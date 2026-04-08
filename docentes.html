@@ -240,6 +240,7 @@
 
         <div class="tabs">
             <button class="tab-btn active" onclick="cambiarTab('miausencia')">⚠️ Mi Ausencia</button>
+            <button class="tab-btn" onclick="cambiarTab('estudiantes')">👥 Estudiantes</button>
             <button class="tab-btn" onclick="cambiarTab('comunicados')">📢 Comunicados</button>
         </div>
 
@@ -297,7 +298,56 @@
             </table>
         </div>
 
-        <!-- TAB 2: COMUNICADOS -->
+        <!-- TAB 2: ESTUDIANTES -->
+        <div id="estudiantes" class="tab-content">
+            <h3>Gestionar Lista de Estudiantes</h3>
+            <p style="background: #e7f3ff; padding: 15px; border-radius: 5px; border-left: 4px solid #008CD0; margin-bottom: 20px;">
+                <strong>Nota:</strong> Agrega y gestiona la lista de estudiantes de tu clase.
+            </p>
+            <form id="formEstudiantes">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="nomEstudiante">Nombre del Estudiante:</label>
+                        <input type="text" id="nomEstudiante" required placeholder="Ej: Juan Pérez">
+                    </div>
+                    <div class="form-group">
+                        <label for="emailEstudiante">Email:</label>
+                        <input type="email" id="emailEstudiante" placeholder="estudiante@email.com">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="telefonoEstudiante">Teléfono:</label>
+                        <input type="tel" id="telefonoEstudiante" placeholder="3001234567">
+                    </div>
+                    <div class="form-group">
+                        <label for="acudienteEstudiante">Acudiente:</label>
+                        <input type="text" id="acudienteEstudiante" placeholder="Nombre del acudiente">
+                    </div>
+                </div>
+                <button type="submit">Agregar Estudiante</button>
+            </form>
+
+            <h3 style="margin-top: 30px;">Lista de Estudiantes</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Email</th>
+                        <th>Teléfono</th>
+                        <th>Acudiente</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaEstudiantes">
+                    <tr>
+                        <td colspan="5" style="text-align: center; color: #999;">No hay estudiantes registrados</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- TAB 3: COMUNICADOS -->
         <div id="comunicados" class="tab-content">
             <h3>Enviar Comunicado a Padres/Estudiantes</h3>
             <form id="formComunicados">
@@ -417,8 +467,34 @@
             }
         });
 
+        // FORM ESTUDIANTES
+        document.getElementById('formEstudiantes').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const docente = localStorage.getItem('emailUsuario');
+            
+            const data = {
+                nombre: document.getElementById('nomEstudiante').value,
+                email: document.getElementById('emailEstudiante').value,
+                telefono: document.getElementById('telefonoEstudiante').value,
+                acudiente: document.getElementById('acudienteEstudiante').value,
+                docente: docente,
+                fechaRegistro: new Date().toISOString()
+            };
+
+            try {
+                let estudiantes = JSON.parse(localStorage.getItem('estudiantes') || '[]');
+                estudiantes.push(data);
+                localStorage.setItem('estudiantes', JSON.stringify(estudiantes));
+                
+                mostrarMensaje('✅ Estudiante agregado correctamente', 'éxito');
+                document.getElementById('formEstudiantes').reset();
+                cargarTablaEstudiantes();
+            } catch (error) {
+                mostrarMensaje('❌ Error: ' + error.message, 'error');
+            }
+        });
+
         
-        function cargarTablaComunicados() {
             const comunicados = JSON.parse(localStorage.getItem('comunicados') || '[]');
             const tbody = document.getElementById('tablaComunicados');
             
@@ -459,6 +535,36 @@
             `).join('');
         }
 
+        function cargarTablaEstudiantes() {
+            const estudiantes = JSON.parse(localStorage.getItem('estudiantes') || '[]');
+            const tbody = document.getElementById('tablaEstudiantes');
+            
+            if (estudiantes.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: #999;">No hay estudiantes registrados</td></tr>';
+                return;
+            }
+            
+            tbody.innerHTML = estudiantes.map((e, index) => `
+                <tr>
+                    <td><strong>${e.nombre}</strong></td>
+                    <td>${e.email || '-'}</td>
+                    <td>${e.telefono || '-'}</td>
+                    <td>${e.acudiente || '-'}</td>
+                    <td><button style="background: #ff6b6b; padding: 5px 10px; font-size: 12px; cursor: pointer; border: none; border-radius: 3px; color: white;" onclick="eliminarEstudiante(${index})">Eliminar</button></td>
+                </tr>
+            `).join('');
+        }
+
+        function eliminarEstudiante(index) {
+            if (confirm('¿Estás seguro de eliminar este estudiante?')) {
+                let estudiantes = JSON.parse(localStorage.getItem('estudiantes') || '[]');
+                estudiantes.splice(index, 1);
+                localStorage.setItem('estudiantes', JSON.stringify(estudiantes));
+                cargarTablaEstudiantes();
+                mostrarMensaje('✅ Estudiante eliminado', 'éxito');
+            }
+        }
+
         function cargarDatosUsuario() {
             const nombre = localStorage.getItem('nombreUsuario') || 'Usuario';
             const email = localStorage.getItem('emailUsuario') || 'No especificado';
@@ -468,6 +574,7 @@
             document.getElementById('emailUsuario').textContent = email;
             document.getElementById('materiaUsuario').textContent = materia;
             
+            cargarTablaEstudiantes();
             cargarTablaMiAusencia();
             cargarTablaComunicados();
         }
