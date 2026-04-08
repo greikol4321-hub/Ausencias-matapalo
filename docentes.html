@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Docentes</title>
+    <link rel="stylesheet" href="stylo.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar {
+            background: #008CD0;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar h1 {
+            color: white;
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .navbar a {
+            background: #ff6b6b;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .navbar a:hover {
+            background: #cc5555;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 50px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .bienvenida {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .bienvenida h2 {
+            color: #008CD0;
+            font-size: 28px;
+        }
+
+        .info-usuario {
+            background: #f0f8ff;
+            padding: 20px;
+            border-radius: 5px;
+            border-left: 4px solid #008CD0;
+            margin-bottom: 30px;
+        }
+
+        .info-usuario p {
+            margin: 10px 0;
+            font-size: 16px;
+        }
+
+        .info-usuario strong {
+            color: #008CD0;
+        }
+
+        .docentes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .docente-card {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-top: 4px solid #008CD0;
+            transition: transform 0.3s;
+        }
+
+        .docente-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .docente-card h3 {
+            color: #008CD0;
+            margin-top: 0;
+        }
+
+        .docente-card p {
+            margin: 8px 0;
+            color: #555;
+        }
+
+        .boton-volver {
+            display: inline-block;
+            margin-top: 20px;
+            background: #28a745;
+            color: white;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .boton-volver:hover {
+            background: #218838;
+        }
+    </style>
+</head>
+
+<body bgcolor="#008CD0">
+    <div class="navbar">
+        <h1>📚 Sistema de Docentes</h1>
+        <a onclick="cerrarSesion()">Cerrar Sesión</a>
+    </div>
+
+    <center><img src="26.jpg" style="margin-top: 20px;">
+        <!--COMENTARIO bradley le deje un codigo centrado no lo mueva-->
+    </center>
+
+    <div class="container">
+        <div class="bienvenida">
+            <h2>¡Bienvenido/a!</h2>
+            <p>Has ingresado correctamente al sistema</p>
+        </div>
+
+        <div class="info-usuario">
+            <h3>Tu Información</h3>
+            <p><strong>Nombre:</strong> <span id="nombreUsuario"></span></p>
+            <p><strong>Email:</strong> <span id="emailUsuario"></span></p>
+            <p><strong>Materia:</strong> <span id="materiaUsuario"></span></p>
+        </div>
+
+        <h3>Docentes Disponibles</h3>
+        <div class="docentes-grid" id="docentesContainer">
+            <div class="docente-card">
+                <h3>Prof. Juan García</h3>
+                <p><strong>Materia:</strong> Matemáticas</p>
+                <p><strong>Horario:</strong> Lunes - Viernes 8:00 AM</p>
+                <p><strong>Email:</strong> juan@docente.com</p>
+            </div>
+            <div class="docente-card">
+                <h3>Prof. María López</h3>
+                <p><strong>Materia:</strong> Español</p>
+                <p><strong>Horario:</strong> Lunes - Viernes 9:00 AM</p>
+                <p><strong>Email:</strong> maria@docente.com</p>
+            </div>
+            <div class="docente-card">
+                <h3>Prof. Carlos Rodríguez</h3>
+                <p><strong>Materia:</strong> Inglés</p>
+                <p><strong>Horario:</strong> Lunes - Viernes 10:00 AM</p>
+                <p><strong>Email:</strong> carlos@docente.com</p>
+            </div>
+            <div class="docente-card">
+                <h3>Prof. Ana Martínez</h3>
+                <p><strong>Materia:</strong> Ciencias</p>
+                <p><strong>Horario:</strong> Lunes - Viernes 11:00 AM</p>
+                <p><strong>Email:</strong> ana@docente.com</p>
+            </div>
+        </div>
+
+        <a href="index.html" class="boton-volver">← Volver a Registro</a>
+    </div>
+
+    <script>
+        // Obtener datos del usuario del localStorage o sessionStorage
+        function cargarDatosUsuario() {
+            // Obtener de parámetros URL si es que vienen
+            const params = new URLSearchParams(window.location.search);
+            const nombre = localStorage.getItem('nombreUsuario') || params.get('nombre') || 'Usuario';
+            const email = localStorage.getItem('emailUsuario') || params.get('email') || 'No especificado';
+            const materia = localStorage.getItem('materiaUsuario') || params.get('materia') || 'No especificada';
+
+            document.getElementById('nombreUsuario').textContent = nombre;
+            document.getElementById('emailUsuario').textContent = email;
+            document.getElementById('materiaUsuario').textContent = materia;
+        }
+
+        function cerrarSesion() {
+            if (confirm('¿Estás seguro de que deseas cerrar sesión?')) {
+                // Limpiar datos
+                localStorage.removeItem('nombreUsuario');
+                localStorage.removeItem('emailUsuario');
+                localStorage.removeItem('materiaUsuario');
+                
+                // Redirigir a página de inicio
+                window.location.href = 'index.html';
+            }
+        }
+
+        // Cargar datos cuando se carga la página
+        cargarDatosUsuario();
+    </script>
+</body>
+
+</html>

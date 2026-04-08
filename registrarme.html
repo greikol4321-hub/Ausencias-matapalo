@@ -176,21 +176,25 @@
                     
                     datosUsuarioDiv.classList.add('show');
                     
-                    mensajeDiv.textContent = '✅ ¡Sesión iniciada correctamente!';
+                    mensajeDiv.textContent = '✅ ¡Sesión iniciada correctamente! Redirigiendo...';
                     mensajeDiv.className = 'mensaje éxito show';
                     form.reset();
                     
+                    // Redirigir a docentes.html después de 2 segundos
                     setTimeout(() => {
-                        mensajeDiv.classList.remove('show');
-                    }, 3000);
+                        window.location.href = 'docentes.html';
+                    }, 2000);
                 } else {
-                    throw new Error('Email o contraseña incorrectos');
+                    // Mostrar alerta si las credenciales son incorrectas
+                    alert('❌ Email o contraseña incorrectos.\n\nDebes registrarte primero para ingresar.');
+                    datosUsuarioDiv.classList.remove('show');
+                    mensajeDiv.textContent = '';
+                    mensajeDiv.className = 'mensaje error';
                 }
             } catch (error) {
-                mensajeDiv.textContent = '❌ Error: ' + error.message;
-                mensajeDiv.className = 'mensaje error show';
-                console.error('Error:', error);
+                alert('❌ Error: ' + error.message + '\n\nDebes registrarte primero para ingresar.');
                 datosUsuarioDiv.classList.remove('show');
+                console.error('Error:', error);
             }
         });
     </script>
