@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario Supabase</title>
+    <link rel="stylesheet" href="stylo.css">
+    <style>
+        .form-container {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        input,
+        textarea {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        
+        button {
+            padding: 12px;
+            background: #008CD0;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        
+        button:hover {
+            background: #006a9a;
+        }
+        
+        .mensaje {
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+            display: none;
+        }
+        
+        .éxito {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .mensaje.show {
+            display: block;
+        }
+    </style>
+</head>
+
+<body bgcolor="#008CD0">
+    <center><img src="escudo sin fondo.png" style="max-width: 150px; height: auto;">
+        <!--COMENTARIO bradley le deje un codigo centrado no lo mueva-->
+    </center>
+    <center>
+        <h1>Registro Docente</h1>
+    </center>
+
+    <div class="form-container">
+        <form id="miFormulario">
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" name="nombre" required placeholder="Tu nombre">
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required placeholder="tu@email.com">
+
+            <label for="password">Contraseña:</label>
+            <input type="password" id="password" name="password" required placeholder="Tu contraseña">
+
+            <label for="materia">Materia:</label>
+            <textarea id="materia" name="materia" rows="5" placeholder="Tu materia aquí..."></textarea>
+
+            <button type="submit">ENVIAR</button>
+            <a href="registrarme.html" style="display: block; text-align: center; margin-top: 15px; padding: 12px; background: #28a745; color: white; text-decoration: none; border-radius: 5px; font-weight: bold;">INGRESAR</a>
+        </form>
+        <div class="mensaje" id="mensaje"></div>
+    </div>
+
+    <script>
+        // Configuración de Supabase
+        const SUPABASE_URL = 'https://etdcmuikvtnqfcnlvodh.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV0ZGNtdWlrdnRucWZjbmx2b2RoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU1OTQ1ODcsImV4cCI6MjA5MTE3MDU4N30.8JHWlTxYRSYEkpipqesHVBKn7QomTXJYHp6Nm6SzU4A';
+
+        const form = document.getElementById('miFormulario');
+        const mensajeDiv = document.getElementById('mensaje');
+
+        form.addEventListener('submit', async(e) => {
+            e.preventDefault();
+
+            const nombre = document.getElementById('nombre').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const materia = document.getElementById('materia').value;
+
+            try {
+                // Realizar POST a Supabase
+                const response = await fetch(
+                    `${SUPABASE_URL}/rest/v1/todos`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'apikey': SUPABASE_KEY,
+                            'Authorization': `Bearer ${SUPABASE_KEY}`
+                        },
+                        body: JSON.stringify({
+                            title: nombre,
+                            materia: materia,
+                            user_email: email,
+                            password: password
+                        })
+                    }
+                );
+
+                if (response.ok) {
+                    mensajeDiv.textContent = '✅ ¡Datos guardados correctamente!';
+                    mensajeDiv.className = 'mensaje éxito show';
+                    form.reset();
+                    setTimeout(() => {
+                        mensajeDiv.classList.remove('show');
+                    }, 3000);
+                } else {
+                    const errorData = await response.json().catch(() => ({}));
+                    const errorMsg = errorData.message || errorData.error || `Error ${response.status}`;
+                    throw new Error(errorMsg);
+                }
+            } catch (error) {
+                mensajeDiv.textContent = '❌ Error: ' + error.message;
+                mensajeDiv.className = 'mensaje error show';
+                console.error('Respuesta completa del error:', error);
+            }
+        });
+    </script>
+</body>
+
+</html>
