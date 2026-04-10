@@ -46,15 +46,15 @@ body {
 
 /* SECCIÓN */
 .seccion-blanca {
-    padding: 20px;
+    padding: 30px;
 }
 
 /* CONTENEDOR CENTRADO */
 .contenedor {
     display: flex;
-    justify-content: center; /* centra todo */
+    justify-content: center;
     align-items: center;
-    gap: 40px;
+    gap: 50px;
 }
 
 /* LOGO */
@@ -71,18 +71,18 @@ body {
 .carousel {
     position: relative;
     width: 100%;
-    height: 300px;
+    height: 320px;
     overflow: hidden;
-    border-radius: 10px;
+    border-radius: 12px;
 }
 
-/* IMÁGENES AJUSTADAS PERFECTO */
+/* IMÁGENES CENTRADAS SIN RECORTE */
 .slides img {
     position: absolute;
     width: 100%;
     height: 100%;
-    object-fit: contain; /* 🔥 AJUSTA SIN CORTAR */
-    background-color: #000; /* fondo si sobra espacio */
+    object-fit: contain; /* 🔥 NO SE CORTA */
+    background-color: #ffffff; /* fondo limpio */
     opacity: 0;
     transition: opacity 0.8s ease-in-out;
 }
@@ -99,8 +99,10 @@ body {
     background-color: rgba(0,0,0,0.5);
     color: white;
     border: none;
-    padding: 8px 12px;
+    padding: 10px 14px;
     cursor: pointer;
+    font-size: 18px;
+    border-radius: 5px;
 }
 
 .prev { left: 10px; }
@@ -113,11 +115,11 @@ body {
     }
 
     .carousel-container {
-        width: 90%;
+        width: 95%;
     }
 
     .carousel {
-        height: 200px;
+        height: 220px;
     }
 }
 </style>
