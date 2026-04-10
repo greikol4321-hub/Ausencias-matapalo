@@ -9,7 +9,7 @@
             font-family: Arial, sans-serif;
         }
 
-        /* CONTENEDOR PRINCIPAL */
+        /* HEADER AZUL */
         .header {
             display: flex;
             align-items: center;
@@ -19,32 +19,7 @@
             color: white;
         }
 
-        /* IZQUIERDA (LOGO STEAM + ANUNCIOS) */
-        .left {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 20%;
-        }
-
-        .left img {
-            width: 80px;
-        }
-
-        .anuncios {
-            margin-top: 10px;
-            width: 100%;
-            height: 80px;
-            background-color: #dcdde1;
-            color: #333;
-            font-size: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 5px;
-        }
-
-        /* CENTRO (ESCUDO + TITULO) */
+        /* CENTRO */
         .center {
             text-align: center;
             width: 60%;
@@ -59,7 +34,7 @@
             font-size: 22px;
         }
 
-        /* DERECHA (BOTONES) */
+        /* BOTONES */
         .right {
             width: 20%;
             display: flex;
@@ -67,7 +42,6 @@
             gap: 10px;
         }
 
-        /* ESTILO DE BOTONES */
         .btn {
             padding: 8px 12px;
             text-decoration: none;
@@ -87,30 +61,70 @@
         .btn:hover {
             opacity: 0.8;
         }
+
+        /* SECCIÓN BLANCA */
+        .seccion-blanca {
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+            gap: 30px;
+            padding: 20px;
+            background-color: white;
+        }
+
+        /* LOGO STEAM */
+        .steam {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .steam img {
+            width: 80px;
+        }
+
+        /* ANUNCIOS */
+        .anuncios {
+            margin-top: 10px;
+            width: 200px;
+            height: 100px;
+            background-color: #dcdde1;
+            color: #333;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
 
+    <!-- HEADER -->
     <div class="header">
-        
-        <!-- IZQUIERDA -->
-        <div class="left">
-            <img src="steam.png" alt="Logo STEAM">
-            <div class="anuncios">
-                Espacio para anuncios del colegio
-            </div>
-        </div>
 
-        <!-- CENTRO -->
+        <div style="width:20%;"></div>
+
         <div class="center">
             <img src="escudo sin fondo.png" alt="Escudo Colegio">
             <h1>Colegio Técnico Profesional de Matapalo</h1>
         </div>
 
-        <!-- DERECHA -->
         <div class="right">
             <a href="registro-docentes.html" class="btn btn-registro">Registro Docente</a>
             <a href="registrarme.html" class="btn btn-login">Iniciar Sesión</a>
+        </div>
+
+    </div>
+
+    <!-- SECCIÓN BLANCA -->
+    <div class="seccion-blanca">
+
+        <div class="steam">
+            <img src="steam.png" alt="Logo STEAM">
+            <div class="anuncios">
+                Espacio para anuncios del colegio
+            </div>
         </div>
 
     </div>
