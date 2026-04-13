@@ -112,7 +112,7 @@ body {
 .prev { left: 10px; }
 .next { right: 10px; }
 
-/* 🔥 TABLA AUSENCIAS */
+/* TABLA */
 .tabla-ausencias {
     margin-top: 50px;
     background: #fff;
@@ -207,22 +207,21 @@ tr:hover {
             <thead>
                 <tr>
                     <th>Docente</th>
+                    <th>Materia</th>
                     <th>Fecha</th>
                     <th>Razón</th>
                     <th>Detalle</th>
                 </tr>
             </thead>
-            <tbody id="tablaAusencias">
-                <tr>
-                    <td colspan="4">No hay ausencias registradas</td>
-                </tr>
-            </tbody>
+            <tbody id="tablaAusencias"></tbody>
         </table>
     </div>
 
 </div>
 
 <script>
+
+// CARRUSEL
 let index = 0;
 let slides = document.querySelectorAll("#carousel1 .slides img");
 
@@ -250,13 +249,14 @@ carrusel.addEventListener("mouseleave", () => {
 });
 
 
-// 🔥 CARGAR AUSENCIAS EN TIEMPO REAL
+// 🔥 CARGAR AUSENCIAS (CORRECTO)
 function cargarAusencias() {
+
     let ausencias = JSON.parse(localStorage.getItem("ausenciasDocente") || "[]");
     let tabla = document.getElementById("tablaAusencias");
 
     if (ausencias.length === 0) {
-        tabla.innerHTML = "<tr><td colspan='4'>No hay ausencias registradas</td></tr>";
+        tabla.innerHTML = "<tr><td colspan='5'>No hay ausencias registradas</td></tr>";
         return;
     }
 
@@ -265,7 +265,8 @@ function cargarAusencias() {
     ausencias.forEach(a => {
         tabla.innerHTML += `
         <tr>
-            <td>${a.nombre || "Docente"}</td>
+            <td>${a.nombre || "Sin nombre"}</td>
+            <td>${a.materia || "-"}</td>
             <td>${a.fecha}</td>
             <td>${a.razon}</td>
             <td>${a.detalle}</td>
@@ -274,9 +275,10 @@ function cargarAusencias() {
     });
 }
 
-// 🔄 ACTUALIZA SOLO (TIEMPO REAL)
-setInterval(cargarAusencias, 2000);
+// 🔄 ACTUALIZA EN TIEMPO REAL
+setInterval(cargarAusencias, 1000);
 cargarAusencias();
+
 </script>
 
 </body>
