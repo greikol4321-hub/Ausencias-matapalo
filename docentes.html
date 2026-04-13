@@ -2,71 +2,100 @@
 <html lang="es">
 
 <head>
-    <meta charset="UTF-8">
-    <title>Panel de Docentes</title>
+<meta charset="UTF-8">
+<title>Panel de Docentes</title>
 
-    <style>
-        body { margin:0; font-family: Arial; background:#008CD0; }
+<style>
+body { margin:0; font-family: Arial; background:#008CD0; }
 
-        .navbar {
-            background:#008CD0;
-            padding:15px;
-            display:flex;
-            justify-content:space-between;
-            color:white;
-        }
+/* HEADER CON LOGOS */
+.header {
+    background:#008CD0;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:10px 20px;
+    color:white;
+}
 
-        .container {
-            max-width:900px;
-            margin:40px auto;
-            padding:25px;
-            background:white;
-            border-radius:10px;
-        }
+.header img {
+    height:70px;
+}
 
-        .info-usuario {
-            background:#f0f8ff;
-            padding:15px;
-            border-left:4px solid #008CD0;
-        }
+.header h1 {
+    margin:0;
+    text-align:center;
+    flex:1;
+}
 
-        .tabs { margin-top:20px; }
+/* NAVBAR */
+.navbar {
+    background:#006a9a;
+    padding:10px;
+    display:flex;
+    justify-content:space-between;
+    color:white;
+}
 
-        .tab-btn {
-            padding:10px 20px;
-            background:#008CD0;
-            color:white;
-            border:none;
-        }
+.container {
+    max-width:900px;
+    margin:40px auto;
+    padding:25px;
+    background:white;
+    border-radius:10px;
+}
 
-        input, select, textarea {
-            width:100%;
-            padding:10px;
-            margin-top:5px;
-        }
+.info-usuario {
+    background:#f0f8ff;
+    padding:15px;
+    border-left:4px solid #008CD0;
+}
 
-        button {
-            margin-top:10px;
-            padding:10px;
-            background:#008CD0;
-            color:white;
-            border:none;
-            cursor:pointer;
-        }
+.tabs { margin-top:20px; }
 
-        table { width:100%; margin-top:20px; }
+.tab-btn {
+    padding:10px 20px;
+    background:#008CD0;
+    color:white;
+    border:none;
+}
 
-        td, th {
-            padding:10px;
-            border-bottom:1px solid #ddd;
-        }
-    </style>
+input, select, textarea {
+    width:100%;
+    padding:10px;
+    margin-top:5px;
+}
+
+button {
+    margin-top:10px;
+    padding:10px;
+    background:#008CD0;
+    color:white;
+    border:none;
+    cursor:pointer;
+}
+
+table { width:100%; margin-top:20px; }
+
+td, th {
+    padding:10px;
+    border-bottom:1px solid #ddd;
+}
+</style>
 </head>
 
 <body>
 
+<!-- 🔥 HEADER CON LOGOS -->
+<div class="header">
+    <img src="escudo sin fondo.png">
+    <h1>Panel de Docentes</h1>
+    <img src="LOGO MEP.png">
+</div>
+
+<!-- NAVBAR -->
 <div class="navbar">
-    <h2>Panel de Docentes</h2>
+    <span>Bienvenido</span>
     <button onclick="cerrarSesion()">Cerrar Sesión</button>
 </div>
 
@@ -151,7 +180,7 @@ function cargarDatosUsuario() {
 cargarDatosUsuario();
 
 
-// 📌 REGISTRAR AUSENCIA
+// REGISTRAR AUSENCIA
 document.getElementById('formMiAusencia').addEventListener('submit', function(e){
 
     e.preventDefault();
@@ -174,7 +203,7 @@ document.getElementById('formMiAusencia').addEventListener('submit', function(e)
 });
 
 
-// 📊 TABLA
+// TABLA
 function cargarTablaMiAusencia(){
 
     let lista = JSON.parse(localStorage.getItem('ausenciasDocente') || '[]');
@@ -200,7 +229,7 @@ function cargarTablaMiAusencia(){
 }
 
 
-// 🔒 CERRAR SESIÓN
+// CERRAR SESIÓN
 function cerrarSesion(){
     localStorage.clear();
     window.location.href = "index.html";
