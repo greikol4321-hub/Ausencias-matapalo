@@ -8,7 +8,6 @@
 <style>
 body { margin:0; font-family: Arial; background:#008CD0; }
 
-/* HEADER CON LOGOS */
 .header {
     background:#008CD0;
     display:flex;
@@ -18,9 +17,7 @@ body { margin:0; font-family: Arial; background:#008CD0; }
     color:white;
 }
 
-.header img {
-    height:70px;
-}
+.header img { height:70px; }
 
 .header h1 {
     margin:0;
@@ -28,7 +25,6 @@ body { margin:0; font-family: Arial; background:#008CD0; }
     flex:1;
 }
 
-/* NAVBAR */
 .navbar {
     background:#006a9a;
     padding:10px;
@@ -51,15 +47,6 @@ body { margin:0; font-family: Arial; background:#008CD0; }
     border-left:4px solid #008CD0;
 }
 
-.tabs { margin-top:20px; }
-
-.tab-btn {
-    padding:10px 20px;
-    background:#008CD0;
-    color:white;
-    border:none;
-}
-
 input, select, textarea {
     width:100%;
     padding:10px;
@@ -75,7 +62,10 @@ button {
     cursor:pointer;
 }
 
-table { width:100%; margin-top:20px; }
+table {
+    width:100%;
+    margin-top:20px;
+}
 
 td, th {
     padding:10px;
@@ -86,14 +76,12 @@ td, th {
 
 <body>
 
-<!-- 🔥 HEADER CON LOGOS -->
 <div class="header">
     <img src="escudo sin fondo.png">
     <h1>Panel de Docentes</h1>
     <img src="LOGO MEP.png">
 </div>
 
-<!-- NAVBAR -->
 <div class="navbar">
     <span>Bienvenido</span>
     <button onclick="cerrarSesion()">Cerrar Sesión</button>
@@ -107,10 +95,6 @@ td, th {
 <p><b>Nombre:</b> <span id="nombreUsuario"></span></p>
 <p><b>Email:</b> <span id="emailUsuario"></span></p>
 <p><b>Materia:</b> <span id="materiaUsuario"></span></p>
-</div>
-
-<div class="tabs">
-    <button class="tab-btn">⚠️ Mi Ausencia</button>
 </div>
 
 <h3>Registrar Ausencia</h3>
@@ -157,22 +141,24 @@ td, th {
 
 <script>
 
-// 🔥 CARGAR DATOS DOCENTE
+// 🔥 PRUEBA AUTOMÁTICA (QUÍTALO CUANDO TENGAS LOGIN)
+if (!localStorage.getItem("nombreUsuario")) {
+    localStorage.setItem("nombreUsuario", "Docente Prueba");
+    localStorage.setItem("emailUsuario", "docente@mep.go.cr");
+    localStorage.setItem("materiaUsuario", "Informática");
+}
+
+
+// 🔥 CARGAR DATOS
 function cargarDatosUsuario() {
 
     const nombre = localStorage.getItem('nombreUsuario');
     const email = localStorage.getItem('emailUsuario');
     const materia = localStorage.getItem('materiaUsuario');
 
-    if (!nombre || !email) {
-        alert("Debe iniciar sesión primero");
-        window.location.href = "index.html";
-        return;
-    }
-
     document.getElementById('nombreUsuario').textContent = nombre;
     document.getElementById('emailUsuario').textContent = email;
-    document.getElementById('materiaUsuario').textContent = materia || "No especificada";
+    document.getElementById('materiaUsuario').textContent = materia;
 
     cargarTablaMiAusencia();
 }
@@ -180,7 +166,7 @@ function cargarDatosUsuario() {
 cargarDatosUsuario();
 
 
-// REGISTRAR AUSENCIA
+// 🔥 REGISTRAR AUSENCIA (CORREGIDO)
 document.getElementById('formMiAusencia').addEventListener('submit', function(e){
 
     e.preventDefault();
@@ -192,18 +178,25 @@ document.getElementById('formMiAusencia').addEventListener('submit', function(e)
 
     let lista = JSON.parse(localStorage.getItem('ausenciasDocente') || '[]');
 
-    lista.push({fecha, razon, detalle, actividad});
+    lista.push({
+        nombre: localStorage.getItem('nombreUsuario'),
+        materia: localStorage.getItem('materiaUsuario'),
+        fecha: fecha,
+        razon: razon,
+        detalle: detalle,
+        actividad: actividad
+    });
 
     localStorage.setItem('ausenciasDocente', JSON.stringify(lista));
 
-    alert("Ausencia registrada");
+    alert("✅ Ausencia enviada correctamente");
 
     this.reset();
     cargarTablaMiAusencia();
 });
 
 
-// TABLA
+// 📊 TABLA
 function cargarTablaMiAusencia(){
 
     let lista = JSON.parse(localStorage.getItem('ausenciasDocente') || '[]');
@@ -229,7 +222,7 @@ function cargarTablaMiAusencia(){
 }
 
 
-// CERRAR SESIÓN
+// 🔒 CERRAR SESIÓN
 function cerrarSesion(){
     localStorage.clear();
     window.location.href = "index.html";
