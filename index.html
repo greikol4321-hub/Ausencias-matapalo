@@ -16,11 +16,12 @@ body {
     text-align: center;
     padding: 20px;
     color: white;
+    position: relative;
 }
 
 /* LOGOS */
 .logo-mep {
-    width: 260px; /* MÁS GRANDE */
+    width: 260px;
 }
 
 .logo-escudo {
@@ -48,25 +49,34 @@ body {
 /* CONTENIDO */
 .seccion-blanca {
     padding: 40px;
-    text-align: center;
+}
+
+/* 🔥 CONTENEDOR LATERAL */
+.contenedor {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
 }
 
 /* STEAM */
+.steam {
+    width: 300px;
+    text-align: center;
+}
+
 .steam img {
-    width: 200px;
+    width: 180px;
 }
 
 .steam p {
-    max-width: 300px;
-    margin: auto;
     font-size: 14px;
     margin-top: 10px;
 }
 
-/* 🎠 CARRUSEL CORREGIDO */
+/* 🎠 CARRUSEL */
 .carousel-container {
     width: 500px;
-    margin: auto;
 }
 
 .carousel-wrapper {
@@ -80,16 +90,14 @@ body {
 
 .slides {
     display: flex;
-    width: 500%;
-    transition: transform 0.5s ease;
+    transition: transform 0.6s ease;
 }
 
-/* 🔥 CLAVE: cada imagen ocupa 100% */
 .slides img {
     width: 100%;
     flex-shrink: 0;
     height: 350px;
-    object-fit: contain; /* NO CORTA */
+    object-fit: contain;
     background: #f4f6f7;
 }
 
@@ -129,6 +137,13 @@ td {
     padding: 10px;
     border-bottom: 1px solid #ddd;
 }
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .contenedor {
+        flex-direction: column;
+    }
+}
 </style>
 </head>
 
@@ -152,6 +167,9 @@ td {
 <!-- CONTENIDO -->
 <div class="seccion-blanca">
 
+<div class="contenedor">
+
+<!-- STEAM -->
 <div class="steam">
     <img src="steam.png">
     <p>
@@ -160,12 +178,10 @@ td {
     </p>
 </div>
 
-<br><br>
-
 <!-- CARRUSEL -->
 <div class="carousel-container">
 
-<h2>Anuncios del Colegio</h2>
+<h2 style="text-align:center;">Anuncios del Colegio</h2>
 
 <div class="carousel-wrapper">
 
@@ -183,11 +199,14 @@ td {
 </div>
 
 </div>
+
+</div>
+
 </div>
 
 <!-- TABLA -->
 <div class="tabla-ausencias">
-<h2>Ausencias de Docentes</h2>
+<h2 style="text-align:center;">Ausencias de Docentes</h2>
 
 <table>
 <thead>
@@ -207,7 +226,7 @@ td {
 
 <script>
 
-// 🎠 CARRUSEL ARREGLADO
+// 🎠 CARRUSEL LENTO
 let index = 0;
 const slides = document.getElementById("slides");
 
@@ -221,8 +240,8 @@ function mover(direccion){
     slides.style.transform = `translateX(-${index * 100}%)`;
 }
 
-// AUTO
-setInterval(() => mover(1), 4000);
+// 🔥 MÁS LENTO (ANTES 4000)
+setInterval(() => mover(1), 7000);
 
 
 // TABLA
