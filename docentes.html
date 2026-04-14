@@ -2,289 +2,296 @@
 <html lang="es">
 
 <head>
-<meta charset="UTF-8">
-<title>Panel de Docentes</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Docentes</title>
 
-<style>
-body { margin:0; font-family: Arial; background:#008CD0; }
+    <style>
+        body { margin: 0; font-family: 'Segoe UI', Arial, sans-serif; background: #008CD0; color: #333; }
 
-.header {
-    background:#008CD0;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:10px 20px;
-    color:white;
-}
+        .header {
+            background: #008CD0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 40px;
+            color: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
 
-.header img { height:70px; }
+        .header img { height: 60px; object-fit: contain; }
+        .header h1 { margin: 0; text-align: center; flex: 1; font-size: 1.5rem; }
 
-.header h1 {
-    margin:0;
-    text-align:center;
-    flex:1;
-}
+        .navbar {
+            background: #006a9a;
+            padding: 10px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+        }
 
-.navbar {
-    background:#006a9a;
-    padding:10px;
-    display:flex;
-    justify-content:space-between;
-    color:white;
-}
+        .container {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
 
-.container {
-    max-width:900px;
-    margin:40px auto;
-    padding:25px;
-    background:white;
-    border-radius:10px;
-}
+        .info-usuario {
+            background: #f0f8ff;
+            padding: 20px;
+            border-left: 5px solid #008CD0;
+            border-radius: 4px;
+            margin-bottom: 25px;
+        }
 
-.info-usuario {
-    background:#f0f8ff;
-    padding:15px;
-    border-left:4px solid #008CD0;
-}
+        .info-usuario p { margin: 5px 0; }
 
-input, select, textarea {
-    width:100%;
-    padding:10px;
-    margin-top:5px;
-}
+        form { display: grid; gap: 15px; background: #f9f9f9; padding: 20px; border-radius: 8px; }
+        
+        label { font-weight: bold; font-size: 0.9rem; }
 
-button {
-    margin-top:10px;
-    padding:10px;
-    background:#008CD0;
-    color:white;
-    border:none;
-    cursor:pointer;
-}
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box; /* Evita que el padding desborde el ancho */
+        }
 
-table {
-    width:100%;
-    margin-top:20px;
-}
+        button {
+            padding: 12px 20px;
+            background: #008CD0;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
 
-td, th {
-    padding:10px;
-    border-bottom:1px solid #ddd;
-}
-</style>
+        button:hover { background: #005f8d; }
+
+        .btn-cerrar { background: #d9534f; padding: 8px 15px; }
+        .btn-cerrar:hover { background: #c9302c; }
+
+        table { width: 100%; border-collapse: collapse; margin-top: 25px; }
+        th { background: #008CD0; color: white; text-align: left; }
+        td, th { padding: 12px; border: 1px solid #eee; }
+        tr:nth-child(even) { background: #fdfdfd; }
+    </style>
 </head>
 
 <body>
 
 <div class="header">
-    <img src="escudo sin fondo.png">
-    <h1 id="saludo">Panel de Docentes</h1>
-    <img src="LOGO MEP.png">
+    <img src="escudo sin fondo.png" alt="Escudo">
+    <h1 id="saludo">Cargando Panel...</h1>
+    <img src="LOGO MEP.png" alt="Logo MEP">
 </div>
 
 <div class="navbar">
-    <span>Bienvenido</span>
-    <button onclick="cerrarSesion()">Cerrar Sesión</button>
+    <span id="labelBienvenida">Sesión activa</span>
+    <button class="btn-cerrar" onclick="cerrarSesion()">Cerrar Sesión</button>
 </div>
 
 <div class="container">
 
-<h2>Información del Docente</h2>
+    <h2>Información del Docente</h2>
+    <div class="info-usuario">
+        <p><b>Nombre:</b> <span id="nombreUsuario">---</span></p>
+        <p><b>Cédula/Usuario:</b> <span id="usuario">---</span></p>
+        <p><b>Rol:</b> <span id="rol">---</span></p>
+    </div>
 
-<div class="info-usuario">
-<p><b>Nombre:</b> <span id="nombreUsuario"></span></p>
-<p><b>Usuario:</b> <span id="usuario"></span></p>
-<p><b>Rol:</b> <span id="rol"></span></p>
-</div>
+    <hr>
 
-<h3>Registrar Ausencia</h3>
+    <h3>Registrar Nueva Ausencia</h3>
+    <form id="formMiAusencia">
+        <div>
+            <label>Fecha de Ausencia</label>
+            <input type="date" id="fechaAusenciaDocente" required>
+        </div>
 
-<form id="formMiAusencia">
+        <div>
+            <label>Razón de la ausencia</label>
+            <select id="razonAusencia" required>
+                <option value="">Seleccione una opción</option>
+                <option value="Enfermedad">Enfermedad</option>
+                <option value="Permiso">Permiso</option>
+                <option value="Capacitación">Capacitación</option>
+                <option value="Cita Médica">Cita Médica</option>
+                <option value="Otro">Otro</option>
+            </select>
+        </div>
 
-<label>Fecha</label>
-<input type="date" id="fechaAusenciaDocente" required>
+        <div>
+            <label>Detalle adicional (Opcional)</label>
+            <textarea id="detalleAusencia" rows="2" placeholder="Ej: Cita en el Ebais..."></textarea>
+        </div>
 
-<label>Razón</label>
-<select id="razonAusencia" required>
-<option value="">Seleccione</option>
-<option>Enfermedad</option>
-<option>Permiso</option>
-<option>Capacitación</option>
-</select>
+        <div>
+            <label>Actividad para el Reemplazo</label>
+            <textarea id="actividadRemplazo" rows="2" placeholder="Ej: Realizar práctica de la página 20..."></textarea>
+        </div>
 
-<label>Detalle</label>
-<textarea id="detalleAusencia"></textarea>
+        <button type="submit" id="btnGuardar">Registrar Ausencia</button>
+    </form>
 
-<label>Actividad</label>
-<textarea id="actividadRemplazo"></textarea>
+    <hr style="margin-top:40px">
 
-<button type="submit">Registrar</button>
-
-</form>
-
-<h3>Historial (Solo tus ausencias)</h3>
-
-<table>
-<thead>
-<tr>
-<th>Fecha</th>
-<th>Razón</th>
-<th>Detalle</th>
-<th>Actividad</th>
-</tr>
-</thead>
-
-<tbody id="tablaMiAusencia"></tbody>
-</table>
+    <h3>Mi Historial Personal</h3>
+    <div style="overflow-x:auto;">
+        <table>
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Razón</th>
+                    <th>Detalle</th>
+                    <th>Actividad</th>
+                </tr>
+            </thead>
+            <tbody id="tablaMiAusencia">
+                <tr><td colspan="4">Cargando tus registros...</td></tr>
+            </tbody>
+        </table>
+    </div>
 
 </div>
 
 <script>
-
 // 🔐 CONFIG SUPABASE
 const SUPABASE_URL = 'https://etdcmuikvtnqfcnlvodh.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV0ZGNtdWlrdnRucWZjbmx2b2RoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU1OTQ1ODcsImV4cCI6MjA5MTE3MDU4N30.8JHWlTxYRSYEkpipqesHVBKn7QomTXJYHp6Nm6SzU4A';
 
-
-// 🔐 CARGAR DATOS DEL LOGIN
-function cargarDatosUsuario() {
-
+// 1. CARGAR DATOS AL INICIAR
+function inicializar() {
     const nombre = localStorage.getItem('nombre');
     const usuario = localStorage.getItem('usuario');
     const rol = localStorage.getItem('rol');
 
     if (!nombre || !usuario) {
-        alert("⚠️ Debe iniciar sesión primero");
+        alert("⚠️ Sesión no válida. Por favor ingrese de nuevo.");
         window.location.href = "index.html";
         return;
     }
 
     document.getElementById('nombreUsuario').textContent = nombre;
     document.getElementById('usuario').textContent = usuario;
-    document.getElementById('rol').textContent = rol || "profesor";
-    document.getElementById('saludo').textContent = "Bienvenido, " + nombre;
-
+    document.getElementById('rol').textContent = rol || "Docente";
+    document.getElementById('saludo').textContent = "Bienvenido, " + nombre.split(' ')[0];
+    
     cargarTablaMiAusencia();
 }
 
-cargarDatosUsuario();
-
-
-// 📝 REGISTRAR AUSENCIA
+// 2. REGISTRAR AUSENCIA (POST)
 document.getElementById('formMiAusencia').addEventListener('submit', async function(e){
-
     e.preventDefault();
+    
+    const btn = document.getElementById('btnGuardar');
+    btn.disabled = true;
+    btn.textContent = "Guardando...";
 
-    const fecha = document.getElementById('fechaAusenciaDocente').value;
-    const razon = document.getElementById('razonAusencia').value;
-    const detalle = document.getElementById('detalleAusencia').value;
-    const actividad = document.getElementById('actividadRemplazo').value;
-
-    if (!razon) {
-        alert("Seleccione una razón");
-        return;
-    }
+    const datos = {
+        usuario: localStorage.getItem('usuario'),
+        nombre: localStorage.getItem('nombre'),
+        rol: localStorage.getItem('rol') || 'Docente',
+        fecha: document.getElementById('fechaAusenciaDocente').value,
+        razon: document.getElementById('razonAusencia').value,
+        detalle: document.getElementById('detalleAusencia').value,
+        actividad: document.getElementById('actividadRemplazo').value
+    };
 
     try {
-
         const response = await fetch(`${SUPABASE_URL}/rest/v1/ausencias`, {
             method: "POST",
             headers: {
-                apikey: SUPABASE_KEY,
-                Authorization: `Bearer ${SUPABASE_KEY}`,
-                "Content-Type": "application/json"
+                "apikey": SUPABASE_KEY,
+                "Authorization": `Bearer ${SUPABASE_KEY}`,
+                "Content-Type": "application/json",
+                "Prefer": "return=minimal"
             },
-            body: JSON.stringify({
-                usuario: localStorage.getItem('usuario'),
-                nombre: localStorage.getItem('nombre'),
-                rol: localStorage.getItem('rol'),
-                fecha: fecha,
-                razon: razon,
-                detalle: detalle,
-                actividad: actividad
-            })
+            body: JSON.stringify(datos)
         });
 
-        if (!response.ok) {
-            const error = await response.text();
-            alert("❌ Error: " + error);
-            return;
+        if (response.ok) {
+            alert("✅ Registrado con éxito");
+            this.reset();
+            cargarTablaMiAusencia();
+        } else {
+            const err = await response.json();
+            throw new Error(err.message);
         }
 
-        alert("✅ Ausencia registrada correctamente");
-
-        this.reset();
-        cargarTablaMiAusencia();
-
     } catch (error) {
-        alert("❌ Error de conexión");
-        console.error(error);
+        alert("❌ Error: " + error.message);
+    } finally {
+        btn.disabled = false;
+        btn.textContent = "Registrar Ausencia";
     }
-
 });
 
-
-// 📊 CARGAR SOLO SUS AUSENCIAS
-async function cargarTablaMiAusencia(){
-
-    const usuario = localStorage.getItem('usuario');
+// 3. CARGAR SOLO LAS AUSENCIAS DEL USUARIO ACTUAL (GET filtrado)
+async function cargarTablaMiAusencia() {
+    const usuarioActivo = localStorage.getItem('usuario');
+    const contenedorTabla = document.getElementById('tablaMiAusencia');
 
     try {
-
-        const response = await fetch(
-            `${SUPABASE_URL}/rest/v1/ausencias?usuario=eq.${encodeURIComponent(usuario)}&order=fecha.desc`,
-            {
-                headers: {
-                    apikey: SUPABASE_KEY,
-                    Authorization: `Bearer ${SUPABASE_KEY}`
-                }
+        // El filtro clave es: usuario=eq. VALOR
+        const query = `usuario=eq.${encodeURIComponent(usuarioActivo)}&order=fecha.desc`;
+        
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/ausencias?${query}`, {
+            headers: {
+                "apikey": SUPABASE_KEY,
+                "Authorization": `Bearer ${SUPABASE_KEY}`
             }
-        );
-
-        if (!response.ok) {
-            const error = await response.text();
-            console.error(error);
-            document.getElementById('tablaMiAusencia').innerHTML =
-                "<tr><td colspan='4'>Error cargando datos</td></tr>";
-            return;
-        }
+        });
 
         const lista = await response.json();
-        let tabla = document.getElementById('tablaMiAusencia');
-
-        if(!lista || lista.length === 0){
-            tabla.innerHTML = "<tr><td colspan='4'>No tienes ausencias registradas</td></tr>";
+        
+        if (lista.length === 0) {
+            contenedorTabla.innerHTML = "<tr><td colspan='4' style='text-align:center'>No tienes ausencias registradas.</td></tr>";
             return;
         }
 
-        tabla.innerHTML = "";
-
-        lista.forEach(a=>{
-
-            let fechaBonita = new Date(a.fecha).toLocaleDateString("es-CR");
-
-            tabla.innerHTML += `
-            <tr>
-                <td>${fechaBonita}</td>
-                <td>${a.razon}</td>
-                <td>${a.detalle}</td>
-                <td>${a.actividad}</td>
-            </tr>`;
+        contenedorTabla.innerHTML = "";
+        lista.forEach(item => {
+            const fila = document.createElement('tr');
+            fila.innerHTML = `
+                <td>${formatearFecha(item.fecha)}</td>
+                <td><b>${item.razon}</b></td>
+                <td>${item.detalle || '-'}</td>
+                <td>${item.actividad || '-'}</td>
+            `;
+            contenedorTabla.appendChild(fila);
         });
 
     } catch (error) {
-        console.error(error);
-        document.getElementById('tablaMiAusencia').innerHTML =
-            "<tr><td colspan='4'>Error de conexión</td></tr>";
+        console.error("Error al cargar:", error);
+        contenedorTabla.innerHTML = "<tr><td colspan='4'>Error al conectar con el servidor.</td></tr>";
     }
 }
 
-
-// 🔒 CERRAR SESIÓN
-function cerrarSesion(){
-    localStorage.clear();
-    window.location.href = "index.html";
+// Utilidad para fecha
+function formatearFecha(fechaString) {
+    if(!fechaString) return "-";
+    const [y, m, d] = fechaString.split('-');
+    return `${d}/${m}/${y}`;
 }
+
+// 4. CERRAR SESIÓN
+function cerrarSesion() {
+    if(confirm("¿Desea cerrar la sesión?")) {
+        localStorage.clear();
+        window.location.href = "index.html";
+    }
+}
+
+// Ejecutar al cargar la página
+window.onload = inicializar;
 
 </script>
 
