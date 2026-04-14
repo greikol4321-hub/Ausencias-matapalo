@@ -181,7 +181,7 @@ para la Educación Ambiental desde un enfoque STEAM
 <thead>
 <tr>
 <th>Docente</th>
-<th>Fecha</th>
+<th>Día</th>
 <th>Motivo</th>
 <th>Detalle</th>
 </tr>
@@ -220,6 +220,7 @@ const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 async function cargarAusencias(){
 
     try {
+
         const response = await fetch(
             `${SUPABASE_URL}/rest/v1/ausencias?select=nombre,fecha,razon,detalle&order=fecha.desc`,
             {
@@ -230,31 +231,50 @@ async function cargarAusencias(){
             }
         );
 
+        if (!response.ok) {
+            const error = await response.text();
+            console.error(error);
+            document.getElementById("tablaAusencias").innerHTML =
+                "<tr><td colspan='4'>Error cargando datos</td></tr>";
+            return;
+        }
+
         const datos = await response.json();
         let tabla = document.getElementById("tablaAusencias");
 
-        if(datos.length === 0){
-            tabla.innerHTML = "<tr><td colspan='4'>No hay datos</td></tr>";
+        if(!datos || datos.length === 0){
+            tabla.innerHTML = "<tr><td colspan='4'>No hay ausencias registradas</td></tr>";
             return;
         }
 
         tabla.innerHTML = "";
 
-        datos.forEach(a=>{
+        datos.forEach(a => {
+
+            let fechaBonita = new Date(a.fecha).toLocaleDateString("es-CR", {
+                weekday: "long",
+                year: "numeric",
+                month: "long",
+                day: "numeric"
+            });
+
             tabla.innerHTML += `
             <tr>
-                <td>${a.nombre}</td>
-                <td>${a.fecha}</td>
-                <td>${a.razon}</td>
-                <td>${a.detalle}</td>
+                <td>${a.nombre || "Sin nombre"}</td>
+                <td>${fechaBonita}</td>
+                <td>${a.razon || "-"}</td>
+                <td>${a.detalle || "-"}</td>
             </tr>`;
         });
 
     } catch (error) {
         console.error(error);
+        document.getElementById("tablaAusencias").innerHTML =
+            "<tr><td colspan='4'>Error de conexión</td></tr>";
     }
 }
 
+// 🚀 EJECUTAR
 cargarAusencias();
 
 </script>
