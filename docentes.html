@@ -141,7 +141,11 @@ td, th {
 
 <script>
 
-// 🔐 CARGAR DATOS DESDE LOGIN (SUPABASE)
+// 🔐 CONFIG SUPABASE
+const SUPABASE_URL = 'https://etdcmuikvtnqfcnlvodh.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'; // pega tu key completa
+
+// 🔐 CARGAR DATOS DESDE LOGIN
 function cargarDatosUsuario() {
 
     const nombre = localStorage.getItem('nombre');
@@ -158,7 +162,6 @@ function cargarDatosUsuario() {
     document.getElementById('usuario').textContent = usuario;
     document.getElementById('rol').textContent = rol || "profesor";
 
-    // 👋 saludo dinámico
     document.getElementById('saludo').textContent = "Bienvenido, " + nombre;
 
     cargarTablaMiAusencia();
@@ -167,8 +170,8 @@ function cargarDatosUsuario() {
 cargarDatosUsuario();
 
 
-// 📝 REGISTRAR AUSENCIA
-document.getElementById('formMiAusencia').addEventListener('submit', function(e){
+// 📝 REGISTRAR AUSENCIA (SUPABASE)
+document.getElementById('formMiAusencia').addEventListener('submit', async function(e){
 
     e.preventDefault();
 
@@ -177,19 +180,23 @@ document.getElementById('formMiAusencia').addEventListener('submit', function(e)
     const detalle = document.getElementById('detalleAusencia').value;
     const actividad = document.getElementById('actividadRemplazo').value;
 
-    let lista = JSON.parse(localStorage.getItem('ausenciasDocente') || '[]');
-
-    lista.push({
-        nombre: localStorage.getItem('nombre'),
-        usuario: localStorage.getItem('usuario'),
-        rol: localStorage.getItem('rol'),
-        fecha: fecha,
-        razon: razon,
-        detalle: detalle,
-        actividad: actividad
+    await fetch(`${SUPABASE_URL}/rest/v1/ausencias`, {
+        method: "POST",
+        headers: {
+            apikey: SUPABASE_KEY,
+            Authorization: `Bearer ${SUPABASE_KEY}`,
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            usuario: localStorage.getItem('usuario'),
+            nombre: localStorage.getItem('nombre'),
+            rol: localStorage.getItem('rol'),
+            fecha: fecha,
+            razon: razon,
+            detalle: detalle,
+            actividad: actividad
+        })
     });
-
-    localStorage.setItem('ausenciasDocente', JSON.stringify(lista));
 
     alert("✅ Ausencia registrada correctamente");
 
@@ -198,10 +205,26 @@ document.getElementById('formMiAusencia').addEventListener('submit', function(e)
 });
 
 
-// 📊 TABLA
-function cargarTablaMiAusencia(){
+// 📊 TABLA DESDE SUPABASE
+async function cargarTablaMiAusencia(){
 
-    let lista = JSON.parse(localStorage.getItem('ausenciasDocente') || '[]');
+    const usuario = localStorage.getItem('usuario');
+    const rol = localStorage.getItem('rol');
+
+    let url = `${SUPABASE_URL}/rest/v1/ausencias?order=fecha.desc`;
+
+    if (rol !== "admin") {
+        url = `${SUPABASE_URL}/rest/v1/ausencias?usuario=eq.${usuario}&order=fecha.desc`;
+    }
+
+    const response = await fetch(url, {
+        headers: {
+            apikey: SUPABASE_KEY,
+            Authorization: `Bearer ${SUPABASE_KEY}`
+        }
+    });
+
+    const lista = await response.json();
     let tabla = document.getElementById('tablaMiAusencia');
 
     if(lista.length === 0){
