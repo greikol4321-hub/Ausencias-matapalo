@@ -4,13 +4,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel de Docentes</title>
+    <title>Panel de Docentes - CTP Matapalo</title>
 
     <style>
-        body { margin: 0; font-family: 'Segoe UI', Arial, sans-serif; background: #008CD0; color: #333; }
+        :root {
+            --azul-mep: #008CD0;
+            --azul-oscuro: #006a9a;
+            --naranja: #f39c12;
+            --rojo: #d9534f;
+            --gris-claro: #f9f9f9;
+        }
+
+        body { margin: 0; font-family: 'Segoe UI', Arial, sans-serif; background: #eef2f5; color: #333; }
 
         .header {
-            background: #008CD0;
+            background: var(--azul-mep);
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -19,11 +27,11 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
 
-        .header img { height: 60px; object-fit: contain; }
-        .header h1 { margin: 0; text-align: center; flex: 1; font-size: 1.5rem; }
+        .header img { height: 60px; filter: brightness(0) invert(1); }
+        .header h1 { margin: 0; font-size: 1.4rem; text-align: center; flex: 1; }
 
         .navbar {
-            background: #006a9a;
+            background: var(--azul-oscuro);
             padding: 10px 40px;
             display: flex;
             justify-content: space-between;
@@ -32,9 +40,9 @@
         }
 
         .container {
-            max-width: 900px;
+            max-width: 950px;
             margin: 30px auto;
-            padding: 30px;
+            padding: 25px;
             background: white;
             border-radius: 12px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
@@ -42,53 +50,60 @@
 
         .info-usuario {
             background: #f0f8ff;
-            padding: 20px;
-            border-left: 5px solid #008CD0;
+            padding: 15px;
+            border-left: 5px solid var(--azul-mep);
             border-radius: 4px;
             margin-bottom: 25px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
         }
 
         /* SECCIÓN ADMIN */
         #seccionAdmin {
-            display: none; /* Se activa por JS si es admin */
+            display: none;
             background: #fff3e0;
             padding: 20px;
             border-radius: 8px;
-            border: 2px dashed #f39c12;
+            border: 2px dashed var(--naranja);
             margin-bottom: 30px;
         }
 
-        form { display: grid; gap: 15px; background: #f9f9f9; padding: 20px; border-radius: 8px; }
+        form { display: grid; gap: 15px; background: var(--gris-claro); padding: 20px; border-radius: 8px; }
         
-        label { font-weight: bold; font-size: 0.9rem; }
+        .row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+
+        label { font-weight: bold; font-size: 0.85rem; color: #555; }
 
         input, select, textarea {
             width: 100%;
-            padding: 12px;
+            padding: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
             box-sizing: border-box;
+            font-size: 0.95rem;
         }
 
         button {
             padding: 12px 20px;
-            background: #008CD0;
+            background: var(--azul-mep);
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             font-weight: bold;
-            transition: background 0.3s;
+            transition: 0.3s;
         }
 
-        button:hover { background: #005f8d; }
-        .btn-admin { background: #f39c12; }
-        .btn-admin:hover { background: #d38300; }
-        .btn-cerrar { background: #d9534f; padding: 8px 15px; }
+        button:hover { background: var(--azul-oscuro); }
+        .btn-admin { background: var(--naranja); }
+        .btn-cerrar { background: var(--rojo); padding: 8px 15px; }
+        .btn-eliminar { background: #ff4d4d; padding: 5px 10px; font-size: 0.8rem; }
 
-        table { width: 100%; border-collapse: collapse; margin-top: 25px; }
-        th { background: #008CD0; color: white; text-align: left; }
-        td, th { padding: 12px; border: 1px solid #eee; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 0.9rem; }
+        th { background: #eee; color: #333; text-align: left; }
+        td, th { padding: 12px; border: 1px solid #ddd; }
+
+        @media (max-width: 600px) { .row { grid-template-columns: 1fr; } }
     </style>
 </head>
 
@@ -96,92 +111,90 @@
 
 <div class="header">
     <img src="escudo sin fondo.png" alt="Escudo">
-    <h1 id="saludo">Cargando Panel...</h1>
+    <h1 id="saludo">Cargando...</h1>
     <img src="LOGO MEP.png" alt="Logo MEP">
 </div>
 
 <div class="navbar">
-    <span id="labelBienvenida">Sesión activa</span>
+    <span id="rolBadge" style="background:rgba(255,255,255,0.2); padding:2px 10px; border-radius:10px;">Sesión activa</span>
     <button class="btn-cerrar" onclick="cerrarSesion()">Cerrar Sesión</button>
 </div>
 
 <div class="container">
 
     <div class="info-usuario">
-        <p><b>Nombre:</b> <span id="nombreUsuario">---</span></p>
-        <p><b>Usuario:</b> <span id="usuario">---</span></p>
-        <p><b>Rol:</b> <span id="rol">---</span></p>
+        <p><b>Nombre:</b> <br><span id="nombreUsuario">---</span></p>
+        <p><b>Usuario:</b> <br><span id="usuario">---</span></p>
+        <p><b>Rol:</b> <br><span id="rol">---</span></p>
     </div>
 
     <div id="seccionAdmin">
-        <h3 style="color: #e67e22; margin-top: 0;">📢 Crear Comunicado Oficial</h3>
+        <h3 style="color: #e67e22; margin-top: 0;">📢 Publicar Comunicado (Admin)</h3>
         <form id="formComunicado">
-            <div>
-                <label>Título del Comunicado</label>
-                <input type="text" id="tituloCom" placeholder="Ej: Suspensión de lecciones" required>
-            </div>
-            <div>
-                <label>Mensaje / Contenido</label>
-                <textarea id="contenidoCom" rows="3" placeholder="Escriba el anuncio aquí..." required></textarea>
-            </div>
-            <div>
-                <label>Nivel de Importancia (Color)</label>
-                <select id="colorCom">
-                    <option value="#27ae60">Verde (Informativo)</option>
-                    <option value="#3498db">Azul (General)</option>
-                    <option value="#f39c12">Naranja (Importante)</option>
-                    <option value="#e74c3c">Rojo (Urgente)</option>
-                </select>
-            </div>
-            <button type="submit" class="btn-admin" id="btnPublicar">Publicar Comunicado</button>
+            <input type="text" id="tituloCom" placeholder="Título del comunicado" required>
+            <textarea id="contenidoCom" rows="2" placeholder="Mensaje para la comunidad..." required></textarea>
+            <select id="colorCom">
+                <option value="#27ae60">Informativo (Verde)</option>
+                <option value="#3498db">General (Azul)</option>
+                <option value="#f39c12">Importante (Naranja)</option>
+                <option value="#e74c3c">Urgente (Rojo)</option>
+            </select>
+            <button type="submit" class="btn-admin" id="btnPublicar">Publicar en el Inicio</button>
         </form>
     </div>
 
-    <hr>
-
-    <h3>Registrar Nueva Ausencia</h3>
+    <h3>Registrar Período de Ausencia</h3>
     <form id="formMiAusencia">
-        <div>
-            <label>Fecha de Ausencia</label>
-            <input type="date" id="fechaAusenciaDocente" required>
+        <div class="row">
+            <div>
+                <label>Fecha de Inicio</label>
+                <input type="date" id="fechaInicio" required>
+            </div>
+            <div>
+                <label>Fecha de Finalización</label>
+                <input type="date" id="fechaFin" required>
+            </div>
         </div>
-        <div>
-            <label>Razón de la ausencia</label>
-            <select id="razonAusencia" required>
-                <option value="">Seleccione una opción</option>
-                <option value="Enfermedad">Enfermedad</option>
-                <option value="Permiso">Permiso</option>
-                <option value="Capacitación">Capacitación</option>
-                <option value="Cita Médica">Cita Médica</option>
-                <option value="Otro">Otro</option>
-            </select>
+        
+        <div class="row">
+            <div>
+                <label>Razón</label>
+                <select id="razonAusencia" required>
+                    <option value="Enfermedad">Enfermedad</option>
+                    <option value="Permiso">Permiso</option>
+                    <option value="Capacitación">Capacitación</option>
+                    <option value="Cita Médica">Cita Médica</option>
+                    <option value="Otro">Otro</option>
+                </select>
+            </div>
+            <div>
+                <label>Detalle (Opcional)</label>
+                <input type="text" id="detalleAusencia" placeholder="Ej: Gripe fuerte">
+            </div>
         </div>
+
         <div>
-            <label>Detalle adicional</label>
-            <textarea id="detalleAusencia" rows="2" placeholder="Opcional..."></textarea>
+            <label>Instrucciones para Estudiantes</label>
+            <textarea id="actividadRemplazo" rows="2" placeholder="¿Qué deben hacer los alumnos mientras no estés?"></textarea>
         </div>
-        <div>
-            <label>Actividad para el Reemplazo</label>
-            <textarea id="actividadRemplazo" rows="2" placeholder="Ej: Realizar práctica de la página 20..."></textarea>
-        </div>
-        <button type="submit" id="btnGuardar">Registrar Ausencia</button>
+        <button type="submit" id="btnGuardar">Registrar Período</button>
     </form>
 
-    <hr style="margin-top:40px">
+    <hr style="margin: 40px 0; border: 0; border-top: 1px solid #eee;">
 
     <h3>Mi Historial de Ausencias</h3>
     <div style="overflow-x:auto;">
-        <table>
+        <table id="tablaHistorial">
             <thead>
                 <tr>
-                    <th>Fecha</th>
-                    <th>Razón</th>
-                    <th>Detalle</th>
-                    <th>Actividad</th>
+                    <th>Desde</th>
+                    <th>Hasta</th>
+                    <th>Razón / Actividad</th>
+                    <th>Acción</th>
                 </tr>
             </thead>
-            <tbody id="tablaMiAusencia">
-                <tr><td colspan="4">Cargando...</td></tr>
+            <tbody id="cuerpoTabla">
+                <tr><td colspan="4">Cargando tus registros...</td></tr>
             </tbody>
         </table>
     </div>
@@ -189,143 +202,109 @@
 </div>
 
 <script>
+// --- CONFIGURACIÓN SUPABASE ---
 const SUPABASE_URL = 'https://etdcmuikvtnqfcnlvodh.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV0ZGNtdWlrdnRucWZjbmx2b2RoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU1OTQ1ODcsImV4cCI6MjA5MTE3MDU4N30.8JHWlTxYRSYEkpipqesHVBKn7QomTXJYHp6Nm6SzU4A';
+const headers = { "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}`, "Content-Type": "application/json" };
 
 function inicializar() {
     const nombre = localStorage.getItem('nombre');
-    const usuario = localStorage.getItem('usuario');
     const rol = localStorage.getItem('rol');
 
-    if (!nombre || !usuario) {
-        window.location.href = "index.html";
-        return;
-    }
+    if (!nombre) { window.location.href = "index.html"; return; }
 
     document.getElementById('nombreUsuario').textContent = nombre;
-    document.getElementById('usuario').textContent = usuario;
+    document.getElementById('usuario').textContent = localStorage.getItem('usuario');
     document.getElementById('rol').textContent = rol;
-    document.getElementById('saludo').textContent = "Bienvenido, " + nombre.split(' ')[0];
+    document.getElementById('saludo').textContent = "Hola, " + nombre.split(' ')[0];
 
-    // Mostrar sección de comunicados solo si el rol es admin
-    if (rol === 'admin') {
-        document.getElementById('seccionAdmin').style.display = 'block';
-    }
-    
-    cargarTablaMiAusencia();
+    if (rol === 'admin') document.getElementById('seccionAdmin').style.display = 'block';
+
+    cargarHistorial();
 }
 
-// --- LÓGICA DE COMUNICADOS (ADMIN) ---
-document.getElementById('formComunicado').addEventListener('submit', async function(e) {
-    e.preventDefault();
-    const btn = document.getElementById('btnPublicar');
-    btn.disabled = true;
-
-    const datos = {
-        titulo: document.getElementById('tituloCom').value,
-        contenido: document.getElementById('contenidoCom').value,
-        color_borde: document.getElementById('colorCom').value,
-        autor: localStorage.getItem('nombre')
-    };
-
-    try {
-        const response = await fetch(`${SUPABASE_URL}/rest/v1/comunicados`, {
-            method: "POST",
-            headers: {
-                "apikey": SUPABASE_KEY,
-                "Authorization": `Bearer ${SUPABASE_KEY}`,
-                "Content-Type": "application/json",
-                "Prefer": "return=minimal"
-            },
-            body: JSON.stringify(datos)
-        });
-
-        if (response.ok) {
-            alert("✅ Comunicado publicado con éxito");
-            this.reset();
-        } else {
-            throw new Error("No se pudo publicar");
-        }
-    } catch (error) {
-        alert("❌ Error: " + error.message);
-    } finally {
-        btn.disabled = false;
-    }
-});
-
-// --- LÓGICA DE AUSENCIAS ---
+// --- GUARDAR AUSENCIA (RANGO DE FECHAS) ---
 document.getElementById('formMiAusencia').addEventListener('submit', async function(e){
     e.preventDefault();
     const btn = document.getElementById('btnGuardar');
-    btn.disabled = true;
+    const f1 = document.getElementById('fechaInicio').value;
+    const f2 = document.getElementById('fechaFin').value;
 
+    if(f2 < f1) return alert("La fecha final no puede ser antes de la inicial.");
+
+    btn.disabled = true;
     const datos = {
         usuario: localStorage.getItem('usuario'),
         nombre: localStorage.getItem('nombre'),
-        rol: localStorage.getItem('rol'),
-        fecha: document.getElementById('fechaAusenciaDocente').value,
+        fecha: f1,      // Inicio
+        fecha_fin: f2,  // Fin
         razon: document.getElementById('razonAusencia').value,
         detalle: document.getElementById('detalleAusencia').value,
         actividad: document.getElementById('actividadRemplazo').value
     };
 
     try {
-        const response = await fetch(`${SUPABASE_URL}/rest/v1/ausencias`, {
-            method: "POST",
-            headers: {
-                "apikey": SUPABASE_KEY,
-                "Authorization": `Bearer ${SUPABASE_KEY}`,
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(datos)
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/ausencias`, {
+            method: "POST", headers, body: JSON.stringify(datos)
         });
-
-        if (response.ok) {
-            alert("✅ Ausencia registrada");
+        if(res.ok) {
+            alert("✅ Período registrado");
             this.reset();
-            cargarTablaMiAusencia();
+            cargarHistorial();
         }
-    } catch (error) {
-        alert("❌ Error de conexión");
-    } finally {
-        btn.disabled = false;
-    }
+    } catch (err) { alert("Error al conectar"); }
+    btn.disabled = false;
 });
 
-async function cargarTablaMiAusencia() {
-    const usuarioActivo = localStorage.getItem('usuario');
-    const contenedor = document.getElementById('tablaMiAusencia');
+// --- CARGAR HISTORIAL ---
+async function cargarHistorial() {
+    const user = localStorage.getItem('usuario');
+    const tbody = document.getElementById('cuerpoTabla');
 
     try {
-        const response = await fetch(`${SUPABASE_URL}/rest/v1/ausencias?usuario=eq.${usuarioActivo}&order=fecha.desc`, {
-            headers: { "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}` }
-        });
-        const lista = await response.json();
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/ausencias?usuario=eq.${user}&order=fecha.desc`, { headers });
+        const datos = await res.json();
         
-        contenedor.innerHTML = "";
-        if (lista.length === 0) {
-            contenedor.innerHTML = "<tr><td colspan='4'>No hay registros.</td></tr>";
-            return;
-        }
+        tbody.innerHTML = "";
+        if(datos.length === 0) { tbody.innerHTML = "<tr><td colspan='4'>No tienes ausencias registradas.</td></tr>"; return; }
 
-        lista.forEach(item => {
-            contenedor.innerHTML += `
+        datos.forEach(a => {
+            tbody.innerHTML += `
                 <tr>
-                    <td>${item.fecha}</td>
-                    <td><b>${item.razon}</b></td>
-                    <td>${item.detalle || '-'}</td>
-                    <td>${item.actividad || '-'}</td>
+                    <td>${a.fecha}</td>
+                    <td>${a.fecha_fin || '---'}</td>
+                    <td><b>${a.razon}</b><br><small>${a.actividad || ''}</small></td>
+                    <td><button class="btn-eliminar" onclick="eliminarAusencia(${a.id})">Borrar</button></td>
                 </tr>`;
         });
-    } catch (error) {
-        contenedor.innerHTML = "<tr><td colspan='4'>Error al cargar.</td></tr>";
-    }
+    } catch (e) { tbody.innerHTML = "<tr><td colspan='4'>Error al cargar historial.</td></tr>"; }
 }
 
-function cerrarSesion() {
-    localStorage.clear();
-    window.location.href = "index.html";
+// --- ELIMINAR REGISTRO ---
+async function eliminarAusencia(id) {
+    if(!confirm("¿Estás seguro de eliminar este registro?")) return;
+    try {
+        await fetch(`${SUPABASE_URL}/rest/v1/ausencias?id=eq.${id}`, { method: "DELETE", headers });
+        cargarHistorial();
+    } catch (e) { alert("Error al borrar"); }
 }
+
+// --- PUBLICAR COMUNICADO (ADMIN) ---
+document.getElementById('formComunicado').addEventListener('submit', async function(e){
+    e.preventDefault();
+    const datos = {
+        titulo: document.getElementById('tituloCom').value,
+        contenido: document.getElementById('contenidoCom').value,
+        color_borde: document.getElementById('colorCom').value,
+        autor: localStorage.getItem('nombre')
+    };
+    try {
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/comunicados`, { method: "POST", headers, body: JSON.stringify(datos) });
+        if(res.ok) { alert("✅ Comunicado enviado al Index"); this.reset(); }
+    } catch (e) { alert("Error"); }
+});
+
+function cerrarSesion() { localStorage.clear(); window.location.href = "index.html"; }
 
 window.onload = inicializar;
 </script>
