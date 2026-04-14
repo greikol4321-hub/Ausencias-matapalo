@@ -10,7 +10,6 @@
         :root {
             --verde-oscuro: #1b5e20;
             --verde-claro: #2e7d32;
-            --azul-mep: #008CD0;
             --gris-fondo: #f1f5f9;
             --blanco: #ffffff;
             --texto-oscuro: #1e293b;
@@ -24,7 +23,7 @@
             color: var(--texto-oscuro);
         }
 
-        /* HEADER TOTALMENTE VERDE OSCURO */
+        /* HEADER VERDE OSCURO */
         .header {
             background-color: var(--verde-oscuro);
             padding: 40px 20px;
@@ -42,18 +41,24 @@
             margin-bottom: 20px;
         }
 
-        /* Ajuste de logos para fondo oscuro */
-        .logo-mep { height: 60px; filter: brightness(0) invert(1); }
-        .logo-escudo { height: 90px; }
+        /* CORRECCIÓN LOGO MEP: Forzado a blanco para contraste en fondo oscuro */
+        .logo-mep { 
+            height: 60px; 
+            filter: brightness(0) invert(1); /* Esto lo hace blanco sólido */
+            opacity: 1;
+        }
+
+        /* Escudo sin fondo suele ser colorido, lo dejamos natural */
+        .logo-escudo { 
+            height: 95px; 
+        }
 
         .header h1 {
             margin: 0;
             font-size: 2.2rem;
             font-weight: 700;
-            letter-spacing: -0.5px;
         }
 
-        /* BOTÓN ACCESO PERSONAL CORREGIDO */
         .nav-actions {
             position: absolute;
             right: 40px;
@@ -77,7 +82,6 @@
         .btn-login:hover {
             background-color: white;
             color: var(--verde-oscuro);
-            transform: translateY(-2px);
         }
 
         .container {
@@ -86,7 +90,6 @@
             padding: 0 20px;
         }
 
-        /* CUADRICULA SUPERIOR */
         .grid-superior {
             display: grid;
             grid-template-columns: 320px 1fr;
@@ -100,7 +103,6 @@
             border-radius: 15px;
             text-align: center;
             border: 1px solid var(--borde);
-            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
         }
 
         .card-steam img { width: 130px; margin-bottom: 20px; }
@@ -110,7 +112,6 @@
             padding: 10px;
             border-radius: 15px;
             border: 1px solid var(--borde);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
         }
 
         .carousel {
@@ -122,7 +123,6 @@
         .slides { display: flex; transition: transform 0.8s ease; height: 100%; }
         .slides img { width: 100%; min-width: 100%; object-fit: cover; }
 
-        /* TÍTULOS DE SECCIÓN */
         .titulo-seccion {
             font-size: 1.7rem;
             margin-bottom: 35px;
@@ -132,7 +132,6 @@
             padding-bottom: 5px;
         }
 
-        /* COMUNICADOS */
         .comunicados-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -148,22 +147,18 @@
             box-shadow: 0 4px 6px rgba(0,0,0,0.05);
         }
 
-        .comunicado-card .meta { font-size: 0.75rem; color: var(--verde-claro); font-weight: 700; text-transform: uppercase; }
-        .comunicado-card h3 { margin: 12px 0; font-size: 1.25rem; color: var(--texto-oscuro); }
+        .comunicado-card .meta { font-size: 0.75rem; color: var(--verde-claro); font-weight: 700; }
 
-        /* TABLA DE AUSENCIAS */
         .tabla-container {
             background: var(--blanco);
             border-radius: 12px;
             border: 1px solid var(--borde);
             overflow: hidden;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
         }
 
         table { width: 100%; border-collapse: collapse; }
-        th { text-align: left; padding: 18px; background: #f8fafc; color: var(--texto-oscuro); font-size: 0.85rem; border-bottom: 2px solid var(--borde); }
+        th { text-align: left; padding: 18px; background: #f8fafc; font-size: 0.85rem; }
         td { padding: 18px; border-bottom: 1px solid var(--borde); }
-        tr:hover { background-color: #fdfdfd; }
 
         .badge-motivo {
             background: #f1f5f9;
@@ -176,8 +171,7 @@
 
         @media (max-width: 900px) {
             .grid-superior { grid-template-columns: 1fr; }
-            .nav-actions { position: static; transform: none; margin-top: 30px; }
-            .header h1 { font-size: 1.7rem; }
+            .nav-actions { position: static; transform: none; margin-top: 30px; text-align: center; }
         }
     </style>
 </head>
@@ -200,7 +194,7 @@
             <section class="card-steam">
                 <a href="galeria.html"><img src="steam.png" alt="STEAM"></a>
                 <h3>Modelo STEAM</h3>
-                <p>Integración de Ciencia, Tecnología y Arte en la formación técnica profesional.</p>
+                <p>Formación técnica con enfoque en ciencia y tecnología.</p>
             </section>
 
             <section class="carousel-box">
@@ -215,24 +209,24 @@
         <section>
             <h2 class="titulo-seccion">Comunicados Oficiales</h2>
             <div class="comunicados-grid" id="contenedorComunicados">
-                <p style="text-align: center; grid-column: 1/-1; padding: 40px;">Buscando anuncios oficiales...</p>
+                <p style="text-align: center; grid-column: 1/-1;">Cargando anuncios...</p>
             </div>
         </section>
 
         <section>
-            <h2 class="titulo-seccion">Reporte de Ausencias</h2>
+            <h2 class="titulo-seccion">Control de Asistencia</h2>
             <div class="tabla-container">
                 <table>
                     <thead>
                         <tr>
-                            <th>Nombre del Docente</th>
+                            <th>Docente</th>
                             <th>Estado</th>
                             <th>Motivo</th>
-                            <th>Indicaciones</th>
+                            <th>Observaciones</th>
                         </tr>
                     </thead>
                     <tbody id="tablaAusencias">
-                        <tr><td colspan="4" style="text-align:center; padding: 40px;">Sincronizando registros...</td></tr>
+                        <tr><td colspan="4" style="text-align:center; padding: 30px;">Sincronizando...</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -250,26 +244,19 @@
             }
         }, 5000);
 
-        // CONFIGURACIÓN SUPABASE
         const SUPABASE_URL = 'https://etdcmuikvtnqfcnlvodh.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV0ZGNtdWlrdnRucWZjbmx2b2RoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU1OTQ1ODcsImV4cCI6MjA5MTE3MDU4N30.8JHWlTxYRSYEkpipqesHVBKn7QomTXJYHp6Nm6SzU4A';
-        const headers = { 
-            "apikey": SUPABASE_KEY, 
-            "Authorization": `Bearer ${SUPABASE_KEY}`,
-            "Content-Type": "application/json"
-        };
+        const headers = { "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}`, "Content-Type": "application/json" };
 
         async function cargarComunicados() {
             const contenedor = document.getElementById("contenedorComunicados");
             try {
                 const res = await fetch(`${SUPABASE_URL}/rest/v1/comunicados?select=*&order=creado_en.desc&limit=6`, { headers });
                 const datos = await res.json();
-
                 if (!datos || datos.length === 0) {
-                    contenedor.innerHTML = "<p style='grid-column:1/-1; text-align:center; color:#666;'>No hay comunicados registrados recientemente.</p>";
+                    contenedor.innerHTML = "<p style='grid-column:1/-1; text-align:center;'>No hay anuncios.</p>";
                     return;
                 }
-
                 contenedor.innerHTML = "";
                 datos.forEach(c => {
                     contenedor.innerHTML += `
@@ -279,44 +266,27 @@
                             <p>${c.contenido}</p>
                         </div>`;
                 });
-            } catch (e) { 
-                contenedor.innerHTML = "<p>Error al conectar con la base de datos.</p>";
-            }
+            } catch (e) { contenedor.innerHTML = "<p>Error al cargar.</p>"; }
         }
 
         async function cargarAusencias() {
             const tabla = document.getElementById("tablaAusencias");
             const hoy = new Date().toISOString().split('T')[0];
-
             try {
-                const url = `${SUPABASE_URL}/rest/v1/ausencias?fecha=lte.${hoy}&fecha_fin=gte.${hoy}&select=*`;
-                const res = await fetch(url, { headers });
+                const res = await fetch(`${SUPABASE_URL}/rest/v1/ausencias?fecha=lte.${hoy}&fecha_fin=gte.${hoy}&select=*`, { headers });
                 const datos = await res.json();
-
                 if (!datos || datos.length === 0) {
-                    tabla.innerHTML = "<tr><td colspan='4' style='text-align:center; padding: 40px;'>No se reportan ausencias el día de hoy.</td></tr>";
+                    tabla.innerHTML = "<tr><td colspan='4' style='text-align:center; padding:20px;'>Todo el personal presente.</td></tr>";
                     return;
                 }
-
                 tabla.innerHTML = "";
                 datos.forEach(a => {
-                    tabla.innerHTML += `
-                        <tr>
-                            <td><strong>${a.nombre}</strong></td>
-                            <td style="color:#d97706; font-weight:700;">Activa</td>
-                            <td><span class="badge-motivo">${a.razon}</span></td>
-                            <td><small>${a.actividad || 'Seguir instrucciones del planeamiento.'}</small></td>
-                        </tr>`;
+                    tabla.innerHTML += `<tr><td><strong>${a.nombre}</strong></td><td style="color:#d97706; font-weight:700;">Ausente</td><td><span class="badge-motivo">${a.razon}</span></td><td><small>${a.actividad || 'N/A'}</small></td></tr>`;
                 });
-            } catch (e) { 
-                tabla.innerHTML = "<tr><td colspan='4' style='text-align:center;'>Error al cargar asistencia.</td></tr>";
-            }
+            } catch (e) { tabla.innerHTML = "<tr><td colspan='4'>Error de conexión.</td></tr>"; }
         }
 
-        window.onload = () => { 
-            cargarComunicados(); 
-            cargarAusencias(); 
-        };
+        window.onload = () => { cargarComunicados(); cargarAusencias(); };
     </script>
 </body>
 </html>
