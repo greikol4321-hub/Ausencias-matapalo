@@ -2,196 +2,348 @@
 <html lang="es">
 
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CTP de Matapalo - Sitio Oficial</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CTP de Matapalo - Sitio Oficial</title>
 
-<style>
-:root {
-    --verde-base: #1b5e20;
-    --verde-suave: #e8f5e9;
-    --fondo-sitio: #f4f7f5;
-    --blanco: #ffffff;
-    --texto-cuerpo: #333333;
-    --borde: #d1d9d1;
-}
+    <style>
+        :root {
+            --verde-base: #1b5e20;
+            --verde-suave: #e8f5e9;
+            --fondo-sitio: #f4f7f5;
+            --blanco: #ffffff;
+            --texto-titulo: #1b5e20;
+            --texto-cuerpo: #333333;
+            --texto-gris: #666666;
+            --borde: #d1d9d1;
+            /* Nuevo color para la cabecera */
+            --cabecera-dark: #212121; 
+        }
 
-body {
-    margin: 0;
-    font-family: Arial;
-    background-color: var(--fondo-sitio);
-}
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--fondo-sitio);
+            color: var(--texto-cuerpo);
+            line-height: 1.6;
+        }
 
-/* HEADER */
-.header {
-    background-color: var(--verde-base);
-    padding: 40px 20px;
-    text-align: center;
-    color: white;
-    position: relative;
-}
+        /* HEADER GRIS OSCURO */
+        .header {
+            background-color: var(--cabecera-dark);
+            padding: 15px 0;
+            color: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
 
-.header-logos {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 40px;
-}
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
 
-/* 🔥 LOGO MEP CORREGIDO */
-.logo-mep { 
-    height: 60px;
-    background: white;
-    padding: 6px;
-    border-radius: 6px;
-}
+        .header-logos-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
 
-/* ESCUDO */
-.logo-escudo { 
-    height: 95px;
-}
+        /* Filtro para que el logo se vea blanco sobre el fondo oscuro */
+        .logo-mep { 
+            height: 48px; 
+            filter: brightness(0) invert(1); 
+        } 
 
-/* BOTÓN LOGIN */
-.nav-actions {
-    position: absolute;
-    right: 40px;
-    top: 50%;
-    transform: translateY(-50%);
-}
+        .divider {
+            width: 1px;
+            height: 40px;
+            background-color: rgba(255,255,255,0.3);
+        }
 
-.btn-login {
-    padding: 10px 22px;
-    border-radius: 5px;
-    border: 2px solid white;
-    color: white;
-    text-decoration: none;
-}
+        .logo-gobierno {
+            text-align: left;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.5px;
+            line-height: 1.2;
+            opacity: 0.9;
+        }
 
-/* CONTENIDO */
-.container {
-    max-width: 1100px;
-    margin: 40px auto;
-}
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
 
-/* TABLA */
-.tabla-container {
-    background: white;
-    border-radius: 10px;
-    overflow: hidden;
-}
+        .logo-escudo { 
+            height: 85px;
+            filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.3));
+        }
 
-table { width: 100%; border-collapse: collapse; }
+        /* BOTÓN DE ACCESO */
+        .btn-login {
+            padding: 9px 20px;
+            border-radius: 4px;
+            background-color: transparent;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            border: 1px solid rgba(255,255,255,0.6);
+            transition: 0.3s;
+        }
 
-th {
-    background: var(--verde-base);
-    color: white;
-    padding: 10px;
-}
+        .btn-login:hover {
+            background-color: white;
+            color: var(--cabecera-dark);
+            border-color: white;
+        }
 
-td {
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
-}
+        /* BARRA DE TÍTULO PRINCIPAL */
+        .main-title-bar {
+            background: white;
+            padding: 25px 0;
+            text-align: center;
+            border-bottom: 1px solid var(--borde);
+        }
 
-.badge-motivo {
-    background: #e8f5e9;
-    padding: 4px 10px;
-    border-radius: 4px;
-}
-</style>
+        .main-title-bar h1 {
+            margin: 0;
+            color: var(--verde-base);
+            font-size: 1.8rem;
+            font-weight: 800;
+        }
+
+        /* CONTENIDO PRINCIPAL */
+        .container { max-width: 1100px; margin: 40px auto; padding: 0 20px; }
+
+        .grid-superior { 
+            display: grid; 
+            grid-template-columns: 320px 1fr; 
+            gap: 25px; 
+            margin-bottom: 50px; 
+        }
+
+        .card-steam { 
+            background: var(--blanco); 
+            padding: 30px; 
+            border-radius: 12px; 
+            text-align: center; 
+            border: 1px solid var(--borde);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+        }
+
+        .card-steam img { width: 130px; margin-bottom: 15px; }
+
+        .carousel-box { 
+            background: var(--blanco); 
+            padding: 8px; 
+            border-radius: 12px; 
+            border: 1px solid var(--borde); 
+        }
+
+        .carousel { overflow: hidden; border-radius: 8px; height: 380px; }
+        .slides { display: flex; transition: transform 0.8s ease; height: 100%; }
+        .slides img { width: 100%; min-width: 100%; object-fit: cover; }
+
+        .titulo-seccion { 
+            font-size: 1.4rem; 
+            margin-bottom: 25px; 
+            color: var(--verde-base); 
+            border-left: 6px solid var(--verde-base); 
+            padding-left: 15px; 
+        }
+
+        .comunicados-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); 
+            gap: 20px; 
+            margin-bottom: 50px; 
+        }
+
+        .comunicado-card { 
+            background: var(--blanco); 
+            padding: 20px; 
+            border-radius: 10px; 
+            border: 1px solid var(--borde); 
+            position: relative; 
+            transition: 0.3s;
+        }
+
+        .comunicado-card:hover { transform: translateY(-3px); box-shadow: 0 6px 15px rgba(0,0,0,0.05); }
+
+        .comunicado-card::before { 
+            content: ""; 
+            position: absolute; 
+            top: 0; left: 0; right: 0; 
+            height: 4px; 
+            background: var(--verde-base); 
+            border-radius: 10px 10px 0 0; 
+        }
+
+        .tabla-container { background: var(--blanco); border-radius: 10px; border: 1px solid var(--borde); overflow: hidden; }
+        table { width: 100%; border-collapse: collapse; }
+        th { text-align: left; padding: 15px; background: var(--verde-base); color: white; }
+        tbody td { padding: 15px; border-bottom: 1px solid #eee; }
+
+        @media (max-width: 900px) {
+            .header-container { flex-direction: column; gap: 20px; text-align: center; }
+            .grid-superior { grid-template-columns: 1fr; }
+            .nav-right { flex-direction: column; gap: 15px; }
+        }
+    </style>
 </head>
 
 <body>
 
-<header class="header">
+    <header class="header">
+        <div class="header-container">
+            <div class="header-logos-left">
+                <img src="LOGO MEP.png" class="logo-mep" alt="MEP">
+                <div class="divider"></div>
+                <div class="logo-gobierno">
+                    <strong>Gobierno</strong><br>de Costa Rica
+                </div>
+            </div>
+            
+            <div class="nav-right">
+                <img src="escudo sin fondo.png" class="logo-escudo" alt="Escudo CTP">
+                <a href="registrarme.html" class="btn-login">Acceso Personal</a>
+            </div>
+        </div>
+    </header>
 
-<div class="header-logos">
-    <img src="LOGO MEP.png" class="logo-mep">
-    <img src="escudo sin fondo.png" class="logo-escudo">
-</div>
+    <section class="main-title-bar">
+        <h1>Colegio Técnico Profesional de Matapalo</h1>
+    </section>
 
-<h1>Colegio Técnico Profesional de Matapalo</h1>
+    <main class="container">
+        <div class="grid-superior">
+            <section class="card-steam">
+                <a href="galeria.html"><img src="steam.png" alt="STEAM"></a>
+                <h3>Modelo STEAM</h3>
+                <p>Innovación educativa basada en Ciencia y Tecnología.</p>
+            </section>
 
-<div class="nav-actions">
-    <a href="registrarme.html" class="btn-login">Acceso Personal</a>
-</div>
+            <section class="carousel-box">
+                <div class="carousel">
+                    <div class="slides" id="slides">
+                        <img src="1.jpeg"> <img src="2.jpeg"> <img src="3.jpeg"> <img src="4.jpeg"> <img src="5.jpeg">
+                    </div>
+                </div>
+            </section>
+        </div>
 
-</header>
+        <section>
+            <h2 class="titulo-seccion">Comunicados Oficiales</h2>
+            <div class="comunicados-grid" id="contenedorComunicados">
+                <p style="text-align: center; grid-column: 1/-1;">Cargando anuncios oficiales...</p>
+            </div>
+        </section>
 
-<div class="container">
+        <section style="margin-top: 50px;">
+            <h2 class="titulo-seccion">Reporte de Asistencia Docente</h2>
+            <div class="tabla-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Docente</th>
+                            <th>Estado</th>
+                            <th>Motivo</th>
+                            <th>Observaciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaAusencias">
+                        <tr><td colspan="4" style="text-align:center; padding: 30px;">Actualizando datos de asistencia...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
 
-<h2>Reporte de Asistencia Docente</h2>
+    <script>
+        // LÓGICA DEL CARRUSEL
+        let idx = 0;
+        setInterval(() => {
+            const slides = document.getElementById("slides");
+            if(slides) {
+                idx = (idx + 1) % 5;
+                slides.style.transform = `translateX(-${idx * 100}%)`;
+            }
+        }, 5000);
 
-<div class="tabla-container">
-<table>
-<thead>
-<tr>
-<th>Docente</th>
-<th>Estado</th>
-<th>Motivo</th>
-<th>Observaciones</th>
-</tr>
-</thead>
+        // CONFIGURACIÓN SUPABASE
+        const SUPABASE_URL = 'https://etdcmuikvtnqfcnlvodh.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV0ZGNtdWlrdnRucWZjbmx2b2RoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU1OTQ1ODcsImV4cCI6MjA5MTE3MDU4N30.8JHWlTxYRSYEkpipqesHVBKn7QomTXJYHp6Nm6SzU4A';
+        const headers = { 
+            "apikey": SUPABASE_KEY, 
+            "Authorization": `Bearer ${SUPABASE_KEY}`, 
+            "Content-Type": "application/json" 
+        };
 
-<tbody id="tablaAusencias">
-<tr><td colspan="4">Cargando...</td></tr>
-</tbody>
+        // CARGAR COMUNICADOS
+        async function cargarComunicados() {
+            const contenedor = document.getElementById("contenedorComunicados");
+            try {
+                const res = await fetch(`${SUPABASE_URL}/rest/v1/comunicados?select=*&order=creado_en.desc&limit=6`, { headers });
+                const datos = await res.json();
+                
+                if (!datos || datos.length === 0) {
+                    contenedor.innerHTML = "<p style='grid-column:1/-1; text-align:center;'>No hay anuncios recientes.</p>";
+                    return;
+                }
 
-</table>
-</div>
-
-</div>
-
-<script>
-
-// 🔐 SUPABASE
-const SUPABASE_URL = 'https://etdcmuikvtnqfcnlvodh.supabase.co';
-const SUPABASE_KEY = 'TU_API_KEY_AQUI';
-
-const headers = {
-    apikey: SUPABASE_KEY,
-    Authorization: `Bearer ${SUPABASE_KEY}`
-};
-
-// 📊 CARGAR AUSENCIAS
-async function cargarAusencias(){
-
-    const tabla = document.getElementById("tablaAusencias");
-
-    try {
-
-        const res = await fetch(
-            `${SUPABASE_URL}/rest/v1/ausencias?select=*&order=fecha.desc`,
-            { headers }
-        );
-
-        const datos = await res.json();
-
-        if(!datos || datos.length === 0){
-            tabla.innerHTML = "<tr><td colspan='4'>No hay datos</td></tr>";
-            return;
+                contenedor.innerHTML = "";
+                datos.forEach(c => {
+                    contenedor.innerHTML += `
+                        <article class="comunicado-card">
+                            <span style="font-size:0.7rem; color:#666; font-weight:bold;">${c.autor || 'DIRECCIÓN'}</span>
+                            <h3 style="margin:10px 0; color:#1b5e20;">${c.titulo}</h3>
+                            <p style="font-size:0.9rem;">${c.contenido}</p>
+                        </article>`;
+                });
+            } catch (e) { 
+                contenedor.innerHTML = "<p>Error al cargar comunicados.</p>"; 
+            }
         }
 
-        tabla.innerHTML = "";
+        // CARGAR ASISTENCIA
+        async function cargarAusencias() {
+            const tabla = document.getElementById("tablaAusencias");
+            const hoy = new Date().toISOString().split('T')[0];
+            try {
+                const res = await fetch(`${SUPABASE_URL}/rest/v1/ausencias?fecha=lte.${hoy}&fecha_fin=gte.${hoy}&select=*`, { headers });
+                const datos = await res.json();
 
-        datos.forEach(a=>{
-            tabla.innerHTML += `
-            <tr>
-                <td>${a.nombre}</td>
-                <td style="color:red;">Ausente</td>
-                <td><span class="badge-motivo">${a.razon}</span></td>
-                <td>${a.detalle || '-'}</td>
-            </tr>`;
-        });
+                if (!datos || datos.length === 0) {
+                    tabla.innerHTML = "<tr><td colspan='4' style='text-align:center; padding:20px; color:#666;'>No hay ausencias reportadas para el día de hoy.</td></tr>";
+                    return;
+                }
 
-    } catch(e){
-        tabla.innerHTML = "<tr><td colspan='4'>Error</td></tr>";
-    }
-}
+                tabla.innerHTML = "";
+                datos.forEach(a => {
+                    tabla.innerHTML += `
+                        <tr>
+                            <td><strong>${a.nombre}</strong></td>
+                            <td style="color:#c62828; font-weight:bold;">Ausente</td>
+                            <td><span style="background:#ffebee; color:#c62828; padding:3px 8px; border-radius:4px; font-size:0.75rem;">${a.razon}</span></td>
+                            <td><small>${a.actividad || 'Ver indicaciones en el aula'}</small></td>
+                        </tr>`;
+                });
+            } catch (e) { 
+                tabla.innerHTML = "<tr><td colspan='4'>Error de conexión con el sistema de asistencia.</td></tr>"; 
+            }
+        }
 
-cargarAusencias();
-
-</script>
-
+        // INICIALIZACIÓN
+        window.onload = () => { 
+            cargarComunicados(); 
+            cargarAusencias(); 
+        };
+    </script>
 </body>
 </html>
