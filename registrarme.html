@@ -3,88 +3,71 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Iniciar Sesión</title>
+    <title>Login Colegio</title>
 
     <style>
+        body {
+            background: #6fcf97;
+            font-family: Arial;
+        }
+
         .login-container {
-            max-width: 500px;
-            margin: 50px auto;
-            padding: 30px;
+            max-width: 400px;
+            margin: 60px auto;
+            padding: 25px;
             background: white;
             border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
-        form {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        input {
+        input, button {
+            width: 100%;
             padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+            margin-top: 10px;
         }
 
         button {
-            padding: 12px;
             background: #008CD0;
             color: white;
             border: none;
-            border-radius: 5px;
-            cursor: pointer;
         }
 
         .mensaje {
-            padding: 10px;
             margin-top: 10px;
+            padding: 10px;
             display: none;
         }
 
-        .exito {
-            background: #d4edda;
-        }
-
-        .error {
-            background: #f8d7da;
-        }
-
-        .show {
-            display: block;
-        }
+        .exito { background: #d4edda; }
+        .error { background: #f8d7da; }
+        .show { display: block; }
     </style>
 </head>
 
-<body bgcolor="#6fcf97">
-
-    <center><h1>Iniciar Sesión</h1></center>
+<body>
 
     <div class="login-container">
+
+        <h2>Iniciar Sesión</h2>
+
         <form id="loginForm">
-
-            <label>Usuario:</label>
-            <input type="text" id="usuario" required placeholder="Ingrese su usuario">
-
-            <label>Contraseña:</label>
-            <input type="password" id="password" required placeholder="Ingrese su contraseña">
-
+            <input type="text" id="usuario" placeholder="Usuario" required>
+            <input type="password" id="password" placeholder="Contraseña" required>
             <button type="submit">INGRESAR</button>
-
         </form>
 
         <div id="mensaje" class="mensaje"></div>
-    </div>
 
-    <div id="datosUsuario" style="display:none;">
-        <h3>Bienvenido</h3>
-        <p><strong>Nombre:</strong> <span id="mostrarNombre"></span></p>
+        <div id="datosUsuario" style="display:none;">
+            <h3>Bienvenido</h3>
+            <p><strong>Nombre:</strong> <span id="mostrarNombre"></span></p>
+        </div>
+
     </div>
 
     <script>
         const SUPABASE_URL = 'https://etdcmuikvtnqfcnlvodh.supabase.co';
-        const SUPABASE_KEY = 'TU_API_KEY_AQUI'; // deja la tuya
+
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV0ZGNtdWlrdnRucWZjbmx2b2RoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU1OTQ1ODcsImV4cCI6MjA5MTE3MDU4N30.8JHWlTxYRSYEkpipqesHVBKn7QomTXJYHp6Nm6SzU4A';
 
         const form = document.getElementById('loginForm');
         const mensaje = document.getElementById('mensaje');
@@ -96,7 +79,6 @@
             const password = document.getElementById('password').value;
 
             try {
-
                 const response = await fetch(
                     `${SUPABASE_URL}/rest/v1/usuarios?usuario=eq.${usuario}&contrasena=eq.${password}`,
                     {
@@ -115,30 +97,28 @@
 
                     const user = data[0];
 
-                    // guardar en localStorage
+                    // Guardar sesión
                     localStorage.setItem("usuario", user.usuario);
                     localStorage.setItem("nombre", user.nombre_completo);
 
-                    // mostrar datos
+                    // Mostrar datos
                     document.getElementById('mostrarNombre').textContent = user.nombre_completo;
                     document.getElementById('datosUsuario').style.display = "block";
 
                     mensaje.textContent = "✅ Bienvenido " + user.nombre_completo;
                     mensaje.className = "mensaje exito show";
 
-                    // redirigir
+                    // Redirección
                     setTimeout(() => {
                         window.location.href = "docentes.html";
                     }, 1500);
 
                 } else {
-
                     mensaje.textContent = "❌ Usuario o contraseña incorrectos";
                     mensaje.className = "mensaje error show";
                 }
 
             } catch (error) {
-
                 mensaje.textContent = "❌ Error de conexión";
                 mensaje.className = "mensaje error show";
                 console.error(error);
