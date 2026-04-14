@@ -1,6 +1,40 @@
-<style>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Colegio</title>
 
-/* 🎯 BOTONES MODERNOS */
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+/* HEADER */
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #6fcf97;
+    padding: 10px 20px;
+    color: white;
+}
+
+.center {
+    text-align: center;
+    width: 60%;
+}
+
+.center img {
+    width: 100px;
+}
+
+.right {
+    display: flex;
+    gap: 10px;
+}
+
+/* BOTONES */
 .btn {
     padding: 10px 16px;
     text-decoration: none;
@@ -23,6 +57,24 @@
     box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
 
+/* SECCIÓN */
+.seccion-blanca {
+    padding: 30px;
+}
+
+/* CONTENEDOR */
+.contenedor {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+}
+
+/* LOGO */
+.steam img {
+    width: 200px;
+}
+
 /* 🎠 CARRUSEL PRO */
 .carousel-container {
     width: 550px;
@@ -40,7 +92,7 @@
     box-shadow: 0 6px 20px rgba(0,0,0,0.2);
 }
 
-/* IMÁGENES CENTRADAS PERFECTAS */
+/* IMÁGENES PERFECTAS */
 .slides img {
     position: absolute;
     width: 100%;
@@ -54,7 +106,7 @@
     opacity: 1;
 }
 
-/* BOTONES CARRUSEL */
+/* BOTONES */
 .prev, .next {
     position: absolute;
     top: 50%;
@@ -66,7 +118,6 @@
     font-size: 20px;
     border-radius: 50%;
     cursor: pointer;
-    transition: 0.3s;
 }
 
 .prev:hover, .next:hover {
@@ -76,16 +127,15 @@
 .prev { left: 15px; }
 .next { right: 15px; }
 
-/* 📢 ANUNCIOS MÁS PRO */
+/* ANUNCIOS */
 .carousel-container h2 {
     background: linear-gradient(90deg, #27ae60, #2ecc71);
     color: white;
     padding: 10px;
     border-radius: 8px;
-    margin-bottom: 15px;
 }
 
-/* 📊 TABLA PRO */
+/* TABLA */
 .tabla-ausencias {
     margin-top: 50px;
     padding: 25px;
@@ -97,38 +147,34 @@
 .tabla-ausencias h2 {
     text-align: center;
     color: #27ae60;
-    margin-bottom: 15px;
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
-    overflow: hidden;
-    border-radius: 10px;
 }
 
-/* ENCABEZADO */
 th {
     background: linear-gradient(90deg, #27ae60, #2ecc71);
     color: white;
     padding: 12px;
 }
 
-/* FILAS */
 td {
     padding: 12px;
     border-bottom: 1px solid #eee;
 }
 
-/* EFECTO HOVER */
 tr:hover {
     background: #f1fdf6;
-    transform: scale(1.01);
-    transition: 0.2s;
 }
 
-/* 🎯 RESPONSIVE */
+/* RESPONSIVE */
 @media (max-width: 768px) {
+    .contenedor {
+        flex-direction: column;
+    }
+
     .carousel-container {
         width: 95%;
     }
@@ -137,5 +183,134 @@ tr:hover {
         height: 250px;
     }
 }
-
 </style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div class="header">
+    <div></div>
+
+    <div class="center">
+        <img src="LOGO MEP.png">
+        <img src="escudo sin fondo.png">
+        <h1>Colegio Técnico Profesional de Matapalo</h1>
+    </div>
+
+    <div class="right">
+        <a href="registro-docentes.html" class="btn btn-registro">Registro Docente</a>
+        <a href="registrarme.html" class="btn btn-login">Iniciar Sesión</a>
+    </div>
+</div>
+
+<!-- SECCIÓN -->
+<div class="seccion-blanca">
+
+    <div class="contenedor">
+
+        <!-- LOGO -->
+        <div class="steam">
+            <a href="galeria.html"><img src="steam.png"></a>
+        </div>
+
+        <!-- CARRUSEL -->
+        <div class="carousel-container">
+            <h2>Anuncios del Colegio</h2>
+
+            <div class="carousel" id="carousel1">
+                <div class="slides">
+                    <img src="1.jpeg" class="active">
+                    <img src="2.jpeg">
+                    <img src="3.jpeg">
+                    <img src="4.jpeg">
+                    <img src="5.jpeg">
+                </div>
+
+                <button class="prev" onclick="cambiar(-1)">❮</button>
+                <button class="next" onclick="cambiar(1)">❯</button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- TABLA -->
+    <div class="tabla-ausencias">
+        <h2>Ausencias de Docentes</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Docente</th>
+                    <th>Materia</th>
+                    <th>Fecha</th>
+                    <th>Razón</th>
+                    <th>Detalle</th>
+                </tr>
+            </thead>
+            <tbody id="tablaAusencias"></tbody>
+        </table>
+    </div>
+
+</div>
+
+<script>
+
+// CARRUSEL
+let index = 0;
+let slides = document.querySelectorAll("#carousel1 .slides img");
+
+function mostrar(i) {
+    slides.forEach(img => img.classList.remove("active"));
+    slides[i].classList.add("active");
+}
+
+function cambiar(direccion) {
+    index += direccion;
+    if (index < 0) index = slides.length - 1;
+    if (index >= slides.length) index = 0;
+    mostrar(index);
+}
+
+let intervalo = setInterval(() => cambiar(1), 4000);
+
+let carrusel = document.getElementById("carousel1");
+
+carrusel.addEventListener("mouseenter", () => clearInterval(intervalo));
+carrusel.addEventListener("mouseleave", () => {
+    intervalo = setInterval(() => cambiar(1), 4000);
+});
+
+// TABLA AUSENCIAS
+function cargarAusencias() {
+
+    let ausencias = JSON.parse(localStorage.getItem("ausenciasDocente") || "[]");
+    let tabla = document.getElementById("tablaAusencias");
+
+    if (ausencias.length === 0) {
+        tabla.innerHTML = "<tr><td colspan='5'>No hay ausencias</td></tr>";
+        return;
+    }
+
+    tabla.innerHTML = "";
+
+    ausencias.forEach(a => {
+        tabla.innerHTML += `
+        <tr>
+            <td>${a.nombre || "Docente"}</td>
+            <td>${a.materia || "-"}</td>
+            <td>${a.fecha}</td>
+            <td>${a.razon}</td>
+            <td>${a.detalle}</td>
+        </tr>
+        `;
+    });
+}
+
+setInterval(cargarAusencias, 1000);
+cargarAusencias();
+
+</script>
+
+</body>
+</html>
