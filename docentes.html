@@ -1,75 +1,22 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
 <meta charset="UTF-8">
 <title>Panel de Docentes</title>
 
 <style>
 body { margin:0; font-family: Arial; background:#008CD0; }
-
 .header {
-    background:#008CD0;
     display:flex;
-    align-items:center;
     justify-content:space-between;
-    padding:10px 20px;
-    color:white;
-}
-
-.header img { height:70px; }
-
-.header h1 {
-    margin:0;
-    text-align:center;
-    flex:1;
-}
-
-.navbar {
-    background:#006a9a;
     padding:10px;
-    display:flex;
-    justify-content:space-between;
     color:white;
 }
-
 .container {
     max-width:900px;
     margin:40px auto;
-    padding:25px;
     background:white;
-    border-radius:10px;
-}
-
-.info-usuario {
-    background:#f0f8ff;
-    padding:15px;
-    border-left:4px solid #008CD0;
-}
-
-input, select, textarea {
-    width:100%;
-    padding:10px;
-    margin-top:5px;
-}
-
-button {
-    margin-top:10px;
-    padding:10px;
-    background:#008CD0;
-    color:white;
-    border:none;
-    cursor:pointer;
-}
-
-table {
-    width:100%;
-    margin-top:20px;
-}
-
-td, th {
-    padding:10px;
-    border-bottom:1px solid #ddd;
+    padding:20px;
 }
 </style>
 </head>
@@ -77,148 +24,47 @@ td, th {
 <body>
 
 <div class="header">
-    <img src="escudo sin fondo.png">
-    <h1>Panel de Docentes</h1>
-    <img src="LOGO MEP.png">
-</div>
-
-<div class="navbar">
-    <span>Bienvenido</span>
+    <h2>Panel de Docentes</h2>
     <button onclick="cerrarSesion()">Cerrar Sesión</button>
 </div>
 
 <div class="container">
 
-<h2>Información del Docente</h2>
+<h3>Información</h3>
 
-<div class="info-usuario">
 <p><b>Nombre:</b> <span id="nombreUsuario"></span></p>
-<p><b>Usuario:</b> <span id="emailUsuario"></span></p>
-<p><b>Rol:</b> <span id="materiaUsuario"></span></p>
+<p><b>Usuario:</b> <span id="usuario"></span></p>
+<p><b>Rol:</b> <span id="rol"></span></p>
+
+<div id="panelAdmin" style="display:none;">
+    <h3>👑 Panel Administrador</h3>
+    <p>Solo visible para admins</p>
 </div>
-
-<h3>Registrar Ausencia</h3>
-
-<form id="formMiAusencia">
-
-<label>Fecha</label>
-<input type="date" id="fechaAusenciaDocente" required>
-
-<label>Razón</label>
-<select id="razonAusencia" required>
-<option value="">Seleccione</option>
-<option>Enfermedad</option>
-<option>Permiso</option>
-<option>Capacitación</option>
-</select>
-
-<label>Detalle</label>
-<textarea id="detalleAusencia"></textarea>
-
-<label>Actividad</label>
-<textarea id="actividadRemplazo"></textarea>
-
-<button type="submit">Registrar</button>
-
-</form>
-
-<h3>Historial</h3>
-
-<table>
-<thead>
-<tr>
-<th>Fecha</th>
-<th>Razón</th>
-<th>Detalle</th>
-<th>Actividad</th>
-</tr>
-</thead>
-
-<tbody id="tablaMiAusencia"></tbody>
-</table>
 
 </div>
 
 <script>
 
-// 🔐 CARGAR DATOS DEL LOGIN
-function cargarDatosUsuario() {
+// 🔐 CARGAR SESIÓN
+const nombre = localStorage.getItem('nombre');
+const usuario = localStorage.getItem('usuario');
+const rol = localStorage.getItem('rol');
 
-    const nombre = localStorage.getItem('nombre');
-    const usuario = localStorage.getItem('usuario');
-
-    // Si no hay sesión → regresar al login
-    if (!nombre || !usuario) {
-        alert("⚠️ Debe iniciar sesión primero");
-        window.location.href = "index.html";
-        return;
-    }
-
-    document.getElementById('nombreUsuario').textContent = nombre;
-    document.getElementById('emailUsuario').textContent = usuario;
-    document.getElementById('materiaUsuario').textContent = "Docente";
-
-    cargarTablaMiAusencia();
+// 🔴 SI NO HAY SESIÓN
+if (!nombre || !usuario) {
+    alert("Debe iniciar sesión");
+    window.location.href = "index.html";
 }
 
-cargarDatosUsuario();
+// MOSTRAR DATOS
+document.getElementById('nombreUsuario').textContent = nombre;
+document.getElementById('usuario').textContent = usuario;
+document.getElementById('rol').textContent = rol;
 
-
-// 📝 REGISTRAR AUSENCIA
-document.getElementById('formMiAusencia').addEventListener('submit', function(e){
-
-    e.preventDefault();
-
-    const fecha = document.getElementById('fechaAusenciaDocente').value;
-    const razon = document.getElementById('razonAusencia').value;
-    const detalle = document.getElementById('detalleAusencia').value;
-    const actividad = document.getElementById('actividadRemplazo').value;
-
-    let lista = JSON.parse(localStorage.getItem('ausenciasDocente') || '[]');
-
-    lista.push({
-        nombre: localStorage.getItem('nombre'),
-        usuario: localStorage.getItem('usuario'),
-        fecha: fecha,
-        razon: razon,
-        detalle: detalle,
-        actividad: actividad
-    });
-
-    localStorage.setItem('ausenciasDocente', JSON.stringify(lista));
-
-    alert("✅ Ausencia registrada correctamente");
-
-    this.reset();
-    cargarTablaMiAusencia();
-});
-
-
-// 📊 TABLA
-function cargarTablaMiAusencia(){
-
-    let lista = JSON.parse(localStorage.getItem('ausenciasDocente') || '[]');
-    let tabla = document.getElementById('tablaMiAusencia');
-
-    if(lista.length === 0){
-        tabla.innerHTML = "<tr><td colspan='4'>No hay registros</td></tr>";
-        return;
-    }
-
-    tabla.innerHTML = "";
-
-    lista.forEach(a=>{
-        tabla.innerHTML += `
-        <tr>
-            <td>${a.fecha}</td>
-            <td>${a.razon}</td>
-            <td>${a.detalle}</td>
-            <td>${a.actividad}</td>
-        </tr>
-        `;
-    });
+// 👑 MOSTRAR PANEL ADMIN
+if (rol === "admin") {
+    document.getElementById('panelAdmin').style.display = "block";
 }
-
 
 // 🔒 CERRAR SESIÓN
 function cerrarSesion(){
