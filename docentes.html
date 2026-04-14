@@ -17,22 +17,24 @@
 
         body { margin: 0; font-family: 'Segoe UI', Arial, sans-serif; background: #eef2f5; color: #333; }
 
+        /* HEADER AJUSTADO */
         .header {
-            background: var(--azul-mep);
+            background: white; /* Fondo blanco para que los logos resalten */
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 10px 40px;
-            color: white;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            color: var(--azul-mep);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-bottom: 4px solid var(--azul-mep);
         }
 
-        .header img { height: 60px; filter: brightness(0) invert(1); }
-        .header h1 { margin: 0; font-size: 1.4rem; text-align: center; flex: 1; }
+        .header img { height: 70px; width: auto; object-fit: contain; }
+        .header h1 { margin: 0; font-size: 1.6rem; text-align: center; flex: 1; font-weight: 800; color: var(--azul-oscuro); }
 
         .navbar {
             background: var(--azul-oscuro);
-            padding: 10px 40px;
+            padding: 12px 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -50,13 +52,19 @@
 
         .info-usuario {
             background: #f0f8ff;
-            padding: 15px;
+            padding: 20px;
             border-left: 5px solid var(--azul-mep);
-            border-radius: 4px;
+            border-radius: 8px;
             margin-bottom: 25px;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
         }
+
+        .info-item { text-align: center; margin: 10px; }
+        .info-item b { color: var(--azul-oscuro); font-size: 0.8rem; text-transform: uppercase; display: block; }
+        .info-item span { font-size: 1.1rem; font-weight: 600; }
 
         /* SECCIÓN ADMIN */
         #seccionAdmin {
@@ -69,16 +77,14 @@
         }
 
         form { display: grid; gap: 15px; background: var(--gris-claro); padding: 20px; border-radius: 8px; }
-        
         .row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-
         label { font-weight: bold; font-size: 0.85rem; color: #555; }
 
         input, select, textarea {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             border: 1px solid #ccc;
-            border-radius: 5px;
+            border-radius: 6px;
             box-sizing: border-box;
             font-size: 0.95rem;
         }
@@ -88,113 +94,134 @@
             background: var(--azul-mep);
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 6px;
             cursor: pointer;
             font-weight: bold;
             transition: 0.3s;
         }
 
-        button:hover { background: var(--azul-oscuro); }
+        button:hover { background: var(--azul-oscuro); transform: translateY(-2px); }
         .btn-admin { background: var(--naranja); }
-        .btn-cerrar { background: var(--rojo); padding: 8px 15px; }
-        .btn-eliminar { background: #ff4d4d; padding: 5px 10px; font-size: 0.8rem; }
+        .btn-cerrar { background: var(--rojo); padding: 8px 15px; font-size: 0.9rem; }
+        .btn-eliminar { background: #ff4d4d; padding: 6px 12px; font-size: 0.8rem; }
 
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 0.9rem; }
-        th { background: #eee; color: #333; text-align: left; }
-        td, th { padding: 12px; border: 1px solid #ddd; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th { background: #f4f6f7; color: #333; text-align: left; padding: 15px; border-bottom: 2px solid #ddd; }
+        td { padding: 15px; border-bottom: 1px solid #eee; }
 
-        @media (max-width: 600px) { .row { grid-template-columns: 1fr; } }
+        .badge-rol {
+            background: rgba(255,255,255,0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.85rem;
+            text-transform: capitalize;
+        }
+
+        @media (max-width: 600px) { .row { grid-template-columns: 1fr; } .header { flex-direction: column; gap: 10px; } }
     </style>
 </head>
 
 <body>
 
 <div class="header">
-    <img src="escudo sin fondo.png" alt="Escudo">
-    <h1 id="saludo">Cargando...</h1>
+    <img src="escudo sin fondo.png" alt="Escudo CTP">
+    <h1 id="saludo">¡Bienvenido al Panel!</h1>
     <img src="LOGO MEP.png" alt="Logo MEP">
 </div>
 
 <div class="navbar">
-    <span id="rolBadge" style="background:rgba(255,255,255,0.2); padding:2px 10px; border-radius:10px;">Sesión activa</span>
+    <div>
+        <span style="opacity: 0.8;">Sesión: </span>
+        <span id="rolBadge" class="badge-rol">Cargando...</span>
+    </div>
     <button class="btn-cerrar" onclick="cerrarSesion()">Cerrar Sesión</button>
 </div>
 
 <div class="container">
 
     <div class="info-usuario">
-        <p><b>Nombre:</b> <br><span id="nombreUsuario">---</span></p>
-        <p><b>Usuario:</b> <br><span id="usuario">---</span></p>
-        <p><b>Rol:</b> <br><span id="rol">---</span></p>
+        <div class="info-item">
+            <b>Nombre Completo</b>
+            <span id="nombreUsuario">---</span>
+        </div>
+        <div class="info-item">
+            <b>Identificador</b>
+            <span id="usuario">---</span>
+        </div>
+        <div class="info-item">
+            <b>Perfil</b>
+            <span id="rol">---</span>
+        </div>
     </div>
 
     <div id="seccionAdmin">
-        <h3 style="color: #e67e22; margin-top: 0;">📢 Publicar Comunicado (Admin)</h3>
+        <h3 style="color: #e67e22; margin-top: 0;">📢 Publicar Comunicado Oficial</h3>
         <form id="formComunicado">
-            <input type="text" id="tituloCom" placeholder="Título del comunicado" required>
-            <textarea id="contenidoCom" rows="2" placeholder="Mensaje para la comunidad..." required></textarea>
+            <input type="text" id="tituloCom" placeholder="Título del comunicado (Ej: Cambio de horario)" required>
+            <textarea id="contenidoCom" rows="2" placeholder="Escriba el mensaje detallado aquí..." required></textarea>
             <select id="colorCom">
-                <option value="#27ae60">Informativo (Verde)</option>
-                <option value="#3498db">General (Azul)</option>
-                <option value="#f39c12">Importante (Naranja)</option>
-                <option value="#e74c3c">Urgente (Rojo)</option>
+                <option value="#27ae60">🟢 Informativo (Verde)</option>
+                <option value="#3498db">🔵 General (Azul)</option>
+                <option value="#f39c12">🟠 Importante (Naranja)</option>
+                <option value="#e74c3c">🔴 Urgente (Rojo)</option>
             </select>
-            <button type="submit" class="btn-admin" id="btnPublicar">Publicar en el Inicio</button>
+            <button type="submit" class="btn-admin" id="btnPublicar">Publicar Comunicado ahora</button>
         </form>
     </div>
 
-    <h3>Registrar Período de Ausencia</h3>
+    <h3>📝 Registrar Nueva Ausencia</h3>
     <form id="formMiAusencia">
         <div class="row">
             <div>
-                <label>Fecha de Inicio</label>
+                <label>📅 Fecha de Inicio</label>
                 <input type="date" id="fechaInicio" required>
             </div>
             <div>
-                <label>Fecha de Finalización</label>
+                <label>🏁 Fecha de Finalización</label>
                 <input type="date" id="fechaFin" required>
             </div>
         </div>
         
         <div class="row">
             <div>
-                <label>Razón</label>
+                <label>❓ Motivo de la Ausencia</label>
                 <select id="razonAusencia" required>
-                    <option value="Enfermedad">Enfermedad</option>
-                    <option value="Permiso">Permiso</option>
-                    <option value="Capacitación">Capacitación</option>
+                    <option value="Enfermedad">Enfermedad / Incapacidad</option>
+                    <option value="Permiso">Permiso Personal</option>
+                    <option value="Capacitación">Capacitación MEP</option>
                     <option value="Cita Médica">Cita Médica</option>
-                    <option value="Otro">Otro</option>
+                    <option value="Otro">Otro Motivo</option>
                 </select>
             </div>
             <div>
-                <label>Detalle (Opcional)</label>
-                <input type="text" id="detalleAusencia" placeholder="Ej: Gripe fuerte">
+                <label>🔍 Detalle Breve</label>
+                <input type="text" id="detalleAusencia" placeholder="Ej: Cita en la Caja">
             </div>
         </div>
 
         <div>
-            <label>Instrucciones para Estudiantes</label>
-            <textarea id="actividadRemplazo" rows="2" placeholder="¿Qué deben hacer los alumnos mientras no estés?"></textarea>
+            <label>📚 Trabajo para los Estudiantes</label>
+            <textarea id="actividadRemplazo" rows="2" placeholder="Describa la práctica o actividad que deben realizar los grupos..."></textarea>
         </div>
-        <button type="submit" id="btnGuardar">Registrar Período</button>
+        <button type="submit" id="btnGuardar">Registrar Período de Ausencia</button>
     </form>
 
     <hr style="margin: 40px 0; border: 0; border-top: 1px solid #eee;">
 
-    <h3>Mi Historial de Ausencias</h3>
+    <h3>📋 Mi Historial Reciente</h3>
     <div style="overflow-x:auto;">
         <table id="tablaHistorial">
             <thead>
                 <tr>
                     <th>Desde</th>
                     <th>Hasta</th>
-                    <th>Razón / Actividad</th>
+                    <th>Motivo y Actividad</th>
                     <th>Acción</th>
                 </tr>
             </thead>
             <tbody id="cuerpoTabla">
-                <tr><td colspan="4">Cargando tus registros...</td></tr>
+                <tr><td colspan="4" style="text-align:center;">Cargando sus registros...</td></tr>
             </tbody>
         </table>
     </div>
@@ -202,7 +229,6 @@
 </div>
 
 <script>
-// --- CONFIGURACIÓN SUPABASE ---
 const SUPABASE_URL = 'https://etdcmuikvtnqfcnlvodh.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV0ZGNtdWlrdnRucWZjbmx2b2RoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU1OTQ1ODcsImV4cCI6MjA5MTE3MDU4N30.8JHWlTxYRSYEkpipqesHVBKn7QomTXJYHp6Nm6SzU4A';
 const headers = { "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}`, "Content-Type": "application/json" };
@@ -210,34 +236,43 @@ const headers = { "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KE
 function inicializar() {
     const nombre = localStorage.getItem('nombre');
     const rol = localStorage.getItem('rol');
+    const usuario = localStorage.getItem('usuario');
 
-    if (!nombre) { window.location.href = "index.html"; return; }
+    if (!nombre || !usuario) { window.location.href = "index.html"; return; }
 
+    // Actualizar Textos
     document.getElementById('nombreUsuario').textContent = nombre;
-    document.getElementById('usuario').textContent = localStorage.getItem('usuario');
+    document.getElementById('usuario').textContent = usuario;
     document.getElementById('rol').textContent = rol;
-    document.getElementById('saludo').textContent = "Hola, " + nombre.split(' ')[0];
+    document.getElementById('rolBadge').textContent = rol;
+    
+    // Mensaje de bienvenida personalizado
+    const primerNombre = nombre.split(' ')[0];
+    document.getElementById('saludo').textContent = `¡Hola, ${primerNombre}! 👋`;
 
-    if (rol === 'admin') document.getElementById('seccionAdmin').style.display = 'block';
+    if (rol === 'admin') {
+        document.getElementById('seccionAdmin').style.display = 'block';
+        document.getElementById('rolBadge').style.background = '#e67e22';
+    }
 
     cargarHistorial();
 }
 
-// --- GUARDAR AUSENCIA (RANGO DE FECHAS) ---
+// --- GUARDAR AUSENCIA ---
 document.getElementById('formMiAusencia').addEventListener('submit', async function(e){
     e.preventDefault();
     const btn = document.getElementById('btnGuardar');
     const f1 = document.getElementById('fechaInicio').value;
     const f2 = document.getElementById('fechaFin').value;
 
-    if(f2 < f1) return alert("La fecha final no puede ser antes de la inicial.");
+    if(f2 < f1) return alert("La fecha final no puede ser anterior a la fecha de inicio.");
 
     btn.disabled = true;
     const datos = {
         usuario: localStorage.getItem('usuario'),
         nombre: localStorage.getItem('nombre'),
-        fecha: f1,      // Inicio
-        fecha_fin: f2,  // Fin
+        fecha: f1,
+        fecha_fin: f2,
         razon: document.getElementById('razonAusencia').value,
         detalle: document.getElementById('detalleAusencia').value,
         actividad: document.getElementById('actividadRemplazo').value
@@ -248,11 +283,11 @@ document.getElementById('formMiAusencia').addEventListener('submit', async funct
             method: "POST", headers, body: JSON.stringify(datos)
         });
         if(res.ok) {
-            alert("✅ Período registrado");
+            alert("✅ Período de ausencia guardado correctamente.");
             this.reset();
             cargarHistorial();
         }
-    } catch (err) { alert("Error al conectar"); }
+    } catch (err) { alert("Error de conexión con el servidor."); }
     btn.disabled = false;
 });
 
@@ -266,32 +301,38 @@ async function cargarHistorial() {
         const datos = await res.json();
         
         tbody.innerHTML = "";
-        if(datos.length === 0) { tbody.innerHTML = "<tr><td colspan='4'>No tienes ausencias registradas.</td></tr>"; return; }
+        if(datos.length === 0) { 
+            tbody.innerHTML = "<tr><td colspan='4' style='text-align:center;'>No tiene ausencias registradas.</td></tr>"; 
+            return; 
+        }
 
         datos.forEach(a => {
             tbody.innerHTML += `
                 <tr>
-                    <td>${a.fecha}</td>
-                    <td>${a.fecha_fin || '---'}</td>
-                    <td><b>${a.razon}</b><br><small>${a.actividad || ''}</small></td>
-                    <td><button class="btn-eliminar" onclick="eliminarAusencia(${a.id})">Borrar</button></td>
+                    <td><b>${a.fecha}</b></td>
+                    <td><b>${a.fecha_fin || '---'}</b></td>
+                    <td>
+                        <span style="color:var(--azul-mep); font-weight:bold;">${a.razon}</span><br>
+                        <small>${a.actividad || 'Sin actividad asignada'}</small>
+                    </td>
+                    <td><button class="btn-eliminar" onclick="eliminarAusencia(${a.id})">Eliminar</button></td>
                 </tr>`;
         });
-    } catch (e) { tbody.innerHTML = "<tr><td colspan='4'>Error al cargar historial.</td></tr>"; }
+    } catch (e) { tbody.innerHTML = "<tr><td colspan='4'>Error al cargar el historial.</td></tr>"; }
 }
 
-// --- ELIMINAR REGISTRO ---
 async function eliminarAusencia(id) {
-    if(!confirm("¿Estás seguro de eliminar este registro?")) return;
+    if(!confirm("¿Desea borrar este registro de ausencia permanentemente?")) return;
     try {
         await fetch(`${SUPABASE_URL}/rest/v1/ausencias?id=eq.${id}`, { method: "DELETE", headers });
         cargarHistorial();
-    } catch (e) { alert("Error al borrar"); }
+    } catch (e) { alert("No se pudo eliminar el registro."); }
 }
 
-// --- PUBLICAR COMUNICADO (ADMIN) ---
 document.getElementById('formComunicado').addEventListener('submit', async function(e){
     e.preventDefault();
+    const btn = document.getElementById('btnPublicar');
+    btn.disabled = true;
     const datos = {
         titulo: document.getElementById('tituloCom').value,
         contenido: document.getElementById('contenidoCom').value,
@@ -300,11 +341,20 @@ document.getElementById('formComunicado').addEventListener('submit', async funct
     };
     try {
         const res = await fetch(`${SUPABASE_URL}/rest/v1/comunicados`, { method: "POST", headers, body: JSON.stringify(datos) });
-        if(res.ok) { alert("✅ Comunicado enviado al Index"); this.reset(); }
-    } catch (e) { alert("Error"); }
+        if(res.ok) { 
+            alert("✅ Comunicado publicado en la página de inicio."); 
+            this.reset(); 
+        }
+    } catch (e) { alert("Error al publicar."); }
+    btn.disabled = false;
 });
 
-function cerrarSesion() { localStorage.clear(); window.location.href = "index.html"; }
+function cerrarSesion() {
+    if(confirm("¿Seguro que desea salir del panel?")) {
+        localStorage.clear();
+        window.location.href = "index.html";
+    }
+}
 
 window.onload = inicializar;
 </script>
