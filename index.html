@@ -21,14 +21,14 @@
         body {
             margin: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--fondo-principal);
-            color: var(--texto-oscuro);
+            background-color: var(--fondo-sitio);
+            color: var(--texto-cuerpo);
             line-height: 1.6;
         }
 
         /* HEADER VERDE OSCURO INSTITUCIONAL */
         .header {
-            background-color: var(--verde-oscuro);
+            background-color: var(--verde-base);
             padding: 15px 0;
             color: white;
             box-shadow: 0 4px 12px rgba(0,0,0,0.2);
@@ -109,14 +109,14 @@
 
         .main-title-bar h1 {
             margin: 0;
-            color: var(--verde-oscuro);
+            color: var(--texto-titulo);
             font-size: 1.8rem;
             font-weight: 800;
         }
 
         .main-title-bar {
-            background: var(--crema);
-            border-bottom: 3px solid var(--verde-oscuro);
+            background: var(--blanco);
+            border-bottom: 3px solid var(--verde-base);
             padding: 25px 0;
             text-align: center;
         }
@@ -132,16 +132,16 @@
         }
 
         .card-steam {
-            background: var(--crema);
+            background: var(--blanco);
             padding: 30px;
             border-radius: 12px;
             text-align: center;
-            border: 2px solid var(--verde-oscuro);
-            color: var(--texto-oscuro);
+            border: 2px solid var(--verde-base);
+            color: var(--texto-cuerpo);
         }
 
         .card-steam h3 {
-            color: var(--verde-oscuro);
+            color: var(--texto-titulo);
         }
 
         .card-steam p {
@@ -151,10 +151,10 @@
         .card-steam img { width: 130px; margin-bottom: 15px; }
 
         .carousel-box {
-            background: var(--crema);
+            background: var(--blanco);
             padding: 8px;
             border-radius: 12px;
-            border: 2px solid var(--verde-oscuro);
+            border: 2px solid var(--verde-base);
         }
 
         .carousel { overflow: hidden; border-radius: 8px; height: 380px; }
@@ -164,8 +164,8 @@
         .titulo-seccion {
             font-size: 1.4rem;
             margin-bottom: 25px;
-            color: var(--verde-oscuro);
-            border-left: 6px solid var(--verde-oscuro);
+            color: var(--texto-titulo);
+            border-left: 6px solid var(--verde-base);
             padding-left: 15px;
         }
 
@@ -177,19 +177,19 @@
         }
 
         .comunicado-card {
-            background: var(--crema);
+            background: var(--blanco);
             padding: 20px;
             border-radius: 10px;
             border: 1px solid var(--borde);
             position: relative;
             transition: 0.3s;
-            color: var(--texto-oscuro);
+            color: var(--texto-cuerpo);
         }
 
         .comunicado-card:hover {
             transform: translateY(-3px);
-            background: #f5f1e8;
-            border-color: var(--verde-oscuro);
+            background: var(--verde-suave);
+            border-color: var(--verde-base);
             box-shadow: 0 4px 12px rgba(10, 76, 35, 0.15);
         }
 
@@ -198,16 +198,16 @@
             position: absolute;
             top: 0; left: 0; right: 0;
             height: 4px;
-            background: var(--verde-oscuro);
+            background: var(--verde-base);
             border-radius: 10px 10px 0 0;
         }
 
-        .tabla-container { background: var(--crema); border-radius: 10px; border: 2px solid var(--verde-oscuro); overflow: hidden; }
+        .tabla-container { background: var(--blanco); border-radius: 10px; border: 2px solid var(--verde-base); overflow: hidden; }
         table { width: 100%; border-collapse: collapse; }
-        th { text-align: left; padding: 15px; background: var(--verde-oscuro); color: var(--crema); font-weight: bold; }
+        th { text-align: left; padding: 15px; background: var(--verde-base); color: white; font-weight: bold; }
         tbody tr { border-bottom: 1px solid var(--borde); }
-        tbody tr:hover { background: #f5f1e8; }
-        tbody td { padding: 15px; color: var(--texto-oscuro); }
+        tbody tr:hover { background: var(--verde-suave); }
+        tbody td { padding: 15px; color: var(--texto-cuerpo); }
 
         @media (max-width: 900px) {
             .header-container { flex-direction: column; gap: 20px; text-align: center; }
