@@ -8,28 +8,27 @@
 
     <style>
         :root {
-            --verde-base: #0a2412;
-            --verde-suave: #1a4d2e;
-            --fondo-sitio: #0f3320;
+            --verde-base: #0a4c23;
+            --verde-suave: #ebe5d9;
+            --fondo-sitio: #ebe5d9;
             --blanco: #ffffff;
-            --texto-titulo: #a8d5ba;
-            --texto-cuerpo: #e0e0e0;
-            --texto-gris: #b0b0b0;
-            --borde: #2d5a3d;
+            --texto-titulo: #0a4c23;
+            --texto-cuerpo: #333333;
+            --texto-gris: #5a5a5a;
+            --borde: #d4ccc0;
         }
 
         body {
             margin: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--fondo-sitio);
-            color: var(--texto-cuerpo);
+            background-color: var(--fondo-principal);
+            color: var(--texto-oscuro);
             line-height: 1.6;
-            background-image: linear-gradient(135deg, #0a2412 0%, #0f3320 100%);
         }
 
         /* HEADER VERDE OSCURO INSTITUCIONAL */
         .header {
-            background-color: var(--verde-base);
+            background-color: var(--verde-oscuro);
             padding: 15px 0;
             color: white;
             box-shadow: 0 4px 12px rgba(0,0,0,0.2);
@@ -110,14 +109,16 @@
 
         .main-title-bar h1 {
             margin: 0;
-            color: #a8d5ba;
+            color: var(--verde-oscuro);
             font-size: 1.8rem;
             font-weight: 800;
         }
 
         .main-title-bar {
-            background: var(--verde-base);
-            border-bottom: 3px solid #2d8659;
+            background: var(--crema);
+            border-bottom: 3px solid var(--verde-oscuro);
+            padding: 25px 0;
+            text-align: center;
         }
 
         /* CONTENIDO */
@@ -131,29 +132,29 @@
         }
 
         .card-steam {
-            background: var(--verde-suave);
+            background: var(--crema);
             padding: 30px;
             border-radius: 12px;
             text-align: center;
-            border: 2px solid #2d8659;
-            color: var(--texto-cuerpo);
+            border: 2px solid var(--verde-oscuro);
+            color: var(--texto-oscuro);
         }
 
         .card-steam h3 {
-            color: #a8d5ba;
+            color: var(--verde-oscuro);
         }
 
         .card-steam p {
-            color: #b0b0b0;
+            color: var(--texto-gris);
         }
 
         .card-steam img { width: 130px; margin-bottom: 15px; }
 
         .carousel-box {
-            background: var(--verde-suave);
+            background: var(--crema);
             padding: 8px;
             border-radius: 12px;
-            border: 2px solid #2d8659;
+            border: 2px solid var(--verde-oscuro);
         }
 
         .carousel { overflow: hidden; border-radius: 8px; height: 380px; }
@@ -163,8 +164,8 @@
         .titulo-seccion {
             font-size: 1.4rem;
             margin-bottom: 25px;
-            color: #a8d5ba;
-            border-left: 6px solid #2d8659;
+            color: var(--verde-oscuro);
+            border-left: 6px solid var(--verde-oscuro);
             padding-left: 15px;
         }
 
@@ -176,19 +177,20 @@
         }
 
         .comunicado-card {
-            background: var(--verde-suave);
+            background: var(--crema);
             padding: 20px;
             border-radius: 10px;
-            border: 1px solid #2d8659;
+            border: 1px solid var(--borde);
             position: relative;
             transition: 0.3s;
-            color: var(--texto-cuerpo);
+            color: var(--texto-oscuro);
         }
 
         .comunicado-card:hover {
             transform: translateY(-3px);
-            background: #2d7a4a;
-            border-color: #4ab56f;
+            background: #f5f1e8;
+            border-color: var(--verde-oscuro);
+            box-shadow: 0 4px 12px rgba(10, 76, 35, 0.15);
         }
 
         .comunicado-card::before {
@@ -196,16 +198,16 @@
             position: absolute;
             top: 0; left: 0; right: 0;
             height: 4px;
-            background: #2d8659;
+            background: var(--verde-oscuro);
             border-radius: 10px 10px 0 0;
         }
 
-        .tabla-container { background: var(--verde-suave); border-radius: 10px; border: 2px solid #2d8659; overflow: hidden; }
+        .tabla-container { background: var(--crema); border-radius: 10px; border: 2px solid var(--verde-oscuro); overflow: hidden; }
         table { width: 100%; border-collapse: collapse; }
-        th { text-align: left; padding: 15px; background: #0a2412; color: #a8d5ba; font-weight: bold; }
-        tbody tr { border-bottom: 1px solid #2d5a3d; }
-        tbody tr:hover { background: #2d7a4a; }
-        tbody td { padding: 15px; color: var(--texto-cuerpo); }
+        th { text-align: left; padding: 15px; background: var(--verde-oscuro); color: var(--crema); font-weight: bold; }
+        tbody tr { border-bottom: 1px solid var(--borde); }
+        tbody tr:hover { background: #f5f1e8; }
+        tbody td { padding: 15px; color: var(--texto-oscuro); }
 
         @media (max-width: 900px) {
             .header-container { flex-direction: column; gap: 20px; text-align: center; }
