@@ -241,13 +241,25 @@
 
         @media (max-width: 700px) {
             .logo-gobierno {
-                font-size: 0.65rem;
+                font-size: 0.7rem;
+                text-align: center;
+            }
+            .header-logos-left {
+                flex-direction: column;
+                justify-content: center;
+            }
+            .divider {
+                display: none;
             }
             .tabla-container, .overflow-auto, .tabla-scroll {
-                overflow-x: auto;
-                display: block;
                 width: 100%;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                display: block;
+            }
+            .tabla-container table, .overflow-auto table, .tabla-scroll table {
                 white-space: nowrap;
+                min-width: max-content;
             }
             .header-container {
                 flex-direction: column;
