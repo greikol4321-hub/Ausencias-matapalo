@@ -248,40 +248,50 @@ button:active {
 }
 
 .mensaje {
-    margin-top: 15px;
-    padding: 12px 15px;
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 15px 30px;
     display: none;
-    border-radius: 8px;
+    border-radius: 50px;
     text-align: center;
-    font-weight: 500;
-    animation: slideDown 0.3s ease-out;
+    font-weight: 600;
+    font-size: 1.1rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    animation: slideDownToast 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
 }
 
-@keyframes slideDown {
+@keyframes slideDownToast {
     from {
         opacity: 0;
-        transform: translateY(-10px);
+        top: -50px;
+        transform: translate(-50%, -20px);
     }
     to {
         opacity: 1;
-        transform: translateY(0);
+        top: 30px;
+        transform: translate(-50%, 0);
     }
 }
 
 .exito {
     background: #e8f5e9;
-    color: #2e7d32;
-    border: 1px solid #0a4c23;
+    color: #1b5e20;
+    border: 2px solid #4caf50;
 }
 
 .error {
     background: #ffebee;
-    color: #c62828;
-    border: 1px solid #d9534f;
+    color: #b71c1c;
+    border: 2px solid #ef5350;
 }
 
 .show {
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 @media (max-width: 600px) {
