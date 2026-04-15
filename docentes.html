@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel de Docentes - CTP Matapalo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
         :root {
@@ -134,66 +135,66 @@
 
 <div class="header">
     <img src="escudo sin fondo.png" alt="Escudo CTP">
-    <h1 id="saludo">¡Bienvenido al Panel!</h1>
+    <h1 id="saludo"><i class="fas fa-wave-hand"></i> ¡Bienvenido al Panel!</h1>
     <img src="LOGO MEP.png" alt="Logo MEP">
 </div>
 
 <div class="navbar">
     <div>
-        <span style="opacity: 0.8;">Sesión: </span>
+        <span style="opacity: 0.8;"><i class="fas fa-clipboard-list"></i> Sesión: </span>
         <span id="rolBadge" class="badge-rol">Cargando...</span>
     </div>
-    <button class="btn-cerrar" onclick="cerrarSesion()">Cerrar Sesión</button>
+    <button class="btn-cerrar" onclick="cerrarSesion()"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</button>
 </div>
 
 <div class="container">
 
     <div class="info-usuario">
         <div class="info-item">
-            <b>Nombre Completo</b>
+            <b><i class="fas fa-user-circle"></i> Nombre Completo</b>
             <span id="nombreUsuario">---</span>
         </div>
         <div class="info-item">
-            <b>Identificador</b>
+            <b><i class="fas fa-id-card"></i> Identificador</b>
             <span id="usuario">---</span>
         </div>
         <div class="info-item">
-            <b>Perfil</b>
+            <b><i class="fas fa-briefcase"></i> Perfil</b>
             <span id="rol">---</span>
         </div>
     </div>
 
     <div id="seccionAdmin">
-        <h3 style="color: #e67e22; margin-top: 0;">📢 Publicar Comunicado Oficial</h3>
+        <h3 style="color: #e67e22; margin-top: 0;"><i class="fas fa-megaphone"></i> Publicar Comunicado Oficial</h3>
         <form id="formComunicado">
             <input type="text" id="tituloCom" placeholder="Título del comunicado (Ej: Cambio de horario)" required>
             <textarea id="contenidoCom" rows="2" placeholder="Escriba el mensaje detallado aquí..." required></textarea>
             <select id="colorCom">
-                <option value="#27ae60">🟢 Informativo (Verde)</option>
-                <option value="#3498db">🔵 General (Azul)</option>
-                <option value="#f39c12">🟠 Importante (Naranja)</option>
-                <option value="#e74c3c">🔴 Urgente (Rojo)</option>
+                <option value="#27ae60"><i class="fas fa-circle"></i> Informativo (Verde)</option>
+                <option value="#3498db"><i class="fas fa-circle"></i> General (Azul)</option>
+                <option value="#f39c12"><i class="fas fa-circle"></i> Importante (Naranja)</option>
+                <option value="#e74c3c"><i class="fas fa-circle"></i> Urgente (Rojo)</option>
             </select>
-            <button type="submit" class="btn-admin" id="btnPublicar">Publicar Comunicado ahora</button>
+            <button type="submit" class="btn-admin" id="btnPublicar"><i class="fas fa-paper-plane"></i> Publicar Comunicado ahora</button>
         </form>
     </div>
 
-    <h3>📝 Registrar Nueva Ausencia</h3>
+    <h3><i class="fas fa-file-alt"></i> Registrar Nueva Ausencia</h3>
     <form id="formMiAusencia">
         <div class="row">
             <div>
-                <label>📅 Fecha de Inicio</label>
+                <label><i class="fas fa-calendar-alt"></i> Fecha de Inicio</label>
                 <input type="date" id="fechaInicio" required>
             </div>
             <div>
-                <label>🏁 Fecha de Finalización</label>
+                <label><i class="fas fa-flag-checkered"></i> Fecha de Finalización</label>
                 <input type="date" id="fechaFin" required>
             </div>
         </div>
-        
+
         <div class="row">
             <div>
-                <label>❓ Motivo de la Ausencia</label>
+                <label><i class="fas fa-question-circle"></i> Motivo de la Ausencia</label>
                 <select id="razonAusencia" required>
                     <option value="Enfermedad">Enfermedad / Incapacidad</option>
                     <option value="Permiso">Permiso Personal</option>
@@ -203,21 +204,21 @@
                 </select>
             </div>
             <div>
-                <label>🔍 Detalle Breve</label>
+                <label><i class="fas fa-search"></i> Detalle Breve</label>
                 <input type="text" id="detalleAusencia" placeholder="Ej: Cita en la Caja">
             </div>
         </div>
 
         <div>
-            <label>📚 Trabajo para los Estudiantes</label>
+            <label><i class="fas fa-book-reader"></i> Trabajo para los Estudiantes</label>
             <textarea id="actividadRemplazo" rows="2" placeholder="Describa la práctica o actividad que deben realizar los grupos..."></textarea>
         </div>
-        <button type="submit" id="btnGuardar">Registrar Período de Ausencia</button>
+        <button type="submit" id="btnGuardar"><i class="fas fa-save"></i> Registrar Período de Ausencia</button>
     </form>
 
     <hr style="margin: 40px 0; border: 0; border-top: 1px solid #eee;">
 
-    <h3>📋 Mi Historial Reciente</h3>
+    <h3><i class="fas fa-history"></i> Mi Historial Reciente</h3>
     <div style="overflow-x:auto;">
         <table id="tablaHistorial">
             <thead>
