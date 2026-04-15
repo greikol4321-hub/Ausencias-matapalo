@@ -8,83 +8,32 @@
     <link rel="stylesheet" href="stylo.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body {
-            background: linear-gradient(135deg, #0a4c23 0%, #1a6b3a 100%);
-            margin: 0;
-            padding: 20px;
-            min-height: 100vh;
+        /* ESTILOS ESPECÍFICOS PARA REGISTRO-DOCENTES.HTML */
+        .form-page {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: calc(100vh - 120px);
+            padding: 40px 20px;
         }
-
         .form-container {
             max-width: 500px;
-            margin: 30px auto;
+            margin: 0 auto;
             padding: 30px;
-            background: #f5f1e8;
+            background: var(--crema);
             border-radius: 10px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-            border: 2px solid #0a4c23;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--borde);
         }
 
         .form-container h1 {
             text-align: center;
-            color: #0a4c23;
-            margin-bottom: 30px;
-        }
-
-        .form-container > div {
-            text-align: center;
+            color: var(--texto-titulo);
             margin-bottom: 20px;
         }
 
-        .form-container img {
-            height: 60px;
-            margin: 0 10px;
-        }
-
-        form {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        label {
-            color: #0a4c23;
-            font-weight: bold;
-            text-align: left;
-            margin-bottom: 5px;
-            display: block;
-        }
-
-        input, textarea {
-            padding: 12px;
-            border: 1px solid #d4ccc0;
-            border-radius: 6px;
-            font-size: 14px;
-            background: white;
-            color: #333;
-            box-sizing: border-box;
-        }
-
-        input::placeholder, textarea::placeholder {
-            color: #999;
-        }
-
-        button {
-            padding: 12px;
-            background: #0a4c23;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
-            transition: 0.3s;
-        }
-
-        button:hover {
-            background: #1a6b3a;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(10, 76, 35, 0.4);
+        .form-group {
+            margin-bottom: 15px;
         }
 
         .mensaje {
@@ -99,25 +48,25 @@
         .éxito {
             background: #e8f5e9;
             color: #2e7d32;
-            border: 1px solid #0a4c23;
+            border: 1px solid var(--verde-base);
         }
 
         .error {
             background: #ffebee;
             color: #c62828;
-            border: 1px solid #d9534f;
+            border: 1px solid var(--rojo);
         }
 
         .mensaje.show {
             display: block;
         }
 
-        a {
+        a.btn-volver {
             display: block;
             text-align: center;
             margin-top: 15px;
             padding: 12px;
-            background: #0a4c23;
+            background: var(--texto-gris);
             color: white;
             text-decoration: none;
             border-radius: 6px;
@@ -125,53 +74,63 @@
             transition: 0.3s;
         }
 
-        a:hover {
-            background: #1a6b3a;
-            transform: translateY(-2px);
+        a.btn-volver:hover {
+            background: #444;
         }
     </style>
 </head>
 
 <body>
 
-    <div class="form-container">
-        <div>
-            <img src="LOGO MEP.png" alt="Logo MEP">
-            <img src="escudo sin fondo.png" alt="Escudo CTP">
+<header class="header">
+    <div class="header-container">
+        <div class="header-logos-left">
+            <img src="LOGO_MEP-removebg-preview.png" class="logo-mep" alt="MEP Costa Rica">
+            <div class="divider"></div>
+            <div class="logo-gobierno">
+                <strong>Gobierno</strong><br>
+                de Costa Rica
+            </div>
         </div>
+        
+        <div class="nav-right">
+            <img src="escudo sin fondo.png" class="logo-escudo" alt="Escudo CTP Matapalo">
+            <a href="index.html" class="btn-login">Volver al Inicio</a>
+        </div>
+    </div>
+</header>
 
+<div class="form-page">
+    <div class="form-container">
         <h1><i class="fas fa-user-check"></i> Registro de Docentes</h1>
 
         <form id="miFormulario">
-
-            <div style="margin-bottom: 15px;">
+            <div class="form-group">
                 <label for="nombre"><i class="fas fa-user"></i> Nombre Completo:</label>
                 <input type="text" id="nombre" name="nombre" required placeholder="Tu nombre completo">
             </div>
 
-            <div style="margin-bottom: 15px;">
+            <div class="form-group">
                 <label for="email"><i class="fas fa-envelope"></i> Correo Institucional:</label>
                 <input type="email" id="email" name="email" required placeholder="correo@mep.go.cr">
             </div>
 
-            <div style="margin-bottom: 15px;">
+            <div class="form-group">
                 <label for="password"><i class="fas fa-key"></i> Contraseña:</label>
                 <input type="password" id="password" name="password" required placeholder="Crea una contraseña segura">
             </div>
 
-            <div style="margin-bottom: 15px;">
+            <div class="form-group">
                 <label for="materia"><i class="fas fa-book"></i> Materia/Especialidad:</label>
-                <textarea id="materia" name="materia" rows="3" placeholder="Describe tu materia o especialidad..."></textarea>
+                <textarea id="materia" name="materia" rows="2" placeholder="Describe tu materia o especialidad..."></textarea>
             </div>
 
             <button type="submit"><i class="fas fa-check"></i> REGISTRARSE</button>
-
-            <a href="registrarme.html"><i class="fas fa-arrow-left"></i> Volver al Login</a>
-
         </form>
 
         <div class="mensaje" id="mensaje"></div>
     </div>
+</div>
 
     <script>
         // Configuración de Supabase

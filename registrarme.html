@@ -4,265 +4,93 @@
 <meta charset="UTF-8">
 <title>Login - CTP Matapalo</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
+<link rel="stylesheet" href="stylo.css">
 <style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    background: #ebe5d9;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    min-height: 100vh;
-    margin: 0;
-    padding: 0;
-}
-
-.header {
-    background-color: #f5f1e8;
-    padding: 15px 0;
-    color: #0a4c23;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    border-bottom: 3px solid #0a4c23;
-}
-
-.header-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 20px;
-}
-
-.header-logos-left {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-}
-
-.logo-mep {
-    height: 50px;
-    object-fit: contain;
-}
-
-.divider {
-    width: 1px;
-    height: 40px;
-    background-color: rgba(10, 76, 35, 0.3);
-}
-
-.logo-gobierno {
-    text-align: left;
-    text-transform: uppercase;
-    font-size: 0.75rem;
-    letter-spacing: 0.5px;
-    line-height: 1.2;
-    color: #0a4c23;
-}
-
-.nav-right {
-    display: flex;
-    align-items: center;
-    gap: 30px;
-}
-
-.logo-escudo {
-    height: 85px;
-    filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.3));
-}
-
-.login-page {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: calc(100vh - 120px);
-    padding: 40px 20px;
-}
-
-.login-wrapper {
-    width: 100%;
-    max-width: 420px;
-}
-
-.login-header {
-    text-align: center;
-    margin-bottom: 30px;
-    color: #0a4c23;
-}
-
-.logo-container {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin-bottom: 15px;
-    align-items: center;
-}
-
-.logo-container img {
-    height: 70px;
-    filter: brightness(0) invert(1);
-}
-
-.login-header h1 {
-    font-size: 28px;
-    font-weight: 700;
-    color: #0a4c23;
-    margin-bottom: 8px;
-}
-
-.login-header p {
-    font-size: 14px;
-    color: #666;
-    font-weight: 300;
-}
-
-.login-container {
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.3);
-    padding: 40px;
-    animation: slideUp 0.5s ease-out;
-}
-
-@keyframes slideUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
+    /* ESTILOS ESPECÍFICOS PARA REGISTRARME.HTML */
+    .login-page {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: calc(100vh - 120px); /* Ajustar para la altura del header */
+        padding: 40px 20px;
     }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
 
-.form-group {
-    margin-bottom: 20px;
-    position: relative;
-}
-
-.form-group i {
-    position: absolute;
-    left: 14px;
-    top: 14px;
-    color: #0a4c23;
-    font-size: 18px;
-    z-index: 1;
-}
-
-input {
-    width: 100%;
-    padding: 12px 12px 12px 45px;
-    border: 2px solid #e0e0e0;
-    border-radius: 8px;
-    font-size: 15px;
-    transition: all 0.3s ease;
-    background: #f8f8f8;
-    color: #333;
-}
-
-input::placeholder {
-    color: #999;
-}
-
-input:focus {
-    outline: none;
-    border-color: #0a4c23;
-    background: white;
-    box-shadow: 0 0 0 3px rgba(10, 76, 35, 0.1);
-}
-
-.btn-container {
-    display: flex;
-    gap: 12px;
-    margin-top: 30px;
-}
-
-button {
-    width: 100%;
-    padding: 12px;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    background: linear-gradient(135deg, #0a4c23 0%, #1a6b3a 100%);
-    color: white;
-}
-
-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(10, 76, 35, 0.3);
-}
-
-button:active {
-    transform: translateY(0);
-}
-
-.mensaje {
-    margin-top: 15px;
-    padding: 12px 15px;
-    display: none;
-    border-radius: 8px;
-    text-align: center;
-    font-weight: 500;
-    animation: slideDown 0.3s ease-out;
-}
-
-@keyframes slideDown {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.exito {
-    background: #e8f5e9;
-    color: #2e7d32;
-    border: 1px solid #0a4c23;
-}
-
-.error {
-    background: #ffebee;
-    color: #c62828;
-    border: 1px solid #d9534f;
-}
-
-.show {
-    display: block;
-}
-
-@media (max-width: 600px) {
     .login-container {
-        padding: 30px 20px;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        padding: 40px;
+        width: 100%;
+        max-width: 420px;
+    }
+
+    .login-header {
+        text-align: center;
+        margin-bottom: 30px;
     }
 
     .login-header h1 {
-        font-size: 24px;
+        font-size: 28px;
+        font-weight: 700;
+        color: var(--texto-titulo);
+        margin-bottom: 8px;
+    }
+
+    .login-header p {
+        font-size: 14px;
+        color: var(--texto-gris);
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+        position: relative;
+    }
+
+    .form-group i {
+        position: absolute;
+        left: 14px;
+        top: 14px;
+        color: var(--verde-base);
+        font-size: 18px;
+    }
+
+    input {
+        padding-left: 45px;
     }
 
     .btn-container {
-        flex-direction: column;
+        margin-top: 30px;
     }
-}
+
+    .mensaje {
+        margin-top: 15px;
+        padding: 12px 15px;
+        display: none;
+        border-radius: 8px;
+        text-align: center;
+        font-weight: 500;
+    }
+
+    .exito {
+        background: #e8f5e9;
+        color: #2e7d32;
+        border: 1px solid var(--verde-base);
+    }
+
+    .error {
+        background: #ffebee;
+        color: #c62828;
+        border: 1px solid var(--rojo);
+    }
+
+    .show {
+        display: block;
+    }
 </style>
 </head>
 
 <body>
 
-<!-- HEADER IGUAL AL INDEX -->
 <header class="header">
     <div class="header-container">
         <div class="header-logos-left">
@@ -273,16 +101,21 @@ button:active {
                 de Costa Rica
             </div>
         </div>
-
+        
         <div class="nav-right">
             <img src="escudo sin fondo.png" class="logo-escudo" alt="Escudo CTP Matapalo">
+            <a href="index.html" class="btn-login">Volver al Inicio</a>
         </div>
     </div>
 </header>
 
 <div class="login-page">
-
     <div class="login-container">
+        <div class="login-header">
+            <h1>Acceso al Panel</h1>
+            <p>Usa tus credenciales para ingresar al sistema.</p>
+        </div>
+
         <form id="loginForm">
             <div class="form-group">
                 <i class="fas fa-user"></i>
