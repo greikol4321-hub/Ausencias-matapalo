@@ -145,16 +145,31 @@
         .info-usuario {
             background: var(--blanco);
             padding: 30px;
-            border-left: 5px solid var(--verde-claro);
-            border-radius: 10px;
+            border-left: 6px solid var(--verde-claro);
+            border-radius: 12px;
             margin-bottom: 40px;
             display: flex;
             justify-content: space-around;
             align-items: center;
             flex-wrap: wrap;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
             border: 1px solid var(--borde);
             animation: fadeInUp 0.45s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .info-usuario::before {
+            content: "\f2bd";
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            position: absolute;
+            right: -20px;
+            bottom: -30px;
+            font-size: 15rem;
+            opacity: 0.03;
+            color: var(--verde-base);
+            pointer-events: none;
         }
 
         .info-item {
@@ -162,6 +177,12 @@
             margin: 10px 20px;
             flex: 1;
             min-width: 150px;
+            padding: 15px;
+            transition: transform 0.3s;
+        }
+
+        .info-item:hover {
+            transform: translateY(-3px);
         }
 
         .info-item b {
@@ -254,8 +275,12 @@
             font-size: 0.95rem;
             background: var(--blanco);
             color: var(--texto-cuerpo);
-            transition: border-color 0.3s, box-shadow 0.3s;
+            transition: border-color 0.3s, box-shadow 0.3s, transform 0.2s;
             font-family: inherit;
+        }
+
+        input:hover, select:hover, textarea:hover {
+            border-color: rgba(10, 76, 35, 0.4);
         }
 
         input::placeholder, textarea::placeholder {
@@ -265,7 +290,8 @@
         input:focus, textarea:focus, select:focus {
             outline: none;
             border-color: var(--verde-claro);
-            box-shadow: 0 0 0 3px rgba(10, 76, 35, 0.1);
+            box-shadow: 0 0 0 4px rgba(10, 76, 35, 0.15);
+            transform: translateY(-1px);
         }
 
         /* BOTONES */
@@ -311,27 +337,44 @@
         }
 
         .btn-cerrar {
-            background: var(--rojo);
-            color: white;
+            background: #ffebee;
+            color: #c62828;
+            border: 1px solid #ef9a9a;
             padding: 10px 18px;
             font-size: 0.9rem;
             margin: 0;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
         }
 
         .btn-cerrar:hover {
-            background: #c91f1f;
+            background: #c62828;
+            color: white;
+            box-shadow: 0 4px 12px rgba(198, 40, 40, 0.2);
+            transform: translateY(-2px);
         }
 
         .btn-eliminar {
-            background: #c94848;
-            color: white;
-            padding: 6px 12px;
-            font-size: 0.8rem;
+            background: #fff5f5;
+            color: #d32f2f;
+            border: 1px solid #ffcdd2;
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-size: 0.85rem;
             margin: 0;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
         }
 
         .btn-eliminar:hover {
-            background: #a73b3b;
+            background: #d32f2f;
+            color: white;
+            border-color: #d32f2f;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(211, 47, 47, 0.2);
         }
 
         /* TABLAS */
@@ -389,10 +432,21 @@
             font-weight: 700;
             font-size: 0.85rem;
             text-transform: uppercase;
-            color: var(--verde-base);
+            color: var(--blanco);
             border: 1px solid var(--verde-claro);
             display: inline-block;
             letter-spacing: 0.5px;
+        }
+
+        .badge-motivo {
+            background: rgba(10, 76, 35, 0.08);
+            color: var(--verde-base);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            display: inline-block;
+            border: 1px solid rgba(10, 76, 35, 0.2);
         }
 
         /* HR */
@@ -631,7 +685,10 @@
                 </tr>
             </thead>
             <tbody id="cuerpoTabla">
-                <tr><td colspan="4" style="text-align:center;">Cargando sus registros...</td></tr>
+                <tr><td colspan="4" style="text-align:center; padding: 40px; color: var(--texto-gris);">
+                    <i class="fas fa-spinner fa-spin fa-2x" style="color: var(--verde-claro); margin-bottom: 10px;"></i><br>
+                    Cargando sus registros...
+                </td></tr>
             </tbody>
         </table>
         </div>
@@ -712,20 +769,26 @@ async function cargarHistorial() {
 
         tbody.innerHTML = "";
         if(datos.length === 0) {
-            tbody.innerHTML = "<tr><td colspan='4' style='text-align:center;'>No tiene ausencias registradas.</td></tr>";
+            tbody.innerHTML = "<tr><td colspan='4' style='text-align:center; padding: 40px; color: var(--texto-gris);'><i class='fas fa-folder-open fa-2x' style='color: #ccc; margin-bottom:15px;'></i><br>No tiene ausencias registradas en el sistema.</td></tr>";
             return;
         }
 
         datos.forEach(a => {
             tbody.innerHTML += `
                 <tr>
-                    <td><b>${a.fecha}</b></td>
-                    <td><b>${a.fecha_fin || '---'}</b></td>
+                    <td><b><i class="fas fa-calendar-day" style="color: var(--texto-gris); margin-right: 5px;"></i> ${a.fecha}</b></td>
+                    <td><b><i class="fas fa-calendar-check" style="color: var(--texto-gris); margin-right: 5px;"></i> ${a.fecha_fin || '---'}</b></td>
                     <td>
-                        <span style="color:var(--verde-base); font-weight:bold;">${a.razon}</span><br>
-                        <small>${a.actividad || 'Sin actividad asignada'}</small>
+                        <span class="badge-motivo">${a.razon}</span>
+                        <div style="font-size: 0.85rem; margin-top: 6px; color: var(--texto-gris);">
+                            <i class="fas fa-comment-dots" style="color: #999; margin-right:4px;"></i> ${a.actividad || 'Sin actividad asignada'}
+                        </div>
                     </td>
-                    <td><button class="btn-eliminar" onclick="eliminarAusencia(${a.id})">Eliminar</button></td>
+                    <td style="text-align: center;">
+                        <button class="btn-eliminar" onclick="eliminarAusencia(${a.id})" title="Eliminar este periodo">
+                            <i class="fas fa-trash-alt"></i> Eliminar
+                        </button>
+                    </td>
                 </tr>`;
         });
     } catch (e) {
