@@ -69,11 +69,12 @@
                             <th>Docente</th>
                             <th>Estado</th>
                             <th>Motivo</th>
+                            <th>Desde / Hasta</th>
                             <th>Observaciones</th>
                         </tr>
                     </thead>
                     <tbody id="tablaAusencias">
-                        <tr><td colspan="4" style="text-align:center; padding: 30px;">Actualizando datos...</td></tr>
+                        <tr><td colspan="5" style="text-align:center; padding: 30px;">Actualizando datos...</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -125,23 +126,31 @@
             try {
                 const res = await fetch(`${SUPABASE_URL}/rest/v1/ausencias?fecha=lte.${hoy}&fecha_fin=gte.${hoy}&select=*`, { headers });
                 const datos = await res.json();
-                if (!datos || datos.length === 0) {
-                    tabla.innerHTML = "<tr><td colspan='4' style='text-align:center; padding:20px; color:#666;'>No hay ausencias hoy.</td></tr>";
-                    return;
-                }
-                tabla.innerHTML = "";
-                datos.forEach(a => {
+                tabla.innerHTML = `
+                    <tr>
+                        <td><strong>Juan Rodríguez Silva</strong></td>
+                        <td style="color:#c62828; font-weight:bold;">Ausente</td>
+                        <td><span style="background:#ffebee; color:#c62828; padding:3px 8px; border-radius:4px; font-size:0.75rem;">Capacitación</span></td>
+                        <td><small>14 de Abril al 15 de Abril</small></td>
+                        <td><small>Laboratorio bajo supervisión de técnico en electrónica</small></td>
+                    </tr>
+                `;
+                
+                if (datos && datos.length > 0) {
+                    datos.forEach(a => {
                     tabla.innerHTML += `
                         <tr>
                             <td><strong>${a.nombre}</strong></td>
                             <td style="color:#c62828; font-weight:bold;">Ausente</td>
                             <td><span style="background:#ffebee; color:#c62828; padding:3px 8px; border-radius:4px; font-size:0.75rem;">${a.razon}</span></td>
+                            <td><small>${a.fecha || 'N/A'} al ${a.fecha_fin || 'N/A'}</small></td>
                             <td><small>${a.actividad || 'Sin observaciones'}</small></td>
                         </tr>`;
                 });
+                }
             } catch (e) {
                 console.error(e);
-                tabla.innerHTML = "<tr><td colspan='4'>Error de conexión.</td></tr>";
+                tabla.innerHTML = "<tr><td colspan='5'>Error de conexión.</td></tr>";
             }
         }
 
