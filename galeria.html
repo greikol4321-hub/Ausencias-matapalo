@@ -6,67 +6,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Galería STEAM - CTP Matapalo</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
+    <link rel="stylesheet" href="stylo.css">
     <style>
-        body {
-            margin: 0;
-            font-family: 'Segoe UI', Arial, sans-serif;
+        /* ESTILOS ESPECÍFICOS PARA GALERIA.HTML */
+        .galeria-container {
+            padding: 40px 20px;
+        }
+
+        .galeria-container h1 {
             text-align: center;
-            background: linear-gradient(135deg, #0a4c23 0%, #1a6b3a 100%);
-            min-height: 100vh;
-            color: #333;
-            padding: 20px;
-        }
-
-        .header {
-            padding: 30px 0;
-            margin-bottom: 20px;
-            border-bottom: 2px solid #d4a256;
-        }
-
-        .header img {
-            height: 80px;
-            margin: 0 10px;
-            transition: transform 0.3s;
-        }
-
-        .header img:hover {
-            transform: scale(1.05);
-        }
-
-        h1 {
-            margin: 20px 0;
-            color: #f5f1e8;
+            color: var(--texto-titulo);
             font-size: 2rem;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            margin-bottom: 30px;
         }
 
-        /* GALERÍA */
         .galeria {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 20px;
-            padding: 20px;
             max-width: 1200px;
             margin: 0 auto;
         }
 
-        /* TARJETAS */
         .item {
-            background: #f5f1e8;
+            background: var(--blanco);
             border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
             transition: transform 0.3s, box-shadow 0.3s;
-            border: 2px solid #0a4c23;
+            border: 2px solid var(--verde-base);
         }
 
         .item:hover {
-            transform: scale(1.08);
-            box-shadow: 0 8px 20px rgba(10, 76, 35, 0.4);
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(10, 76, 35, 0.2);
         }
 
-        /* IMÁGENES Y VIDEOS */
         .item img,
         .item video {
             width: 100%;
@@ -74,20 +49,9 @@
             object-fit: cover;
         }
 
-        /* RESPONSIVE */
         @media (max-width: 600px) {
-            h1 {
-                font-size: 1.5rem;
-            }
-
             .galeria {
-                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-                gap: 15px;
-            }
-
-            .item img,
-            .item video {
-                height: 150px;
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -95,37 +59,35 @@
 
 <body>
 
-    <div class="header">
-        <img src="steam.png" alt="STEAM">
-        <img src="escudo sin fondo.png" alt="Escudo CTP" style="max-width: 100px; height: auto;">
+<header class="header">
+    <div class="header-container">
+        <div class="header-logos-left">
+            <img src="LOGO_MEP-removebg-preview.png" class="logo-mep" alt="MEP Costa Rica">
+            <div class="divider"></div>
+            <div class="logo-gobierno">
+                <strong>Gobierno</strong><br>
+                de Costa Rica
+            </div>
+        </div>
+        
+        <div class="nav-right">
+            <img src="escudo sin fondo.png" class="logo-escudo" alt="Escudo CTP Matapalo">
+            <a href="index.html" class="btn-login">Volver al Inicio</a>
+        </div>
     </div>
+</header>
 
+<div class="galeria-container">
     <h1><i class="fas fa-images"></i> Galería STEAM</h1>
 
     <div class="galeria">
-
-        <!-- IMÁGENES -->
-        <div class="item">
-            <img src="1.jpeg" alt="Imagen 1">
-        </div>
-
-        <div class="item">
-            <img src="2.jpeg" alt="Imagen 2">
-        </div>
-
-        <div class="item">
-            <img src="3.jpeg" alt="Imagen 3">
-        </div>
-
-        <div class="item">
-            <img src="4.jpeg" alt="Imagen 4">
-        </div>
-
-        <div class="item">
-            <img src="5.jpeg" alt="Imagen 5">
-        </div>
-
+        <div class="item"><img src="1.jpeg" alt="Imagen 1"></div>
+        <div class="item"><img src="2.jpeg" alt="Imagen 2"></div>
+        <div class="item"><img src="3.jpeg" alt="Imagen 3"></div>
+        <div class="item"><img src="4.jpeg" alt="Imagen 4"></div>
+        <div class="item"><img src="5.jpeg" alt="Imagen 5"></div>
     </div>
+</div>
 
 </body>
 

@@ -5,125 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CTP de Matapalo - Sitio Oficial</title>
-
+    <link rel="stylesheet" href="stylo.css">
     <style>
-        :root {
-            --verde-base: #0a4c23;
-            --verde-suave: #ebe5d9;
-            --fondo-sitio: #ebe5d9;
-            --blanco: #ffffff;
-            --texto-titulo: #0a4c23;
-            --texto-cuerpo: #333333;
-            --texto-gris: #5a5a5a;
-            --borde: #d4ccc0;
-        }
-
-        body {
-            margin: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--fondo-sitio);
-            color: var(--texto-cuerpo);
-            line-height: 1.6;
-        }
-
-        /* HEADER CREMA - MEJOR VISIBILIDAD DE LOGOS */
-        .header {
-            background-color: #f5f1e8;
-            padding: 15px 0;
-            color: #0a4c23;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            border-bottom: 3px solid var(--verde-base);
-        }
-
-        .header-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 20px;
-        }
-
-        .header-logos-left {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        /* LOGO MEP */
-        .logo-mep {
-            height: 50px;
-            object-fit: contain;
-        } 
-
-        .divider {
-            width: 1px;
-            height: 40px;
-            background-color: rgba(10, 76, 35, 0.3);
-        }
-
-        .logo-gobierno {
-            text-align: left;
-            text-transform: uppercase;
-            font-size: 0.75rem;
-            letter-spacing: 0.5px;
-            line-height: 1.2;
-        }
-
-        .nav-right {
-            display: flex;
-            align-items: center;
-            gap: 30px;
-        }
-
-        .logo-escudo { 
-            height: 85px;
-            filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.3));
-        }
-
-        .btn-login {
-            padding: 9px 20px;
-            border-radius: 4px;
-            background-color: var(--verde-base);
-            color: white;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            border: 1px solid var(--verde-base);
-            transition: 0.3s;
-        }
-
-        .btn-login:hover {
-            background-color: white;
-            color: var(--verde-base);
-        }
-
-        /* BARRA DE TÍTULO */
-        .main-title-bar {
-            background: white;
-            padding: 25px 0;
-            text-align: center;
-            border-bottom: 1px solid var(--borde);
-        }
-
-        .main-title-bar h1 {
-            margin: 0;
-            color: var(--texto-titulo);
-            font-size: 1.8rem;
-            font-weight: 800;
-        }
-
-        .main-title-bar {
-            background: var(--blanco);
-            border-bottom: 3px solid var(--verde-base);
-            padding: 25px 0;
-            text-align: center;
-        }
-
-        /* CONTENIDO */
-        .container { max-width: 1100px; margin: 40px auto; padding: 0 20px; }
-
+        /* ESTILOS ESPECÍFICOS PARA INDEX.HTML */
         .grid-superior { 
             display: grid; 
             grid-template-columns: 320px 1fr; 
@@ -161,14 +45,6 @@
         .slides { display: flex; transition: transform 0.8s ease; height: 100%; }
         .slides img { width: 100%; min-width: 100%; object-fit: cover; }
 
-        .titulo-seccion {
-            font-size: 1.4rem;
-            margin-bottom: 25px;
-            color: var(--texto-titulo);
-            border-left: 6px solid var(--verde-base);
-            padding-left: 15px;
-        }
-
         .comunicados-grid { 
             display: grid; 
             grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); 
@@ -202,15 +78,7 @@
             border-radius: 10px 10px 0 0;
         }
 
-        .tabla-container { background: var(--blanco); border-radius: 10px; border: 2px solid var(--verde-base); overflow: hidden; }
-        table { width: 100%; border-collapse: collapse; }
-        th { text-align: left; padding: 15px; background: var(--verde-base); color: white; font-weight: bold; }
-        tbody tr { border-bottom: 1px solid var(--borde); }
-        tbody tr:hover { background: var(--verde-suave); }
-        tbody td { padding: 15px; color: var(--texto-cuerpo); }
-
         @media (max-width: 900px) {
-            .header-container { flex-direction: column; gap: 20px; text-align: center; }
             .grid-superior { grid-template-columns: 1fr; }
         }
     </style>
