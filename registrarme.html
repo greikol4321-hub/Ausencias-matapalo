@@ -2,89 +2,270 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Login Colegio</title>
+<title>Login - CTP Matapalo</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
-body { background: linear-gradient(135deg, #0a4c23 0%, #1a6b3a 100%); font-family:Arial; min-height: 100vh; margin: 0; padding: 20px; }
-.login-container {
-    max-width:400px;
-    margin:60px auto;
-    padding:30px;
-    background: #f5f1e8;
-    border-radius:10px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-    border: 2px solid #0a4c23;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-.login-container h2 {
-    color: #0a4c23;
+body {
+    background: linear-gradient(135deg, #0a4c23 0%, #1a6b3a 100%);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.login-wrapper {
+    width: 100%;
+    max-width: 420px;
+}
+
+.login-header {
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
+    color: white;
 }
 
-input, button {
-    width:100%;
-    padding:12px;
-    margin-top:15px;
-    border-radius: 6px;
+.logo-container {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 15px;
+    align-items: center;
+}
+
+.logo-container img {
+    height: 70px;
+    filter: brightness(0) invert(1);
+}
+
+.login-header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 8px;
+}
+
+.login-header p {
+    font-size: 14px;
+    color: rgba(255,255,255,0.9);
+    font-weight: 300;
+}
+
+.login-container {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+    padding: 40px;
+    animation: slideUp 0.5s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.form-group {
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.form-group i {
+    position: absolute;
+    left: 14px;
+    top: 14px;
+    color: #0a4c23;
+    font-size: 18px;
+    z-index: 1;
 }
 
 input {
-    background: white;
-    border: 1px solid #d4ccc0;
+    width: 100%;
+    padding: 12px 12px 12px 45px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 15px;
+    transition: all 0.3s ease;
+    background: #f8f8f8;
     color: #333;
-    font-size: 14px;
-    box-sizing: border-box;
 }
 
 input::placeholder {
     color: #999;
 }
 
-button {
-    background: #0a4c23;
-    color:white;
-    border:none;
-    font-weight: bold;
+input:focus {
+    outline: none;
+    border-color: #0a4c23;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(10, 76, 35, 0.1);
+}
+
+.btn-container {
+    display: flex;
+    gap: 12px;
+    margin-top: 30px;
+}
+
+button, .btn-register {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
     font-size: 16px;
+    font-weight: 600;
     cursor: pointer;
-    transition: 0.3s;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+button {
+    background: linear-gradient(135deg, #0a4c23 0%, #1a6b3a 100%);
+    color: white;
 }
 
 button:hover {
-    background: #1a6b3a;
     transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(10, 76, 35, 0.4);
+    box-shadow: 0 8px 20px rgba(10, 76, 35, 0.3);
 }
 
-.mensaje { margin-top:15px; padding:15px; display:none; border-radius: 6px; text-align: center; font-weight: bold; }
-.exito { background: #e8f5e9; color: #2e7d32; border: 1px solid #0a4c23; }
-.error { background: #ffebee; color: #c62828; border: 1px solid #d9534f; }
-.show { display:block; }
+button:active {
+    transform: translateY(0);
+}
+
+.btn-register {
+    background: #f5f1e8;
+    color: #0a4c23;
+    border: 2px solid #0a4c23;
+}
+
+.btn-register:hover {
+    background: #0a4c23;
+    color: white;
+}
+
+.mensaje {
+    margin-top: 15px;
+    padding: 12px 15px;
+    display: none;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: 500;
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.exito {
+    background: #e8f5e9;
+    color: #2e7d32;
+    border: 1px solid #0a4c23;
+}
+
+.error {
+    background: #ffebee;
+    color: #c62828;
+    border: 1px solid #d9534f;
+}
+
+.show {
+    display: block;
+}
+
+.forgot-password {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.forgot-password a {
+    color: #0a4c23;
+    text-decoration: none;
+    font-size: 13px;
+    transition: 0.3s;
+}
+
+.forgot-password a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+    .login-container {
+        padding: 30px 20px;
+    }
+
+    .login-header h1 {
+        font-size: 24px;
+    }
+
+    .btn-container {
+        flex-direction: column;
+    }
+}
 </style>
 </head>
 
 <body>
 
-<div class="login-container">
+<div class="login-wrapper">
+    <div class="login-header">
+        <div class="logo-container">
+            <img src="LOGO MEP.png" alt="Logo MEP">
+            <img src="escudo sin fondo.png" alt="Escudo CTP">
+        </div>
+        <h1><i class="fas fa-lock"></i> Iniciar Sesión</h1>
+        <p>Colegio Técnico Profesional de Matapalo</p>
+    </div>
 
-<h2><i class="fas fa-lock"></i> Iniciar Sesión</h2>
+    <div class="login-container">
+        <form id="loginForm">
+            <div class="form-group">
+                <i class="fas fa-user"></i>
+                <input type="text" id="usuario" placeholder="Usuario" required>
+            </div>
 
-<form id="loginForm">
-<div style="position: relative; margin-bottom: 15px;">
-  <i class="fas fa-user" style="position: absolute; left: 12px; top: 12px; color: #0a4c23;"></i>
-  <input type="text" id="usuario" placeholder=" Usuario" style="padding-left: 40px;" required>
-</div>
-<div style="position: relative; margin-bottom: 15px;">
-  <i class="fas fa-key" style="position: absolute; left: 12px; top: 12px; color: #0a4c23;"></i>
-  <input type="password" id="password" placeholder=" Contraseña" style="padding-left: 40px;" required>
-</div>
-<button type="submit">INGRESAR</button>
-</form>
+            <div class="form-group">
+                <i class="fas fa-key"></i>
+                <input type="password" id="password" placeholder="Contraseña" required>
+            </div>
 
-<div id="mensaje" class="mensaje"></div>
+            <div class="btn-container">
+                <button type="submit"><i class="fas fa-sign-in-alt"></i> INGRESAR</button>
+                <a href="registro-docentes.html" class="btn-register"><i class="fas fa-user-plus"></i> REGISTRARSE</a>
+            </div>
+        </form>
 
+        <div id="mensaje" class="mensaje"></div>
+
+        <div class="forgot-password">
+            <a href="#"><i class="fas fa-question-circle"></i> ¿Olvidaste tu contraseña?</a>
+        </div>
+    </div>
 </div>
 
 <script>
