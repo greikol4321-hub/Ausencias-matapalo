@@ -568,6 +568,24 @@
                 width: 100%;
                 justify-content: center;
             }
+
+            .btn-cerrar {
+                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                transform-origin: top;
+                max-height: 60px;
+                overflow: hidden;
+            }
+
+            .btn-cerrar.hide-on-scroll {
+                opacity: 0;
+                max-height: 0;
+                padding-top: 0;
+                padding-bottom: 0;
+                margin-top: -15px; /* Compensa el gap del navbar flex */
+                border-width: 0;
+                transform: translateY(-10px) scaleY(0);
+                pointer-events: none;
+            }
         }
     </style>
 
@@ -855,6 +873,27 @@ function cerrarSesion() {
 }
 
 window.onload = inicializar;
+
+// ANIMACION DE OCULTAMIENTO EN CELULAR AL BAJAR
+let lastScrollY = window.scrollY;
+window.addEventListener('scroll', () => {
+    if (window.innerWidth <= 600) {
+        const btn = document.querySelector('.btn-cerrar');
+        if (!btn) return;
+        
+        if (window.scrollY > lastScrollY && window.scrollY > 60) {
+            // Scroll hacia abajo: ocultar (animación de plegado)
+            btn.classList.add('hide-on-scroll');
+        } else {
+            // Scroll hacia arriba o arriba del top: mostrar
+            btn.classList.remove('hide-on-scroll');
+        }
+    } else {
+        // Restaurar si volviera mágicamente a desktop
+        document.querySelector('.btn-cerrar')?.classList.remove('hide-on-scroll');
+    }
+    lastScrollY = window.scrollY;
+});
 </script>
 </body>
 </html>
