@@ -4,16 +4,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulario Supabase</title>
+    <title>Registro de Docentes - CTP Matapalo</title>
     <link rel="stylesheet" href="stylo.css">
     <style>
+        body {
+            background: linear-gradient(135deg, #0a2412 0%, #0f3320 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
         .form-container {
             max-width: 500px;
-            margin: 50px auto;
+            margin: 30px auto;
             padding: 30px;
-            background: white;
+            background: #1a4d2e;
             border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            border: 2px solid #2d8659;
+        }
+
+        .form-container h1 {
+            text-align: center;
+            color: #a8d5ba;
+            margin-bottom: 30px;
+        }
+
+        .form-container > div {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form-container img {
+            height: 60px;
+            margin: 0 10px;
         }
 
         form {
@@ -22,83 +46,118 @@
             gap: 15px;
         }
 
-        input,
-        textarea {
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+        label {
+            color: #a8d5ba;
+            font-weight: bold;
+            text-align: left;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        input, textarea {
+            padding: 12px;
+            border: 1px solid #2d8659;
+            border-radius: 6px;
             font-size: 14px;
+            background: #0f3320;
+            color: #e0e0e0;
+            box-sizing: border-box;
+        }
+
+        input::placeholder, textarea::placeholder {
+            color: #b0b0b0;
         }
 
         button {
             padding: 12px;
-            background: #008CD0;
+            background: #2d8659;
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 6px;
             cursor: pointer;
             font-size: 16px;
             font-weight: bold;
+            transition: 0.3s;
         }
 
         button:hover {
-            background: #006a9a;
+            background: #4ab56f;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(45, 134, 89, 0.4);
         }
 
         .mensaje {
             padding: 15px;
-            border-radius: 5px;
+            border-radius: 6px;
             margin-top: 15px;
             display: none;
+            font-weight: bold;
+            text-align: center;
         }
 
         .éxito {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
+            background: #2d5a3d;
+            color: #a8d5ba;
+            border: 1px solid #2d8659;
         }
 
         .error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
+            background: #8b3a3a;
+            color: #ffb3b3;
+            border: 1px solid #d9534f;
         }
 
         .mensaje.show {
             display: block;
         }
+
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            padding: 12px;
+            background: #2d8659;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        a:hover {
+            background: #4ab56f;
+            transform: translateY(-2px);
+        }
     </style>
 </head>
 
-<body bgcolor="#6fcf97">
-    <center><img src="LOGO MEP.png"><img src="escudo sin fondo.png" style="max-width: 150px; height: auto;">
-    </center>
-
-    <center>
-        <h1>Registro Docente</h1>
-    </center>
+<body>
 
     <div class="form-container">
+        <div>
+            <img src="LOGO MEP.png" alt="Logo MEP">
+            <img src="escudo sin fondo.png" alt="Escudo CTP">
+        </div>
+
+        <h1>📝 Registro de Docentes</h1>
+
         <form id="miFormulario">
 
-            <label for="nombre">Nombre:</label>
-            <input type="text" id="nombre" name="nombre" required placeholder="Tu nombre">
+            <label for="nombre">Nombre Completo:</label>
+            <input type="text" id="nombre" name="nombre" required placeholder="Tu nombre completo">
 
-            <label for="email">Email:</label>
+            <label for="email">Correo Institucional:</label>
             <input type="email" id="email" name="email" required placeholder="correo@mep.go.cr">
 
             <label for="password">Contraseña:</label>
-            <input type="password" id="password" name="password" required placeholder="Tu contraseña">
+            <input type="password" id="password" name="password" required placeholder="Crea una contraseña segura">
 
-            <label for="materia">Materia:</label>
-            <textarea id="materia" name="materia" rows="5" placeholder="Tu materia aquí..."></textarea>
+            <label for="materia">Materia/Especialidad:</label>
+            <textarea id="materia" name="materia" rows="3" placeholder="Describe tu materia o especialidad..."></textarea>
 
-            <button type="submit">ENVIAR</button>
+            <button type="submit">✓ REGISTRARSE</button>
 
-            <a href="registrarme.html"
-               style="display: block; text-align: center; margin-top: 15px; padding: 12px; background: #28a745; color: white; text-decoration: none; border-radius: 5px; font-weight: bold;">
-               INGRESAR
-            </a>
+            <a href="registrarme.html">↩️ Volver al Login</a>
 
         </form>
 

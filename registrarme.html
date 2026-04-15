@@ -5,27 +5,61 @@
 <title>Login Colegio</title>
 
 <style>
-body { background:#6fcf97; font-family:Arial; }
+body { background: linear-gradient(135deg, #0a2412 0%, #0f3320 100%); font-family:Arial; min-height: 100vh; margin: 0; padding: 20px; }
 .login-container {
     max-width:400px;
     margin:60px auto;
-    padding:25px;
-    background:white;
+    padding:30px;
+    background: #1a4d2e;
     border-radius:10px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+    border: 2px solid #2d8659;
 }
+
+.login-container h2 {
+    color: #a8d5ba;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
 input, button {
     width:100%;
-    padding:10px;
-    margin-top:10px;
+    padding:12px;
+    margin-top:15px;
+    border-radius: 6px;
 }
+
+input {
+    background: #0f3320;
+    border: 1px solid #2d8659;
+    color: #e0e0e0;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+input::placeholder {
+    color: #b0b0b0;
+}
+
 button {
-    background:#008CD0;
+    background: #2d8659;
     color:white;
     border:none;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
 }
-.mensaje { margin-top:10px; padding:10px; display:none; }
-.exito { background:#d4edda; }
-.error { background:#f8d7da; }
+
+button:hover {
+    background: #4ab56f;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(45, 134, 89, 0.4);
+}
+
+.mensaje { margin-top:15px; padding:15px; display:none; border-radius: 6px; text-align: center; font-weight: bold; }
+.exito { background: #2d5a3d; color: #a8d5ba; border: 1px solid #2d8659; }
+.error { background: #8b3a3a; color: #ffb3b3; border: 1px solid #d9534f; }
 .show { display:block; }
 </style>
 </head>
@@ -34,11 +68,11 @@ button {
 
 <div class="login-container">
 
-<h2>Iniciar Sesión</h2>
+<h2>🔐 Iniciar Sesión</h2>
 
 <form id="loginForm">
-<input type="text" id="usuario" placeholder="Usuario" required>
-<input type="password" id="password" placeholder="Contraseña" required>
+<input type="text" id="usuario" placeholder="👤 Usuario" required>
+<input type="password" id="password" placeholder="🔑 Contraseña" required>
 <button type="submit">INGRESAR</button>
 </form>
 
@@ -48,9 +82,9 @@ button {
 
 <script>
 
-const SUPABASE_URL = 'https://etdcmuikvtnqfcnlvodh.supabase.co';
+const SUPABASE_URL = 'https://iowxlwnosyyqetbvvmuk.supabase.co';
 
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV0ZGNtdWlrdnRucWZjbmx2b2RoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU1OTQ1ODcsImV4cCI6MjA5MTE3MDU4N30.8JHWlTxYRSYEkpipqesHVBKn7QomTXJYHp6Nm6SzU4A';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlvd3hsd25vc3l5cWV0YnZ2bXVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYxOTk4NDYsImV4cCI6MjA5MTc3NTg0Nn0.VZ5VMu0z4nlsZ0hKvDSk4IUluA1yGx9eQCCXzDc5HmU';
 
 const form = document.getElementById('loginForm');
 const mensaje = document.getElementById('mensaje');
