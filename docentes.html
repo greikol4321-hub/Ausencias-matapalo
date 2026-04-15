@@ -459,83 +459,8 @@
         }
     </style>
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 0;
-        }
+</head>
 
-        th {
-            background: var(--verde-base);
-            color: white;
-            text-align: left;
-            padding: 15px;
-            border-bottom: 2px solid var(--verde-claro);
-            font-weight: 700;
-            text-transform: uppercase;
-            font-size: 0.85rem;
-            letter-spacing: 0.5px;
-        }
-
-        td {
-            padding: 15px;
-            border-bottom: 1px solid var(--borde);
-            color: var(--texto-cuerpo);
-        }
-
-        tbody tr:hover {
-            background: rgba(10, 76, 35, 0.03);
-        }
-
-        .badge-rol {
-            background: rgba(10, 76, 35, 0.12);
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-weight: 700;
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            color: var(--verde-base);
-            border: 1px solid var(--verde-claro);
-            display: inline-block;
-            letter-spacing: 0.5px;
-        }
-
-        hr {
-            margin: 40px 0;
-            border: 0;
-            border-top: 1px solid var(--borde);
-        }
-
-        @media (max-width: 900px) {
-            .header-container {
-                flex-wrap: wrap;
-                gap: 20px;
-                text-align: center;
-            }
-            .row {
-                grid-template-columns: 1fr;
-            }
-            .info-usuario {
-                flex-direction: column;
-            }
-            .navbar {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 15px;
-            }
-        }
-
-        @media (max-width: 600px) {
-            .logo-mep {
-                height: 40px;
-            }
-            .logo-escudo {
-                height: 60px;
-            }
-        }
-    </style>
-</head> class="navbar-info">
-        <span><i class="fas fa-clipboard-list"></i> Sesión:
 <body>
 
 <header class="header">
@@ -556,8 +481,8 @@
 </header>
 
 <div class="navbar">
-    <div>
-        <span style="opacity: 0.9;"><i class="fas fa-clipboard-list"></i> Sesión: </span>
+    <div class="navbar-info">
+        <span><i class="fas fa-clipboard-list"></i> Sesión:</span>
         <span id="rolBadge" class="badge-rol">Cargando...</span>
     </div>
     <button class="btn-cerrar" onclick="cerrarSesion()"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</button>
@@ -577,7 +502,29 @@
         <div class="info-item">
             <b><i class="fas fa-briefcase"></i> Perfil</b>
             <span id="rol">---</span>
-        </div><i class="fas fa-calendar-alt"></i> Fecha de Inicio</label>
+        </div>
+    </div>
+
+    <div id="seccionAdmin">
+        <h3 style="color: #e67e22; margin-top: 0;"><i class="fas fa-megaphone"></i> Publicar Comunicado Oficial</h3>
+        <form id="formComunicado">
+            <input type="text" id="tituloCom" placeholder="Título del comunicado (Ej: Cambio de horario)" required>
+            <textarea id="contenidoCom" rows="2" placeholder="Escriba el mensaje detallado aquí..." required></textarea>
+            <select id="colorCom">
+                <option value="#27ae60"><i class="fas fa-circle"></i> Informativo (Verde)</option>
+                <option value="#3498db"><i class="fas fa-circle"></i> General (Azul)</option>
+                <option value="#f39c12"><i class="fas fa-circle"></i> Importante (Naranja)</option>
+                <option value="#e74c3c"><i class="fas fa-circle"></i> Urgente (Rojo)</option>
+            </select>
+            <button type="submit" class="btn-admin" id="btnPublicar"><i class="fas fa-paper-plane"></i> Publicar Comunicado ahora</button>
+        </form>
+    </div>
+
+    <h3><i class="fas fa-clipboard-plus"></i> Registrar Nueva Ausencia</h3>
+    <form id="formMiAusencia">
+        <div class="row">
+            <div>
+                <label><i class="fas fa-calendar-alt"></i> Fecha de Inicio</label>
                 <input type="date" id="fechaInicio" required>
             </div>
             <div>
@@ -608,9 +555,10 @@
             <label><i class="fas fa-book"></i> Trabajo para los Estudiantes</label>
             <textarea id="actividadRemplazo" rows="3" placeholder="Describa la práctica o actividad que deben realizar los grupos..."></textarea>
         </div>
-        <button type="submit" id="btnGuardar"><i class="fas fa-save"></i>
-        <div class="row">
-            <div>var(--borde);">
+        <button type="submit" id="btnGuardar"><i class="fas fa-save"></i> Registrar Período de Ausencia</button>
+    </form>
+
+    <hr>
 
     <h3><i class="fas fa-history"></i> Mi Historial Reciente</h3>
     <div class="overflow-auto">
@@ -621,30 +569,7 @@
                     <th><i class="fas fa-calendar"></i> Desde</th>
                     <th><i class="fas fa-calendar-check"></i> Hasta</th>
                     <th><i class="fas fa-info-circle"></i> Motivo y Actividad</th>
-                    <th><i class="fas fa-cog"></i>Detalle Breve</label>
-                <input type="text" id="detalleAusencia" placeholder="Ej: Cita en la Caja">
-            </div>
-        </div>
-
-        <div>
-            <label>📚 Trabajo para los Estudiantes</label>
-            <textarea id="actividadRemplazo" rows="2" placeholder="Describa la práctica o actividad que deben realizar los grupos..."></textarea>
-        </div>
-        <button type="submit" id="btnGuardar">💾 Registrar Período de Ausencia</button>
-    </form>
-
-    <hr style="margin: 40px 0; border: 0; border-top: 1px solid #eee;">
-
-    <h3>📋 Mi Historial Reciente</h3>
-    <div style="overflow-x:auto;">
-        <div class="tabla-container">
-        <table id="tablaHistorial">
-            <thead>
-                <tr>
-                    <th>📅 Desde</th>
-                    <th>🏁 Hasta</th>
-                    <th>ℹ️ Motivo y Actividad</th>
-                    <th>⚙️ Acción</th>
+                    <th><i class="fas fa-cog"></i> Acción</th>
                 </tr>
             </thead>
             <tbody id="cuerpoTabla">
