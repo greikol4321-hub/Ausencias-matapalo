@@ -26,6 +26,7 @@
         }
 
         body {
+            overflow-x: hidden;
             background:
                 radial-gradient(circle at top right, rgba(26, 107, 58, 0.1), transparent 40%),
                 radial-gradient(circle at bottom left, rgba(10, 76, 35, 0.08), transparent 38%),
@@ -34,6 +35,11 @@
             min-height: 100vh;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: var(--texto-cuerpo);
+        }
+
+        img, video {
+            max-width: 100%;
+            height: auto;
         }
 
         .header {

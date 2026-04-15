@@ -28,6 +28,7 @@
         }
 
         body {
+            overflow-x: hidden;
             margin: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background:
@@ -36,6 +37,11 @@
                 var(--fondo);
             color: var(--texto-cuerpo);
             line-height: 1.6;
+        }
+
+        img, video {
+            max-width: 100%;
+            height: auto;
         }
 
         /* HEADER CONSISTENTE */
