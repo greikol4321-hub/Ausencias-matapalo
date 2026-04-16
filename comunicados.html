@@ -207,7 +207,11 @@
             const rol = localStorage.getItem('rol');
             const usuario = localStorage.getItem('usuario');
 
-            console.log('🔍 Datos en localStorage:', { nombre, rol, usuario });
+            console.log('🔍 Datos en localStorage:', {
+                nombre,
+                rol,
+                usuario
+            });
 
             if (!nombre || !usuario) {
                 console.warn('⚠️ No hay datos de sesión, redirigiendo a index...');
