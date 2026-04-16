@@ -208,7 +208,7 @@ document.getElementById('formMiAusencia').addEventListener('submit', async funct
             method: "POST", headers, body: JSON.stringify(datos)
         });
         if(res.ok) {            // Notificar por correo vÃ­a EmailJS al guardar la ausencia
-            emailjs.send("service_2wecd52", "i5bktu9", {
+            emailjs.send("service_2wecd52", "template_l7o4l3f", {
                 nombre: datos.nombre,
                 fecha_inicio: datos.fecha,
                 fecha_fin: datos.fecha_fin,
@@ -216,7 +216,10 @@ document.getElementById('formMiAusencia').addEventListener('submit', async funct
                 detalle: datos.detalle,
                 actividad: datos.actividad
             }).then(() => console.log("Correo enviado a direcciÃ³n"))
-              .catch(err => console.error("Fallo EmailJS:", err));
+              .catch(err => {
+                  console.error("Fallo EmailJS:", err);
+                  alert("Error exacto de EmailJS: " + (err.text || JSON.stringify(err)));
+              });
             alert("✅ Período de ausencia guardado correctamente.");
             this.reset();
             cargarHistorial();
