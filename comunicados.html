@@ -1,177 +1,211 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gestión de Comunicados</title>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<style>
+body {
+    font-family: Arial;
+    margin: 0;
+    background: #f4f6f9;
+}
+
+.container {
+    width: 90%;
+    max-width: 1000px;
+    margin: auto;
+    padding: 20px;
+}
+
+h2 {
+    text-align: center;
+}
+
+form {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+input, textarea, select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+button {
+    margin-top: 10px;
+    padding: 10px;
+    cursor: pointer;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+}
+
+th, td {
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+th {
+    background: #2c3e50;
+    color: white;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Gestión de Comunicados</h2>
+
+<!-- FORMULARIO -->
+<form id="formComunicado">
+    <input type="text" id="tituloCom" placeholder="Título" required>
+    <textarea id="contenidoCom" placeholder="Contenido" required></textarea>
+
+    <select id="colorCom">
+        <option value="#27ae60">Verde</option>
+        <option value="#3498db">Azul</option>
+        <option value="#f39c12">Naranja</option>
+        <option value="#e74c3c">Rojo</option>
+    </select>
+
+    <button type="submit">Guardar</button>
+</form>
+
+<!-- BUSCADOR -->
+<input type="text" id="busquedaComunicados" placeholder="Buscar..." onkeyup="filtrarTabla()">
+
+<!-- TABLA -->
+<table id="tablaComunicados">
+    <thead>
+        <tr>
+            <th>Fecha</th>
+            <th>Contenido</th>
+            <th>Autor</th>
+            <th>Acción</th>
+        </tr>
+    </thead>
+    <tbody id="cuerpoTabla">
+        <tr><td colspan="4">Cargando...</td></tr>
+    </tbody>
+</table>
+
+</div>
+
 <script>
-    // CONFIG EMAILJS
+
+// 🔹 CONFIG SUPABASE
+const SUPABASE_URL = 'https://etdcmuikvtnqfcnlvodh.supabase.co';
+const SUPABASE_KEY = 'TU_API_KEY_AQUI';
+
+const headers = {
+    apikey: SUPABASE_KEY,
+    Authorization: `Bearer ${SUPABASE_KEY}`,
+    "Content-Type": "application/json"
+};
+
+// 🔹 CARGAR DATOS
+async function cargarComunicados() {
+    const tbody = document.getElementById('cuerpoTabla');
+
     try {
-        emailjs.init({
-            publicKey: "qAglmSdD5me55ae1-"
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/comunicados?select=*`, { headers });
+
+        const datos = await res.json();
+        console.log(datos);
+
+        tbody.innerHTML = "";
+
+        if (!datos.length) {
+            tbody.innerHTML = "<tr><td colspan='4'>Sin datos</td></tr>";
+            return;
+        }
+
+        datos.forEach(c => {
+            const fecha = c.creado_en ? new Date(c.creado_en).toLocaleDateString() : "";
+
+            tbody.innerHTML += `
+            <tr>
+                <td>${fecha}</td>
+                <td>
+                    <strong style="color:${c.color_borde}">${c.titulo}</strong><br>
+                    ${c.contenido}
+                </td>
+                <td>${c.autor}</td>
+                <td>
+                    <button onclick="eliminar(${c.id})">Eliminar</button>
+                </td>
+            </tr>`;
         });
-    } catch (error) {
-        console.error("Error configurando EmailJS:", error);
+
+    } catch (e) {
+        console.error(e);
+        tbody.innerHTML = "<tr><td colspan='4'>Error</td></tr>";
     }
+}
 
-    // 🔒 SESIÓN
-    if (!localStorage.getItem('usuario') || !localStorage.getItem('nombre')) {
-        window.location.href = "registrarme.html";
-    }
+// 🔹 GUARDAR
+document.getElementById('formComunicado').addEventListener('submit', async function(e){
+    e.preventDefault();
 
-    // ✅ CONFIG SUPABASE (CORREGIDO)
-    const SUPABASE_URL = 'https://etdcmuikvtnqfcnlvodh.supabase.co';
-    const SUPABASE_KEY = 'TU_API_KEY';
-
-    const headers = {
-        apikey: SUPABASE_KEY,
-        Authorization: `Bearer ${SUPABASE_KEY}`,
-        "Content-Type": "application/json"
+    const datos = {
+        titulo: tituloCom.value,
+        contenido: contenidoCom.value,
+        color_borde: colorCom.value,
+        autor: "Admin"
     };
 
-    function inicializar() {
-        const nombre = localStorage.getItem('nombre');
-        const rol = localStorage.getItem('rol');
-        const usuario = localStorage.getItem('usuario');
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/comunicados`, {
+        method: "POST",
+        headers,
+        body: JSON.stringify(datos)
+    });
 
-        if (!nombre || !usuario) {
-            window.location.href = "index.html";
-            return;
-        }
-
-        if (rol !== 'admin') {
-            window.location.href = "docentes.html";
-            return;
-        }
-
-        document.getElementById('nombreUsuario').textContent = nombre;
-        document.getElementById('usuario').textContent = usuario;
-        document.getElementById('rol').textContent = rol;
-        document.getElementById('rolBadge').textContent = rol;
-        document.getElementById('rolBadge').style.background = '#e67e22';
-
-        setupComunicadoListener();
-        cargarComunicadosAdmin();
+    if(res.ok){
+        this.reset();
+        cargarComunicados();
+    } else {
+        alert("Error al guardar");
     }
+});
 
-    // ✅ CARGAR COMUNICADOS
-    async function cargarComunicadosAdmin() {
-        const tbody = document.getElementById('cuerpoTabla');
+// 🔹 ELIMINAR
+async function eliminar(id){
+    await fetch(`${SUPABASE_URL}/rest/v1/comunicados?id=eq.${id}`, {
+        method:"DELETE",
+        headers
+    });
+    cargarComunicados();
+}
 
-        try {
-            console.log("Cargando comunicados...");
+// 🔹 BUSCAR
+function filtrarTabla() {
+    let input = document.getElementById("busquedaComunicados").value.toUpperCase();
+    let tr = document.getElementById("tablaComunicados").getElementsByTagName("tr");
 
-            const res = await fetch(`${SUPABASE_URL}/rest/v1/comunicados?select=*&order=creado_en.desc`, {
-                headers
-            });
+    for (let i = 1; i < tr.length; i++) {
+        let tds = tr[i].getElementsByTagName("td");
+        let texto = (tds[0]?.innerText || "") + (tds[1]?.innerText || "");
 
-            const datos = await res.json();
-            console.log(datos);
-
-            tbody.innerHTML = "";
-
-            if (!datos || datos.length === 0) {
-                tbody.innerHTML = "<tr><td colspan='4'>No hay comunicados.</td></tr>";
-                return;
-            }
-
-            datos.forEach(c => {
-                const date = new Date(c.creado_en);
-                const formattedDate = date.toLocaleDateString('es-CR');
-
-                tbody.innerHTML += `
-                <tr>
-                    <td><b>${formattedDate}</b></td>
-                    <td>
-                        <strong style="color:${c.color_borde};">${c.titulo}</strong>
-                        <div style="font-size: 0.85rem;">${c.contenido}</div>
-                    </td>
-                    <td>${c.autor}</td>
-                    <td>
-                        <button onclick="eliminarComunicado(${c.id})">Eliminar</button>
-                    </td>
-                </tr>`;
-            });
-
-        } catch (e) {
-            console.error("ERROR:", e);
-            tbody.innerHTML = "<tr><td colspan='4'>Error al cargar</td></tr>";
-        }
+        tr[i].style.display = texto.toUpperCase().includes(input) ? "" : "none";
     }
+}
 
-    async function eliminarComunicado(id) {
-        try {
-            const res = await fetch(`${SUPABASE_URL}/rest/v1/comunicados?id=eq.${id}`, {
-                method: "DELETE",
-                headers
-            });
+// 🔹 INICIAR
+cargarComunicados();
 
-            if (res.ok) {
-                cargarComunicadosAdmin();
-            } else {
-                alert("Error al eliminar");
-            }
-
-        } catch (e) {
-            console.error(e);
-        }
-    }
-
-    function setupComunicadoListener() {
-        const form = document.getElementById('formComunicado');
-
-        if (form) {
-            form.addEventListener('submit', async function(e) {
-                e.preventDefault();
-
-                const datos = {
-                    titulo: document.getElementById('tituloCom').value,
-                    contenido: document.getElementById('contenidoCom').value,
-                    color_borde: document.getElementById('colorCom').value,
-                    autor: localStorage.getItem('nombre')
-                };
-
-                try {
-                    const res = await fetch(`${SUPABASE_URL}/rest/v1/comunicados`, {
-                        method: "POST",
-                        headers,
-                        body: JSON.stringify(datos)
-                    });
-
-                    if (res.ok) {
-                        this.reset();
-                        cargarComunicadosAdmin();
-                    } else {
-                        alert("Error al guardar");
-                    }
-
-                } catch (e) {
-                    console.error(e);
-                }
-            });
-        }
-    }
-
-    function cerrarSesion() {
-        localStorage.clear();
-        window.location.href = "index.html";
-    }
-
-    // ✅ BUSCADOR CORREGIDO
-    function filtrarTabla() {
-        let input = document.getElementById("busquedaComunicados");
-        let filter = input.value.toUpperCase();
-        let table = document.getElementById("tablaComunicados");
-        let tr = table.getElementsByTagName("tr");
-
-        for (let i = 1; i < tr.length; i++) {
-            let textDesde = tr[i].getElementsByTagName("td")[0]?.innerText || "";
-            let textMotivo = tr[i].getElementsByTagName("td")[1]?.innerText || "";
-
-            if (
-                textMotivo.toUpperCase().includes(filter) ||
-                textDesde.toUpperCase().includes(filter)
-            ) {
-                tr[i].style.display = "";
-            } else {
-                tr[i].style.display = "none";
-            }
-        }
-    }
-
-    window.onload = inicializar;
 </script>
+
+</body>
+</html>
