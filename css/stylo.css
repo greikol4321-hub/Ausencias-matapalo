@@ -2127,6 +2127,12 @@ body .swal2-popup .swal2-actions:has(> button:hidden),
 body .swal2-popup .swal2-actions[style*="display: none"] {
     display: none !important;
 }
+
+/* Ocultar botones cuando showConfirmButton es false */
+body .swal2-popup:has(.swal2-confirm[style*="display: none"]) .swal2-actions,
+body .swal2-actions:has(button[style*="display: none"]) {
+    display: none !important;
+}
 }
 
 /* Ocultar botones cuando showConfirmButton es false */
@@ -2134,8 +2140,4 @@ body .swal2-popup:has(.swal2-confirm[style*="display: none"]) .swal2-actions,
 body .swal2-actions:has(button[style*="display: none"]) {
     display: none !important;
 }
-    flex-wrap: wrap;
-    justify-content: center;
-    width: 100%;
-    margin-top: 1.5em;
-}
+
