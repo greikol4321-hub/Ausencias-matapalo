@@ -207,18 +207,23 @@
             const rol = localStorage.getItem('rol');
             const usuario = localStorage.getItem('usuario');
 
+            console.log('🔍 Datos en localStorage:', { nombre, rol, usuario });
+
             if (!nombre || !usuario) {
+                console.warn('⚠️ No hay datos de sesión, redirigiendo a index...');
                 globalThis.location.href = "index.html";
                 return;
             }
 
             // Si no es admin lo mandamos a docentes
             if (rol !== 'admin') {
+                console.warn('⚠️ Usuario no es admin, redirigiendo a docentes...');
                 globalThis.location.href = "docentes.html";
                 return;
             }
 
             // Actualizar Textos
+            console.log('✅ Actualizando interfaz con datos del usuario');
             document.getElementById('nombreUsuario').textContent = nombre;
             document.getElementById('usuario').textContent = usuario;
             document.getElementById('rol').textContent = rol;
@@ -491,8 +496,8 @@
             let tr = table.getElementsByTagName("tr");
 
             for (let i = 1; i < tr.length; i++) {
-                let textDesde = tr[i].getElementsByTagName("td")[0] ? .innerText || "";
-                let textMotivo = tr[i].getElementsByTagName("td")[1] ? .innerText || "";
+                let textDesde = tr[i].getElementsByTagName("td")[0]?.innerText || "";
+                let textMotivo = tr[i].getElementsByTagName("td")[1]?.innerText || "";
 
                 if (textMotivo.toUpperCase().indexOf(filter) > -1 || textDesde.toUpperCase().indexOf(filter) > -1) {
                     tr[i].style.display = "";
@@ -518,7 +523,7 @@
                 }
             } else {
                 // Restaurar si volviera mágicamente a desktop
-                document.querySelector('.btn-cerrar') ? .classList.remove('hide-on-scroll');
+                document.querySelector('.btn-cerrar')?.classList.remove('hide-on-scroll');
             }
             lastScrollY = window.scrollY;
         });
