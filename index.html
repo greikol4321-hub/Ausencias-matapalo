@@ -108,9 +108,13 @@
                 datos.forEach(c => {
                     contenedor.innerHTML += `
                         <article class="comunicado-card">
-                            <span style="font-size:0.7rem; color:#666; font-weight:bold;">${c.autor || 'DIRECCIÓN'}</span>
-                            <h3 style="margin:10px 0; color:#1b5e20;">${c.titulo}</h3>
-                            <p style="font-size:0.9rem;">${c.contenido}</p>
+                            <div class="com-content">
+                                <h3 class="com-titulo">${c.titulo}</h3>
+                                <p class="com-contenido">${c.contenido}</p>
+                            </div>
+                            <div class="com-footer">
+                                <span class="com-autor"><i class="fas fa-user-circle"></i> ${c.autor || 'DIRECCIÓN'}</span>
+                            </div>
                         </article>`;
                 });
             } catch (e) {
