@@ -1962,27 +1962,61 @@ a:hover {
         }
 
 /* ------------- AJUSTES SWEETALERT2 ------------- */
-.swal2-container button {
-    width: auto !important;
-    display: inline-flex !important;
-    margin: 5px !important;
-    justify-content: center;
-    background: none; /* Quitamos el background global para que los colores por defecto o inline operen correctamente */
-    border-radius: .25em; /* Valor por defecto SWAL */
-    padding: .625em 1.1em;
+body .swal2-popup {
+    border-radius: 16px;
+    font-family: inherit;
+    box-shadow: 0 15px 40px rgba(10, 76, 35, 0.15);
+    background: #fffdf9;
+    border: none;
+    padding: 1.5em;
 }
-.swal2-container .swal2-actions {
-    gap: 10px !important;
-    display: flex !important;
+
+body .swal2-title {
+    color: var(--verde-oscuro);
+    font-weight: 800;
+    font-size: 1.6rem;
+}
+
+body .swal2-html-container {
+    color: #4a4a4a;
+    font-size: 1.05rem;
+}
+
+body .swal2-icon {
+    border-width: 4px;
+}
+
+body .swal2-container button.swal2-styled {
+    width: auto;
+    display: inline-flex;
+    justify-content: center;
+    margin: 0;
+    border-radius: 8px;
+    padding: 12px 28px;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-image: none !important;
+}
+
+body .swal2-container button.swal2-styled:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    filter: brightness(1.1);
+}
+
+body .swal2-container button.swal2-styled:active {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+body .swal2-container .swal2-actions {
+    gap: 15px;
+    display: flex;
     flex-wrap: wrap;
     justify-content: center;
     width: 100%;
-}
-.swal2-container .swal2-confirm {
-    background-color: var(--swal2-confirm-button-background, #e74c3c) !important;
-    color: white !important;
-}
-.swal2-container .swal2-cancel {
-    background-color: var(--swal2-cancel-button-background, #95a5a6) !important;
-    color: white !important;
+    margin-top: 1.5em;
 }
