@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CTP de Matapalo - Sitio Oficial</title>
+    <title>CTP de Matapalo - Sitio Oficial probando </title>
 
-    
+
     <link rel="stylesheet" href="css/stylo.css">
 </head>
 
@@ -21,7 +21,7 @@
                     <strong>Colegio Técnico Profesional</strong><br>de Matapalo
                 </div>
             </div>
-            
+
             <div class="nav-right">
                 <a href="index.html" title="Inicio">
                     <img src="img/logo_colegio_nuevo.png" class="logo-escudo" alt="Escudo CTP Matapalo">
@@ -39,14 +39,15 @@
         <div class="grid-superior">
             <section class="card-steam">
                 <a href="galeria.html"><img src="img/steam.png" alt="STEAM"></a>
-               <h3>Ingresa a STEAM</h3>
+                <h3>Ingresa a STEAM</h3>
                 <p>Conservación y Promoción de la Reserva Ecológica Institucional como estrategia para la Educación Ambiental desde un enfoque STEAM. </p>
             </section>
 
             <section class="carousel-box">
                 <div class="carousel">
                     <div class="slides" id="slides">
-                        <img src="img/1.jpeg" alt="Actividad institucional 1"> <img src="img/2.jpeg" alt="Actividad institucional 2"> <img src="img/3.jpeg" alt="Actividad institucional 3"> <img src="img/4.jpeg" alt="Actividad institucional 4"> <img src="img/5.jpeg" alt="Actividad institucional 5">
+                        <img src="img/1.jpeg" alt="Actividad institucional 1"> <img src="img/2.jpeg" alt="Actividad institucional 2"> <img src="img/3.jpeg" alt="Actividad institucional 3"> <img src="img/4.jpeg" alt="Actividad institucional 4"> <img src="img/5.jpeg"
+                            alt="Actividad institucional 5">
                     </div>
                 </div>
             </section>
@@ -62,21 +63,23 @@
         <section style="margin-top: 50px;">
             <h2 class="titulo-seccion">Reporte de Asistencia Docente</h2>
             <div class="tabla-scroll">
-            <div class="tabla-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Docente</th>
-                            <th>Estado</th>
-                            <th>Motivo</th>
-                            <th>Desde / Hasta</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tablaAusencias">
-                        <tr><td colspan="4" style="text-align:center; padding: 30px; color: #666;"><i class="fas fa-spinner fa-spin"></i> Actualizando datos...</td></tr>
-                    </tbody>
-                </table>
-            </div>
+                <div class="tabla-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Docente</th>
+                                <th>Estado</th>
+                                <th>Motivo</th>
+                                <th>Desde / Hasta</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tablaAusencias">
+                            <tr>
+                                <td colspan="4" style="text-align:center; padding: 30px; color: #666;"><i class="fas fa-spinner fa-spin"></i> Actualizando datos...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </section>
     </main>
@@ -85,21 +88,27 @@
         let idx = 0;
         setInterval(() => {
             const slides = document.getElementById("slides");
-            if(slides) {
+            if (slides) {
                 idx = (idx + 1) % 5;
                 slides.style.transform = `translateX(-${idx * 100}%)`;
             }
         }, 5000);
 
-       const SUPABASE_URL = 'https://etdcmuikvtnqfcnlvodh.supabase.co';
+        const SUPABASE_URL = 'https://etdcmuikvtnqfcnlvodh.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV0ZGNtdWlrdnRucWZjbmx2b2RoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU1OTQ1ODcsImV4cCI6MjA5MTE3MDU4N30.8JHWlTxYRSYEkpipqesHVBKn7QomTXJYHp6Nm6SzU4A';
 
-        const headers = { "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}`, "Content-Type": "application/json" };
+        const headers = {
+            "apikey": SUPABASE_KEY,
+            "Authorization": `Bearer ${SUPABASE_KEY}`,
+            "Content-Type": "application/json"
+        };
 
         async function cargarComunicados() {
             const contenedor = document.getElementById("contenedorComunicados");
             try {
-                const res = await fetch(`${SUPABASE_URL}/rest/v1/comunicados?select=*&order=creado_en.desc&limit=6`, { headers });
+                const res = await fetch(`${SUPABASE_URL}/rest/v1/comunicados?select=*&order=creado_en.desc&limit=6`, {
+                    headers
+                });
                 const datos = await res.json();
                 if (!datos || datos.length === 0) {
                     contenedor.innerHTML = "<p style='grid-column:1/-1; text-align:center; color: #666;'><i class='fas fa-info-circle' style='color: #3498db; font-size: 1.5rem; display:block; margin-bottom: 10px;'></i>No hay anuncios institucionales recientes.</p>";
@@ -128,14 +137,16 @@
             const tabla = document.getElementById("tablaAusencias");
             const hoy = new Date().toISOString().split('T')[0];
             try {
-                const res = await fetch(`${SUPABASE_URL}/rest/v1/ausencias?fecha=lte.${hoy}&fecha_fin=gte.${hoy}&select=*`, { headers });
+                const res = await fetch(`${SUPABASE_URL}/rest/v1/ausencias?fecha=lte.${hoy}&fecha_fin=gte.${hoy}&select=*`, {
+                    headers
+                });
                 const datos = await res.json();
-                
+
                 if (!datos || datos.length === 0) {
                     tabla.innerHTML = "<tr><td colspan='4' style='text-align:center; padding:30px; color:#666;'><i class='fas fa-check-circle' style='color: #27ae60; font-size: 1.5rem; display:block; margin-bottom: 10px;'></i>Todos los docentes están presentes hoy.</td></tr>";
                     return;
                 }
-                
+
                 tabla.innerHTML = "";
                 datos.forEach(a => {
                     const formatearFecha = (fechaOriginal) => {
@@ -163,11 +174,14 @@
             }
         }
 
-        window.onload = () => { cargarComunicados(); cargarAusencias(); };
+        window.onload = () => {
+            cargarComunicados();
+            cargarAusencias();
+        };
     </script>
 </body>
-    <footer>
+<footer>
     Desarrollado por la Especialidad de Informatica.
 </footer>
-</html>
 
+</html>

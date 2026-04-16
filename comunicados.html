@@ -7,237 +7,251 @@
     <title>Gestión de Comunicados - CTP Matapalo</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    
+
 
     <link rel="stylesheet" href="css/stylo.css">
 </head>
 
 <body class="page-docentes">
 
-<header class="header">
-    <div class="header-container">
-        <div class="header-logos-left">
-            <img src="img/LOGO_MEP-removebg-preview.png" class="logo-mep" alt="MEP Costa Rica">
-            <div class="divider"></div>
-            <div class="logo-gobierno">
-                <strong>Colegio Técnico Profesional</strong><br>
-                de Matapalo
+    <header class="header">
+        <div class="header-container">
+            <div class="header-logos-left">
+                <img src="img/LOGO_MEP-removebg-preview.png" class="logo-mep" alt="MEP Costa Rica">
+                <div class="divider"></div>
+                <div class="logo-gobierno">
+                    <strong>Colegio Técnico Profesional</strong><br> de Matapalo
+                </div>
+            </div>
+
+            <div class="nav-right">
+                <a href="index.html" title="Inicio">
+                    <img src="img/logo_colegio_nuevo.png" class="logo-escudo" alt="Escudo CTP Matapalo">
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <div class="navbar">
+        <div class="navbar-info">
+            <span><i class="fas fa-clipboard-list"></i> Sesión:</span>
+            <span id="rolBadge" class="badge-rol">Cargando...</span>
+        </div>
+        <button class="btn-cerrar" onclick="cerrarSesion()"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</button>
+    </div>
+
+    <div class="container">
+
+        <div class="info-usuario">
+            <div class="info-item">
+                <b><i class="fas fa-user-circle"></i> Nombre Completo</b>
+                <span id="nombreUsuario">---</span>
+            </div>
+            <div class="info-item">
+                <b><i class="fas fa-id-card"></i> Usuario</b>
+                <span id="usuario">---</span>
+            </div>
+            <div class="info-item">
+                <b><i class="fas fa-briefcase"></i> Perfil</b>
+                <span id="rol">---</span>
             </div>
         </div>
 
-        <div class="nav-right">
-            <a href="index.html" title="Inicio">
-                <img src="img/logo_colegio_nuevo.png" class="logo-escudo" alt="Escudo CTP Matapalo">
-            </a>
-        </div>
-    </div>
-</header>
 
-<div class="navbar">
-    <div class="navbar-info">
-        <span><i class="fas fa-clipboard-list"></i> Sesión:</span>
-        <span id="rolBadge" class="badge-rol">Cargando...</span>
-    </div>
-    <button class="btn-cerrar" onclick="cerrarSesion()"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</button>
-</div>
-
-<div class="container">
-
-    <div class="info-usuario">
-        <div class="info-item">
-            <b><i class="fas fa-user-circle"></i> Nombre Completo</b>
-            <span id="nombreUsuario">---</span>
-        </div>
-        <div class="info-item">
-            <b><i class="fas fa-id-card"></i> Usuario</b>
-            <span id="usuario">---</span>
-        </div>
-        <div class="info-item">
-            <b><i class="fas fa-briefcase"></i> Perfil</b>
-            <span id="rol">---</span>
-        </div>
-    </div>
-
-    
-    <div class="panel-admin" style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 30px; border-top: 5px solid #e67e22;">
-        <h3 style="color: #e67e22; margin-top: 0;"><i class="fas fa-megaphone"></i> Publicar Comunicado Oficial</h3>
-        <form id="formComunicado">
-            <input type="text" id="tituloCom" placeholder="Título del comunicado (Ej: Cambio de horario)" required>
-            <textarea id="contenidoCom" rows="2" placeholder="Escriba el mensaje detallado aquí..." required></textarea>
-            <select id="colorCom">
+        <div class="panel-admin" style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 30px; border-top: 5px solid #e67e22;">
+            <h3 style="color: #e67e22; margin-top: 0;"><i class="fas fa-megaphone"></i> Publicar Comunicado Oficial</h3>
+            <form id="formComunicado">
+                <input type="text" id="tituloCom" placeholder="Título del comunicado (Ej: Cambio de horario)" required>
+                <textarea id="contenidoCom" rows="2" placeholder="Escriba el mensaje detallado aquí..." required></textarea>
+                <select id="colorCom">
                 <option value="#27ae60"><i class="fas fa-circle"></i> Informativo (Verde)</option>
                 <option value="#3498db"><i class="fas fa-circle"></i> General (Azul)</option>
                 <option value="#f39c12"><i class="fas fa-circle"></i> Importante (Naranja)</option>
                 <option value="#e74c3c"><i class="fas fa-circle"></i> Urgente (Rojo)</option>
             </select>
-            <button type="submit" class="btn-admin" id="btnPublicar"><i class="fas fa-paper-plane"></i> Publicar Comunicado ahora</button>
-        </form>
-    </div>
-
-
-    
-
-    <h3><i class="fas fa-newspaper"></i> Comunicados Activos</h3>
-    <div style="margin-bottom: 15px; position: relative;">
-        <i class="fas fa-search" style="position: absolute; left: 15px; top: 12px; color: var(--texto-gris);"></i>
-        <input type="text" id="busquedaComunicados" onkeyup="filtrarTabla()" placeholder="Buscar por motivo, actividad o fecha..." style="width: 100%; padding: 12px 15px 12px 40px; border-radius: 8px; border: 1px solid rgba(0,0,0,0.1); font-size: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
-    </div>
-    
-    <div class="overflow-auto">
-        <div class="tabla-container">
-        <table id="tablaComunicados">
-                        <thead>
-                <tr>
-                    <th><i class="fas fa-calendar"></i> Fecha</th>
-                    <th><i class="fas fa-heading"></i> Título y Contenido</th>
-                    <th><i class="fas fa-user"></i> Autor</th>
-                    <th><i class="fas fa-cog"></i> Acción</th>
-                </tr>
-            </thead>
-            <tbody id="cuerpoTabla">
-                <tr><td colspan="4" style="text-align:center; padding: 40px; color: var(--texto-gris);">
-                    <i class="fas fa-spinner fa-spin fa-2x" style="color: var(--verde-claro); margin-bottom: 10px;"></i><br>
-                    Cargando sus registros...
-                </td></tr>
-            </tbody>
-        </table>
+                <button type="submit" class="btn-admin" id="btnPublicar"><i class="fas fa-paper-plane"></i> Publicar Comunicado ahora</button>
+            </form>
         </div>
-    </div>
 
-    <div style="margin-top: 30px; text-align: center;">
-        <button type="button" class="btn-volver" onclick="window.location.href='docentes.html'" title="Volver a tu panel de ausencias">
+
+
+
+        <h3><i class="fas fa-newspaper"></i> Comunicados Activos</h3>
+        <div style="margin-bottom: 15px; position: relative;">
+            <i class="fas fa-search" style="position: absolute; left: 15px; top: 12px; color: var(--texto-gris);"></i>
+            <input type="text" id="busquedaComunicados" onkeyup="filtrarTabla()" placeholder="Buscar por motivo, actividad o fecha..." style="width: 100%; padding: 12px 15px 12px 40px; border-radius: 8px; border: 1px solid rgba(0,0,0,0.1); font-size: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+        </div>
+
+        <div class="overflow-auto">
+            <div class="tabla-container">
+                <table id="tablaComunicados">
+                    <thead>
+                        <tr>
+                            <th><i class="fas fa-calendar"></i> Fecha</th>
+                            <th><i class="fas fa-heading"></i> Título y Contenido</th>
+                            <th><i class="fas fa-user"></i> Autor</th>
+                            <th><i class="fas fa-cog"></i> Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cuerpoTabla">
+                        <tr>
+                            <td colspan="4" style="text-align:center; padding: 40px; color: var(--texto-gris);">
+                                <i class="fas fa-spinner fa-spin fa-2x" style="color: var(--verde-claro); margin-bottom: 10px;"></i><br> Cargando sus registros...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div style="margin-top: 30px; text-align: center;">
+            <button type="button" class="btn-volver" onclick="window.location.href='docentes.html'" title="Volver a tu panel de ausencias">
             <i class="fas fa-arrow-left"></i> Volver a Mi Panel de Ausencias
         </button>
+        </div>
+
     </div>
 
-</div>
-
-<style>
-.btn-editar-com {
-    background: #3498db;
-    color: white;
-    padding: 8px 14px;
-    border-radius: 5px;
-    border: none;
-    cursor: pointer;
-    font-weight: 600;
-    font-size: 0.9rem;
-    transition: all 0.3s ease;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-}
-.btn-editar-com:hover {
-    background: #2980b9;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
-}
-.btn-eliminar-com {
-    background: #e74c3c;
-    color: white;
-    padding: 8px 14px;
-    border-radius: 5px;
-    border: none;
-    cursor: pointer;
-    font-weight: 600;
-    font-size: 0.9rem;
-    transition: all 0.3s ease;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-}
-.btn-eliminar-com:hover {
-    background: #c0392b;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(231, 76, 60, 0.3);
-}
-.btn-volver {
-    background: #5a5a5a;
-    color: white;
-    padding: 12px 30px;
-    border-radius: 6px;
-    border: none;
-    cursor: pointer;
-    font-weight: bold;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-}
-.btn-volver:hover {
-    background: #454545;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-}
-</style>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-<script>
-// Manejar validaciones para asegurar que el código no se caiga
-try {
-    emailjs.init({
-      publicKey: "qAglmSdD5me55ae1-"
-    });
-} catch (error) {
-    console.error("Error configurando EmailJS:", error);
-}
-
-// 🔒 VERIFICACIÓN DE SESIÓN INMEDIATA
-if (!localStorage.getItem('usuario') || !localStorage.getItem('nombre')) {
-    window.location.href = "registrarme.html";
-}
-
-const SUPABASE_URL = 'https://iowxlwnosyyqetbvvmuk.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlvd3hsd25vc3l5cWV0YnZ2bXVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYxOTk4NDYsImV4cCI6MjA5MTc3NTg0Nn0.VZ5VMu0z4nlsZ0hKvDSk4IUluA1yGx9eQCCXzDc5HmU';
-const headers = { "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}`, "Content-Type": "application/json" };
-
-
-function inicializar() {
-    const nombre = localStorage.getItem('nombre');
-    const rol = localStorage.getItem('rol');
-    const usuario = localStorage.getItem('usuario');
-
-    if (!nombre || !usuario) { globalThis.location.href = "index.html"; return; }
-    
-    // Si no es admin lo mandamos a docentes
-    if (rol !== 'admin') {
-        globalThis.location.href = "docentes.html";
-        return;
-    }
-
-    // Actualizar Textos
-    document.getElementById('nombreUsuario').textContent = nombre;
-    document.getElementById('usuario').textContent = usuario;
-    document.getElementById('rol').textContent = rol;
-    document.getElementById('rolBadge').textContent = rol;
-
-    document.getElementById('rolBadge').style.background = '#e67e22';
-    setupComunicadoListener();
-    cargarComunicadosAdmin();
-}
-
-
-
-// --- CARGAR COMUNICADOS ---
-async function cargarComunicadosAdmin() {
-    const tbody = document.getElementById('cuerpoTabla');
-
-    try {
-        const res = await fetch(`${SUPABASE_URL}/rest/v1/comunicados?order=creado_en.desc`, { headers });
-        const datos = await res.json();
-
-        tbody.innerHTML = "";
-        if(datos.length === 0) {
-            tbody.innerHTML = "<tr><td colspan='4' style='text-align:center; padding: 40px; color: var(--texto-gris);'><i class='fas fa-folder-open fa-2x' style='color: #ccc; margin-bottom:15px;'></i><br>No hay comunicados registrados.</td></tr>";
-            return;
+    <style>
+        .btn-editar-com {
+            background: #3498db;
+            color: white;
+            padding: 8px 14px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .btn-editar-com:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
+        }
+        
+        .btn-eliminar-com {
+            background: #e74c3c;
+            color: white;
+            padding: 8px 14px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .btn-eliminar-com:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(231, 76, 60, 0.3);
+        }
+        
+        .btn-volver {
+            background: #5a5a5a;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-volver:hover {
+            background: #454545;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script>
+        // Manejar validaciones para asegurar que el código no se caiga
+        try {
+            emailjs.init({
+                publicKey: "qAglmSdD5me55ae1-"
+            });
+        } catch (error) {
+            console.error("Error configurando EmailJS:", error);
         }
 
-        datos.forEach(c => {
-            const date = new Date(c.creado_en);
-            const formattedDate = date.toLocaleDateString('es-CR');
+        // 🔒 VERIFICACIÓN DE SESIÓN INMEDIATA
+        if (!localStorage.getItem('usuario') || !localStorage.getItem('nombre')) {
+            window.location.href = "registrarme.html";
+        }
 
-            tbody.innerHTML += `
+        const SUPABASE_URL = 'https://iowxlwnosyyqetbvvmuk.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlvd3hsd25vc3l5cWV0YnZ2bXVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYxOTk4NDYsImV4cCI6MjA5MTc3NTg0Nn0.VZ5VMu0z4nlsZ0hKvDSk4IUluA1yGx9eQCCXzDc5HmU';
+        const headers = {
+            "apikey": SUPABASE_KEY,
+            "Authorization": `Bearer ${SUPABASE_KEY}`,
+            "Content-Type": "application/json"
+        };
+
+
+        function inicializar() {
+            const nombre = localStorage.getItem('nombre');
+            const rol = localStorage.getItem('rol');
+            const usuario = localStorage.getItem('usuario');
+
+            if (!nombre || !usuario) {
+                globalThis.location.href = "index.html";
+                return;
+            }
+
+            // Si no es admin lo mandamos a docentes
+            if (rol !== 'admin') {
+                globalThis.location.href = "docentes.html";
+                return;
+            }
+
+            // Actualizar Textos
+            document.getElementById('nombreUsuario').textContent = nombre;
+            document.getElementById('usuario').textContent = usuario;
+            document.getElementById('rol').textContent = rol;
+            document.getElementById('rolBadge').textContent = rol;
+
+            document.getElementById('rolBadge').style.background = '#e67e22';
+            setupComunicadoListener();
+            cargarComunicadosAdmin();
+        }
+
+
+
+        // --- CARGAR COMUNICADOS ---
+        async function cargarComunicadosAdmin() {
+            const tbody = document.getElementById('cuerpoTabla');
+
+            try {
+                const res = await fetch(`${SUPABASE_URL}/rest/v1/comunicados?order=creado_en.desc`, {
+                    headers
+                });
+                const datos = await res.json();
+
+                tbody.innerHTML = "";
+                if (datos.length === 0) {
+                    tbody.innerHTML = "<tr><td colspan='4' style='text-align:center; padding: 40px; color: var(--texto-gris);'><i class='fas fa-folder-open fa-2x' style='color: #ccc; margin-bottom:15px;'></i><br>No hay comunicados registrados.</td></tr>";
+                    return;
+                }
+
+                datos.forEach(c => {
+                    const date = new Date(c.creado_en);
+                    const formattedDate = date.toLocaleDateString('es-CR');
+
+                    tbody.innerHTML += `
                 <tr>
                     <td><b>${formattedDate}</b></td>
                     <td>
@@ -248,7 +262,7 @@ async function cargarComunicadosAdmin() {
                     </td>
                     <td>${c.autor}</td>
                     <td style="text-align: center; display: flex; gap: 8px; justify-content: center;">
-                        <button class="btn-editar-com" onclick="editarComunicado(${c.id}, '${c.titulo.replace(/'/g, "\\'")}',' ${c.contenido.replace(/'/g, "\\'").replace(/\n/g, "\\n")}', '${c.color_borde}')" title="Editar este comunicado">
+                        <button class="btn-editar-com" onclick="editarComunicado(${c.id}, '${c.titulo.replace(/'/g, "\\'")}', '${c.contenido.replace(/'/g, "\\'").replace(/\n/g, "\\n")}', '${c.color_borde}')" title="Editar este comunicado">
                             <i class="fas fa-edit"></i> Editar
                         </button>
                         <button class="btn-eliminar-com" onclick="eliminarComunicado(${c.id})" title="Eliminar este comunicado">
@@ -256,69 +270,71 @@ async function cargarComunicadosAdmin() {
                         </button>
                     </td>
                 </tr>`;
-        });
-    } catch (e) {
-        console.error(e);
-        tbody.innerHTML = "<tr><td colspan='4'>Error al cargar los comunicados.</td></tr>";
-    }
-}
-
-async function eliminarComunicado(id) {
-    const confirmacion = await Swal.fire({
-        title: '¿Eliminar comunicado?',
-        text: "Esta acción no se puede deshacer y desaparecerá para todos los usuarios.",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#e74c3c',
-        cancelButtonColor: '#95a5a6',
-        confirmButtonText: 'Sí, eliminar',
-        cancelButtonText: 'Cancelar'
-    });
-
-    if(!confirmacion.isConfirmed) return;
-
-    Swal.fire({
-        title: 'Borrando...',
-        text: 'Por favor espere un momento',
-        allowOutsideClick: false,
-        showConfirmButton: false,
-        didOpen: () => { 
-            Swal.showLoading();
-            const actions = document.querySelector('.swal2-actions');
-            if (actions) actions.style.display = 'none';
+                });
+            } catch (e) {
+                console.error(e);
+                tbody.innerHTML = "<tr><td colspan='4'>Error al cargar los comunicados.</td></tr>";
+            }
         }
-    });
 
-    try {
-        const res = await fetch(`${SUPABASE_URL}/rest/v1/comunicados?id=eq.${id}`, {
-            method: "DELETE",
-            headers
-        });
-        if(res.ok) {
+        async function eliminarComunicado(id) {
+            const confirmacion = await Swal.fire({
+                title: '¿Eliminar comunicado?',
+                text: "Esta acción no se puede deshacer y desaparecerá para todos los usuarios.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#e74c3c',
+                cancelButtonColor: '#95a5a6',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            });
+
+            if (!confirmacion.isConfirmed) return;
+
             Swal.fire({
-                icon: 'success',
-                title: 'Eliminado',
-                text: 'El comunicado fue eliminado con éxito.',
-                timer: 1500,
+                title: 'Borrando...',
+                text: 'Por favor espere un momento',
+                allowOutsideClick: false,
                 showConfirmButton: false,
                 didOpen: () => {
+                    Swal.showLoading();
                     const actions = document.querySelector('.swal2-actions');
                     if (actions) actions.style.display = 'none';
                 }
             });
-            cargarComunicadosAdmin();
-        } else {
-            Swal.fire('Error', 'No se pudo eliminar: ' + res.statusText, 'error');
-        }
-    } catch (e) {
-        Swal.fire('Error', 'Problema de conexión.', 'error');
-    }
-}
 
-async function editarComunicado(id, tituloActual, contenidoActual, colorActual) {
-    const { value: formValues } = await Swal.fire({
-        title: 'Editar Comunicado',
-        html: `
+            try {
+                const res = await fetch(`${SUPABASE_URL}/rest/v1/comunicados?id=eq.${id}`, {
+                    method: "DELETE",
+                    headers
+                });
+                if (res.ok) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Eliminado',
+                        text: 'El comunicado fue eliminado con éxito.',
+                        timer: 1500,
+                        showConfirmButton: false,
+                        didOpen: () => {
+                            const actions = document.querySelector('.swal2-actions');
+                            if (actions) actions.style.display = 'none';
+                        }
+                    });
+                    cargarComunicadosAdmin();
+                } else {
+                    Swal.fire('Error', 'No se pudo eliminar: ' + res.statusText, 'error');
+                }
+            } catch (e) {
+                Swal.fire('Error', 'Problema de conexión.', 'error');
+            }
+        }
+
+        async function editarComunicado(id, tituloActual, contenidoActual, colorActual) {
+            const {
+                value: formValues
+            } = await Swal.fire({
+                title: 'Editar Comunicado',
+                html: `
             <input id="swal-input-titulo" class="swal2-input" value="${tituloActual}" placeholder="Título">
             <textarea id="swal-input-contenido" class="swal2-textarea" placeholder="Contenido" rows="4" style="margin-top: 15px;">${contenidoActual}</textarea>
             <select id="swal-input-color" class="swal2-input" style="width: 80%; display: flex; margin: 15px auto;">
@@ -328,177 +344,185 @@ async function editarComunicado(id, tituloActual, contenidoActual, colorActual) 
                 <option value="#e74c3c" ${colorActual === '#e74c3c' ? 'selected' : ''}>Urgente (Rojo)</option>
             </select>
         `,
-        focusConfirm: false,
-        showCancelButton: true,
-        confirmButtonColor: '#3498db',
-        cancelButtonColor: '#95a5a6',
-        confirmButtonText: 'Guardar Cambios',
-        cancelButtonText: 'Cancelar',
-        preConfirm: () => {
-            const valTitulo = document.getElementById('swal-input-titulo').value.trim();
-            const valContenido = document.getElementById('swal-input-contenido').value.trim();
-            const valColor = document.getElementById('swal-input-color').value;
-            
-            if(!valTitulo || !valContenido) {
-                Swal.showValidationMessage('El título y contenido son requeridos');
-            }
-            return { titulo: valTitulo, contenido: valContenido, color_borde: valColor };
-        }
-    });
+                focusConfirm: false,
+                showCancelButton: true,
+                confirmButtonColor: '#3498db',
+                cancelButtonColor: '#95a5a6',
+                confirmButtonText: 'Guardar Cambios',
+                cancelButtonText: 'Cancelar',
+                preConfirm: () => {
+                    const valTitulo = document.getElementById('swal-input-titulo').value.trim();
+                    const valContenido = document.getElementById('swal-input-contenido').value.trim();
+                    const valColor = document.getElementById('swal-input-color').value;
 
-    if (formValues) {
-        Swal.fire({
-            title: 'Actualizando...',
-            text: 'Por favor espere',
-            allowOutsideClick: false,
-            showConfirmButton: false,
-            didOpen: () => { 
-                Swal.showLoading();
-                const actions = document.querySelector('.swal2-actions');
-                if (actions) actions.style.display = 'none';
-            }
-        });
-
-        try {
-            const res = await fetch(`${SUPABASE_URL}/rest/v1/comunicados?id=eq.${id}`, {
-                method: "PATCH",
-                headers,
-                body: JSON.stringify(formValues)
+                    if (!valTitulo || !valContenido) {
+                        Swal.showValidationMessage('El título y contenido son requeridos');
+                    }
+                    return {
+                        titulo: valTitulo,
+                        contenido: valContenido,
+                        color_borde: valColor
+                    };
+                }
             });
 
-            if (res.ok) {
-                Swal.fire({ 
-                    icon: 'success', 
-                    title: '¡Actualizado!', 
-                    text: 'El comunicado se actualizó con éxito.', 
-                    timer: 2000, 
-                    showConfirmButton: false,
-                    didOpen: () => {
-                        const actions = document.querySelector('.swal2-actions');
-                        if (actions) actions.style.display = 'none';
-                    }
-                });
-                cargarComunicadosAdmin();
-            } else {
-                Swal.fire('Error', 'No se pudo actualizar el comunicado.', 'error');
-            }
-        } catch (e) {
-            Swal.fire('Error', 'Problema de red al actualizar.', 'error');
-        }
-    }
-}
-
-function setupComunicadoListener() {
-    const form = document.getElementById('formComunicado');
-    if (form) {
-        form.addEventListener('submit', async function(e){
-            e.preventDefault();
-            const btn = document.getElementById('btnPublicar');
-            btn.disabled = true;
-            const datos = {
-                titulo: document.getElementById('tituloCom').value,
-                contenido: document.getElementById('contenidoCom').value,
-                color_borde: document.getElementById('colorCom').value,
-                autor: localStorage.getItem('nombre')
-            };
-            try {
+            if (formValues) {
                 Swal.fire({
-                    title: 'Publicando...',
+                    title: 'Actualizando...',
+                    text: 'Por favor espere',
                     allowOutsideClick: false,
                     showConfirmButton: false,
-                    didOpen: () => { 
+                    didOpen: () => {
                         Swal.showLoading();
                         const actions = document.querySelector('.swal2-actions');
                         if (actions) actions.style.display = 'none';
                     }
                 });
-                const res = await fetch(`${SUPABASE_URL}/rest/v1/comunicados`, { method: "POST", headers, body: JSON.stringify(datos) });
-                if(res.ok) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: '¡Publicado!',
-                        text: 'Comunicado publicado exitosamente.',
-                        timer: 2000,
-                        showConfirmButton: false,
-                        didOpen: () => {
-                            const actions = document.querySelector('.swal2-actions');
-                            if (actions) actions.style.display = 'none';
-                        }
+
+                try {
+                    const res = await fetch(`${SUPABASE_URL}/rest/v1/comunicados?id=eq.${id}`, {
+                        method: "PATCH",
+                        headers,
+                        body: JSON.stringify(formValues)
                     });
-                    this.reset();
-                    cargarComunicadosAdmin(); // Reload the table automatically
-                } else {
-                    const error = await res.json();
-                    Swal.fire('Error', 'No se pudo publicar: ' + (error.message || res.statusText), 'error');
+
+                    if (res.ok) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: '¡Actualizado!',
+                            text: 'El comunicado se actualizó con éxito.',
+                            timer: 2000,
+                            showConfirmButton: false,
+                            didOpen: () => {
+                                const actions = document.querySelector('.swal2-actions');
+                                if (actions) actions.style.display = 'none';
+                            }
+                        });
+                        cargarComunicadosAdmin();
+                    } else {
+                        Swal.fire('Error', 'No se pudo actualizar el comunicado.', 'error');
+                    }
+                } catch (e) {
+                    Swal.fire('Error', 'Problema de red al actualizar.', 'error');
                 }
-            } catch (e) {
-                Swal.fire('Error', 'Error al publicar: ' + e.message, 'error');
             }
-            btn.disabled = false;
+        }
+
+        function setupComunicadoListener() {
+            const form = document.getElementById('formComunicado');
+            if (form) {
+                form.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    const btn = document.getElementById('btnPublicar');
+                    btn.disabled = true;
+                    const datos = {
+                        titulo: document.getElementById('tituloCom').value,
+                        contenido: document.getElementById('contenidoCom').value,
+                        color_borde: document.getElementById('colorCom').value,
+                        autor: localStorage.getItem('nombre')
+                    };
+                    try {
+                        Swal.fire({
+                            title: 'Publicando...',
+                            allowOutsideClick: false,
+                            showConfirmButton: false,
+                            didOpen: () => {
+                                Swal.showLoading();
+                                const actions = document.querySelector('.swal2-actions');
+                                if (actions) actions.style.display = 'none';
+                            }
+                        });
+                        const res = await fetch(`${SUPABASE_URL}/rest/v1/comunicados`, {
+                            method: "POST",
+                            headers,
+                            body: JSON.stringify(datos)
+                        });
+                        if (res.ok) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: '¡Publicado!',
+                                text: 'Comunicado publicado exitosamente.',
+                                timer: 2000,
+                                showConfirmButton: false,
+                                didOpen: () => {
+                                    const actions = document.querySelector('.swal2-actions');
+                                    if (actions) actions.style.display = 'none';
+                                }
+                            });
+                            this.reset();
+                            cargarComunicadosAdmin(); // Reload the table automatically
+                        } else {
+                            const error = await res.json();
+                            Swal.fire('Error', 'No se pudo publicar: ' + (error.message || res.statusText), 'error');
+                        }
+                    } catch (e) {
+                        Swal.fire('Error', 'Error al publicar: ' + e.message, 'error');
+                    }
+                    btn.disabled = false;
+                });
+            }
+        }
+
+        async function cerrarSesion() {
+            const confirmacion = await Swal.fire({
+                title: '¿Cerrar Sesión?',
+                text: '¿Seguro que desea salir del panel?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3498db',
+                cancelButtonColor: '#95a5a6',
+                confirmButtonText: 'Sí, salir',
+                cancelButtonText: 'Cancelar'
+            });
+
+            if (confirmacion.isConfirmed) {
+                localStorage.clear();
+                globalThis.location.href = "index.html";
+            }
+        }
+
+        window.onload = inicializar;
+
+        // 🔎 FUNCIONALIDAD DE BUSQUEDA EN TABLA
+        function filtrarTabla() {
+            let input = document.getElementById("busquedaComunicados");
+            let filter = input.value.toUpperCase();
+            let table = document.getElementById("tablaComunicados");
+            let tr = table.getElementsByTagName("tr");
+
+            for (let i = 1; i < tr.length; i++) {
+                let textDesde = tr[i].getElementsByTagName("td")[0] ? .innerText || "";
+                let textMotivo = tr[i].getElementsByTagName("td")[1] ? .innerText || "";
+
+                if (textMotivo.toUpperCase().indexOf(filter) > -1 || textDesde.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+
+        // ANIMACION DE OCULTAMIENTO EN CELULAR AL BAJAR
+        let lastScrollY = window.scrollY;
+        window.addEventListener('scroll', () => {
+            if (window.innerWidth <= 600) {
+                const btn = document.querySelector('.btn-cerrar');
+                if (!btn) return;
+
+                if (window.scrollY > lastScrollY && window.scrollY > 60) {
+                    // Scroll hacia abajo: ocultar (animación de plegado)
+                    btn.classList.add('hide-on-scroll');
+                } else {
+                    // Scroll hacia arriba o arriba del top: mostrar
+                    btn.classList.remove('hide-on-scroll');
+                }
+            } else {
+                // Restaurar si volviera mágicamente a desktop
+                document.querySelector('.btn-cerrar') ? .classList.remove('hide-on-scroll');
+            }
+            lastScrollY = window.scrollY;
         });
-    }
-}
-
-async function cerrarSesion() {
-    const confirmacion = await Swal.fire({
-        title: '¿Cerrar Sesión?',
-        text: '¿Seguro que desea salir del panel?',
-        icon: 'question',
-        showCancelButton: true,
-        confirmButtonColor: '#3498db',
-        cancelButtonColor: '#95a5a6',
-        confirmButtonText: 'Sí, salir',
-        cancelButtonText: 'Cancelar'
-    });
-
-    if(confirmacion.isConfirmed) {
-        localStorage.clear();
-        globalThis.location.href = "index.html";
-    }
-}
-
-window.onload = inicializar;
-
-// 🔎 FUNCIONALIDAD DE BUSQUEDA EN TABLA
-function filtrarTabla() {
-    let input = document.getElementById("busquedaComunicados");
-    let filter = input.value.toUpperCase();
-    let table = document.getElementById("tablaComunicados");
-    let tr = table.getElementsByTagName("tr");
-
-    for (let i = 1; i < tr.length; i++) {
-        let textDesde = tr[i].getElementsByTagName("td")[0]?.innerText || "";
-        let textMotivo = tr[i].getElementsByTagName("td")[1]?.innerText || "";
-
-        if (textMotivo.toUpperCase().indexOf(filter) > -1 || textDesde.toUpperCase().indexOf(filter) > -1) {
-            tr[i].style.display = "";
-        } else {
-            tr[i].style.display = "none";
-        }
-    }
-}
-
-// ANIMACION DE OCULTAMIENTO EN CELULAR AL BAJAR
-let lastScrollY = window.scrollY;
-window.addEventListener('scroll', () => {
-    if (window.innerWidth <= 600) {
-        const btn = document.querySelector('.btn-cerrar');
-        if (!btn) return;
-        
-        if (window.scrollY > lastScrollY && window.scrollY > 60) {
-            // Scroll hacia abajo: ocultar (animación de plegado)
-            btn.classList.add('hide-on-scroll');
-        } else {
-            // Scroll hacia arriba o arriba del top: mostrar
-            btn.classList.remove('hide-on-scroll');
-        }
-    } else {
-        // Restaurar si volviera mágicamente a desktop
-        document.querySelector('.btn-cerrar')?.classList.remove('hide-on-scroll');
-    }
-    lastScrollY = window.scrollY;
-});
-</script>
+    </script>
 </body>
-</html>
 
+</html>
