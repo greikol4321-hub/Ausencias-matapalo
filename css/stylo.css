@@ -1982,10 +1982,6 @@ body .swal2-html-container {
     font-size: 1.05rem;
 }
 
-body .swal2-icon {
-    border-width: 4px;
-}
-
 body .swal2-container button.swal2-styled {
     width: auto;
     display: inline-flex;
@@ -1996,7 +1992,7 @@ body .swal2-container button.swal2-styled {
     font-size: 1rem;
     font-weight: bold;
     border: none;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     background-image: none !important;
 }
