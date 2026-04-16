@@ -133,12 +133,23 @@
                 
                 tabla.innerHTML = "";
                 datos.forEach(a => {
+                    const formatearFecha = (fechaOriginal) => {
+                        if (!fechaOriginal) return 'N/A';
+                        const partes = fechaOriginal.split('-');
+                        if (partes.length === 3) {
+                            return `${partes[2]}/${partes[1]}/${partes[0]}`;
+                        }
+                        return fechaOriginal;
+                    };
+                    const fechaInicio = formatearFecha(a.fecha);
+                    const fechaFin = formatearFecha(a.fecha_fin);
+
                     tabla.innerHTML += `
                         <tr>
                             <td><strong>${a.nombre}</strong></td>
                             <td style="color:#c62828; font-weight:bold;">Ausente</td>
                             <td><span style="background:#ffebee; color:#c62828; padding:3px 8px; border-radius:4px; font-size:0.75rem;">${a.razon}</span></td>
-                            <td><small>${a.fecha || 'N/A'} al ${a.fecha_fin || 'N/A'}</small></td>
+                            <td><small>${fechaInicio} al ${fechaFin}</small></td>
                         </tr>`;
                 });
             } catch (e) {
