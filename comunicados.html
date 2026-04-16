@@ -500,8 +500,9 @@
             let tr = table.getElementsByTagName("tr");
 
             for (let i = 1; i < tr.length; i++) {
-                let textDesde = tr[i].getElementsByTagName("td")[0]?.innerText || "";
-                let textMotivo = tr[i].getElementsByTagName("td")[1]?.innerText || "";
+                let tds = tr[i].getElementsByTagName("td");
+                let textDesde = tds.length > 0 ? (tds[0].textContent || tds[0].innerText) : "";
+                let textMotivo = tds.length > 1 ? (tds[1].textContent || tds[1].innerText) : "";
 
                 if (textMotivo.toUpperCase().indexOf(filter) > -1 || textDesde.toUpperCase().indexOf(filter) > -1) {
                     tr[i].style.display = "";
@@ -527,7 +528,8 @@
                 }
             } else {
                 // Restaurar si volviera mágicamente a desktop
-                document.querySelector('.btn-cerrar')?.classList.remove('hide-on-scroll');
+                const btnX = document.querySelector('.btn-cerrar');
+                if (btnX) btnX.classList.remove('hide-on-scroll');
             }
             lastScrollY = window.scrollY;
         });

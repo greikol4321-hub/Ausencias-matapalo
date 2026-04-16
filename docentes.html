@@ -422,7 +422,8 @@
                 }
             } else {
                 // Restaurar si volviera mágicamente a desktop
-                document.querySelector('.btn-cerrar') ? .classList.remove('hide-on-scroll');
+                const btnX = document.querySelector('.btn-cerrar');
+                if (btnX) btnX.classList.remove('hide-on-scroll');
             }
             lastScrollY = window.scrollY;
         });
