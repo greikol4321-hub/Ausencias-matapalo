@@ -202,10 +202,6 @@ document.getElementById('formMiAusencia').addEventListener('submit', async funct
     };
 
     try {
-        const res = await fetch(`${SUPABASE_URL}/rest/v1/ausencias`, {
-            method: "POST", headers, body: JSON.stringify(datos)
-        });
-
         Swal.fire({
             title: 'Guardando...',
             text: 'Registrando la ausencia, espere un momento.',
@@ -218,7 +214,12 @@ document.getElementById('formMiAusencia').addEventListener('submit', async funct
             }
         });
 
-        if(res.ok) {            // Notificar por correo vÃ­a EmailJS al guardar la ausencia
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/ausencias`, {
+            method: "POST", headers, body: JSON.stringify(datos)
+        });
+
+        if(res.ok) {
+            // Notificar por correo vía EmailJS al guardar la ausencia
             emailjs.send("service_2wecd52", "template_fbik8ht", {
                 nombre: datos.nombre,
                 fecha_inicio: datos.fecha,
@@ -226,32 +227,37 @@ document.getElementById('formMiAusencia').addEventListener('submit', async funct
                 motivo: datos.razon,
                 detalle: datos.detalle,
                 actividad: datos.actividad
-            }).then(() => console.log("Correo enviado a direcciÃ³n"))
+            }).then(() => console.log("Correo enviado"))
               .catch(err => {
                   console.error("Fallo EmailJS:", err);
-                  Swal.fire('Atención', 'Datos guardados, pero hubo un error enviando el correo: ' + (err.text || JSON.stringify(err)), 'warning');
               });
             Swal.fire({
                 icon: 'success',
                 title: '¡Guardado!',
-                text: 'Período de ausencia guardado correctamente.',
+                text: 'Período de ausencia registrado correctamente.',
                 timer: 2000,
                 showConfirmButton: false,
                 didOpen: () => {
-                    // Asegurar que los botones no se muestren
                     const actions = document.querySelector('.swal2-actions');
                     if (actions) actions.style.display = 'none';
                 }
             });
             this.reset();
             cargarHistorial();
+        } else {
+            const errorData = await res.json().catch(() => ({}));
+            let msgError = errorData.message || res.statusText || 'Error desconocido';
+            if (msgError.includes('row-level security') || msgError.includes('violates row-level')) {
+                msgError = 'No tiene permisos para realizar esta acción. Contacte al administrador.';
+            }
+            Swal.fire({ icon: 'error', title: 'Error al guardar', text: msgError });
         }
     } catch (err) {
         console.error(err);
         Swal.fire({
             icon: 'error',
-            title: 'Error',
-            text: 'Error de conexión con el servidor.'
+            title: 'Error de conexión',
+            text: 'No se pudo conectar con el servidor. Verifique su conexión e intente de nuevo.'
         });
     }
     btn.disabled = false;
@@ -272,11 +278,17 @@ async function cargarHistorial() {
             return;
         }
 
+        const formatearFecha = (f) => {
+            if (!f) return '---';
+            const p = f.split('-');
+            return p.length === 3 ? `${p[2]}/${p[1]}/${p[0]}` : f;
+        };
+
         datos.forEach(a => {
             tbody.innerHTML += `
                 <tr>
-                    <td><b><i class="fas fa-calendar-day" style="color: var(--texto-gris); margin-right: 5px;"></i> ${a.fecha}</b></td>
-                    <td><b><i class="fas fa-calendar-check" style="color: var(--texto-gris); margin-right: 5px;"></i> ${a.fecha_fin || '---'}</b></td>
+                    <td><b><i class="fas fa-calendar-day" style="color: var(--texto-gris); margin-right: 5px;"></i> ${formatearFecha(a.fecha)}</b></td>
+                    <td><b><i class="fas fa-calendar-check" style="color: var(--texto-gris); margin-right: 5px;"></i> ${formatearFecha(a.fecha_fin)}</b></td>
                     <td>
                         <span class="badge-motivo">${a.razon}</span>
                         <div style="font-size: 0.85rem; margin-top: 6px; color: var(--texto-gris);">
