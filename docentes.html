@@ -317,6 +317,8 @@ async function eliminarAusencia(id) {
         showConfirmButton: false,
         didOpen: () => {
             Swal.showLoading();
+            const actions = document.querySelector('.swal2-actions');
+            if (actions) actions.style.display = 'none';
         }
     });
 

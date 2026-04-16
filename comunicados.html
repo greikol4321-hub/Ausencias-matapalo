@@ -367,7 +367,17 @@ async function editarComunicado(id, tituloActual, contenidoActual, colorActual) 
             });
 
             if (res.ok) {
-                Swal.fire({ icon: 'success', title: '¡Actualizado!', text: 'El comunicado se actualizó con éxito.', timer: 2000, showConfirmButton: false });
+                Swal.fire({ 
+                    icon: 'success', 
+                    title: '¡Actualizado!', 
+                    text: 'El comunicado se actualizó con éxito.', 
+                    timer: 2000, 
+                    showConfirmButton: false,
+                    didOpen: () => {
+                        const actions = document.querySelector('.swal2-actions');
+                        if (actions) actions.style.display = 'none';
+                    }
+                });
                 cargarComunicadosAdmin();
             } else {
                 Swal.fire('Error', 'No se pudo actualizar el comunicado.', 'error');
