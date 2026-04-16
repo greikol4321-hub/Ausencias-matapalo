@@ -2030,6 +2030,15 @@ a:hover {
             }
         }
 
+/* ------------- PANEL ADMIN DE COMUNICADOS ------------- */
+.page-docentes .panel-admin form {
+    background: transparent;
+    box-shadow: none;
+    border: none;
+    padding: 0;
+    animation: none;
+}
+
 /* ------------- AJUSTES SWEETALERT2 ------------- */
 body .swal2-popup {
     border-radius: 16px;
@@ -2126,13 +2135,6 @@ body .swal2-container .swal2-actions {
 body .swal2-popup .swal2-actions:has(> button:hidden),
 body .swal2-popup .swal2-actions[style*="display: none"] {
     display: none !important;
-}
-
-/* Ocultar botones cuando showConfirmButton es false */
-body .swal2-popup:has(.swal2-confirm[style*="display: none"]) .swal2-actions,
-body .swal2-actions:has(button[style*="display: none"]) {
-    display: none !important;
-}
 }
 
 /* Ocultar botones cuando showConfirmButton es false */

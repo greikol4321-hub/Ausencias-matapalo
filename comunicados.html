@@ -58,53 +58,55 @@
         </div>
     </div>
 
-    
+
+    <!-- SECCIÓN 1: Crear nuevo comunicado -->
     <div class="panel-admin" style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 30px; border-top: 5px solid #e67e22;">
-        <h3 style="color: #e67e22; margin-top: 0;"><i class="fas fa-megaphone"></i> Publicar Comunicado Oficial</h3>
+        <h3 style="color: #e67e22; margin-top: 0;"><i class="fas fa-plus-circle"></i> Crear Nuevo Comunicado</h3>
+        <p style="margin-bottom: 18px; font-size: 0.9rem; color: var(--texto-gris);">Complete los campos y publique un comunicado para todos los docentes del centro educativo.</p>
         <form id="formComunicado">
             <input type="text" id="tituloCom" placeholder="Título del comunicado (Ej: Cambio de horario)" required>
-            <textarea id="contenidoCom" rows="2" placeholder="Escriba el mensaje detallado aquí..." required></textarea>
+            <textarea id="contenidoCom" rows="3" placeholder="Escriba el mensaje detallado aquí..." required></textarea>
             <select id="colorCom">
-                <option value="#27ae60"><i class="fas fa-circle"></i> Informativo (Verde)</option>
-                <option value="#3498db"><i class="fas fa-circle"></i> General (Azul)</option>
-                <option value="#f39c12"><i class="fas fa-circle"></i> Importante (Naranja)</option>
-                <option value="#e74c3c"><i class="fas fa-circle"></i> Urgente (Rojo)</option>
+                <option value="#27ae60">🟢 Informativo (Verde)</option>
+                <option value="#3498db">🔵 General (Azul)</option>
+                <option value="#f39c12">🟠 Importante (Naranja)</option>
+                <option value="#e74c3c">🔴 Urgente (Rojo)</option>
             </select>
-            <button type="submit" class="btn-admin" id="btnPublicar"><i class="fas fa-paper-plane"></i> Publicar Comunicado ahora</button>
+            <button type="submit" class="btn-admin" id="btnPublicar"><i class="fas fa-paper-plane"></i> Publicar Comunicado</button>
         </form>
     </div>
 
+    <!-- SECCIÓN 2: Ver comunicados publicados -->
+    <div style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 30px; border-top: 5px solid var(--verde-claro);">
+        <h3 style="margin-top: 0; margin-bottom: 18px;"><i class="fas fa-newspaper"></i> Comunicados Publicados</h3>
+        <div style="margin-bottom: 15px; position: relative;">
+            <i class="fas fa-search" style="position: absolute; left: 15px; top: 12px; color: var(--texto-gris);"></i>
+            <input type="text" id="busquedaComunicados" onkeyup="filtrarTabla()" placeholder="Buscar por título, contenido o autor..." style="width: 100%; padding: 12px 15px 12px 40px; border-radius: 8px; border: 1px solid rgba(0,0,0,0.1); font-size: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+        </div>
 
-    
-
-    <h3><i class="fas fa-newspaper"></i> Comunicados Activos</h3>
-    <div style="margin-bottom: 15px; position: relative;">
-        <i class="fas fa-search" style="position: absolute; left: 15px; top: 12px; color: var(--texto-gris);"></i>
-        <input type="text" id="busquedaComunicados" onkeyup="filtrarTabla()" placeholder="Buscar por motivo, actividad o fecha..." style="width: 100%; padding: 12px 15px 12px 40px; border-radius: 8px; border: 1px solid rgba(0,0,0,0.1); font-size: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
-    </div>
-    
-    <div class="overflow-auto">
-        <div class="tabla-container">
-        <table id="tablaComunicados">
-                        <thead>
-                <tr>
-                    <th><i class="fas fa-calendar"></i> Fecha</th>
-                    <th><i class="fas fa-heading"></i> Título y Contenido</th>
-                    <th><i class="fas fa-user"></i> Autor</th>
-                    <th><i class="fas fa-cog"></i> Acción</th>
-                </tr>
-            </thead>
-            <tbody id="cuerpoTabla">
-                <tr><td colspan="4" style="text-align:center; padding: 40px; color: var(--texto-gris);">
-                    <i class="fas fa-spinner fa-spin fa-2x" style="color: var(--verde-claro); margin-bottom: 10px;"></i><br>
-                    Cargando sus registros...
-                </td></tr>
-            </tbody>
-        </table>
+        <div class="overflow-auto">
+            <div class="tabla-container">
+            <table id="tablaComunicados">
+                <thead>
+                    <tr>
+                        <th><i class="fas fa-calendar"></i> Fecha</th>
+                        <th><i class="fas fa-heading"></i> Título y Contenido</th>
+                        <th><i class="fas fa-user"></i> Autor</th>
+                        <th><i class="fas fa-cog"></i> Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="cuerpoTabla">
+                    <tr><td colspan="4" style="text-align:center; padding: 40px; color: var(--texto-gris);">
+                        <i class="fas fa-spinner fa-spin fa-2x" style="color: var(--verde-claro); margin-bottom: 10px;"></i><br>
+                        Cargando comunicados...
+                    </td></tr>
+                </tbody>
+            </table>
+            </div>
         </div>
     </div>
 
-    <div style="margin-top: 30px; text-align: center;">
+    <div style="margin-top: 20px; text-align: center;">
         <button type="button" class="btn-volver" onclick="window.location.href='docentes.html'" title="Volver a tu panel de ausencias">
             <i class="fas fa-arrow-left"></i> Volver a Mi Panel de Ausencias
         </button>
@@ -429,7 +431,15 @@ function setupComunicadoListener() {
                     cargarComunicadosAdmin(); // Reload the table automatically
                 } else {
                     const error = await res.json();
-                    Swal.fire('Error', 'No se pudo publicar: ' + (error.message || res.statusText), 'error');
+                    let msgError = error.message || res.statusText || 'Error desconocido';
+                    if (msgError.includes('row-level security') || msgError.includes('violates row-level')) {
+                        msgError = 'No tiene permisos para realizar esta acción. Contacte al administrador del sistema.';
+                    }
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'No se pudo publicar',
+                        text: msgError
+                    });
                 }
             } catch (e) {
                 Swal.fire('Error', 'Error al publicar: ' + e.message, 'error');
