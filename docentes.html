@@ -7,80 +7,79 @@
     <title>Panel de Docentes - CTP Matapalo</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    
+
 
     <link rel="stylesheet" href="css/stylo.css">
 </head>
 
 <body class="page-docentes">
 
-<header class="header">
-    <div class="header-container">
-        <div class="header-logos-left">
-            <img src="img/LOGO_MEP-removebg-preview.png" class="logo-mep" alt="MEP Costa Rica">
-            <div class="divider"></div>
-            <div class="logo-gobierno">
-                <strong>Colegio Técnico Profesional</strong><br>
-                de Matapalo
+    <header class="header">
+        <div class="header-container">
+            <div class="header-logos-left">
+                <img src="img/LOGO_MEP-removebg-preview.png" class="logo-mep" alt="MEP Costa Rica">
+                <div class="divider"></div>
+                <div class="logo-gobierno">
+                    <strong>Colegio Técnico Profesional</strong><br> de Matapalo
+                </div>
+            </div>
+
+            <div class="nav-right">
+                <a href="index.html" title="Inicio">
+                    <img src="img/logo_colegio_nuevo.png" class="logo-escudo" alt="Escudo CTP Matapalo">
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <div class="navbar">
+        <div class="navbar-info">
+            <span><i class="fas fa-clipboard-list"></i> Sesión:</span>
+            <span id="rolBadge" class="badge-rol">Cargando...</span>
+        </div>
+        <button class="btn-cerrar" onclick="cerrarSesion()"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</button>
+    </div>
+
+    <div class="container">
+
+        <div class="info-usuario">
+            <div class="info-item">
+                <b><i class="fas fa-user-circle"></i> Nombre Completo</b>
+                <span id="nombreUsuario">---</span>
+            </div>
+            <div class="info-item">
+                <b><i class="fas fa-id-card"></i> Usuario</b>
+                <span id="usuario">---</span>
+            </div>
+            <div class="info-item">
+                <b><i class="fas fa-briefcase"></i> Perfil</b>
+                <span id="rol">---</span>
             </div>
         </div>
 
-        <div class="nav-right">
-            <a href="index.html" title="Inicio">
-                <img src="img/logo_colegio_nuevo.png" class="logo-escudo" alt="Escudo CTP Matapalo">
-            </a>
+        <div id="seccionAdmin">
+            <h3 style="color: #e67e22; margin-top: 0;"><i class="fas fa-user-shield"></i> Panel de Administración</h3>
+            <p style="margin-bottom: 20px; font-size: 0.95rem;">Usted cuenta con acceso al gestor de comunicados institucionales.</p>
+            <button type="button" class="btn-admin" onclick="window.location.href='comunicados.html'"><i class="fas fa-megaphone"></i> Ir a Gestión de Comunicados</button>
         </div>
-    </div>
-</header>
 
-<div class="navbar">
-    <div class="navbar-info">
-        <span><i class="fas fa-clipboard-list"></i> Sesión:</span>
-        <span id="rolBadge" class="badge-rol">Cargando...</span>
-    </div>
-    <button class="btn-cerrar" onclick="cerrarSesion()"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</button>
-</div>
-
-<div class="container">
-
-    <div class="info-usuario">
-        <div class="info-item">
-            <b><i class="fas fa-user-circle"></i> Nombre Completo</b>
-            <span id="nombreUsuario">---</span>
-        </div>
-        <div class="info-item">
-            <b><i class="fas fa-id-card"></i> Usuario</b>
-            <span id="usuario">---</span>
-        </div>
-        <div class="info-item">
-            <b><i class="fas fa-briefcase"></i> Perfil</b>
-            <span id="rol">---</span>
-        </div>
-    </div>
-
-    <div id="seccionAdmin">
-        <h3 style="color: #e67e22; margin-top: 0;"><i class="fas fa-user-shield"></i> Panel de Administración</h3>
-        <p style="margin-bottom: 20px; font-size: 0.95rem;">Usted cuenta con acceso al gestor de comunicados institucionales.</p>
-        <button type="button" class="btn-admin" onclick="window.location.href='comunicados.html'"><i class="fas fa-megaphone"></i> Ir a Gestión de Comunicados</button>
-    </div>
-
-    <h3><i class="fas fa-clipboard-plus"></i> Registrar Nueva Ausencia</h3>
-    <form id="formMiAusencia">
-        <div class="row">
-            <div>
-                <label for="fechaInicio"><i class="fas fa-calendar-alt"></i> Fecha de Inicio</label>
-                <input type="date" id="fechaInicio" required>
+        <h3><i class="fas fa-clipboard-plus"></i> Registrar Nueva Ausencia</h3>
+        <form id="formMiAusencia">
+            <div class="row">
+                <div>
+                    <label for="fechaInicio"><i class="fas fa-calendar-alt"></i> Fecha de Inicio</label>
+                    <input type="date" id="fechaInicio" required>
+                </div>
+                <div>
+                    <label for="fechaFin"><i class="fas fa-calendar-check"></i> Fecha de Finalización</label>
+                    <input type="date" id="fechaFin" required>
+                </div>
             </div>
-            <div>
-                <label for="fechaFin"><i class="fas fa-calendar-check"></i> Fecha de Finalización</label>
-                <input type="date" id="fechaFin" required>
-            </div>
-        </div>
 
-        <div class="row">
-            <div>
-                <label for="razonAusencia"><i class="fas fa-list-ul"></i> Motivo de la Ausencia</label>
-                <select id="razonAusencia" required>
+            <div class="row">
+                <div>
+                    <label for="razonAusencia"><i class="fas fa-list-ul"></i> Motivo de la Ausencia</label>
+                    <select id="razonAusencia" required>
                     <option value="">-- Seleccionar motivo --</option>
                     <option value="Enfermedad">Enfermedad / Incapacidad</option>
                     <option value="Permiso">Permiso Personal</option>
@@ -88,192 +87,204 @@
                     <option value="Cita Médica">Cita Médica</option>
                     <option value="Otro">Otro Motivo</option>
                 </select>
+                </div>
+                <div>
+                    <label for="detalleAusencia"><i class="fas fa-clipboard"></i> Detalle Breve</label>
+                    <input type="text" id="detalleAusencia" placeholder="Ej: Cita en la Caja">
+                </div>
             </div>
+
             <div>
-                <label for="detalleAusencia"><i class="fas fa-clipboard"></i> Detalle Breve</label>
-                <input type="text" id="detalleAusencia" placeholder="Ej: Cita en la Caja">
+                <label for="actividadRemplazo"><i class="fas fa-book"></i> Trabajo para los Estudiantes</label>
+                <textarea id="actividadRemplazo" rows="3" placeholder="Describa la práctica o actividad que deben realizar los grupos..."></textarea>
+            </div>
+            <button type="submit" id="btnGuardar"><i class="fas fa-save"></i> Registrar Período de Ausencia</button>
+        </form>
+
+        <hr>
+
+        <h3><i class="fas fa-history"></i> Mi Historial Reciente</h3>
+        <div style="margin-bottom: 15px; position: relative;">
+            <i class="fas fa-search" style="position: absolute; left: 15px; top: 12px; color: var(--texto-gris);"></i>
+            <input type="text" id="busquedaHistorial" onkeyup="filtrarTabla()" placeholder="Buscar por motivo, actividad o fecha..." style="width: 100%; padding: 12px 15px 12px 40px; border-radius: 8px; border: 1px solid rgba(0,0,0,0.1); font-size: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+        </div>
+
+        <div class="overflow-auto">
+            <div class="tabla-container">
+                <table id="tablaHistorial">
+                    <thead>
+                        <tr>
+                            <th><i class="fas fa-calendar"></i> Desde</th>
+                            <th><i class="fas fa-calendar-check"></i> Hasta</th>
+                            <th><i class="fas fa-info-circle"></i> Motivo y Actividad</th>
+                            <th><i class="fas fa-cog"></i> Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cuerpoTabla">
+                        <tr>
+                            <td colspan="4" style="text-align:center; padding: 40px; color: var(--texto-gris);">
+                                <i class="fas fa-spinner fa-spin fa-2x" style="color: var(--verde-claro); margin-bottom: 10px;"></i><br> Cargando sus registros...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
 
-        <div>
-            <label for="actividadRemplazo"><i class="fas fa-book"></i> Trabajo para los Estudiantes</label>
-            <textarea id="actividadRemplazo" rows="3" placeholder="Describa la práctica o actividad que deben realizar los grupos..."></textarea>
-        </div>
-        <button type="submit" id="btnGuardar"><i class="fas fa-save"></i> Registrar Período de Ausencia</button>
-    </form>
-
-    <hr>
-
-    <h3><i class="fas fa-history"></i> Mi Historial Reciente</h3>
-    <div style="margin-bottom: 15px; position: relative;">
-        <i class="fas fa-search" style="position: absolute; left: 15px; top: 12px; color: var(--texto-gris);"></i>
-        <input type="text" id="busquedaHistorial" onkeyup="filtrarTabla()" placeholder="Buscar por motivo, actividad o fecha..." style="width: 100%; padding: 12px 15px 12px 40px; border-radius: 8px; border: 1px solid rgba(0,0,0,0.1); font-size: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
-    </div>
-    
-    <div class="overflow-auto">
-        <div class="tabla-container">
-        <table id="tablaHistorial">
-            <thead>
-                <tr>
-                    <th><i class="fas fa-calendar"></i> Desde</th>
-                    <th><i class="fas fa-calendar-check"></i> Hasta</th>
-                    <th><i class="fas fa-info-circle"></i> Motivo y Actividad</th>
-                    <th><i class="fas fa-cog"></i> Acción</th>
-                </tr>
-            </thead>
-            <tbody id="cuerpoTabla">
-                <tr><td colspan="4" style="text-align:center; padding: 40px; color: var(--texto-gris);">
-                    <i class="fas fa-spinner fa-spin fa-2x" style="color: var(--verde-claro); margin-bottom: 10px;"></i><br>
-                    Cargando sus registros...
-                </td></tr>
-            </tbody>
-        </table>
-        </div>
     </div>
 
-</div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script>
+        // Manejar validaciones para asegurar que el código no se caiga
+        try {
+            emailjs.init({
+                publicKey: "EhWIBnbn9ScJ2PgoJ"
+            });
+        } catch (error) {
+            console.error("Error configurando EmailJS:", error);
+        }
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-<script>
-// Manejar validaciones para asegurar que el código no se caiga
-try {
-    emailjs.init({
-      publicKey: "qAglmSdD5me55ae1-"
-    });
-} catch (error) {
-    console.error("Error configurando EmailJS:", error);
-}
-
-// 🔒 VERIFICACIÓN DE SESIÓN INMEDIATA
-if (!localStorage.getItem('usuario') || !localStorage.getItem('nombre')) {
-    window.location.href = "registrarme.html";
-}
- const SUPABASE_URL = 'https://etdcmuikvtnqfcnlvodh.supabase.co';
+        // 🔒 VERIFICACIÓN DE SESIÓN INMEDIATA
+        if (!localStorage.getItem('usuario') || !localStorage.getItem('nombre')) {
+            window.location.href = "registrarme.html";
+        }
+        const SUPABASE_URL = 'https://etdcmuikvtnqfcnlvodh.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV0ZGNtdWlrdnRucWZjbmx2b2RoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU1OTQ1ODcsImV4cCI6MjA5MTE3MDU4N30.8JHWlTxYRSYEkpipqesHVBKn7QomTXJYHp6Nm6SzU4A';
 
-const headers = { "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}`, "Content-Type": "application/json" };
+        const headers = {
+            "apikey": SUPABASE_KEY,
+            "Authorization": `Bearer ${SUPABASE_KEY}`,
+            "Content-Type": "application/json"
+        };
 
-function inicializar() {
-    const nombre = localStorage.getItem('nombre');
-    const rol = localStorage.getItem('rol');
-    const usuario = localStorage.getItem('usuario');
+        function inicializar() {
+            const nombre = localStorage.getItem('nombre');
+            const rol = localStorage.getItem('rol');
+            const usuario = localStorage.getItem('usuario');
 
-    if (!nombre || !usuario) { globalThis.location.href = "index.html"; return; }
-
-    // Actualizar Textos
-    document.getElementById('nombreUsuario').textContent = nombre;
-    document.getElementById('usuario').textContent = usuario;
-    document.getElementById('rol').textContent = rol;
-    document.getElementById('rolBadge').textContent = rol;
-
-    if (rol === 'admin') {
-        document.getElementById('seccionAdmin').style.display = 'block';
-        document.getElementById('rolBadge').style.background = '#e67e22';
-    }
-
-    cargarHistorial();
-}
-
-document.getElementById('formMiAusencia').addEventListener('submit', async function(e){
-    e.preventDefault();
-    const btn = document.getElementById('btnGuardar');
-    const f1 = document.getElementById('fechaInicio').value;
-    const f2 = document.getElementById('fechaFin').value;
-
-    if(f2 < f1) {
-        Swal.fire({
-            icon: 'warning',
-            title: 'Fechas incorrectas',
-            text: 'La fecha final no puede ser anterior a la fecha de inicio.'
-        });
-        return;
-    }
-
-    btn.disabled = true;
-    const datos = {
-        usuario: localStorage.getItem('usuario'),
-        nombre: localStorage.getItem('nombre'),
-        fecha: f1,
-        fecha_fin: f2,
-        razon: document.getElementById('razonAusencia').value,
-        detalle: document.getElementById('detalleAusencia').value,
-        actividad: document.getElementById('actividadRemplazo').value
-    };
-
-    try {
-        const res = await fetch(`${SUPABASE_URL}/rest/v1/ausencias`, {
-            method: "POST", headers, body: JSON.stringify(datos)
-        });
-
-        Swal.fire({
-            title: 'Guardando...',
-            text: 'Registrando la ausencia, espere un momento.',
-            allowOutsideClick: false,
-            showConfirmButton: false,
-            didOpen: () => {
-                Swal.showLoading();
-                const actions = document.querySelector('.swal2-actions');
-                if (actions) actions.style.display = 'none';
+            if (!nombre || !usuario) {
+                globalThis.location.href = "index.html";
+                return;
             }
-        });
 
-        if(res.ok) {            // Notificar por correo vÃ­a EmailJS al guardar la ausencia
-            emailjs.send("service_2wecd52", "template_fbik8ht", {
-                nombre: datos.nombre,
-                fecha_inicio: datos.fecha,
-                fecha_fin: datos.fecha_fin,
-                motivo: datos.razon,
-                detalle: datos.detalle,
-                actividad: datos.actividad
-            }).then(() => console.log("Correo enviado a direcciÃ³n"))
-              .catch(err => {
-                  console.error("Fallo EmailJS:", err);
-                  Swal.fire('Atención', 'Datos guardados, pero hubo un error enviando el correo: ' + (err.text || JSON.stringify(err)), 'warning');
-              });
-            Swal.fire({
-                icon: 'success',
-                title: '¡Guardado!',
-                text: 'Período de ausencia guardado correctamente.',
-                timer: 2000,
-                showConfirmButton: false,
-                didOpen: () => {
-                    // Asegurar que los botones no se muestren
-                    const actions = document.querySelector('.swal2-actions');
-                    if (actions) actions.style.display = 'none';
-                }
-            });
-            this.reset();
+            // Actualizar Textos
+            document.getElementById('nombreUsuario').textContent = nombre;
+            document.getElementById('usuario').textContent = usuario;
+            document.getElementById('rol').textContent = rol;
+            document.getElementById('rolBadge').textContent = rol;
+
+            if (rol === 'admin') {
+                document.getElementById('seccionAdmin').style.display = 'block';
+                document.getElementById('rolBadge').style.background = '#e67e22';
+            }
+
             cargarHistorial();
         }
-    } catch (err) {
-        console.error(err);
-        Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'Error de conexión con el servidor.'
+
+        document.getElementById('formMiAusencia').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btnGuardar');
+            const f1 = document.getElementById('fechaInicio').value;
+            const f2 = document.getElementById('fechaFin').value;
+
+            if (f2 < f1) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Fechas incorrectas',
+                    text: 'La fecha final no puede ser anterior a la fecha de inicio.'
+                });
+                return;
+            }
+
+            btn.disabled = true;
+            const datos = {
+                usuario: localStorage.getItem('usuario'),
+                nombre: localStorage.getItem('nombre'),
+                fecha: f1,
+                fecha_fin: f2,
+                razon: document.getElementById('razonAusencia').value,
+                detalle: document.getElementById('detalleAusencia').value,
+                actividad: document.getElementById('actividadRemplazo').value
+            };
+
+            try {
+                const res = await fetch(`${SUPABASE_URL}/rest/v1/ausencias`, {
+                    method: "POST",
+                    headers,
+                    body: JSON.stringify(datos)
+                });
+
+                Swal.fire({
+                    title: 'Guardando...',
+                    text: 'Registrando la ausencia, espere un momento.',
+                    allowOutsideClick: false,
+                    showConfirmButton: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                        const actions = document.querySelector('.swal2-actions');
+                        if (actions) actions.style.display = 'none';
+                    }
+                });
+
+                if (res.ok) { // Notificar por correo vÃ­a EmailJS al guardar la ausencia
+                    emailjs.send("service_lww6198", "template_h7kwcvg", {
+                            nombre: datos.nombre,
+                            fecha_inicio: datos.fecha,
+                            fecha_fin: datos.fecha_fin,
+                            motivo: datos.razon,
+                            detalle: datos.detalle,
+                            actividad: datos.actividad
+                        }).then(() => console.log("Correo enviado a direcciÃ³n"))
+                        .catch(err => {
+                            console.error("Fallo EmailJS:", err);
+                            Swal.fire('Atención', 'Datos guardados, pero hubo un error enviando el correo: ' + (err.text || JSON.stringify(err)), 'warning');
+                        });
+                    Swal.fire({
+                        icon: 'success',
+                        title: '¡Guardado!',
+                        text: 'Período de ausencia guardado correctamente.',
+                        timer: 2000,
+                        showConfirmButton: false,
+                        didOpen: () => {
+                            // Asegurar que los botones no se muestren
+                            const actions = document.querySelector('.swal2-actions');
+                            if (actions) actions.style.display = 'none';
+                        }
+                    });
+                    this.reset();
+                    cargarHistorial();
+                }
+            } catch (err) {
+                console.error(err);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Error de conexión con el servidor.'
+                });
+            }
+            btn.disabled = false;
         });
-    }
-    btn.disabled = false;
-});
 
-// --- CARGAR HISTORIAL ---
-async function cargarHistorial() {
-    const user = localStorage.getItem('usuario');
-    const tbody = document.getElementById('cuerpoTabla');
+        // --- CARGAR HISTORIAL ---
+        async function cargarHistorial() {
+            const user = localStorage.getItem('usuario');
+            const tbody = document.getElementById('cuerpoTabla');
 
-    try {
-        const res = await fetch(`${SUPABASE_URL}/rest/v1/ausencias?usuario=eq.${encodeURIComponent(user)}&order=fecha.desc`, { headers });
-        const datos = await res.json();
+            try {
+                const res = await fetch(`${SUPABASE_URL}/rest/v1/ausencias?usuario=eq.${encodeURIComponent(user)}&order=fecha.desc`, {
+                    headers
+                });
+                const datos = await res.json();
 
-        tbody.innerHTML = "";
-        if(datos.length === 0) {
-            tbody.innerHTML = "<tr><td colspan='4' style='text-align:center; padding: 40px; color: var(--texto-gris);'><i class='fas fa-folder-open fa-2x' style='color: #ccc; margin-bottom:15px;'></i><br>No tiene ausencias registradas en el sistema.</td></tr>";
-            return;
-        }
+                tbody.innerHTML = "";
+                if (datos.length === 0) {
+                    tbody.innerHTML = "<tr><td colspan='4' style='text-align:center; padding: 40px; color: var(--texto-gris);'><i class='fas fa-folder-open fa-2x' style='color: #ccc; margin-bottom:15px;'></i><br>No tiene ausencias registradas en el sistema.</td></tr>";
+                    return;
+                }
 
-        datos.forEach(a => {
-            tbody.innerHTML += `
+                datos.forEach(a => {
+                    tbody.innerHTML += `
                 <tr>
                     <td><b><i class="fas fa-calendar-day" style="color: var(--texto-gris); margin-right: 5px;"></i> ${a.fecha}</b></td>
                     <td><b><i class="fas fa-calendar-check" style="color: var(--texto-gris); margin-right: 5px;"></i> ${a.fecha_fin || '---'}</b></td>
@@ -289,133 +300,133 @@ async function cargarHistorial() {
                         </button>
                     </td>
                 </tr>`;
-        });
-    } catch (e) {
-        console.error(e);
-        tbody.innerHTML = "<tr><td colspan='4'>Error al cargar el historial.</td></tr>";
-    }
-}
-
-async function eliminarAusencia(id) {
-    const confirmacion = await Swal.fire({
-        title: '¿Eliminar ausencia?',
-        text: "Esta acción no se puede deshacer.",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#e74c3c',
-        cancelButtonColor: '#95a5a6',
-        confirmButtonText: 'Sí, eliminar',
-        cancelButtonText: 'Cancelar'
-    });
-
-    if(!confirmacion.isConfirmed) return;
-
-    Swal.fire({
-        title: 'Borrando...',
-        text: 'Por favor espere un momento',
-        allowOutsideClick: false,
-        showConfirmButton: false,
-        didOpen: () => {
-            Swal.showLoading();
-            const actions = document.querySelector('.swal2-actions');
-            if (actions) actions.style.display = 'none';
+                });
+            } catch (e) {
+                console.error(e);
+                tbody.innerHTML = "<tr><td colspan='4'>Error al cargar el historial.</td></tr>";
+            }
         }
-    });
 
-    try {
-        const res = await fetch(`${SUPABASE_URL}/rest/v1/ausencias?id=eq.${id}`, {
-            method: "DELETE",
-            headers
-        });
-        if(res.ok) {
+        async function eliminarAusencia(id) {
+            const confirmacion = await Swal.fire({
+                title: '¿Eliminar ausencia?',
+                text: "Esta acción no se puede deshacer.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#e74c3c',
+                cancelButtonColor: '#95a5a6',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            });
+
+            if (!confirmacion.isConfirmed) return;
+
             Swal.fire({
-                icon: 'success',
-                title: 'Eliminado',
-                text: 'La ausencia fue eliminada con éxito.',
-                timer: 1500,
+                title: 'Borrando...',
+                text: 'Por favor espere un momento',
+                allowOutsideClick: false,
                 showConfirmButton: false,
                 didOpen: () => {
+                    Swal.showLoading();
                     const actions = document.querySelector('.swal2-actions');
                     if (actions) actions.style.display = 'none';
                 }
             });
-            cargarHistorial();
-        } else {
-            Swal.fire('Error', 'No se pudo eliminar: ' + res.statusText, 'error');
-        }
-    } catch (e) {
-        console.error(e);
-        Swal.fire('Error', 'Problema de conexión con el servidor.', 'error');
-    }
-}
 
-async function cerrarSesion() {
-    const confirmacion = await Swal.fire({
-        title: '¿Cerrar Sesión?',
-        text: '¿Seguro que desea salir del panel?',
-        icon: 'question',
-        showCancelButton: true,
-        confirmButtonColor: '#3498db',
-        cancelButtonColor: '#95a5a6',
-        confirmButtonText: 'Sí, salir',
-        cancelButtonText: 'Cancelar'
-    });
-
-    if(confirmacion.isConfirmed) {
-        localStorage.clear();
-        globalThis.location.href = "index.html";
-    }
-}
-
-window.onload = inicializar;
-
-// 🔎 FUNCIONALIDAD DE BUSQUEDA EN TABLA
-function filtrarTabla() {
-    let input = document.getElementById("busquedaHistorial");
-    let filter = input.value.toUpperCase();
-    let table = document.getElementById("tablaHistorial");
-    let tr = table.getElementsByTagName("tr");
-
-    for (let i = 1; i < tr.length; i++) { // Start at 1 to skip <thead>
-        let tdMotivo = tr[i].getElementsByTagName("td")[2]; 
-        let tdDesde = tr[i].getElementsByTagName("td")[0];
-        let tdHasta = tr[i].getElementsByTagName("td")[1];
-        
-        if (tdMotivo || tdDesde || tdHasta) {
-            let textMotivo = tdMotivo.textContent || tdMotivo.innerText;
-            let textDesde = tdDesde.textContent || tdDesde.innerText;
-            let textHasta = tdHasta.textContent || tdHasta.innerText;
-            
-            if (textMotivo.toUpperCase().indexOf(filter) > -1 || textDesde.toUpperCase().indexOf(filter) > -1 || textHasta.toUpperCase().indexOf(filter) > -1) {
-                tr[i].style.display = "";
-            } else {
-                tr[i].style.display = "none";
+            try {
+                const res = await fetch(`${SUPABASE_URL}/rest/v1/ausencias?id=eq.${id}`, {
+                    method: "DELETE",
+                    headers
+                });
+                if (res.ok) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Eliminado',
+                        text: 'La ausencia fue eliminada con éxito.',
+                        timer: 1500,
+                        showConfirmButton: false,
+                        didOpen: () => {
+                            const actions = document.querySelector('.swal2-actions');
+                            if (actions) actions.style.display = 'none';
+                        }
+                    });
+                    cargarHistorial();
+                } else {
+                    Swal.fire('Error', 'No se pudo eliminar: ' + res.statusText, 'error');
+                }
+            } catch (e) {
+                console.error(e);
+                Swal.fire('Error', 'Problema de conexión con el servidor.', 'error');
             }
-        }       
-    }
-}
-
-// ANIMACION DE OCULTAMIENTO EN CELULAR AL BAJAR
-let lastScrollY = window.scrollY;
-window.addEventListener('scroll', () => {
-    if (window.innerWidth <= 600) {
-        const btn = document.querySelector('.btn-cerrar');
-        if (!btn) return;
-        
-        if (window.scrollY > lastScrollY && window.scrollY > 60) {
-            // Scroll hacia abajo: ocultar (animación de plegado)
-            btn.classList.add('hide-on-scroll');
-        } else {
-            // Scroll hacia arriba o arriba del top: mostrar
-            btn.classList.remove('hide-on-scroll');
         }
-    } else {
-        // Restaurar si volviera mágicamente a desktop
-        document.querySelector('.btn-cerrar')?.classList.remove('hide-on-scroll');
-    }
-    lastScrollY = window.scrollY;
-});
-</script>
-</body>
-</html>
 
+        async function cerrarSesion() {
+            const confirmacion = await Swal.fire({
+                title: '¿Cerrar Sesión?',
+                text: '¿Seguro que desea salir del panel?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3498db',
+                cancelButtonColor: '#95a5a6',
+                confirmButtonText: 'Sí, salir',
+                cancelButtonText: 'Cancelar'
+            });
+
+            if (confirmacion.isConfirmed) {
+                localStorage.clear();
+                globalThis.location.href = "index.html";
+            }
+        }
+
+        window.onload = inicializar;
+
+        // 🔎 FUNCIONALIDAD DE BUSQUEDA EN TABLA
+        function filtrarTabla() {
+            let input = document.getElementById("busquedaHistorial");
+            let filter = input.value.toUpperCase();
+            let table = document.getElementById("tablaHistorial");
+            let tr = table.getElementsByTagName("tr");
+
+            for (let i = 1; i < tr.length; i++) { // Start at 1 to skip <thead>
+                let tdMotivo = tr[i].getElementsByTagName("td")[2];
+                let tdDesde = tr[i].getElementsByTagName("td")[0];
+                let tdHasta = tr[i].getElementsByTagName("td")[1];
+
+                if (tdMotivo || tdDesde || tdHasta) {
+                    let textMotivo = tdMotivo.textContent || tdMotivo.innerText;
+                    let textDesde = tdDesde.textContent || tdDesde.innerText;
+                    let textHasta = tdHasta.textContent || tdHasta.innerText;
+
+                    if (textMotivo.toUpperCase().indexOf(filter) > -1 || textDesde.toUpperCase().indexOf(filter) > -1 || textHasta.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+
+        // ANIMACION DE OCULTAMIENTO EN CELULAR AL BAJAR
+        let lastScrollY = window.scrollY;
+        window.addEventListener('scroll', () => {
+            if (window.innerWidth <= 600) {
+                const btn = document.querySelector('.btn-cerrar');
+                if (!btn) return;
+
+                if (window.scrollY > lastScrollY && window.scrollY > 60) {
+                    // Scroll hacia abajo: ocultar (animación de plegado)
+                    btn.classList.add('hide-on-scroll');
+                } else {
+                    // Scroll hacia arriba o arriba del top: mostrar
+                    btn.classList.remove('hide-on-scroll');
+                }
+            } else {
+                // Restaurar si volviera mágicamente a desktop
+                document.querySelector('.btn-cerrar') ? .classList.remove('hide-on-scroll');
+            }
+            lastScrollY = window.scrollY;
+        });
+    </script>
+</body>
+
+</html>
