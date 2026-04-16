@@ -228,7 +228,7 @@
                 });
 
                 if (res.ok) { // Notificar por correo vÃ­a EmailJS al guardar la ausencia
-                    emailjs.send("service_lww6198", "template_h7kwcvg", {
+                    emailjs.send("service_lww6198", "template_htbp6yd", {
                             nombre: datos.nombre,
                             fecha_inicio: datos.fecha,
                             fecha_fin: datos.fecha_fin,
@@ -422,7 +422,7 @@
                 }
             } else {
                 // Restaurar si volviera mágicamente a desktop
-                document.querySelector('.btn-cerrar')?.classList.remove('hide-on-scroll');
+                document.querySelector('.btn-cerrar') ? .classList.remove('hide-on-scroll');
             }
             lastScrollY = window.scrollY;
         });

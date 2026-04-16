@@ -12,7 +12,7 @@
 ## Paso 3: Configurar el Template
 
 ### A) NOMBRE DEL TEMPLATE
-- Template ID: `template_h7kwcvg`
+- Template ID: `template_htbp6yd`
 - Template Name: `Notificación de Ausencia Docente`
 
 ### B) CONFIGURACIÓN DEL "TO EMAIL"
@@ -69,7 +69,7 @@ Asegúrate de que estas variables estén configuradas en la sección de variable
 El código en `docentes.html` ya está configurado con:
 
 ```javascript
-emailjs.send("service_lww6198", "template_h7kwcvg", {
+emailjs.send("service_lww6198", "template_htbp6yd", {
     nombre: datos.nombre,
     fecha_inicio: datos.fecha,
     fecha_fin: datos.fecha_fin,
