@@ -148,6 +148,7 @@ a:hover {
         :root {
             --verde-base: #0a4c23;
             --verde-suave: #ebe5d9;
+            --crema: #f5f1e8;
             --fondo-sitio: #ebe5d9;
             --blanco: #ffffff;
             --texto-titulo: #0a4c23;
@@ -582,7 +583,7 @@ a:hover {
 
         /* BARRA DE TÍTULO */
         .page-index .main-title-bar {
-            background: white;
+            background: var(--crema);
             padding: 25px 0;
             text-align: center;
             border-bottom: 1px solid var(--borde);
@@ -593,6 +594,21 @@ a:hover {
             color: var(--texto-titulo);
             font-size: 1.8rem;
             font-weight: 800;
+        }
+
+        .page-index .site-footer {
+            background: var(--crema);
+            border-top: 1px solid var(--borde);
+            padding: 16px 20px;
+            text-align: center;
+        }
+
+        .page-index .site-footer p {
+            margin: 0;
+            color: var(--texto-gris);
+            font-size: 0.9rem;
+            font-weight: 600;
+            line-height: 1.5;
         }
 
         /* CONTENIDO */
