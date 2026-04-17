@@ -187,6 +187,36 @@
             const btn = document.getElementById('btnGuardar');
             const f1 = document.getElementById('fechaInicio').value;
             const f2 = document.getElementById('fechaFin').value;
+            const razon = document.getElementById('razonAusencia').value;
+            const detalle = document.getElementById('detalleAusencia').value.trim();
+            const actividad = document.getElementById('actividadRemplazo').value.trim();
+
+            if (!f1 || !f2 || !razon) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Campos requeridos',
+                    text: 'Complete fecha de inicio, fecha de finalización y motivo de ausencia.'
+                });
+                return;
+            }
+
+            if (detalle.length > 180) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Detalle demasiado largo',
+                    text: 'El detalle breve no puede superar 180 caracteres.'
+                });
+                return;
+            }
+
+            if (actividad && actividad.length < 8) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Actividad muy corta',
+                    text: 'Si ingresa actividad, debe tener al menos 8 caracteres.'
+                });
+                return;
+            }
 
             if (f2 < f1) {
                 Swal.fire({
@@ -203,12 +233,35 @@
                 nombre: localStorage.getItem('nombre'),
                 fecha: f1,
                 fecha_fin: f2,
-                razon: document.getElementById('razonAusencia').value,
-                detalle: document.getElementById('detalleAusencia').value,
-                actividad: document.getElementById('actividadRemplazo').value
+                razon,
+                detalle,
+                actividad
             };
 
             try {
+                const prevRes = await fetch(`${SUPABASE_URL}/rest/v1/ausencias?usuario=eq.${encodeURIComponent(datos.usuario)}&select=id,fecha,fecha_fin,razon`, {
+                    headers
+                });
+                const prevData = await prevRes.json();
+                const inicioNuevo = new Date(datos.fecha).getTime();
+                const finNuevo = new Date(datos.fecha_fin).getTime();
+
+                const hayTraslape = (Array.isArray(prevData) ? prevData : []).some(item => {
+                    const inicioExistente = new Date(item.fecha).getTime();
+                    const finExistente = new Date(item.fecha_fin).getTime();
+                    return inicioNuevo <= finExistente && finNuevo >= inicioExistente;
+                });
+
+                if (hayTraslape) {
+                    btn.disabled = false;
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Periodo duplicado o traslapado',
+                        text: 'Ya existe una ausencia registrada que se traslapa con ese rango de fechas.'
+                    });
+                    return;
+                }
+
                 const res = await fetch(`${SUPABASE_URL}/rest/v1/ausencias`, {
                     method: "POST",
                     headers,

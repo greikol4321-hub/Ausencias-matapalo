@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 
 <head>
@@ -71,6 +71,54 @@
             </select>
                 <button type="submit" class="btn-admin" id="btnPublicar"><i class="fas fa-paper-plane"></i> Publicar Comunicado ahora</button>
             </form>
+        </div>
+
+        <div class="panel-admin" style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 30px; border-top: 5px solid #3498db;">
+            <h3 style="color: #2980b9; margin-top: 0;"><i class="fas fa-users-cog"></i> Gestión de Usuarios</h3>
+            <p style="margin: 0 0 18px; color: #555;">Cree y administre usuarios internos. El auto-registro está desactivado.</p>
+            <form id="formUsuario" class="form-usuarios-grid">
+                <input type="hidden" id="usuarioIdEdicion">
+                <input type="text" id="nombreCompletoUser" placeholder="Nombre completo" required>
+                <input type="text" id="usuarioUser" placeholder="Usuario (ej: jlopez)" required>
+                <select id="rolUser" required>
+                    <option value="">Seleccione rol...</option>
+                    <option value="docente">Docente</option>
+                    <option value="admin">Administrador</option>
+                </select>
+                <input type="password" id="contrasenaUser" placeholder="Contraseña (min 8 caracteres)">
+                <button type="submit" class="btn-admin" id="btnGuardarUsuario"><i class="fas fa-user-plus"></i> Guardar Usuario</button>
+                <button type="button" class="btn-volver btn-secundario" id="btnCancelarEdicion" style="display:none;"><i class="fas fa-times"></i> Cancelar Edición</button>
+            </form>
+
+            <div class="overflow-auto" style="margin-top: 15px;">
+                <div class="tabla-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Usuario</th>
+                                <th>Nombre</th>
+                                <th>Rol</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cuerpoTablaUsuarios">
+                            <tr>
+                                <td colspan="4" style="text-align:center; color:#666; padding:18px;">Cargando usuarios...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel-admin" style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 30px; border-top: 5px solid #16a085;">
+            <h3 style="color: #138d75; margin-top: 0;"><i class="fas fa-database"></i> Datos y Mantenimiento</h3>
+            <div class="mantenimiento-actions">
+                <button type="button" class="btn-admin" id="btnRespaldo"><i class="fas fa-download"></i> Generar Respaldo Ahora</button>
+                <button type="button" class="btn-admin" id="btnAuditoria" style="background:#16a085;"><i class="fas fa-search"></i> Ejecutar Auditoría de Integridad</button>
+            </div>
+            <p id="estadoRespaldo" style="margin-top: 10px; color: #555; font-size: 0.92rem;">Sin respaldo generado en esta sesión.</p>
+            <div id="resultadoAuditoria" class="resultado-auditoria" style="display:none;"></div>
         </div>
 
 
@@ -175,6 +223,55 @@
             transform: translateY(-2px);
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
         }
+
+        .btn-secundario {
+            background: #7f8c8d;
+        }
+
+        .form-usuarios-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(220px, 1fr));
+            gap: 10px;
+            align-items: center;
+        }
+
+        .form-usuarios-grid input,
+        .form-usuarios-grid select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #d9d9d9;
+            border-radius: 8px;
+            font-size: 0.95rem;
+        }
+
+        .mantenimiento-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .resultado-auditoria {
+            margin-top: 16px;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 14px;
+            background: #fafafa;
+        }
+
+        .resultado-auditoria ul {
+            margin: 10px 0 0 18px;
+            padding: 0;
+        }
+
+        .resultado-auditoria li {
+            margin-bottom: 6px;
+        }
+
+        @media (max-width: 720px) {
+            .form-usuarios-grid {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
@@ -235,7 +332,11 @@
 
             document.getElementById('rolBadge').style.background = '#e67e22';
             setupComunicadoListener();
+            setupUsuariosListener();
+            setupMantenimientoListener();
             cargarComunicadosAdmin();
+            cargarUsuariosAdmin();
+            inicializarRespaldoAutomatico();
         }
 
 
@@ -469,6 +570,347 @@
                     }
                     btn.disabled = false;
                 });
+            }
+        }
+
+        function validarUsuarioInput(datos, esEdicion = false) {
+            if (!datos.nombre_completo || datos.nombre_completo.trim().length < 4) {
+                return 'El nombre completo debe tener al menos 4 caracteres.';
+            }
+
+            if (!datos.usuario || !/^[a-zA-Z0-9._-]{4,20}$/.test(datos.usuario)) {
+                return 'El usuario debe tener entre 4 y 20 caracteres y solo usar letras, numeros, punto, guion o guion bajo.';
+            }
+
+            if (!['admin', 'docente'].includes(datos.rol)) {
+                return 'Debe seleccionar un rol valido.';
+            }
+
+            if (!esEdicion && (!datos.contrasena || datos.contrasena.length < 8)) {
+                return 'La contraseña debe tener al menos 8 caracteres.';
+            }
+
+            if (esEdicion && datos.contrasena && datos.contrasena.length < 8) {
+                return 'Si desea cambiar la contraseña, debe tener al menos 8 caracteres.';
+            }
+
+            return null;
+        }
+
+        async function existeUsuarioDuplicado(usuario, idActual = null) {
+            const res = await fetch(`${SUPABASE_URL}/rest/v1/usuarios?select=id,usuario&usuario=eq.${encodeURIComponent(usuario)}`, {
+                headers
+            });
+            const data = await res.json();
+
+            if (!Array.isArray(data) || data.length === 0) return false;
+            if (!idActual) return true;
+
+            return data.some(u => String(u.id) !== String(idActual));
+        }
+
+        function limpiarFormularioUsuario() {
+            document.getElementById('usuarioIdEdicion').value = '';
+            document.getElementById('nombreCompletoUser').value = '';
+            document.getElementById('usuarioUser').value = '';
+            document.getElementById('rolUser').value = '';
+            document.getElementById('contrasenaUser').value = '';
+            document.getElementById('btnGuardarUsuario').innerHTML = '<i class="fas fa-user-plus"></i> Guardar Usuario';
+            document.getElementById('btnCancelarEdicion').style.display = 'none';
+        }
+
+        function setupUsuariosListener() {
+            const form = document.getElementById('formUsuario');
+            const btnCancelar = document.getElementById('btnCancelarEdicion');
+
+            btnCancelar.addEventListener('click', limpiarFormularioUsuario);
+
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+
+                const idEdicion = document.getElementById('usuarioIdEdicion').value;
+                const datos = {
+                    nombre_completo: document.getElementById('nombreCompletoUser').value.trim(),
+                    usuario: document.getElementById('usuarioUser').value.trim(),
+                    rol: document.getElementById('rolUser').value,
+                    contrasena: document.getElementById('contrasenaUser').value
+                };
+
+                const errorValidacion = validarUsuarioInput(datos, Boolean(idEdicion));
+                if (errorValidacion) {
+                    Swal.fire('Validacion', errorValidacion, 'warning');
+                    return;
+                }
+
+                try {
+                    if (await existeUsuarioDuplicado(datos.usuario, idEdicion || null)) {
+                        Swal.fire('Duplicado', 'Ya existe un usuario con ese nombre de acceso.', 'warning');
+                        return;
+                    }
+
+                    let payload = {
+                        nombre_completo: datos.nombre_completo,
+                        usuario: datos.usuario,
+                        rol: datos.rol
+                    };
+
+                    if (datos.contrasena) payload.contrasena = datos.contrasena;
+
+                    let res;
+                    if (idEdicion) {
+                        res = await fetch(`${SUPABASE_URL}/rest/v1/usuarios?id=eq.${idEdicion}`, {
+                            method: 'PATCH',
+                            headers,
+                            body: JSON.stringify(payload)
+                        });
+                    } else {
+                        payload.contrasena = datos.contrasena;
+                        res = await fetch(`${SUPABASE_URL}/rest/v1/usuarios`, {
+                            method: 'POST',
+                            headers,
+                            body: JSON.stringify(payload)
+                        });
+                    }
+
+                    if (!res.ok) {
+                        const err = await res.json().catch(() => ({}));
+                        throw new Error(err.message || 'No se pudo guardar el usuario.');
+                    }
+
+                    Swal.fire('Correcto', idEdicion ? 'Usuario actualizado.' : 'Usuario creado.', 'success');
+                    limpiarFormularioUsuario();
+                    cargarUsuariosAdmin();
+                } catch (error) {
+                    Swal.fire('Error', error.message || 'Error guardando usuario.', 'error');
+                }
+            });
+        }
+
+        async function cargarUsuariosAdmin() {
+            const tbody = document.getElementById('cuerpoTablaUsuarios');
+            try {
+                const res = await fetch(`${SUPABASE_URL}/rest/v1/usuarios?select=id,usuario,nombre_completo,rol&order=nombre_completo.asc`, {
+                    headers
+                });
+                const usuarios = await res.json();
+
+                tbody.innerHTML = '';
+                if (!Array.isArray(usuarios) || usuarios.length === 0) {
+                    tbody.innerHTML = "<tr><td colspan='4' style='text-align:center; color:#666; padding:18px;'>No hay usuarios registrados.</td></tr>";
+                    return;
+                }
+
+                usuarios.forEach(u => {
+                    tbody.innerHTML += `
+                    <tr>
+                        <td><b>${u.usuario || '---'}</b></td>
+                        <td>${u.nombre_completo || '---'}</td>
+                        <td><span class="badge-motivo">${u.rol || '---'}</span></td>
+                        <td style="display:flex; gap:8px; justify-content:center;">
+                            <button class="btn-editar-com" onclick="editarUsuario(${u.id}, '${(u.usuario || '').replace(/'/g, "\\'")}', '${(u.nombre_completo || '').replace(/'/g, "\\'")}', '${(u.rol || '').replace(/'/g, "\\'")}')"><i class="fas fa-edit"></i> Editar</button>
+                            <button class="btn-eliminar-com" onclick="eliminarUsuario(${u.id})"><i class="fas fa-trash-alt"></i> Eliminar</button>
+                        </td>
+                    </tr>`;
+                });
+            } catch (error) {
+                console.error(error);
+                tbody.innerHTML = "<tr><td colspan='4' style='text-align:center; color:#c0392b; padding:18px;'>Error al cargar usuarios.</td></tr>";
+            }
+        }
+
+        function editarUsuario(id, usuario, nombreCompleto, rol) {
+            document.getElementById('usuarioIdEdicion').value = id;
+            document.getElementById('nombreCompletoUser').value = nombreCompleto;
+            document.getElementById('usuarioUser').value = usuario;
+            document.getElementById('rolUser').value = rol;
+            document.getElementById('contrasenaUser').value = '';
+            document.getElementById('btnGuardarUsuario').innerHTML = '<i class="fas fa-save"></i> Actualizar Usuario';
+            document.getElementById('btnCancelarEdicion').style.display = 'inline-flex';
+            window.scrollTo({
+                top: document.getElementById('formUsuario').offsetTop - 100,
+                behavior: 'smooth'
+            });
+        }
+
+        async function eliminarUsuario(id) {
+            const confirmacion = await Swal.fire({
+                title: '¿Eliminar usuario?',
+                text: 'Esta acción eliminará el acceso del docente.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar',
+                confirmButtonColor: '#e74c3c'
+            });
+
+            if (!confirmacion.isConfirmed) return;
+
+            try {
+                const res = await fetch(`${SUPABASE_URL}/rest/v1/usuarios?id=eq.${id}`, {
+                    method: 'DELETE',
+                    headers
+                });
+
+                if (!res.ok) throw new Error('No se pudo eliminar el usuario.');
+
+                Swal.fire('Eliminado', 'Usuario eliminado correctamente.', 'success');
+                cargarUsuariosAdmin();
+            } catch (error) {
+                Swal.fire('Error', error.message || 'Error eliminando usuario.', 'error');
+            }
+        }
+
+        function setupMantenimientoListener() {
+            const btnRespaldo = document.getElementById('btnRespaldo');
+            const btnAuditoria = document.getElementById('btnAuditoria');
+
+            btnRespaldo.addEventListener('click', async() => {
+                try {
+                    await generarRespaldo(true);
+                } catch (error) {
+                    Swal.fire('Error', error.message || 'No se pudo generar el respaldo.', 'error');
+                }
+            });
+
+            btnAuditoria.addEventListener('click', async() => {
+                try {
+                    await ejecutarAuditoriaIntegridad();
+                } catch (error) {
+                    Swal.fire('Error', error.message || 'No se pudo ejecutar la auditoría.', 'error');
+                }
+            });
+        }
+
+        async function fetchTabla(nombreTabla, select = '*') {
+            const res = await fetch(`${SUPABASE_URL}/rest/v1/${nombreTabla}?select=${encodeURIComponent(select)}`, {
+                headers
+            });
+            if (!res.ok) {
+                const error = await res.json().catch(() => ({}));
+                throw new Error(error.message || `No se pudo leer la tabla ${nombreTabla}.`);
+            }
+            return res.json();
+        }
+
+        async function generarRespaldo(descargar = false) {
+            const [usuarios, ausencias, comunicados] = await Promise.all([
+                fetchTabla('usuarios', 'id,usuario,nombre_completo,rol,contrasena'),
+                fetchTabla('ausencias'),
+                fetchTabla('comunicados')
+            ]);
+
+            const respaldo = {
+                generado_en: new Date().toISOString(),
+                generado_por: localStorage.getItem('usuario') || 'admin',
+                version: 1,
+                tablas: {
+                    usuarios,
+                    ausencias,
+                    comunicados
+                }
+            };
+
+            const key = `backup_ctp_${Date.now()}`;
+            localStorage.setItem(key, JSON.stringify(respaldo));
+
+            const indice = JSON.parse(localStorage.getItem('backup_ctp_index') || '[]');
+            indice.push(key);
+            while (indice.length > 10) {
+                const eliminar = indice.shift();
+                if (eliminar) localStorage.removeItem(eliminar);
+            }
+            localStorage.setItem('backup_ctp_index', JSON.stringify(indice));
+
+            const estado = document.getElementById('estadoRespaldo');
+            estado.textContent = `Último respaldo: ${new Date().toLocaleString('es-CR')} (${usuarios.length} usuarios, ${ausencias.length} ausencias, ${comunicados.length} comunicados).`;
+
+            if (descargar) {
+                const blob = new Blob([JSON.stringify(respaldo, null, 2)], {
+                    type: 'application/json'
+                });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `respaldo_ctp_${new Date().toISOString().replace(/[:.]/g, '-')}.json`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                Swal.fire('Respaldo generado', 'Se generó y descargó el respaldo en formato JSON.', 'success');
+            }
+        }
+
+        function inicializarRespaldoAutomatico() {
+            const ultima = localStorage.getItem('backup_ctp_ultimo_auto');
+            const ahora = Date.now();
+            if (!ultima || (ahora - Number(ultima) > 2 * 60 * 60 * 1000)) {
+                generarRespaldo(false).then(() => {
+                    localStorage.setItem('backup_ctp_ultimo_auto', String(Date.now()));
+                }).catch(console.error);
+            }
+
+            setInterval(async() => {
+                try {
+                    await generarRespaldo(false);
+                    localStorage.setItem('backup_ctp_ultimo_auto', String(Date.now()));
+                } catch (error) {
+                    console.error('Error en respaldo automático:', error);
+                }
+            }, 2 * 60 * 60 * 1000);
+        }
+
+        async function ejecutarAuditoriaIntegridad() {
+            const [usuarios, ausencias, comunicados] = await Promise.all([
+                fetchTabla('usuarios', 'id,usuario,nombre_completo,rol,contrasena'),
+                fetchTabla('ausencias', 'id,usuario,nombre,fecha,fecha_fin,razon'),
+                fetchTabla('comunicados', 'id,titulo,contenido,autor,creado_en')
+            ]);
+
+            const hallazgos = [];
+            const usuariosMap = new Map();
+
+            usuarios.forEach(u => {
+                if (!u.usuario || !u.nombre_completo || !u.contrasena || !u.rol) {
+                    hallazgos.push(`Usuario incompleto (id ${u.id || 'sin id'}): faltan campos obligatorios.`);
+                }
+                if (!['admin', 'docente'].includes(u.rol)) {
+                    hallazgos.push(`Usuario ${u.usuario || '(sin usuario)'} con rol no válido: ${u.rol || 'vacío'}.`);
+                }
+                const keyUser = (u.usuario || '').toLowerCase();
+                if (keyUser) {
+                    usuariosMap.set(keyUser, (usuariosMap.get(keyUser) || 0) + 1);
+                }
+            });
+
+            usuariosMap.forEach((cantidad, usuario) => {
+                if (cantidad > 1) hallazgos.push(`Usuario duplicado detectado: ${usuario} (${cantidad} registros).`);
+            });
+
+            ausencias.forEach(a => {
+                if (!a.usuario || !a.nombre || !a.fecha || !a.fecha_fin || !a.razon) {
+                    hallazgos.push(`Ausencia incompleta (id ${a.id || 'sin id'}).`);
+                }
+                if (a.fecha && a.fecha_fin && a.fecha_fin < a.fecha) {
+                    hallazgos.push(`Ausencia con rango inválido (id ${a.id || 'sin id'}): fecha_fin menor que fecha.`);
+                }
+                if (a.usuario && !usuariosMap.has(a.usuario.toLowerCase())) {
+                    hallazgos.push(`Ausencia con usuario no registrado: ${a.usuario} (id ${a.id || 'sin id'}).`);
+                }
+            });
+
+            comunicados.forEach(c => {
+                if (!c.titulo || !c.contenido || !c.autor) {
+                    hallazgos.push(`Comunicado incompleto (id ${c.id || 'sin id'}).`);
+                }
+            });
+
+            const resultado = document.getElementById('resultadoAuditoria');
+            resultado.style.display = 'block';
+
+            if (hallazgos.length === 0) {
+                resultado.innerHTML = '<b style="color:#27ae60;">No se detectaron inconsistencias de integridad.</b>';
+            } else {
+                resultado.innerHTML = `<b style="color:#c0392b;">Se detectaron ${hallazgos.length} hallazgos:</b><ul>${hallazgos.map(h => `<li>${h}</li>`).join('')}</ul>`;
             }
         }
 
