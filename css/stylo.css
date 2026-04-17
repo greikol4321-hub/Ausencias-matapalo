@@ -1831,23 +1831,22 @@ a:hover {
 
         /* ----- ESTILOS MEJORADOS PARA BOTONES DE SWEETALERT ----- */
         .page-docentes .swal2-container button.swal2-styled {
-            /* Restringimos el estilo global de .page-docentes button */
-            all: unset; /* Quitamos todo el reset de page-docentes */
-            
-            /* Empezamos de cero dándole forma de botón premium */
             display: inline-flex !important;
             align-items: center;
             justify-content: center;
             padding: 10px 24px !important;
-            font-size: 1.05rem !important;
-            font-weight: 600 !important;
+            font-size: 1rem !important;
+            font-weight: 700 !important;
             font-family: inherit !important;
-            border-radius: 8px !important;
+            border-radius: 12px !important;
             cursor: pointer !important;
             transition: all 0.2s ease-in-out !important;
             border: 2px solid transparent !important;
-            margin: 0.5rem !important;
+            margin: 0 !important;
             color: #fff !important;
+            min-height: 44px;
+            min-width: 120px;
+            line-height: 1.2;
         }
 
         /* Botón de confirmar (ELIMINAR) */

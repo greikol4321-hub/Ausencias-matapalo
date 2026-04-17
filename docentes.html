@@ -372,7 +372,10 @@
                 cancelButtonText: 'Conservar'
             });
 
-            if (!confirmacion.isConfirmed) return;
+            if (!confirmacion.isConfirmed) {
+                Swal.close();
+                return;
+            }
 
             Swal.fire({
                 title: 'Eliminando ausencia...',
@@ -424,6 +427,11 @@
                 confirmButtonText: 'Sí, salir',
                 cancelButtonText: 'Cancelar'
             });
+
+            if (!confirmacion.isConfirmed) {
+                Swal.close();
+                return;
+            }
 
             if (confirmacion.isConfirmed) {
                 localStorage.clear();
