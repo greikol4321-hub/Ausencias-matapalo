@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -19,7 +19,7 @@
             <img src="img/LOGO_MEP-removebg-preview.png" class="logo-mep" alt="MEP Costa Rica">
             <div class="divider"></div>
             <div class="logo-gobierno">
-                <strong>Colegio TÃ©cnico Profesional</strong><br>
+                <strong>Colegio Técnico Profesional</strong><br>
                 de Matapalo
             </div>
         </div>
@@ -48,7 +48,7 @@
 
             <div class="form-group">
                 <i class="fas fa-key"></i>
-                <input type="password" id="password" placeholder="ContraseÃ±a" required>
+                <input type="password" id="password" placeholder="Contraseña" required>
             </div>
 
             <div class="btn-container">
@@ -99,12 +99,12 @@ form.addEventListener('submit', async (e) => {
 
             const user = data[0];
 
-            // ðŸ” GUARDAR SESIÃ“N
+            // 🔐 GUARDAR SESIÓN
             localStorage.setItem("usuario", user.usuario);
             localStorage.setItem("nombre", user.nombre_completo);
             localStorage.setItem("rol", user.rol);
 
-            mensaje.innerHTML = "âœ… Bienvenido " + user.nombre_completo;
+            mensaje.innerHTML = "✅ Bienvenido " + user.nombre_completo;
             mensaje.className = "mensaje exito show";
 
             setTimeout(() => {
@@ -112,12 +112,12 @@ form.addEventListener('submit', async (e) => {
             }, 1500);
 
         } else {
-            mensaje.innerHTML = "âŒ Usuario o contraseÃ±a incorrectos";
+            mensaje.innerHTML = "❌ Usuario o contraseña incorrectos";
             mensaje.className = "mensaje error show";
         }
 
     } catch (error) {
-        mensaje.innerHTML = "âŒ Error de conexiÃ³n";
+        mensaje.innerHTML = "❌ Error de conexión";
         mensaje.className = "mensaje error show";
         console.error(error);
     } finally {
