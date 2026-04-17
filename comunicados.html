@@ -310,7 +310,7 @@
 
         .page-admin .admin-layout {
             display: grid;
-            grid-template-columns: 1.1fr 1fr;
+            grid-template-columns: 1.35fr 1fr;
             gap: 16px;
             margin-bottom: 20px;
             align-items: start;
@@ -370,7 +370,7 @@
 
         .page-admin .comunicado-editor-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: minmax(0, 1.45fr) minmax(240px, 0.85fr);
             gap: 14px;
             align-items: start;
         }
@@ -381,7 +381,7 @@
         }
 
         .page-admin #contenidoCom {
-            min-height: 170px;
+            min-height: 260px;
             resize: vertical;
         }
 
@@ -410,7 +410,7 @@
         .page-admin .comunicado-preview {
             border: 1px solid #e2d8c7;
             border-radius: 12px;
-            padding: 14px;
+            padding: 16px;
             background: #fdfbf7;
             border-left: 5px solid #27ae60;
             min-height: 210px;
@@ -447,7 +447,7 @@
             align-items: center;
             gap: 6px;
             background: rgba(39, 174, 96, 0.12);
-            color: #0b5c31;
+            color: #06361b;
             border: 1px solid rgba(39, 174, 96, 0.3);
             border-radius: 999px;
             padding: 4px 10px;
@@ -603,6 +603,17 @@
 
         .resultado-auditoria li {
             margin-bottom: 6px;
+        }
+
+        @media (max-width: 1400px) {
+            .page-admin .comunicado-editor-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .page-admin .comunicado-preview {
+                position: static;
+                min-height: 0;
+            }
         }
 
         @media (max-width: 1024px) {
