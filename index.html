@@ -103,6 +103,40 @@
             "Content-Type": "application/json"
         };
 
+        function obtenerPrioridadComunicado(colorBorde) {
+            const color = String(colorBorde || '').toLowerCase();
+
+            if (color === '#e74c3c') {
+                return {
+                    texto: 'Urgente',
+                    clase: 'prioridad-urgente',
+                    color: '#e74c3c'
+                };
+            }
+
+            if (color === '#f39c12') {
+                return {
+                    texto: 'Importante',
+                    clase: 'prioridad-importante',
+                    color: '#f39c12'
+                };
+            }
+
+            if (color === '#3498db') {
+                return {
+                    texto: 'General',
+                    clase: 'prioridad-general',
+                    color: '#3498db'
+                };
+            }
+
+            return {
+                texto: 'Informativo',
+                clase: 'prioridad-informativo',
+                color: '#27ae60'
+            };
+        }
+
         async function cargarComunicados() {
             const contenedor = document.getElementById("contenedorComunicados");
             try {
@@ -116,10 +150,14 @@
                 }
                 contenedor.innerHTML = "";
                 datos.forEach(c => {
+                    const prioridad = obtenerPrioridadComunicado(c.color_borde);
                     contenedor.innerHTML += `
-                        <article class="comunicado-card">
+                        <article class="comunicado-card" style="--com-color:${prioridad.color};">
                             <div class="com-content">
-                                <h3 class="com-titulo">${c.titulo}</h3>
+                                <div class="com-encabezado">
+                                    <h3 class="com-titulo">${c.titulo}</h3>
+                                    <span class="com-prioridad ${prioridad.clase}">${prioridad.texto}</span>
+                                </div>
                                 <p class="com-contenido">${c.contenido}</p>
                             </div>
                             <div class="com-footer">
