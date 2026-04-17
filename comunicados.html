@@ -94,15 +94,29 @@
                 <article class="panel-admin panel-comunicados" id="moduloComunicados">
                     <h3><i class="fas fa-megaphone"></i> Publicar Comunicado Oficial</h3>
                     <form id="formComunicado" class="form-panel">
-                        <input type="hidden" id="comunicadoIdEdicion">
-                        <input type="text" id="tituloCom" placeholder="Título del comunicado (Ej: Cambio de horario)" required>
-                        <textarea id="contenidoCom" rows="3" placeholder="Escriba el mensaje detallado aquí..." required></textarea>
-                        <select id="colorCom">
-                            <option value="#27ae60">Informativo (Verde)</option>
-                            <option value="#3498db">General (Azul)</option>
-                            <option value="#f39c12">Importante (Naranja)</option>
-                            <option value="#e74c3c">Urgente (Rojo)</option>
-                        </select>
+                        <div class="comunicado-editor-grid">
+                            <div class="comunicado-campos">
+                                <input type="hidden" id="comunicadoIdEdicion">
+                                <input type="text" id="tituloCom" placeholder="Título del comunicado (Ej: Cambio de horario)" required>
+                                <textarea id="contenidoCom" rows="7" maxlength="500" placeholder="Escriba el mensaje detallado aquí..." required></textarea>
+                                <div class="comunicado-meta-row">
+                                    <select id="colorCom">
+                                        <option value="#27ae60">Informativo (Verde)</option>
+                                        <option value="#3498db">General (Azul)</option>
+                                        <option value="#f39c12">Importante (Naranja)</option>
+                                        <option value="#e74c3c">Urgente (Rojo)</option>
+                                    </select>
+                                    <span id="conteoContenidoCom" class="conteo-contenido">0/500</span>
+                                </div>
+                            </div>
+
+                            <aside class="comunicado-preview" id="previewComunicado">
+                                <p class="preview-label"><i class="fas fa-eye"></i> Vista previa</p>
+                                <h4 id="previewTituloCom">Sin título</h4>
+                                <p id="previewContenidoCom">Escriba el contenido para visualizar cómo se publicará.</p>
+                                <span id="previewTipoCom" class="preview-tipo">Informativo</span>
+                            </aside>
+                        </div>
                         <button type="submit" class="btn-admin" id="btnPublicar"><i class="fas fa-paper-plane"></i> Publicar Comunicado</button>
                         <button type="button" class="btn-volver btn-secundario" id="btnCancelarComEdit" style="display:none;"><i class="fas fa-times"></i> Cancelar Edición</button>
                     </form>
@@ -354,6 +368,93 @@
             animation: none;
         }
 
+        .page-admin .comunicado-editor-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            align-items: start;
+        }
+
+        .page-admin .comunicado-campos {
+            display: grid;
+            gap: 10px;
+        }
+
+        .page-admin #contenidoCom {
+            min-height: 170px;
+            resize: vertical;
+        }
+
+        .page-admin .comunicado-meta-row {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .page-admin .comunicado-meta-row select {
+            flex: 1;
+        }
+
+        .page-admin .conteo-contenido {
+            background: #f4efe4;
+            color: #5f5f5f;
+            border: 1px solid #e2d8c7;
+            border-radius: 999px;
+            padding: 6px 10px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            min-width: 72px;
+            text-align: center;
+        }
+
+        .page-admin .comunicado-preview {
+            border: 1px solid #e2d8c7;
+            border-radius: 12px;
+            padding: 14px;
+            background: #fdfbf7;
+            border-left: 5px solid #27ae60;
+            min-height: 210px;
+            position: sticky;
+            top: 90px;
+        }
+
+        .page-admin .preview-label {
+            margin: 0 0 8px;
+            color: #6d6d6d;
+            font-size: 0.82rem;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            font-weight: 700;
+        }
+
+        .page-admin .comunicado-preview h4 {
+            margin: 0;
+            color: #0a4c23;
+            font-size: 1.05rem;
+            line-height: 1.3;
+        }
+
+        .page-admin .comunicado-preview p {
+            margin: 9px 0 12px;
+            color: #4f4f4f;
+            font-size: 0.93rem;
+            line-height: 1.5;
+            white-space: pre-wrap;
+        }
+
+        .page-admin .preview-tipo {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(39, 174, 96, 0.12);
+            color: #0b5c31;
+            border: 1px solid rgba(39, 174, 96, 0.3);
+            border-radius: 999px;
+            padding: 4px 10px;
+            font-size: 0.79rem;
+            font-weight: 700;
+        }
+
         .page-admin .btn-admin {
             justify-content: center;
         }
@@ -508,6 +609,15 @@
             .page-admin .admin-layout {
                 grid-template-columns: 1fr;
             }
+
+            .page-admin .comunicado-editor-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .page-admin .comunicado-preview {
+                position: static;
+                min-height: 0;
+            }
         }
 
         @media (max-width: 720px) {
@@ -655,6 +765,33 @@
             if (elUltimo && typeof ultimoComunicado === 'string') {
                 elUltimo.textContent = ultimoComunicado;
             }
+        }
+
+        function actualizarPreviewComunicado() {
+            const titulo = document.getElementById('tituloCom').value.trim();
+            const contenido = document.getElementById('contenidoCom').value.trim();
+            const selectorColor = document.getElementById('colorCom');
+            const color = selectorColor.value;
+            const tipoTexto = (selectorColor.options[selectorColor.selectedIndex]?.text || 'Informativo').split('(')[0].trim();
+
+            const previewTitulo = document.getElementById('previewTituloCom');
+            const previewContenido = document.getElementById('previewContenidoCom');
+            const previewTipo = document.getElementById('previewTipoCom');
+            const previewCard = document.getElementById('previewComunicado');
+            const conteo = document.getElementById('conteoContenidoCom');
+
+            previewTitulo.textContent = titulo || 'Sin título';
+            previewContenido.textContent = contenido || 'Escriba el contenido para visualizar cómo se publicará.';
+            previewTipo.textContent = tipoTexto || 'Informativo';
+            previewCard.style.borderLeftColor = color;
+            previewTipo.style.color = color;
+            previewTipo.style.borderColor = color + '66';
+            previewTipo.style.backgroundColor = color + '1f';
+
+            const cantidad = document.getElementById('contenidoCom').value.length;
+            conteo.textContent = `${cantidad}/500`;
+            conteo.style.color = cantidad > 460 ? '#b0342b' : '#5f5f5f';
+            conteo.style.borderColor = cantidad > 460 ? '#d9a19d' : '#e2d8c7';
         }
 
 
@@ -820,6 +957,7 @@
             document.getElementById('tituloCom').value = tituloActual;
             document.getElementById('contenidoCom').value = contenidoActual;
             document.getElementById('colorCom').value = colorActual || '#27ae60';
+            actualizarPreviewComunicado();
             document.getElementById('btnPublicar').innerHTML = '<i class="fas fa-save"></i> Guardar Cambios';
             document.getElementById('btnCancelarComEdit').style.display = 'inline-flex';
             Notiflix.Notify.info('Modo edición activado para el comunicado seleccionado.');
@@ -835,11 +973,20 @@
             document.getElementById('comunicadoIdEdicion').value = '';
             document.getElementById('btnPublicar').innerHTML = '<i class="fas fa-paper-plane"></i> Publicar Comunicado';
             document.getElementById('btnCancelarComEdit').style.display = 'none';
+            actualizarPreviewComunicado();
         }
 
         function setupComunicadoListener() {
             const form = document.getElementById('formComunicado');
             const btnCancelarComEdit = document.getElementById('btnCancelarComEdit');
+            const titulo = document.getElementById('tituloCom');
+            const contenido = document.getElementById('contenidoCom');
+            const color = document.getElementById('colorCom');
+
+            titulo.addEventListener('input', actualizarPreviewComunicado);
+            contenido.addEventListener('input', actualizarPreviewComunicado);
+            color.addEventListener('change', actualizarPreviewComunicado);
+            actualizarPreviewComunicado();
 
             if (btnCancelarComEdit) {
                 btnCancelarComEdit.addEventListener('click', limpiarFormularioComunicado);
