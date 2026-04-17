@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -19,7 +19,7 @@
             <img src="img/LOGO_MEP-removebg-preview.png" class="logo-mep" alt="MEP Costa Rica">
             <div class="divider"></div>
             <div class="logo-gobierno">
-                <strong>Colegio Técnico Profesional</strong><br>
+                <strong>Colegio TÃ©cnico Profesional</strong><br>
                 de Matapalo
             </div>
         </div>
@@ -48,7 +48,7 @@
 
             <div class="form-group">
                 <i class="fas fa-key"></i>
-                <input type="password" id="password" placeholder="Contraseña" required>
+                <input type="password" id="password" placeholder="ContraseÃ±a" required>
             </div>
 
             <div class="btn-container">
@@ -61,8 +61,8 @@
 </div>
 
 <script>
- const SUPABASE_URL = 'https://etdcmuikvtnqfcnlvodh.supabase.co';
-        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV0ZGNtdWlrdnRucWZjbmx2b2RoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU1OTQ1ODcsImV4cCI6MjA5MTE3MDU4N30.8JHWlTxYRSYEkpipqesHVBKn7QomTXJYHp6Nm6SzU4A';
+ const SUPABASE_URL = 'https://iowxlwnosyyqetbvvmuk.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlvd3hsd25vc3l5cWV0YnZ2bXVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYxOTk4NDYsImV4cCI6MjA5MTc3NTg0Nn0.VZ5VMu0z4nlsZ0hKvDSk4IUluA1yGx9eQCCXzDc5HmU';
     
 const form = document.getElementById('loginForm');
 const mensaje = document.getElementById('mensaje');
@@ -96,12 +96,12 @@ form.addEventListener('submit', async (e) => {
 
             const user = data[0];
 
-            // 🔐 GUARDAR SESIÓN
+            // ðŸ” GUARDAR SESIÃ“N
             localStorage.setItem("usuario", user.usuario);
             localStorage.setItem("nombre", user.nombre_completo);
             localStorage.setItem("rol", user.rol);
 
-            mensaje.innerHTML = "✅ Bienvenido " + user.nombre_completo;
+            mensaje.innerHTML = "âœ… Bienvenido " + user.nombre_completo;
             mensaje.className = "mensaje exito show";
 
             setTimeout(() => {
@@ -109,12 +109,12 @@ form.addEventListener('submit', async (e) => {
             }, 1500);
 
         } else {
-            mensaje.innerHTML = "❌ Usuario o contraseña incorrectos";
+            mensaje.innerHTML = "âŒ Usuario o contraseÃ±a incorrectos";
             mensaje.className = "mensaje error show";
         }
 
     } catch (error) {
-        mensaje.innerHTML = "❌ Error de conexión";
+        mensaje.innerHTML = "âŒ Error de conexiÃ³n";
         mensaje.className = "mensaje error show";
         console.error(error);
     } finally {
@@ -127,4 +127,5 @@ form.addEventListener('submit', async (e) => {
 
 </body>
 </html>
+
 

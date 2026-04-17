@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 
 <head>
@@ -18,7 +18,7 @@
                 <img src="img/LOGO_MEP-removebg-preview.png" class="logo-mep" alt="MEP Costa Rica">
                 <div class="divider"></div>
                 <div class="logo-gobierno">
-                    <strong>Colegio Técnico Profesional</strong><br>de Matapalo
+                    <strong>Colegio TÃ©cnico Profesional</strong><br>de Matapalo
                 </div>
             </div>
 
@@ -40,7 +40,7 @@
             <section class="card-steam">
                 <a href="galeria.html"><img src="img/steam.png" alt="STEAM"></a>
                 <h3>Ingresa a STEAM</h3>
-                <p>Conservación y Promoción de la Reserva Ecológica Institucional como estrategia para la Educación Ambiental desde un enfoque STEAM. </p>
+                <p>ConservaciÃ³n y PromociÃ³n de la Reserva EcolÃ³gica Institucional como estrategia para la EducaciÃ³n Ambiental desde un enfoque STEAM. </p>
             </section>
 
             <section class="carousel-box">
@@ -94,8 +94,8 @@
             }
         }, 5000);
 
-        const SUPABASE_URL = 'https://etdcmuikvtnqfcnlvodh.supabase.co';
-        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV0ZGNtdWlrdnRucWZjbmx2b2RoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU1OTQ1ODcsImV4cCI6MjA5MTE3MDU4N30.8JHWlTxYRSYEkpipqesHVBKn7QomTXJYHp6Nm6SzU4A';
+        const SUPABASE_URL = 'https://iowxlwnosyyqetbvvmuk.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlvd3hsd25vc3l5cWV0YnZ2bXVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYxOTk4NDYsImV4cCI6MjA5MTc3NTg0Nn0.VZ5VMu0z4nlsZ0hKvDSk4IUluA1yGx9eQCCXzDc5HmU';
 
         const headers = {
             "apikey": SUPABASE_KEY,
@@ -123,7 +123,7 @@
                                 <p class="com-contenido">${c.contenido}</p>
                             </div>
                             <div class="com-footer">
-                                <span class="com-autor"><i class="fas fa-user-circle"></i> ${c.autor || 'DIRECCIÓN'}</span>
+                                <span class="com-autor"><i class="fas fa-user-circle"></i> ${c.autor || 'DIRECCIÃ“N'}</span>
                             </div>
                         </article>`;
                 });
@@ -143,7 +143,7 @@
                 const datos = await res.json();
 
                 if (!datos || datos.length === 0) {
-                    tabla.innerHTML = "<tr><td colspan='4' style='text-align:center; padding:30px; color:#666;'><i class='fas fa-check-circle' style='color: #27ae60; font-size: 1.5rem; display:block; margin-bottom: 10px;'></i>Todos los docentes están presentes hoy.</td></tr>";
+                    tabla.innerHTML = "<tr><td colspan='4' style='text-align:center; padding:30px; color:#666;'><i class='fas fa-check-circle' style='color: #27ae60; font-size: 1.5rem; display:block; margin-bottom: 10px;'></i>Todos los docentes estÃ¡n presentes hoy.</td></tr>";
                     return;
                 }
 

@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión de Comunicados - CTP Matapalo</title>
+    <title>GestiÃ³n de Comunicados - CTP Matapalo</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 
@@ -20,7 +20,7 @@
                 <img src="img/LOGO_MEP-removebg-preview.png" class="logo-mep" alt="MEP Costa Rica">
                 <div class="divider"></div>
                 <div class="logo-gobierno">
-                    <strong>Colegio Técnico Profesional</strong><br> de Matapalo
+                    <strong>Colegio TÃ©cnico Profesional</strong><br> de Matapalo
                 </div>
             </div>
 
@@ -34,10 +34,10 @@
 
     <div class="navbar">
         <div class="navbar-info">
-            <span><i class="fas fa-clipboard-list"></i> Sesión:</span>
+            <span><i class="fas fa-clipboard-list"></i> SesiÃ³n:</span>
             <span id="rolBadge" class="badge-rol">Cargando...</span>
         </div>
-        <button class="btn-cerrar" onclick="cerrarSesion()"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</button>
+        <button class="btn-cerrar" onclick="cerrarSesion()"><i class="fas fa-sign-out-alt"></i> Cerrar SesiÃ³n</button>
     </div>
 
     <div class="container">
@@ -61,8 +61,8 @@
         <div class="panel-admin" style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 30px; border-top: 5px solid #e67e22;">
             <h3 style="color: #e67e22; margin-top: 0;"><i class="fas fa-megaphone"></i> Publicar Comunicado Oficial</h3>
             <form id="formComunicado">
-                <input type="text" id="tituloCom" placeholder="Título del comunicado (Ej: Cambio de horario)" required>
-                <textarea id="contenidoCom" rows="2" placeholder="Escriba el mensaje detallado aquí..." required></textarea>
+                <input type="text" id="tituloCom" placeholder="TÃ­tulo del comunicado (Ej: Cambio de horario)" required>
+                <textarea id="contenidoCom" rows="2" placeholder="Escriba el mensaje detallado aquÃ­..." required></textarea>
                 <select id="colorCom">
                 <option value="#27ae60"><i class="fas fa-circle"></i> Informativo (Verde)</option>
                 <option value="#3498db"><i class="fas fa-circle"></i> General (Azul)</option>
@@ -88,9 +88,9 @@
                     <thead>
                         <tr>
                             <th><i class="fas fa-calendar"></i> Fecha</th>
-                            <th><i class="fas fa-heading"></i> Título y Contenido</th>
+                            <th><i class="fas fa-heading"></i> TÃ­tulo y Contenido</th>
                             <th><i class="fas fa-user"></i> Autor</th>
-                            <th><i class="fas fa-cog"></i> Acción</th>
+                            <th><i class="fas fa-cog"></i> AcciÃ³n</th>
                         </tr>
                     </thead>
                     <tbody id="cuerpoTabla">
@@ -179,7 +179,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script>
-        // Manejar validaciones para asegurar que el código no se caiga
+        // Manejar validaciones para asegurar que el cÃ³digo no se caiga
         try {
             emailjs.init({
                 publicKey: "qAglmSdD5me55ae1-"
@@ -188,13 +188,13 @@
             console.error("Error configurando EmailJS:", error);
         }
 
-        // 🔒 VERIFICACIÓN DE SESIÓN INMEDIATA
+        // ðŸ”’ VERIFICACIÃ“N DE SESIÃ“N INMEDIATA
         if (!localStorage.getItem('usuario') || !localStorage.getItem('nombre')) {
             window.location.href = "registrarme.html";
         }
 
-        const SUPABASE_URL = 'https://etdcmuikvtnqfcnlvodh.supabase.co';
-        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV0ZGNtdWlrdnRucWZjbmx2b2RoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU1OTQ1ODcsImV4cCI6MjA5MTE3MDU4N30.8JHWlTxYRSYEkpipqesHVBKn7QomTXJYHp6Nm6SzU4A';
+        const SUPABASE_URL = 'https://iowxlwnosyyqetbvvmuk.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlvd3hsd25vc3l5cWV0YnZ2bXVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYxOTk4NDYsImV4cCI6MjA5MTc3NTg0Nn0.VZ5VMu0z4nlsZ0hKvDSk4IUluA1yGx9eQCCXzDc5HmU';
         const headers = {
             "apikey": SUPABASE_KEY,
             "Authorization": `Bearer ${SUPABASE_KEY}`,
@@ -207,27 +207,27 @@
             const rol = localStorage.getItem('rol');
             const usuario = localStorage.getItem('usuario');
 
-            console.log('🔍 Datos en localStorage:', {
+            console.log('ðŸ” Datos en localStorage:', {
                 nombre,
                 rol,
                 usuario
             });
 
             if (!nombre || !usuario) {
-                console.warn('⚠️ No hay datos de sesión, redirigiendo a index...');
+                console.warn('âš ï¸ No hay datos de sesiÃ³n, redirigiendo a index...');
                 globalThis.location.href = "index.html";
                 return;
             }
 
             // Si no es admin lo mandamos a docentes
             if (rol !== 'admin') {
-                console.warn('⚠️ Usuario no es admin, redirigiendo a docentes...');
+                console.warn('âš ï¸ Usuario no es admin, redirigiendo a docentes...');
                 globalThis.location.href = "docentes.html";
                 return;
             }
 
             // Actualizar Textos
-            console.log('✅ Actualizando interfaz con datos del usuario');
+            console.log('âœ… Actualizando interfaz con datos del usuario');
             document.getElementById('nombreUsuario').textContent = nombre;
             document.getElementById('usuario').textContent = usuario;
             document.getElementById('rol').textContent = rol;
@@ -288,13 +288,13 @@
 
         async function eliminarComunicado(id) {
             const confirmacion = await Swal.fire({
-                title: '¿Eliminar comunicado?',
-                text: "Esta acción no se puede deshacer y desaparecerá para todos los usuarios.",
+                title: 'Â¿Eliminar comunicado?',
+                text: "Esta acciÃ³n no se puede deshacer y desaparecerÃ¡ para todos los usuarios.",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#e74c3c',
                 cancelButtonColor: '#95a5a6',
-                confirmButtonText: 'Sí, eliminar',
+                confirmButtonText: 'SÃ­, eliminar',
                 cancelButtonText: 'Cancelar'
             });
 
@@ -321,7 +321,7 @@
                     Swal.fire({
                         icon: 'success',
                         title: 'Eliminado',
-                        text: 'El comunicado fue eliminado con éxito.',
+                        text: 'El comunicado fue eliminado con Ã©xito.',
                         timer: 1500,
                         showConfirmButton: false,
                         didOpen: () => {
@@ -334,7 +334,7 @@
                     Swal.fire('Error', 'No se pudo eliminar: ' + res.statusText, 'error');
                 }
             } catch (e) {
-                Swal.fire('Error', 'Problema de conexión.', 'error');
+                Swal.fire('Error', 'Problema de conexiÃ³n.', 'error');
             }
         }
 
@@ -344,7 +344,7 @@
             } = await Swal.fire({
                 title: 'Editar Comunicado',
                 html: `
-            <input id="swal-input-titulo" class="swal2-input" value="${tituloActual}" placeholder="Título">
+            <input id="swal-input-titulo" class="swal2-input" value="${tituloActual}" placeholder="TÃ­tulo">
             <textarea id="swal-input-contenido" class="swal2-textarea" placeholder="Contenido" rows="4" style="margin-top: 15px;">${contenidoActual}</textarea>
             <select id="swal-input-color" class="swal2-input" style="width: 80%; display: flex; margin: 15px auto;">
                 <option value="#27ae60" ${colorActual === '#27ae60' ? 'selected' : ''}>Informativo (Verde)</option>
@@ -365,7 +365,7 @@
                     const valColor = document.getElementById('swal-input-color').value;
 
                     if (!valTitulo || !valContenido) {
-                        Swal.showValidationMessage('El título y contenido son requeridos');
+                        Swal.showValidationMessage('El tÃ­tulo y contenido son requeridos');
                     }
                     return {
                         titulo: valTitulo,
@@ -398,8 +398,8 @@
                     if (res.ok) {
                         Swal.fire({
                             icon: 'success',
-                            title: '¡Actualizado!',
-                            text: 'El comunicado se actualizó con éxito.',
+                            title: 'Â¡Actualizado!',
+                            text: 'El comunicado se actualizÃ³ con Ã©xito.',
                             timer: 2000,
                             showConfirmButton: false,
                             didOpen: () => {
@@ -449,7 +449,7 @@
                         if (res.ok) {
                             Swal.fire({
                                 icon: 'success',
-                                title: '¡Publicado!',
+                                title: 'Â¡Publicado!',
                                 text: 'Comunicado publicado exitosamente.',
                                 timer: 2000,
                                 showConfirmButton: false,
@@ -474,13 +474,13 @@
 
         async function cerrarSesion() {
             const confirmacion = await Swal.fire({
-                title: '¿Cerrar Sesión?',
-                text: '¿Seguro que desea salir del panel?',
+                title: 'Â¿Cerrar SesiÃ³n?',
+                text: 'Â¿Seguro que desea salir del panel?',
                 icon: 'question',
                 showCancelButton: true,
                 confirmButtonColor: '#3498db',
                 cancelButtonColor: '#95a5a6',
-                confirmButtonText: 'Sí, salir',
+                confirmButtonText: 'SÃ­, salir',
                 cancelButtonText: 'Cancelar'
             });
 
@@ -492,7 +492,7 @@
 
         window.onload = inicializar;
 
-        // 🔎 FUNCIONALIDAD DE BUSQUEDA EN TABLA
+        // ðŸ”Ž FUNCIONALIDAD DE BUSQUEDA EN TABLA
         function filtrarTabla() {
             let input = document.getElementById("busquedaComunicados");
             let filter = input.value.toUpperCase();
@@ -520,14 +520,14 @@
                 if (!btn) return;
 
                 if (window.scrollY > lastScrollY && window.scrollY > 60) {
-                    // Scroll hacia abajo: ocultar (animación de plegado)
+                    // Scroll hacia abajo: ocultar (animaciÃ³n de plegado)
                     btn.classList.add('hide-on-scroll');
                 } else {
                     // Scroll hacia arriba o arriba del top: mostrar
                     btn.classList.remove('hide-on-scroll');
                 }
             } else {
-                // Restaurar si volviera mágicamente a desktop
+                // Restaurar si volviera mÃ¡gicamente a desktop
                 const btnX = document.querySelector('.btn-cerrar');
                 if (btnX) btnX.classList.remove('hide-on-scroll');
             }

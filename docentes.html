@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 
 <head>
@@ -20,7 +20,7 @@
                 <img src="img/LOGO_MEP-removebg-preview.png" class="logo-mep" alt="MEP Costa Rica">
                 <div class="divider"></div>
                 <div class="logo-gobierno">
-                    <strong>Colegio Técnico Profesional</strong><br> de Matapalo
+                    <strong>Colegio TÃ©cnico Profesional</strong><br> de Matapalo
                 </div>
             </div>
 
@@ -34,10 +34,10 @@
 
     <div class="navbar">
         <div class="navbar-info">
-            <span><i class="fas fa-clipboard-list"></i> Sesión:</span>
+            <span><i class="fas fa-clipboard-list"></i> SesiÃ³n:</span>
             <span id="rolBadge" class="badge-rol">Cargando...</span>
         </div>
-        <button class="btn-cerrar" onclick="cerrarSesion()"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</button>
+        <button class="btn-cerrar" onclick="cerrarSesion()"><i class="fas fa-sign-out-alt"></i> Cerrar SesiÃ³n</button>
     </div>
 
     <div class="container">
@@ -58,9 +58,9 @@
         </div>
 
         <div id="seccionAdmin">
-            <h3 style="color: #e67e22; margin-top: 0;"><i class="fas fa-user-shield"></i> Panel de Administración</h3>
+            <h3 style="color: #e67e22; margin-top: 0;"><i class="fas fa-user-shield"></i> Panel de AdministraciÃ³n</h3>
             <p style="margin-bottom: 20px; font-size: 0.95rem;">Usted cuenta con acceso al gestor de comunicados institucionales.</p>
-            <button type="button" class="btn-admin" onclick="window.location.href='comunicados.html'"><i class="fas fa-megaphone"></i> Ir a Gestión de Comunicados</button>
+            <button type="button" class="btn-admin" onclick="window.location.href='comunicados.html'"><i class="fas fa-megaphone"></i> Ir a GestiÃ³n de Comunicados</button>
         </div>
 
         <h3><i class="fas fa-clipboard-plus"></i> Registrar Nueva Ausencia</h3>
@@ -71,7 +71,7 @@
                     <input type="date" id="fechaInicio" required>
                 </div>
                 <div>
-                    <label for="fechaFin"><i class="fas fa-calendar-check"></i> Fecha de Finalización</label>
+                    <label for="fechaFin"><i class="fas fa-calendar-check"></i> Fecha de FinalizaciÃ³n</label>
                     <input type="date" id="fechaFin" required>
                 </div>
             </div>
@@ -83,8 +83,8 @@
                     <option value="">-- Seleccionar motivo --</option>
                     <option value="Enfermedad">Enfermedad / Incapacidad</option>
                     <option value="Permiso">Permiso Personal</option>
-                    <option value="Capacitación">Capacitación MEP</option>
-                    <option value="Cita Médica">Cita Médica</option>
+                    <option value="CapacitaciÃ³n">CapacitaciÃ³n MEP</option>
+                    <option value="Cita MÃ©dica">Cita MÃ©dica</option>
                     <option value="Otro">Otro Motivo</option>
                 </select>
                 </div>
@@ -96,9 +96,9 @@
 
             <div>
                 <label for="actividadRemplazo"><i class="fas fa-book"></i> Trabajo para los Estudiantes</label>
-                <textarea id="actividadRemplazo" rows="3" placeholder="Describa la práctica o actividad que deben realizar los grupos..."></textarea>
+                <textarea id="actividadRemplazo" rows="3" placeholder="Describa la prÃ¡ctica o actividad que deben realizar los grupos..."></textarea>
             </div>
-            <button type="submit" id="btnGuardar"><i class="fas fa-save"></i> Registrar Período de Ausencia</button>
+            <button type="submit" id="btnGuardar"><i class="fas fa-save"></i> Registrar PerÃ­odo de Ausencia</button>
         </form>
 
         <hr>
@@ -117,7 +117,7 @@
                             <th><i class="fas fa-calendar"></i> Desde</th>
                             <th><i class="fas fa-calendar-check"></i> Hasta</th>
                             <th><i class="fas fa-info-circle"></i> Motivo y Actividad</th>
-                            <th><i class="fas fa-cog"></i> Acción</th>
+                            <th><i class="fas fa-cog"></i> AcciÃ³n</th>
                         </tr>
                     </thead>
                     <tbody id="cuerpoTabla">
@@ -136,7 +136,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script>
-        // Manejar validaciones para asegurar que el código no se caiga
+        // Manejar validaciones para asegurar que el cÃ³digo no se caiga
         try {
             emailjs.init({
                 publicKey: "EhWIBnbn9ScJ2PgoJ"
@@ -145,12 +145,12 @@
             console.error("Error configurando EmailJS:", error);
         }
 
-        // 🔒 VERIFICACIÓN DE SESIÓN INMEDIATA
+        // ðŸ”’ VERIFICACIÃ“N DE SESIÃ“N INMEDIATA
         if (!localStorage.getItem('usuario') || !localStorage.getItem('nombre')) {
             window.location.href = "registrarme.html";
         }
-        const SUPABASE_URL = 'https://etdcmuikvtnqfcnlvodh.supabase.co';
-        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV0ZGNtdWlrdnRucWZjbmx2b2RoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU1OTQ1ODcsImV4cCI6MjA5MTE3MDU4N30.8JHWlTxYRSYEkpipqesHVBKn7QomTXJYHp6Nm6SzU4A';
+        const SUPABASE_URL = 'https://iowxlwnosyyqetbvvmuk.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlvd3hsd25vc3l5cWV0YnZ2bXVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYxOTk4NDYsImV4cCI6MjA5MTc3NTg0Nn0.VZ5VMu0z4nlsZ0hKvDSk4IUluA1yGx9eQCCXzDc5HmU';
 
         const headers = {
             "apikey": SUPABASE_KEY,
@@ -227,7 +227,7 @@
                     }
                 });
 
-                if (res.ok) { // Notificar por correo vÃ­a EmailJS al guardar la ausencia
+                if (res.ok) { // Notificar por correo vÃƒÂ­a EmailJS al guardar la ausencia
                     emailjs.send("service_lww6198", "template_htbp6yd", {
                             nombre: datos.nombre,
                             fecha_inicio: datos.fecha,
@@ -235,15 +235,15 @@
                             motivo: datos.razon,
                             detalle: datos.detalle,
                             actividad: datos.actividad
-                        }).then(() => console.log("Correo enviado a direcciÃ³n"))
+                        }).then(() => console.log("Correo enviado a direcciÃƒÂ³n"))
                         .catch(err => {
                             console.error("Fallo EmailJS:", err);
-                            Swal.fire('Atención', 'Datos guardados, pero hubo un error enviando el correo: ' + (err.text || JSON.stringify(err)), 'warning');
+                            Swal.fire('AtenciÃ³n', 'Datos guardados, pero hubo un error enviando el correo: ' + (err.text || JSON.stringify(err)), 'warning');
                         });
                     Swal.fire({
                         icon: 'success',
-                        title: '¡Guardado!',
-                        text: 'Período de ausencia guardado correctamente.',
+                        title: 'Â¡Guardado!',
+                        text: 'PerÃ­odo de ausencia guardado correctamente.',
                         timer: 2000,
                         showConfirmButton: false,
                         didOpen: () => {
@@ -260,7 +260,7 @@
                 Swal.fire({
                     icon: 'error',
                     title: 'Error',
-                    text: 'Error de conexión con el servidor.'
+                    text: 'Error de conexiÃ³n con el servidor.'
                 });
             }
             btn.disabled = false;
@@ -309,13 +309,13 @@
 
         async function eliminarAusencia(id) {
             const confirmacion = await Swal.fire({
-                title: '¿Eliminar ausencia?',
-                text: "Esta acción no se puede deshacer.",
+                title: 'Â¿Eliminar ausencia?',
+                text: "Esta acciÃ³n no se puede deshacer.",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#e74c3c',
                 cancelButtonColor: '#95a5a6',
-                confirmButtonText: 'Sí, eliminar',
+                confirmButtonText: 'SÃ­, eliminar',
                 cancelButtonText: 'Cancelar'
             });
 
@@ -342,7 +342,7 @@
                     Swal.fire({
                         icon: 'success',
                         title: 'Eliminado',
-                        text: 'La ausencia fue eliminada con éxito.',
+                        text: 'La ausencia fue eliminada con Ã©xito.',
                         timer: 1500,
                         showConfirmButton: false,
                         didOpen: () => {
@@ -356,19 +356,19 @@
                 }
             } catch (e) {
                 console.error(e);
-                Swal.fire('Error', 'Problema de conexión con el servidor.', 'error');
+                Swal.fire('Error', 'Problema de conexiÃ³n con el servidor.', 'error');
             }
         }
 
         async function cerrarSesion() {
             const confirmacion = await Swal.fire({
-                title: '¿Cerrar Sesión?',
-                text: '¿Seguro que desea salir del panel?',
+                title: 'Â¿Cerrar SesiÃ³n?',
+                text: 'Â¿Seguro que desea salir del panel?',
                 icon: 'question',
                 showCancelButton: true,
                 confirmButtonColor: '#3498db',
                 cancelButtonColor: '#95a5a6',
-                confirmButtonText: 'Sí, salir',
+                confirmButtonText: 'SÃ­, salir',
                 cancelButtonText: 'Cancelar'
             });
 
@@ -380,7 +380,7 @@
 
         window.onload = inicializar;
 
-        // 🔎 FUNCIONALIDAD DE BUSQUEDA EN TABLA
+        // ðŸ”Ž FUNCIONALIDAD DE BUSQUEDA EN TABLA
         function filtrarTabla() {
             let input = document.getElementById("busquedaHistorial");
             let filter = input.value.toUpperCase();
@@ -414,14 +414,14 @@
                 if (!btn) return;
 
                 if (window.scrollY > lastScrollY && window.scrollY > 60) {
-                    // Scroll hacia abajo: ocultar (animación de plegado)
+                    // Scroll hacia abajo: ocultar (animaciÃ³n de plegado)
                     btn.classList.add('hide-on-scroll');
                 } else {
                     // Scroll hacia arriba o arriba del top: mostrar
                     btn.classList.remove('hide-on-scroll');
                 }
             } else {
-                // Restaurar si volviera mágicamente a desktop
+                // Restaurar si volviera mÃ¡gicamente a desktop
                 const btnX = document.querySelector('.btn-cerrar');
                 if (btnX) btnX.classList.remove('hide-on-scroll');
             }
