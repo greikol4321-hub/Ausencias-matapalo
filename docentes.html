@@ -133,9 +133,89 @@
 
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/notiflix@3/dist/notiflix-aio-3.2.8.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script>
+        Notiflix.Notify.init({
+            position: 'right-top',
+            timeout: 2800,
+            clickToClose: true,
+            fontSize: '14px'
+        });
+
+        Notiflix.Confirm.init({
+            titleColor: '#0a4c23',
+            okButtonBackground: '#0a4c23',
+            cancelButtonBackground: '#95a5a6',
+            borderRadius: '14px'
+        });
+
+        const Swal = {
+            async fire(arg1, arg2, arg3) {
+                if (typeof arg1 === 'string') {
+                    this.notifyByIcon(arg3 || 'info', arg1, arg2 || '');
+                    return {
+                        isConfirmed: true
+                    };
+                }
+
+                const opts = arg1 || {};
+
+                if (opts.showCancelButton) {
+                    const confirmado = await new Promise(resolve => {
+                        Notiflix.Confirm.show(
+                            opts.title || 'Confirmación',
+                            opts.text || '',
+                            opts.confirmButtonText || 'Aceptar',
+                            opts.cancelButtonText || 'Cancelar',
+                            () => resolve(true),
+                            () => resolve(false)
+                        );
+                    });
+
+                    return {
+                        isConfirmed: confirmado
+                    };
+                }
+
+                if (opts.showConfirmButton === false && !opts.icon) {
+                    Notiflix.Loading.standard(opts.text || opts.title || 'Procesando...');
+                    return {
+                        isConfirmed: true
+                    };
+                }
+
+                if (opts.icon || opts.title || opts.text) {
+                    this.notifyByIcon(opts.icon || 'info', opts.title || 'Aviso', opts.text || '');
+                }
+
+                return {
+                    isConfirmed: true
+                };
+            },
+            close() {
+                Notiflix.Loading.remove();
+            },
+            showLoading() {
+                Notiflix.Loading.standard('Procesando...');
+            },
+            showValidationMessage(message) {
+                Notiflix.Notify.warning(message);
+            },
+            notifyByIcon(icon, title, text) {
+                const message = [title, text].filter(Boolean).join(': ');
+                if (icon === 'success') {
+                    Notiflix.Notify.success(message || 'Operación exitosa');
+                } else if (icon === 'error') {
+                    Notiflix.Notify.failure(message || 'Ocurrió un error');
+                } else if (icon === 'warning') {
+                    Notiflix.Notify.warning(message || 'Atención');
+                } else {
+                    Notiflix.Notify.info(message || 'Información');
+                }
+            }
+        };
+
         // Manejar validaciones para asegurar que el código no se caiga
         try {
             emailjs.init({

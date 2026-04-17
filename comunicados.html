@@ -94,6 +94,7 @@
                 <article class="panel-admin panel-comunicados" id="moduloComunicados">
                     <h3><i class="fas fa-megaphone"></i> Publicar Comunicado Oficial</h3>
                     <form id="formComunicado" class="form-panel">
+                        <input type="hidden" id="comunicadoIdEdicion">
                         <input type="text" id="tituloCom" placeholder="Título del comunicado (Ej: Cambio de horario)" required>
                         <textarea id="contenidoCom" rows="3" placeholder="Escriba el mensaje detallado aquí..." required></textarea>
                         <select id="colorCom">
@@ -103,6 +104,7 @@
                             <option value="#e74c3c">Urgente (Rojo)</option>
                         </select>
                         <button type="submit" class="btn-admin" id="btnPublicar"><i class="fas fa-paper-plane"></i> Publicar Comunicado</button>
+                        <button type="button" class="btn-volver btn-secundario" id="btnCancelarComEdit" style="display:none;"><i class="fas fa-times"></i> Cancelar Edición</button>
                     </form>
                 </article>
 
@@ -527,9 +529,89 @@
             }
         }
     </style>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/notiflix@3/dist/notiflix-aio-3.2.8.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script>
+        Notiflix.Notify.init({
+            position: 'right-top',
+            timeout: 2800,
+            clickToClose: true,
+            fontSize: '14px'
+        });
+
+        Notiflix.Confirm.init({
+            titleColor: '#0a4c23',
+            okButtonBackground: '#0a4c23',
+            cancelButtonBackground: '#95a5a6',
+            borderRadius: '14px'
+        });
+
+        const Swal = {
+            async fire(arg1, arg2, arg3) {
+                if (typeof arg1 === 'string') {
+                    this.notifyByIcon(arg3 || 'info', arg1, arg2 || '');
+                    return {
+                        isConfirmed: true
+                    };
+                }
+
+                const opts = arg1 || {};
+
+                if (opts.showCancelButton) {
+                    const confirmado = await new Promise(resolve => {
+                        Notiflix.Confirm.show(
+                            opts.title || 'Confirmación',
+                            opts.text || '',
+                            opts.confirmButtonText || 'Aceptar',
+                            opts.cancelButtonText || 'Cancelar',
+                            () => resolve(true),
+                            () => resolve(false)
+                        );
+                    });
+
+                    return {
+                        isConfirmed: confirmado
+                    };
+                }
+
+                if (opts.showConfirmButton === false && !opts.icon) {
+                    Notiflix.Loading.standard(opts.text || opts.title || 'Procesando...');
+                    return {
+                        isConfirmed: true
+                    };
+                }
+
+                if (opts.icon || opts.title || opts.text) {
+                    this.notifyByIcon(opts.icon || 'info', opts.title || 'Aviso', opts.text || '');
+                }
+
+                return {
+                    isConfirmed: true
+                };
+            },
+            close() {
+                Notiflix.Loading.remove();
+            },
+            showLoading() {
+                Notiflix.Loading.standard('Procesando...');
+            },
+            showValidationMessage(message) {
+                Notiflix.Notify.warning(message);
+            },
+            notifyByIcon(icon, title, text) {
+                const message = [title, text].filter(Boolean).join(': ');
+                if (icon === 'success') {
+                    Notiflix.Notify.success(message || 'Operación exitosa');
+                } else if (icon === 'error') {
+                    Notiflix.Notify.failure(message || 'Ocurrió un error');
+                } else if (icon === 'warning') {
+                    Notiflix.Notify.warning(message || 'Atención');
+                } else {
+                    Notiflix.Notify.info(message || 'Información');
+                }
+            }
+        };
+
         // Manejar validaciones para asegurar que el código no se caiga
         try {
             emailjs.init({
@@ -730,92 +812,41 @@
             }
         }
 
-        async function editarComunicado(id, tituloActual, contenidoActual, colorActual) {
-            const {
-                value: formValues
-            } = await Swal.fire({
-                title: 'Editar comunicado',
-                html: `
-            <input id="swal-input-titulo" class="swal2-input" value="${tituloActual}" placeholder="Título">
-            <textarea id="swal-input-contenido" class="swal2-textarea" placeholder="Contenido" rows="4" style="margin-top: 15px;">${contenidoActual}</textarea>
-            <select id="swal-input-color" class="swal2-input" style="width: 80%; display: flex; margin: 15px auto;">
-                <option value="#27ae60" ${colorActual === '#27ae60' ? 'selected' : ''}>Informativo (Verde)</option>
-                <option value="#3498db" ${colorActual === '#3498db' ? 'selected' : ''}>General (Azul)</option>
-                <option value="#f39c12" ${colorActual === '#f39c12' ? 'selected' : ''}>Importante (Naranja)</option>
-                <option value="#e74c3c" ${colorActual === '#e74c3c' ? 'selected' : ''}>Urgente (Rojo)</option>
-            </select>
-        `,
-                focusConfirm: false,
-                showCancelButton: true,
-                confirmButtonColor: '#3498db',
-                cancelButtonColor: '#95a5a6',
-                confirmButtonText: 'Guardar cambios',
-                cancelButtonText: 'Cancelar',
-                preConfirm: () => {
-                    const valTitulo = document.getElementById('swal-input-titulo').value.trim();
-                    const valContenido = document.getElementById('swal-input-contenido').value.trim();
-                    const valColor = document.getElementById('swal-input-color').value;
-
-                    if (!valTitulo || !valContenido) {
-                        Swal.showValidationMessage('Debe completar el título y el contenido.');
-                    }
-                    return {
-                        titulo: valTitulo,
-                        contenido: valContenido,
-                        color_borde: valColor
-                    };
-                }
+        function editarComunicado(id, tituloActual, contenidoActual, colorActual) {
+            document.getElementById('comunicadoIdEdicion').value = String(id);
+            document.getElementById('tituloCom').value = tituloActual;
+            document.getElementById('contenidoCom').value = contenidoActual;
+            document.getElementById('colorCom').value = colorActual || '#27ae60';
+            document.getElementById('btnPublicar').innerHTML = '<i class="fas fa-save"></i> Guardar Cambios';
+            document.getElementById('btnCancelarComEdit').style.display = 'inline-flex';
+            Notiflix.Notify.info('Modo edición activado para el comunicado seleccionado.');
+            globalThis.scrollTo({
+                top: document.getElementById('formComunicado').offsetTop - 110,
+                behavior: 'smooth'
             });
+        }
 
-            if (formValues) {
-                Swal.fire({
-                    title: 'Guardando cambios...',
-                    text: 'Actualizando comunicado en el sistema.',
-                    allowOutsideClick: false,
-                    showConfirmButton: false,
-                    didOpen: () => {
-                        Swal.showLoading();
-                        const actions = document.querySelector('.swal2-actions');
-                        if (actions) actions.style.display = 'none';
-                    }
-                });
-
-                try {
-                    const res = await fetch(`${SUPABASE_URL}/rest/v1/comunicados?id=eq.${id}`, {
-                        method: "PATCH",
-                        headers,
-                        body: JSON.stringify(formValues)
-                    });
-
-                    if (res.ok) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Cambios guardados',
-                            text: 'El comunicado se actualizó correctamente.',
-                            timer: 2000,
-                            showConfirmButton: false,
-                            didOpen: () => {
-                                const actions = document.querySelector('.swal2-actions');
-                                if (actions) actions.style.display = 'none';
-                            }
-                        });
-                        cargarComunicadosAdmin();
-                    } else {
-                        Swal.fire('No se pudo actualizar', 'Verifique los datos e intente nuevamente.', 'error');
-                    }
-                } catch (e) {
-                    console.error(e);
-                    Swal.fire('Sin conexión', 'No se pudo actualizar el comunicado por un problema de red.', 'error');
-                }
-            }
+        function limpiarFormularioComunicado() {
+            const form = document.getElementById('formComunicado');
+            form.reset();
+            document.getElementById('comunicadoIdEdicion').value = '';
+            document.getElementById('btnPublicar').innerHTML = '<i class="fas fa-paper-plane"></i> Publicar Comunicado';
+            document.getElementById('btnCancelarComEdit').style.display = 'none';
         }
 
         function setupComunicadoListener() {
             const form = document.getElementById('formComunicado');
+            const btnCancelarComEdit = document.getElementById('btnCancelarComEdit');
+
+            if (btnCancelarComEdit) {
+                btnCancelarComEdit.addEventListener('click', limpiarFormularioComunicado);
+            }
+
             if (form) {
                 form.addEventListener('submit', async function(e) {
                     e.preventDefault();
                     const btn = document.getElementById('btnPublicar');
+                    const idEdicion = document.getElementById('comunicadoIdEdicion').value;
                     btn.disabled = true;
                     const datos = {
                         titulo: document.getElementById('tituloCom').value,
@@ -825,40 +856,33 @@
                     };
                     try {
                         Swal.fire({
-                            title: 'Publicando comunicado...',
-                            text: 'Estamos registrando la nueva publicación.',
+                            title: idEdicion ? 'Guardando cambios...' : 'Publicando comunicado...',
+                            text: idEdicion ? 'Actualizando publicación en el sistema.' : 'Estamos registrando la nueva publicación.',
                             allowOutsideClick: false,
-                            showConfirmButton: false,
-                            didOpen: () => {
-                                Swal.showLoading();
-                                const actions = document.querySelector('.swal2-actions');
-                                if (actions) actions.style.display = 'none';
-                            }
+                            showConfirmButton: false
                         });
-                        const res = await fetch(`${SUPABASE_URL}/rest/v1/comunicados`, {
-                            method: "POST",
+
+                        const url = idEdicion ? `${SUPABASE_URL}/rest/v1/comunicados?id=eq.${idEdicion}` : `${SUPABASE_URL}/rest/v1/comunicados`;
+                        const method = idEdicion ? 'PATCH' : 'POST';
+
+                        const res = await fetch(url, {
+                            method,
                             headers,
                             body: JSON.stringify(datos)
                         });
+
+                        Swal.close();
+
                         if (res.ok) {
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Comunicado publicado',
-                                text: 'La publicación está activa para todos los usuarios.',
-                                timer: 2000,
-                                showConfirmButton: false,
-                                didOpen: () => {
-                                    const actions = document.querySelector('.swal2-actions');
-                                    if (actions) actions.style.display = 'none';
-                                }
-                            });
-                            this.reset();
+                            Swal.fire('Operación exitosa', idEdicion ? 'El comunicado fue actualizado correctamente.' : 'El comunicado fue publicado y ya está activo para todo el personal.', 'success');
+                            limpiarFormularioComunicado();
                             cargarComunicadosAdmin(); // Reload the table automatically
                         } else {
                             const error = await res.json();
                             Swal.fire('No se pudo publicar', error.message || 'Revise la información e intente nuevamente.', 'error');
                         }
                     } catch (e) {
+                        Swal.close();
                         Swal.fire('Error de conexión', e.message || 'No fue posible publicar en este momento.', 'error');
                     }
                     btn.disabled = false;
