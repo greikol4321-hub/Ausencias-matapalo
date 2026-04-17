@@ -677,20 +677,20 @@
         async function eliminarComunicado(id) {
             const confirmacion = await Swal.fire({
                 title: '¿Eliminar comunicado?',
-                text: "Esta acción no se puede deshacer y desaparecerá para todos los usuarios.",
+                text: 'Este comunicado dejará de mostrarse para todo el personal. Esta acción no se puede deshacer.',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#e74c3c',
                 cancelButtonColor: '#95a5a6',
                 confirmButtonText: 'Sí, eliminar',
-                cancelButtonText: 'Cancelar'
+                cancelButtonText: 'Conservar'
             });
 
             if (!confirmacion.isConfirmed) return;
 
             Swal.fire({
-                title: 'Borrando...',
-                text: 'Por favor espere un momento',
+                title: 'Eliminando comunicado...',
+                text: 'Espere un momento, por favor.',
                 allowOutsideClick: false,
                 showConfirmButton: false,
                 didOpen: () => {
@@ -708,8 +708,8 @@
                 if (res.ok) {
                     Swal.fire({
                         icon: 'success',
-                        title: 'Eliminado',
-                        text: 'El comunicado fue eliminado con éxito.',
+                        title: 'Comunicado eliminado',
+                        text: 'La publicación se eliminó correctamente.',
                         timer: 1500,
                         showConfirmButton: false,
                         didOpen: () => {
@@ -719,10 +719,11 @@
                     });
                     cargarComunicadosAdmin();
                 } else {
-                    Swal.fire('Error', 'No se pudo eliminar: ' + res.statusText, 'error');
+                    Swal.fire('No se pudo eliminar', 'Ocurrió un problema al eliminar el comunicado. Intente nuevamente.', 'error');
                 }
             } catch (e) {
-                Swal.fire('Error', 'Problema de conexión.', 'error');
+                console.error(e);
+                Swal.fire('Sin conexión', 'No fue posible completar la acción por un problema de red.', 'error');
             }
         }
 
@@ -730,7 +731,7 @@
             const {
                 value: formValues
             } = await Swal.fire({
-                title: 'Editar Comunicado',
+                title: 'Editar comunicado',
                 html: `
             <input id="swal-input-titulo" class="swal2-input" value="${tituloActual}" placeholder="Título">
             <textarea id="swal-input-contenido" class="swal2-textarea" placeholder="Contenido" rows="4" style="margin-top: 15px;">${contenidoActual}</textarea>
@@ -745,7 +746,7 @@
                 showCancelButton: true,
                 confirmButtonColor: '#3498db',
                 cancelButtonColor: '#95a5a6',
-                confirmButtonText: 'Guardar Cambios',
+                confirmButtonText: 'Guardar cambios',
                 cancelButtonText: 'Cancelar',
                 preConfirm: () => {
                     const valTitulo = document.getElementById('swal-input-titulo').value.trim();
@@ -753,7 +754,7 @@
                     const valColor = document.getElementById('swal-input-color').value;
 
                     if (!valTitulo || !valContenido) {
-                        Swal.showValidationMessage('El título y contenido son requeridos');
+                        Swal.showValidationMessage('Debe completar el título y el contenido.');
                     }
                     return {
                         titulo: valTitulo,
@@ -765,8 +766,8 @@
 
             if (formValues) {
                 Swal.fire({
-                    title: 'Actualizando...',
-                    text: 'Por favor espere',
+                    title: 'Guardando cambios...',
+                    text: 'Actualizando comunicado en el sistema.',
                     allowOutsideClick: false,
                     showConfirmButton: false,
                     didOpen: () => {
@@ -786,8 +787,8 @@
                     if (res.ok) {
                         Swal.fire({
                             icon: 'success',
-                            title: '¡Actualizado!',
-                            text: 'El comunicado se actualizó con éxito.',
+                            title: 'Cambios guardados',
+                            text: 'El comunicado se actualizó correctamente.',
                             timer: 2000,
                             showConfirmButton: false,
                             didOpen: () => {
@@ -797,10 +798,11 @@
                         });
                         cargarComunicadosAdmin();
                     } else {
-                        Swal.fire('Error', 'No se pudo actualizar el comunicado.', 'error');
+                        Swal.fire('No se pudo actualizar', 'Verifique los datos e intente nuevamente.', 'error');
                     }
                 } catch (e) {
-                    Swal.fire('Error', 'Problema de red al actualizar.', 'error');
+                    console.error(e);
+                    Swal.fire('Sin conexión', 'No se pudo actualizar el comunicado por un problema de red.', 'error');
                 }
             }
         }
@@ -820,7 +822,8 @@
                     };
                     try {
                         Swal.fire({
-                            title: 'Publicando...',
+                            title: 'Publicando comunicado...',
+                            text: 'Estamos registrando la nueva publicación.',
                             allowOutsideClick: false,
                             showConfirmButton: false,
                             didOpen: () => {
@@ -837,8 +840,8 @@
                         if (res.ok) {
                             Swal.fire({
                                 icon: 'success',
-                                title: '¡Publicado!',
-                                text: 'Comunicado publicado exitosamente.',
+                                title: 'Comunicado publicado',
+                                text: 'La publicación está activa para todos los usuarios.',
                                 timer: 2000,
                                 showConfirmButton: false,
                                 didOpen: () => {
@@ -850,10 +853,10 @@
                             cargarComunicadosAdmin(); // Reload the table automatically
                         } else {
                             const error = await res.json();
-                            Swal.fire('Error', 'No se pudo publicar: ' + (error.message || res.statusText), 'error');
+                            Swal.fire('No se pudo publicar', error.message || 'Revise la información e intente nuevamente.', 'error');
                         }
                     } catch (e) {
-                        Swal.fire('Error', 'Error al publicar: ' + e.message, 'error');
+                        Swal.fire('Error de conexión', e.message || 'No fue posible publicar en este momento.', 'error');
                     }
                     btn.disabled = false;
                 });
@@ -925,13 +928,13 @@
 
                 const errorValidacion = validarUsuarioInput(datos, Boolean(idEdicion));
                 if (errorValidacion) {
-                    Swal.fire('Validacion', errorValidacion, 'warning');
+                    Swal.fire('Validación', errorValidacion, 'warning');
                     return;
                 }
 
                 try {
                     if (await existeUsuarioDuplicado(datos.usuario, idEdicion || null)) {
-                        Swal.fire('Duplicado', 'Ya existe un usuario con ese nombre de acceso.', 'warning');
+                        Swal.fire('Usuario duplicado', 'Ya existe una cuenta con ese nombre de usuario.', 'warning');
                         return;
                     }
 
@@ -964,11 +967,11 @@
                         throw new Error(err.message || 'No se pudo guardar el usuario.');
                     }
 
-                    Swal.fire('Correcto', idEdicion ? 'Usuario actualizado.' : 'Usuario creado.', 'success');
+                    Swal.fire('Operación exitosa', idEdicion ? 'Usuario actualizado correctamente.' : 'Usuario creado correctamente.', 'success');
                     limpiarFormularioUsuario();
                     cargarUsuariosAdmin();
                 } catch (error) {
-                    Swal.fire('Error', error.message || 'Error guardando usuario.', 'error');
+                    Swal.fire('No se pudo guardar', error.message || 'Ocurrió un error al guardar el usuario.', 'error');
                 }
             });
         }
@@ -1032,11 +1035,11 @@
         async function eliminarUsuario(id) {
             const confirmacion = await Swal.fire({
                 title: '¿Eliminar usuario?',
-                text: 'Esta acción eliminará el acceso del docente.',
+                text: 'Se revocará el acceso del usuario al sistema.',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonText: 'Sí, eliminar',
-                cancelButtonText: 'Cancelar',
+                cancelButtonText: 'Conservar',
                 confirmButtonColor: '#e74c3c'
             });
 
@@ -1050,10 +1053,10 @@
 
                 if (!res.ok) throw new Error('No se pudo eliminar el usuario.');
 
-                Swal.fire('Eliminado', 'Usuario eliminado correctamente.', 'success');
+                Swal.fire('Usuario eliminado', 'El acceso fue removido correctamente.', 'success');
                 cargarUsuariosAdmin();
             } catch (error) {
-                Swal.fire('Error', error.message || 'Error eliminando usuario.', 'error');
+                Swal.fire('No se pudo eliminar', error.message || 'Ocurrió un problema al eliminar el usuario.', 'error');
             }
         }
 
@@ -1065,7 +1068,7 @@
                 try {
                     await generarRespaldo(true);
                 } catch (error) {
-                    Swal.fire('Error', error.message || 'No se pudo generar el respaldo.', 'error');
+                    Swal.fire('No se pudo generar respaldo', error.message || 'Intente nuevamente en unos minutos.', 'error');
                 }
             });
 
@@ -1073,7 +1076,7 @@
                 try {
                     await ejecutarAuditoriaIntegridad();
                 } catch (error) {
-                    Swal.fire('Error', error.message || 'No se pudo ejecutar la auditoría.', 'error');
+                    Swal.fire('No se pudo ejecutar auditoría', error.message || 'Revise la conexión e intente nuevamente.', 'error');
                 }
             });
         }
@@ -1133,7 +1136,7 @@
                 a.click();
                 document.body.removeChild(a);
                 URL.revokeObjectURL(url);
-                Swal.fire('Respaldo generado', 'Se generó y descargó el respaldo en formato JSON.', 'success');
+                Swal.fire('Respaldo generado', 'La copia de seguridad se descargó correctamente en formato JSON.', 'success');
             }
         }
 
@@ -1213,11 +1216,11 @@
 
         async function cerrarSesion() {
             const confirmacion = await Swal.fire({
-                title: '¿Cerrar Sesión?',
-                text: '¿Seguro que desea salir del panel?',
-                icon: 'question',
+                title: '¿Desea cerrar sesión?',
+                text: 'Su sesión actual finalizará y volverá al inicio.',
+                icon: 'warning',
                 showCancelButton: true,
-                confirmButtonColor: '#3498db',
+                confirmButtonColor: '#e74c3c',
                 cancelButtonColor: '#95a5a6',
                 confirmButtonText: 'Sí, salir',
                 cancelButtonText: 'Cancelar'
