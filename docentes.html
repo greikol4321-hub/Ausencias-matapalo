@@ -195,7 +195,7 @@
                 Swal.fire({
                     icon: 'warning',
                     title: 'Campos requeridos',
-                    text: 'Complete fecha de inicio, fecha de finalización y motivo de ausencia.'
+                    text: 'Complete fecha de inicio, fecha final y motivo de la ausencia.'
                 });
                 return;
             }
@@ -203,8 +203,8 @@
             if (detalle.length > 180) {
                 Swal.fire({
                     icon: 'warning',
-                    title: 'Detalle demasiado largo',
-                    text: 'El detalle breve no puede superar 180 caracteres.'
+                    title: 'Detalle muy extenso',
+                    text: 'El detalle breve no puede superar los 180 caracteres.'
                 });
                 return;
             }
@@ -212,8 +212,8 @@
             if (actividad && actividad.length < 8) {
                 Swal.fire({
                     icon: 'warning',
-                    title: 'Actividad muy corta',
-                    text: 'Si ingresa actividad, debe tener al menos 8 caracteres.'
+                    title: 'Actividad demasiado corta',
+                    text: 'Si ingresa una actividad, debe tener al menos 8 caracteres.'
                 });
                 return;
             }
@@ -221,7 +221,7 @@
             if (f2 < f1) {
                 Swal.fire({
                     icon: 'warning',
-                    title: 'Fechas incorrectas',
+                    title: 'Rango de fechas inválido',
                     text: 'La fecha final no puede ser anterior a la fecha de inicio.'
                 });
                 return;
@@ -256,8 +256,8 @@
                     btn.disabled = false;
                     Swal.fire({
                         icon: 'warning',
-                        title: 'Periodo duplicado o traslapado',
-                        text: 'Ya existe una ausencia registrada que se traslapa con ese rango de fechas.'
+                        title: 'Período traslapado',
+                        text: 'Ya existe una ausencia registrada en ese rango de fechas.'
                     });
                     return;
                 }
@@ -269,8 +269,8 @@
                 });
 
                 Swal.fire({
-                    title: 'Guardando...',
-                    text: 'Registrando la ausencia, espere un momento.',
+                    title: 'Guardando ausencia...',
+                    text: 'Estamos registrando la información en el sistema.',
                     allowOutsideClick: false,
                     showConfirmButton: false,
                     didOpen: () => {
@@ -291,12 +291,12 @@
                         }).then(() => console.log("Correo enviado a direccion"))
                         .catch(err => {
                             console.error("Fallo EmailJS:", err);
-                            Swal.fire('Atención', 'Datos guardados, pero hubo un error enviando el correo: ' + (err.text || JSON.stringify(err)), 'warning');
+                            Swal.fire('Aviso', 'La ausencia fue guardada, pero no se pudo enviar el correo automático.', 'warning');
                         });
                     Swal.fire({
                         icon: 'success',
-                        title: '¡Guardado!',
-                        text: 'Período de ausencia guardado correctamente.',
+                        title: 'Ausencia registrada',
+                        text: 'El período de ausencia se guardó correctamente.',
                         timer: 2000,
                         showConfirmButton: false,
                         didOpen: () => {
@@ -312,8 +312,8 @@
                 console.error(err);
                 Swal.fire({
                     icon: 'error',
-                    title: 'Error',
-                    text: 'Error de conexión con el servidor.'
+                    title: 'Sin conexión',
+                    text: 'No se pudo conectar con el servidor. Intente nuevamente.'
                 });
             }
             btn.disabled = false;
@@ -363,20 +363,20 @@
         async function eliminarAusencia(id) {
             const confirmacion = await Swal.fire({
                 title: '¿Eliminar ausencia?',
-                text: "Esta acción no se puede deshacer.",
+                text: 'Esta acción no se puede deshacer.',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#e74c3c',
                 cancelButtonColor: '#95a5a6',
                 confirmButtonText: 'Sí, eliminar',
-                cancelButtonText: 'Cancelar'
+                cancelButtonText: 'Conservar'
             });
 
             if (!confirmacion.isConfirmed) return;
 
             Swal.fire({
-                title: 'Borrando...',
-                text: 'Por favor espere un momento',
+                title: 'Eliminando ausencia...',
+                text: 'Espere un momento, por favor.',
                 allowOutsideClick: false,
                 showConfirmButton: false,
                 didOpen: () => {
@@ -394,8 +394,8 @@
                 if (res.ok) {
                     Swal.fire({
                         icon: 'success',
-                        title: 'Eliminado',
-                        text: 'La ausencia fue eliminada con éxito.',
+                        title: 'Ausencia eliminada',
+                        text: 'El registro se eliminó correctamente.',
                         timer: 1500,
                         showConfirmButton: false,
                         didOpen: () => {
@@ -405,21 +405,21 @@
                     });
                     cargarHistorial();
                 } else {
-                    Swal.fire('Error', 'No se pudo eliminar: ' + res.statusText, 'error');
+                    Swal.fire('No se pudo eliminar', 'Ocurrió un problema al eliminar la ausencia.', 'error');
                 }
             } catch (e) {
                 console.error(e);
-                Swal.fire('Error', 'Problema de conexión con el servidor.', 'error');
+                Swal.fire('Sin conexión', 'No fue posible eliminar por un problema de red.', 'error');
             }
         }
 
         async function cerrarSesion() {
             const confirmacion = await Swal.fire({
-                title: '¿Cerrar Sesión?',
-                text: '¿Seguro que desea salir del panel?',
-                icon: 'question',
+                title: '¿Desea cerrar sesión?',
+                text: 'Su sesión finalizará y volverá a la pantalla de inicio.',
+                icon: 'warning',
                 showCancelButton: true,
-                confirmButtonColor: '#3498db',
+                confirmButtonColor: '#e74c3c',
                 cancelButtonColor: '#95a5a6',
                 confirmButtonText: 'Sí, salir',
                 cancelButtonText: 'Cancelar'

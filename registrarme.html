@@ -71,6 +71,12 @@ const form = document.getElementById('loginForm');
 const mensaje = document.getElementById('mensaje');
 const btnIngresar = document.getElementById('btnIngresar');
 
+function mostrarMensaje(tipo, titulo, detalle) {
+    const icono = tipo === 'exito' ? 'fa-circle-check' : 'fa-triangle-exclamation';
+    mensaje.innerHTML = `<i class="fa-solid ${icono}" aria-hidden="true"></i><div><strong>${titulo}</strong><p>${detalle}</p></div>`;
+    mensaje.className = `mensaje ${tipo} show`;
+}
+
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -104,21 +110,18 @@ form.addEventListener('submit', async (e) => {
             localStorage.setItem("nombre", user.nombre_completo);
             localStorage.setItem("rol", user.rol);
 
-            mensaje.innerHTML = "✅ Bienvenido " + user.nombre_completo;
-            mensaje.className = "mensaje exito show";
+            mostrarMensaje('exito', 'Bienvenido', `${user.nombre_completo}. Redirigiendo a su panel...`);
 
             setTimeout(() => {
                 globalThis.location.href = "docentes.html";
             }, 1500);
 
         } else {
-            mensaje.innerHTML = "❌ Usuario o contraseña incorrectos";
-            mensaje.className = "mensaje error show";
+            mostrarMensaje('error', 'Acceso denegado', 'Usuario o contraseña incorrectos. Verifique e intente nuevamente.');
         }
 
     } catch (error) {
-        mensaje.innerHTML = "❌ Error de conexión";
-        mensaje.className = "mensaje error show";
+        mostrarMensaje('error', 'Sin conexión', 'No se pudo conectar con el servidor en este momento.');
         console.error(error);
     } finally {
         btnIngresar.disabled = false;

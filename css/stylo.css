@@ -1043,77 +1043,118 @@ a:hover {
 
 .page-registrarme .mensaje {
     position: fixed;
-    top: 20px;
+    top: 18px;
     left: 50%;
     transform: translateX(-50%);
-    padding: 15px 30px;
+    padding: 12px 16px;
     display: none;
-    border-radius: 50px;
-    text-align: center;
+    border-radius: 14px;
+    text-align: left;
     font-weight: 600;
-    font-size: 1.1rem;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    font-size: 0.98rem;
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(6px);
+    border: 1px solid transparent;
     z-index: 1000;
-    animation: slideDownToast 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    width: min(92vw, 460px);
+    animation: slideDownToast 0.35s ease-out forwards;
 }
 
 @keyframes slideDownToast {
     from {
         opacity: 0;
-        top: -50px;
+        top: -40px;
         transform: translate(-50%, -20px);
     }
     to {
         opacity: 1;
-        top: 30px;
+        top: 18px;
         transform: translate(-50%, 0);
     }
 }
 
+@keyframes toastPulseIn {
+    from {
+        transform: scale(0.96);
+        opacity: 0.8;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
 .page-registrarme .exito {
-    background: #e8f5e9;
+    background: rgba(232, 245, 233, 0.96);
     color: #1b5e20;
-    border: 2px solid #4caf50;
+    border-color: #4caf50;
 }
 
 .page-registrarme .error {
-    background: #ffebee;
-    color: #b71c1c;
-    border: 2px solid #ef5350;
+    background: rgba(255, 235, 238, 0.97);
+    color: #9f1239;
+    border-color: #ef5350;
 }
 
 .page-registrarme .show {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
+    animation: slideDownToast 0.35s ease-out, toastPulseIn 0.25s ease-out;
+}
+
+.page-registrarme .mensaje i {
+    font-size: 1.25rem;
+    flex-shrink: 0;
+}
+
+.page-registrarme .mensaje strong {
+    display: block;
+    font-size: 0.95rem;
+    line-height: 1.2;
+}
+
+.page-registrarme .mensaje p {
+    margin: 3px 0 0;
+    font-size: 0.88rem;
+    font-weight: 500;
+    opacity: 0.92;
 }
 
 @media (max-width: 600px) {
-            .page-registrarme .logo-gobierno {
-                font-size: 0.7rem;
-                text-align: center;
-            }
-            .page-registrarme .header-logos-left {
-                flex-direction: column;
-                justify-content: center;
-            }
-            .page-registrarme .divider {
-                display: none;
-            }
-            .page-registrarme .tabla-container, .page-registrarme .overflow-auto, .page-registrarme .tabla-scroll {
-                width: 100%;
-                overflow-x: auto;
-                -webkit-overflow-scrolling: touch;
-                display: block;
-            }
-            .page-registrarme .tabla-container table, .page-registrarme .overflow-auto table, .page-registrarme .tabla-scroll table {
-                white-space: nowrap;
-                min-width: max-content;
-            }
+    .page-registrarme .logo-gobierno {
+        font-size: 0.7rem;
+        text-align: center;
+    }
+
+    .page-registrarme .header-logos-left {
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .page-registrarme .divider {
+        display: none;
+    }
+
+    .page-registrarme .tabla-container,
+    .page-registrarme .overflow-auto,
+    .page-registrarme .tabla-scroll {
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        display: block;
+    }
+
+    .page-registrarme .tabla-container table,
+    .page-registrarme .overflow-auto table,
+    .page-registrarme .tabla-scroll table {
+        white-space: nowrap;
+        min-width: max-content;
+    }
+
     .page-registrarme .header-container {
         flex-direction: column;
         gap: 15px;
-        text-align: center;
     }
 
     .page-registrarme .nav-right {
@@ -1130,9 +1171,6 @@ a:hover {
 
     .page-registrarme .main-title-bar h1 {
         font-size: 1.3rem;
-    }
-
-    .page-registrarme .main-title-bar p {
         padding: 0 14px;
     }
 
@@ -1146,6 +1184,31 @@ a:hover {
 
     .page-registrarme .btn-container {
         flex-direction: column;
+    }
+
+    .page-registrarme .btn-login {
+        font-size: 0.7rem;
+        padding: 8px 14px;
+    }
+
+    .page-registrarme .mensaje {
+        top: auto;
+        bottom: 14px;
+        width: calc(100vw - 20px);
+        border-radius: 12px;
+    }
+
+    @keyframes slideDownToast {
+        from {
+            opacity: 0;
+            bottom: -45px;
+            transform: translate(-50%, 20px);
+        }
+        to {
+            opacity: 1;
+            bottom: 14px;
+            transform: translate(-50%, 0);
+        }
     }
 }
 
@@ -1225,6 +1288,26 @@ a:hover {
             text-transform: uppercase;
             font-size: 0.75rem;
             letter-spacing: 0.5px;
+            .page-registrarme .mensaje {
+                top: auto;
+                bottom: 14px;
+                left: 50%;
+                width: calc(100vw - 20px);
+                border-radius: 12px;
+            }
+
+            @keyframes slideDownToast {
+                from {
+                    opacity: 0;
+                    bottom: -45px;
+                    transform: translate(-50%, 20px);
+                }
+                to {
+                    opacity: 1;
+                    bottom: 14px;
+                    transform: translate(-50%, 0);
+                }
+            }
             line-height: 1.2;
             color: var(--verde-base);
         }
@@ -2076,12 +2159,14 @@ a:hover {
 
 /* ------------- AJUSTES SWEETALERT2 ------------- */
 body .swal2-popup {
-    border-radius: 16px;
+    width: min(92vw, 560px) !important;
+    border-radius: 20px;
     font-family: inherit;
-    box-shadow: 0 15px 40px rgba(10, 76, 35, 0.15);
-    background: #fffdf9;
-    border: none;
-    padding: 1.5em;
+    box-shadow: 0 24px 55px rgba(8, 58, 27, 0.22);
+    background: linear-gradient(180deg, #fffdf9 0%, #fff8ec 100%);
+    border: 1px solid rgba(10, 76, 35, 0.1);
+    padding: 1.35em 1.2em 1.15em;
+    animation: swalPopIn 0.28s ease-out;
 }
 
 body .swal2-popup * {
@@ -2089,8 +2174,8 @@ body .swal2-popup * {
 }
 
 body .swal2-icon {
-    width: 80px !important;
-    height: 80px !important;
+    width: 74px !important;
+    height: 74px !important;
     border: none !important;
     border-radius: 50% !important;
     display: flex !important;
@@ -2126,12 +2211,14 @@ body .swal2-icon svg {
 body .swal2-title {
     color: var(--verde-oscuro);
     font-weight: 800;
-    font-size: 1.6rem;
+    font-size: clamp(1.3rem, 3.5vw, 1.62rem);
+    line-height: 1.2;
 }
 
 body .swal2-html-container {
     color: #4a4a4a;
-    font-size: 1.05rem;
+    font-size: clamp(0.95rem, 2.8vw, 1.03rem);
+    margin-top: 0.6rem;
 }
 
 /* Excepciones para botones dentro de SweetAlert2 */
@@ -2139,14 +2226,15 @@ body .swal2-container button.swal2-styled {
     width: auto;
     display: inline-flex;
     justify-content: center;
+    align-items: center;
     margin: 0;
-    border-radius: 8px;
-    padding: 12px 28px;
-    font-size: 1rem;
-    font-weight: bold;
+    border-radius: 12px;
+    padding: 11px 24px;
+    font-size: 0.98rem;
+    font-weight: 700;
     border: none;
     transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
     background-image: none !important;
 }
 
@@ -2162,7 +2250,58 @@ body .swal2-container button.swal2-styled:active {
 }
 
 body .swal2-container .swal2-actions {
-    gap: 15px;
+    gap: 12px;
     display: flex;
+}
+
+body .swal2-container .swal2-confirm {
+    background: linear-gradient(135deg, #0a4c23 0%, #1a6b3a 100%) !important;
+}
+
+body .swal2-container .swal2-cancel {
+    background: #f3f4f6 !important;
+    color: #1f2937 !important;
+    border: 1px solid #d1d5db !important;
+}
+
+body .swal2-backdrop-show {
+    backdrop-filter: blur(3px);
+    background: rgba(12, 24, 17, 0.5) !important;
+}
+
+@keyframes swalPopIn {
+    from {
+        opacity: 0;
+        transform: translateY(14px) scale(0.96);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@media (max-width: 640px) {
+    body .swal2-popup {
+        width: min(94vw, 420px) !important;
+        border-radius: 16px;
+        padding: 1.15em 0.92em 1em;
+    }
+
+    body .swal2-icon {
+        width: 64px !important;
+        height: 64px !important;
+        margin-top: 0.35em !important;
+    }
+
+    body .swal2-container .swal2-actions {
+        width: 100%;
+        gap: 10px;
+        flex-direction: column-reverse;
+    }
+
+    body .swal2-container button.swal2-styled {
+        width: 100%;
+        margin: 0 !important;
+    }
 }
 
