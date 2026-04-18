@@ -12,6 +12,7 @@ body {
     color: #333;
     line-height: 1.6;
     min-height: 100vh;
+    overflow-x: hidden;
 }
 
 /* COLORES PRINCIPALES */
@@ -382,6 +383,11 @@ a:hover {
             .page-galeria .header-container {
                 flex-wrap: wrap;
                 gap: 10px;
+            }
+
+            .page-galeria .galeria-wrap {
+                padding: 0 14px;
+                margin: 20px auto 28px;
             }
 
             .page-galeria .nav-right {
@@ -1223,6 +1229,10 @@ a:hover {
         padding: 0 14px;
     }
 
+    .page-registrarme .main-title-bar p {
+        padding: 0 14px;
+    }
+
     .page-registrarme .login-container {
         padding: 30px 20px;
     }
@@ -1337,26 +1347,6 @@ a:hover {
             text-transform: uppercase;
             font-size: 0.75rem;
             letter-spacing: 0.5px;
-            .page-registrarme .mensaje {
-                top: auto;
-                bottom: 14px;
-                left: 50%;
-                width: calc(100vw - 20px);
-                border-radius: 12px;
-            }
-
-            @keyframes slideDownToast {
-                from {
-                    opacity: 0;
-                    bottom: -45px;
-                    transform: translate(-50%, 20px);
-                }
-                to {
-                    opacity: 1;
-                    bottom: 14px;
-                    transform: translate(-50%, 0);
-                }
-            }
             line-height: 1.2;
             color: var(--verde-base);
         }
@@ -1520,6 +1510,11 @@ a:hover {
                 flex-direction: column;
                 gap: 15px;
                 text-align: center;
+            }
+
+            .page-registro-docentes .nav-right {
+                width: 100%;
+                justify-content: center;
             }
             .page-registro-docentes .logo-gobierno {
                 font-size: 0.7rem;
@@ -2167,6 +2162,17 @@ a:hover {
 
             .page-docentes .logo-escudo {
                 height: 60px;
+            }
+
+            .page-docentes .navbar-info {
+                flex-wrap: wrap;
+                gap: 8px;
+                justify-content: flex-start;
+            }
+
+            .page-docentes .navbar-info span {
+                font-size: 0.9rem;
+                word-break: break-word;
             }
 
             .page-docentes h3 {
