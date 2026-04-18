@@ -19,12 +19,19 @@ body {
 :root {
     --verde-oscuro: #0a4c23;
     --verde-claro: #1a6b3a;
+    --verde-base: #0a4c23;
+    --verde-suave: #ebe5d9;
     --crema: #f5f1e8;
+    --fondo: #ebe5d9;
+    --fondo-sitio: #ebe5d9;
     --blanco: #ffffff;
     --texto-principal: #0a4c23;
+    --texto-titulo: #0a4c23;
+    --texto-cuerpo: #333333;
     --texto-gris: #5a5a5a;
     --borde: #d4ccc0;
     --dorado: #d4a256;
+    --sombra-card: 0 12px 30px rgba(10, 76, 35, 0.12);
 }
 
 /* HEADERS Y TÍTULOS */
@@ -127,7 +134,7 @@ th {
 
 .warning {
     background: #fff3e0;
-    color: #e65100;
+    color: #8f3f00;
     border: 1px solid #d4a256;
     padding: 12px;
     border-radius: 6px;
@@ -145,19 +152,6 @@ a:hover {
     text-decoration: underline;
 }
 /* Extracted from galeria.html */
-
-        :root {
-            --verde-base: #0a4c23;
-            --verde-suave: #ebe5d9;
-            --crema: #f5f1e8;
-            --fondo-sitio: #ebe5d9;
-            --blanco: #ffffff;
-            --texto-titulo: #0a4c23;
-            --texto-cuerpo: #333333;
-            --texto-gris: #5a5a5a;
-            --borde: #d4ccc0;
-            --sombra-card: 0 12px 30px rgba(10, 76, 35, 0.12);
-        }
 
         .page-galeria * {
             margin: 0;
@@ -483,17 +477,6 @@ a:hover {
     
 
 /* Extracted from index.html */
-
-        :root {
-            --verde-base: #0a4c23;
-            --verde-suave: #ebe5d9;
-            --fondo-sitio: #ebe5d9;
-            --blanco: #ffffff;
-            --texto-titulo: #0a4c23;
-            --texto-cuerpo: #333333;
-            --texto-gris: #5a5a5a;
-            --borde: #d4ccc0;
-        }
 
         .page-index * {
             box-sizing: border-box;
@@ -855,17 +838,6 @@ a:hover {
     
 
 /* Extracted from registrarme.html */
-
-:root {
-    --verde-base: #0a4c23;
-    --verde-claro: #1a6b3a;
-    --crema: #f5f1e8;
-    --fondo: #ebe5d9;
-    --blanco: #ffffff;
-    --texto-cuerpo: #333333;
-    --texto-gris: #5a5a5a;
-    --borde: #d4ccc0;
-}
 
 .page-registrarme * {
     margin: 0;
@@ -1274,17 +1246,6 @@ a:hover {
 
 /* Extracted from registro-docentes.html */
 
-        :root {
-            --verde-base: #0a4c23;
-            --verde-claro: #1a6b3a;
-            --crema: #f5f1e8;
-            --fondo: #ebe5d9;
-            --blanco: #ffffff;
-            --texto-cuerpo: #333333;
-            --texto-gris: #5a5a5a;
-            --borde: #d4ccc0;
-        }
-
         .page-registro-docentes * {
             margin: 0;
             padding: 0;
@@ -1537,12 +1498,6 @@ a:hover {
                 white-space: nowrap;
                 min-width: max-content;
             }
-            .page-registro-docentes .header-container {
-                flex-direction: column;
-                gap: 15px;
-                text-align: center;
-            }
-
             .page-registro-docentes .logo-mep {
                 height: 40px;
             }
@@ -1570,19 +1525,6 @@ a:hover {
     
 
 /* Extracted from docentes.html */
-
-        :root {
-            --verde-base: #0a4c23;
-            --verde-claro: #1a6b3a;
-            --crema: #f5f1e8;
-            --fondo: #ebe5d9;
-            --dorado: #d4a256;
-            --rojo: #d9534f;
-            --blanco: #ffffff;
-            --texto-cuerpo: #333333;
-            --texto-gris: #5a5a5a;
-            --borde: #d4ccc0;
-        }
 
         .page-docentes * {
             margin: 0;
@@ -1723,7 +1665,7 @@ a:hover {
         
         .page-docentes .info-usuario::before {
             content: "\f2bd";
-            font-family: "Font Awesome 6 Free";
+            font-family: "Font Awesome 6 Free", sans-serif;
             font-weight: 900;
             position: absolute;
             right: -20px;
@@ -2067,6 +2009,11 @@ a:hover {
             margin-bottom: 0;
         }
 
+        .page-docentes td[data-label]::before {
+            content: attr(data-label);
+            display: none;
+        }
+
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -2137,24 +2084,105 @@ a:hover {
             .page-docentes .header-logos-left {
                 flex-direction: column;
                 justify-content: center;
+                gap: 10px;
             }
             .page-docentes .divider {
                 display: none;
             }
-            .page-docentes .tabla-container, .page-docentes .overflow-auto, .page-docentes .tabla-scroll {
+            .page-docentes .tabla-container,
+            .page-docentes .overflow-auto,
+            .page-docentes .tabla-scroll {
                 width: 100%;
-                overflow-x: auto;
-                -webkit-overflow-scrolling: touch;
+                overflow: visible;
                 display: block;
             }
-            .page-docentes .tabla-container table, .page-docentes .overflow-auto table, .page-docentes .tabla-scroll table {
-                white-space: nowrap;
-                min-width: max-content;
-            }
-            .page-docentes .header-logos-left {
-                gap: 10px;
+
+            .page-docentes .tabla-container table,
+            .page-docentes .overflow-auto table,
+            .page-docentes .tabla-scroll table {
+                border-collapse: separate;
+                border-spacing: 0 12px;
+                min-width: 0;
+                white-space: normal;
             }
 
+            .page-docentes .tabla-container thead,
+            .page-docentes .overflow-auto thead,
+            .page-docentes .tabla-scroll thead {
+                display: none;
+            }
+
+            .page-docentes .tabla-container tbody,
+            .page-docentes .overflow-auto tbody,
+            .page-docentes .tabla-scroll tbody,
+            .page-docentes .tabla-container tr,
+            .page-docentes .overflow-auto tr,
+            .page-docentes .tabla-scroll tr,
+            .page-docentes .tabla-container td,
+            .page-docentes .overflow-auto td,
+            .page-docentes .tabla-scroll td {
+                display: block;
+                width: 100%;
+            }
+
+            .page-docentes .tabla-container tr,
+            .page-docentes .overflow-auto tr,
+            .page-docentes .tabla-scroll tr {
+                border: 1px solid var(--borde);
+                border-radius: 14px;
+                overflow: hidden;
+                background: var(--blanco);
+                box-shadow: 0 10px 20px rgba(10, 76, 35, 0.08);
+                margin-bottom: 12px;
+            }
+
+            .page-docentes .tabla-container td,
+            .page-docentes .overflow-auto td,
+            .page-docentes .tabla-scroll td {
+                border-bottom: 1px solid rgba(212, 204, 192, 0.7);
+                padding: 12px 14px;
+            }
+
+            .page-docentes .tabla-container td:last-child,
+            .page-docentes .overflow-auto td:last-child,
+            .page-docentes .tabla-scroll td:last-child {
+                border-bottom: none;
+            }
+
+            .page-docentes td[data-label] {
+                display: flex;
+                align-items: flex-start;
+                gap: 10px;
+                text-align: left;
+            }
+
+            .page-docentes td[data-label]::before {
+                display: inline-block;
+                width: 40%;
+                max-width: 140px;
+                flex: 0 0 40%;
+                text-transform: uppercase;
+                letter-spacing: 0.4px;
+                font-size: 0.72rem;
+                font-weight: 800;
+                color: var(--verde-base);
+            }
+
+            .page-docentes td[data-label="Acción"] {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .page-docentes td[data-label="Acción"]::before {
+                width: auto;
+                max-width: none;
+                flex: 0 0 auto;
+            }
+
+            .page-docentes td[data-label="Acción"] .btn-eliminar {
+                width: 100%;
+                justify-content: center;
+            }
             .page-docentes .logo-mep {
                 height: 40px;
             }

@@ -17,7 +17,7 @@
     <header class="header">
         <div class="header-container">
             <div class="header-logos-left">
-                <img src="img/LOGO_MEP-removebg-preview.png" class="logo-mep" alt="MEP Costa Rica">
+                <img src="img/LOGO_MEP-removebg-preview.png" class="logo-mep" alt="MEP Costa Rica" loading="lazy" decoding="async" fetchpriority="low">
                 <div class="divider"></div>
                 <div class="logo-gobierno">
                     <strong>Colegio Técnico Profesional</strong><br> de Matapalo
@@ -26,7 +26,7 @@
 
             <div class="nav-right">
                 <a href="index.html" title="Inicio">
-                    <img src="img/logo_colegio_nuevo.png" class="logo-escudo" alt="Escudo CTP Matapalo">
+                    <img src="img/logo_colegio_nuevo.png" class="logo-escudo" alt="Escudo CTP Matapalo" loading="lazy" decoding="async" fetchpriority="low">
                 </a>
             </div>
         </div>
@@ -174,7 +174,7 @@
                                 </thead>
                                 <tbody id="cuerpoTabla">
                                     <tr>
-                                        <td colspan="4" style="text-align:center; padding: 40px; color: var(--texto-gris);">
+                                        <td colspan="4" data-label="Estado" style="text-align:center; padding: 40px; color: var(--texto-gris);">
                                             <i class="fas fa-spinner fa-spin fa-2x" style="color: var(--verde-claro); margin-bottom: 10px;"></i><br> Cargando sus registros...
                                         </td>
                                     </tr>
@@ -228,7 +228,7 @@
                                 </thead>
                                 <tbody id="cuerpoTablaUsuarios">
                                     <tr>
-                                        <td colspan="4" style="text-align:center; color:#666; padding:18px;">Cargando usuarios...</td>
+                                        <td colspan="4" data-label="Estado" style="text-align:center; color:#666; padding:18px;">Cargando usuarios...</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -787,6 +787,79 @@
             .page-admin .panel-admin {
                 padding: 16px;
             }
+
+            .page-admin .tabla-container {
+                overflow: visible;
+            }
+
+            .page-admin .tabla-container table {
+                border-collapse: separate;
+                border-spacing: 0 12px;
+            }
+
+            .page-admin .tabla-container thead {
+                display: none;
+            }
+
+            .page-admin .tabla-container tbody,
+            .page-admin .tabla-container tr,
+            .page-admin .tabla-container td {
+                display: block;
+                width: 100%;
+            }
+
+            .page-admin .tabla-container tr {
+                background: #fff;
+                border: 1px solid #e5dccf;
+                border-radius: 14px;
+                overflow: hidden;
+                box-shadow: 0 10px 20px rgba(10, 76, 35, 0.08);
+                margin-bottom: 12px;
+            }
+
+            .page-admin .tabla-container td {
+                display: flex;
+                align-items: flex-start;
+                gap: 10px;
+                text-align: left !important;
+                border-bottom: 1px solid rgba(212, 204, 192, 0.7);
+                padding: 12px 14px;
+            }
+
+            .page-admin .tabla-container td:last-child {
+                border-bottom: none;
+            }
+
+            .page-admin .tabla-container td[data-label]::before {
+                content: attr(data-label);
+                width: 40%;
+                max-width: 140px;
+                flex: 0 0 40%;
+                text-transform: uppercase;
+                letter-spacing: 0.4px;
+                font-size: 0.72rem;
+                font-weight: 800;
+                color: #0a4c23;
+            }
+
+            .page-admin .tabla-container td[data-label="Acción"],
+            .page-admin .tabla-container td[data-label="Acciones"] {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .page-admin .tabla-container td[data-label="Acción"]::before,
+            .page-admin .tabla-container td[data-label="Acciones"]::before {
+                width: auto;
+                max-width: none;
+                flex: 0 0 auto;
+            }
+
+            .page-admin .tabla-container td[data-label="Acción"] button,
+            .page-admin .tabla-container td[data-label="Acciones"] button {
+                width: 100%;
+                justify-content: center;
+            }
         }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/notiflix@3/dist/notiflix-aio-3.2.8.min.js"></script>
@@ -794,10 +867,10 @@
     <script>
         Notiflix.Notify.init({
             position: 'right-top',
-            timeout: 2800,
+            timeout: 3600,
             clickToClose: true,
-            fontSize: '14px',
-            borderRadius: '999px',
+            fontSize: '15px',
+            borderRadius: '16px',
             distance: '14px',
             showOnlyTheLastOne: true
         });
@@ -878,6 +951,46 @@
                 }
             }
         };
+
+        let usuariosYaCargados = false;
+
+        function setButtonLoading(button, isLoading, loadingText) {
+            if (!button) return;
+            if (isLoading) {
+                if (!button.dataset.originalHtml) {
+                    button.dataset.originalHtml = button.innerHTML;
+                }
+                button.disabled = true;
+                button.setAttribute('aria-busy', 'true');
+                button.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${loadingText || 'Procesando...'}`;
+                return;
+            }
+
+            button.disabled = false;
+            button.removeAttribute('aria-busy');
+            if (button.dataset.originalHtml) {
+                button.innerHTML = button.dataset.originalHtml;
+                delete button.dataset.originalHtml;
+            }
+        }
+
+        function cargarTareasDiferidas() {
+            const ejecutar = () => {
+                if (!usuariosYaCargados) {
+                    usuariosYaCargados = true;
+                    cargarUsuariosAdmin();
+                }
+                inicializarRespaldoAutomatico();
+            };
+
+            if (typeof requestIdleCallback === 'function') {
+                requestIdleCallback(ejecutar, {
+                    timeout: 1200
+                });
+            } else {
+                setTimeout(ejecutar, 600);
+            }
+        }
 
         // Manejar validaciones para asegurar que el código no se caiga
         try {
@@ -1020,6 +1133,10 @@
             botonesTab.forEach(btn => {
                 btn.addEventListener('click', () => {
                     abrirTabAdmin(btn.dataset.adminTab);
+                    if (btn.dataset.adminTab === 'usuarios' && !usuariosYaCargados) {
+                        usuariosYaCargados = true;
+                        cargarUsuariosAdmin();
+                    }
                 });
             });
 
@@ -1089,8 +1206,7 @@
             setupUsuariosListener();
             setupMantenimientoListener();
             cargarComunicadosAdmin();
-            cargarUsuariosAdmin();
-            inicializarRespaldoAutomatico();
+            cargarTareasDiferidas();
         }
 
 
@@ -1111,7 +1227,7 @@
                         totalComunicados: 0,
                         ultimoComunicado: 'Sin registros'
                     });
-                    tbody.innerHTML = "<tr><td colspan='4' style='text-align:center; padding: 40px; color: var(--texto-gris);'><i class='fas fa-folder-open fa-2x' style='color: #ccc; margin-bottom:15px;'></i><br>No hay comunicados registrados.</td></tr>";
+                    tbody.innerHTML = "<tr><td colspan='4' data-label='Estado' style='text-align:center; padding: 40px; color: var(--texto-gris);'><i class='fas fa-folder-open fa-2x' style='color: #ccc; margin-bottom:15px;'></i><br>No hay comunicados registrados.</td></tr>";
                     return;
                 }
 
@@ -1127,22 +1243,25 @@
                     const tituloSeguro = escapeHtml(c.titulo || 'Sin titulo');
                     const contenidoSeguro = escapeHtml(c.contenido || 'Sin contenido');
                     const autorSeguro = escapeHtml(c.autor || '---');
+                    const tituloRaw = encodeURIComponent(String(c.titulo || ''));
+                    const contenidoRaw = encodeURIComponent(String(c.contenido || ''));
+                    const colorRaw = encodeURIComponent(String(c.color_borde || '#27ae60'));
 
                     tbody.innerHTML += `
                 <tr>
-                    <td><b>${formattedDate}</b></td>
-                    <td>
+                    <td data-label="Fecha"><b>${formattedDate}</b></td>
+                    <td data-label="Título y Contenido">
                         <strong style="color: ${c.color_borde};">${tituloSeguro}</strong>
                         <div style="font-size: 0.85rem; margin-top: 6px; color: var(--texto-gris);">
                             ${contenidoSeguro}
                         </div>
                     </td>
-                    <td>${autorSeguro}</td>
-                    <td style="text-align: center; display: flex; gap: 8px; justify-content: center;">
-                        <button class="btn-editar-com" onclick="editarComunicado(${c.id}, '${String(c.titulo || '').replaceAll("'", "\\'")}', '${String(c.contenido || '').replaceAll("'", "\\'").replaceAll('\n', "\\n")}', '${c.color_borde}')" title="Editar este comunicado">
+                    <td data-label="Autor">${autorSeguro}</td>
+                    <td data-label="Acción" style="text-align: center; display: flex; gap: 8px; justify-content: center;">
+                        <button class="btn-editar-com" data-id="${c.id}" data-titulo="${tituloRaw}" data-contenido="${contenidoRaw}" data-color="${colorRaw}" onclick="editarComunicadoDesdeBoton(this)" title="Editar este comunicado" type="button">
                             <i class="fas fa-edit"></i> Editar
                         </button>
-                        <button class="btn-eliminar-com" onclick="eliminarComunicado(${c.id})" title="Eliminar este comunicado">
+                        <button class="btn-eliminar-com" onclick="eliminarComunicado(${c.id}, this)" title="Eliminar este comunicado" type="button">
                             <i class="fas fa-trash-alt"></i> Eliminar
                         </button>
                     </td>
@@ -1153,11 +1272,11 @@
                 actualizarResumen({
                     ultimoComunicado: 'No disponible'
                 });
-                tbody.innerHTML = "<tr><td colspan='4'>Error al cargar los comunicados.</td></tr>";
+                tbody.innerHTML = "<tr><td colspan='4' data-label='Estado'>Error al cargar los comunicados.</td></tr>";
             }
         }
 
-        async function eliminarComunicado(id) {
+        async function eliminarComunicado(id, boton) {
             const confirmacion = await Swal.fire({
                 title: '¿Eliminar comunicado?',
                 text: 'Este comunicado dejará de mostrarse para todo el personal. Esta acción no se puede deshacer.',
@@ -1174,17 +1293,7 @@
                 return;
             }
 
-            Swal.fire({
-                title: 'Eliminando comunicado...',
-                text: 'Espere un momento, por favor.',
-                allowOutsideClick: false,
-                showConfirmButton: false,
-                didOpen: () => {
-                    Swal.showLoading();
-                    const actions = document.querySelector('.swal2-actions');
-                    if (actions) actions.style.display = 'none';
-                }
-            });
+            setButtonLoading(boton, true, 'Eliminando...');
 
             try {
                 const res = await fetch(`${SUPABASE_URL}/rest/v1/comunicados?id=eq.${id}`, {
@@ -1192,17 +1301,7 @@
                     headers
                 });
                 if (res.ok) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Comunicado eliminado',
-                        text: 'La publicación se eliminó correctamente.',
-                        timer: 1500,
-                        showConfirmButton: false,
-                        didOpen: () => {
-                            const actions = document.querySelector('.swal2-actions');
-                            if (actions) actions.style.display = 'none';
-                        }
-                    });
+                    Swal.fire('Comunicado eliminado', 'La publicación se eliminó correctamente.', 'success');
                     cargarComunicadosAdmin();
                 } else {
                     Swal.fire('No se pudo eliminar', 'Ocurrió un problema al eliminar el comunicado. Intente nuevamente.', 'error');
@@ -1210,6 +1309,8 @@
             } catch (e) {
                 console.error(e);
                 Swal.fire('Sin conexión', 'No fue posible completar la acción por un problema de red.', 'error');
+            } finally {
+                setButtonLoading(boton, false);
             }
         }
 
@@ -1227,6 +1328,14 @@
                 top: document.getElementById('formComunicado').offsetTop - 110,
                 behavior: 'smooth'
             });
+        }
+
+        function editarComunicadoDesdeBoton(button) {
+            const id = Number(button.dataset.id);
+            const titulo = decodeURIComponent(button.dataset.titulo || '');
+            const contenido = decodeURIComponent(button.dataset.contenido || '');
+            const color = decodeURIComponent(button.dataset.color || '#27ae60');
+            editarComunicado(id, titulo, contenido, color);
         }
 
         function limpiarFormularioComunicado() {
@@ -1259,7 +1368,8 @@
                     e.preventDefault();
                     const btn = document.getElementById('btnPublicar');
                     const idEdicion = document.getElementById('comunicadoIdEdicion').value;
-                    btn.disabled = true;
+                    if (btn.disabled) return;
+                    setButtonLoading(btn, true, idEdicion ? 'Guardando...' : 'Publicando...');
                     const datos = {
                         titulo: document.getElementById('tituloCom').value,
                         contenido: document.getElementById('contenidoCom').value,
@@ -1267,13 +1377,6 @@
                         autor: localStorage.getItem('nombre')
                     };
                     try {
-                        Swal.fire({
-                            title: idEdicion ? 'Guardando cambios...' : 'Publicando comunicado...',
-                            text: idEdicion ? 'Actualizando publicación en el sistema.' : 'Estamos registrando la nueva publicación.',
-                            allowOutsideClick: false,
-                            showConfirmButton: false
-                        });
-
                         const url = idEdicion ? `${SUPABASE_URL}/rest/v1/comunicados?id=eq.${idEdicion}` : `${SUPABASE_URL}/rest/v1/comunicados`;
                         const method = idEdicion ? 'PATCH' : 'POST';
 
@@ -1282,8 +1385,6 @@
                             headers,
                             body: JSON.stringify(datos)
                         });
-
-                        Swal.close();
 
                         if (res.ok) {
                             Swal.fire('Operación exitosa', idEdicion ? 'El comunicado fue actualizado correctamente.' : 'El comunicado fue publicado y ya está activo para todo el personal.', 'success');
@@ -1294,10 +1395,10 @@
                             Swal.fire('No se pudo publicar', error.message || 'Revise la información e intente nuevamente.', 'error');
                         }
                     } catch (e) {
-                        Swal.close();
                         Swal.fire('Error de conexión', e.message || 'No fue posible publicar en este momento.', 'error');
+                    } finally {
+                        setButtonLoading(btn, false);
                     }
-                    btn.disabled = false;
                 });
             }
         }
@@ -1357,7 +1458,12 @@
             form.addEventListener('submit', async function(e) {
                 e.preventDefault();
 
+                const btn = document.getElementById('btnGuardarUsuario');
                 const idEdicion = document.getElementById('usuarioIdEdicion').value;
+
+                if (btn.disabled) return;
+                setButtonLoading(btn, true, idEdicion ? 'Actualizando...' : 'Guardando...');
+
                 const datos = {
                     nombre_completo: document.getElementById('nombreCompletoUser').value.trim(),
                     usuario: document.getElementById('usuarioUser').value.trim(),
@@ -1368,12 +1474,14 @@
                 const errorValidacion = validarUsuarioInput(datos, Boolean(idEdicion));
                 if (errorValidacion) {
                     Swal.fire('Validación', errorValidacion, 'warning');
+                    setButtonLoading(btn, false);
                     return;
                 }
 
                 try {
                     if (await existeUsuarioDuplicado(datos.usuario, idEdicion || null)) {
                         Swal.fire('Usuario duplicado', 'Ya existe una cuenta con ese nombre de usuario.', 'warning');
+                        setButtonLoading(btn, false);
                         return;
                     }
 
@@ -1411,6 +1519,8 @@
                     cargarUsuariosAdmin();
                 } catch (error) {
                     Swal.fire('No se pudo guardar', error.message || 'Ocurrió un error al guardar el usuario.', 'error');
+                } finally {
+                    setButtonLoading(btn, false);
                 }
             });
         }
@@ -1428,7 +1538,7 @@
                     actualizarResumen({
                         totalUsuarios: 0
                     });
-                    tbody.innerHTML = "<tr><td colspan='4' style='text-align:center; color:#666; padding:18px;'>No hay usuarios registrados.</td></tr>";
+                    tbody.innerHTML = "<tr><td colspan='4' data-label='Estado' style='text-align:center; color:#666; padding:18px;'>No hay usuarios registrados.</td></tr>";
                     return;
                 }
 
@@ -1440,14 +1550,17 @@
                     const usuarioSeguro = escapeHtml(u.usuario || '---');
                     const nombreSeguro = escapeHtml(u.nombre_completo || '---');
                     const rolSeguro = escapeHtml(u.rol || '---');
+                    const usuarioRaw = encodeURIComponent(String(u.usuario || ''));
+                    const nombreRaw = encodeURIComponent(String(u.nombre_completo || ''));
+                    const rolRaw = encodeURIComponent(String(u.rol || ''));
                     tbody.innerHTML += `
                     <tr>
-                        <td><b>${usuarioSeguro}</b></td>
-                        <td>${nombreSeguro}</td>
-                        <td><span class="badge-motivo">${rolSeguro}</span></td>
-                        <td style="display:flex; gap:8px; justify-content:center;">
-                            <button class="btn-editar-com" onclick="editarUsuario(${u.id}, '${String(u.usuario || '').replaceAll("'", "\\'")}', '${String(u.nombre_completo || '').replaceAll("'", "\\'")}', '${String(u.rol || '').replaceAll("'", "\\'")}')"><i class="fas fa-edit"></i> Editar</button>
-                            <button class="btn-eliminar-com" onclick="eliminarUsuario(${u.id})"><i class="fas fa-trash-alt"></i> Eliminar</button>
+                        <td data-label="Usuario"><b>${usuarioSeguro}</b></td>
+                        <td data-label="Nombre">${nombreSeguro}</td>
+                        <td data-label="Rol"><span class="badge-motivo">${rolSeguro}</span></td>
+                        <td data-label="Acciones" style="display:flex; gap:8px; justify-content:center;">
+                            <button class="btn-editar-com" data-id="${u.id}" data-usuario="${usuarioRaw}" data-nombre="${nombreRaw}" data-rol="${rolRaw}" onclick="editarUsuarioDesdeBoton(this)" type="button"><i class="fas fa-edit"></i> Editar</button>
+                            <button class="btn-eliminar-com" onclick="eliminarUsuario(${u.id}, this)" type="button"><i class="fas fa-trash-alt"></i> Eliminar</button>
                         </td>
                     </tr>`;
                 });
@@ -1456,7 +1569,7 @@
                 actualizarResumen({
                     totalUsuarios: 0
                 });
-                tbody.innerHTML = "<tr><td colspan='4' style='text-align:center; color:#c0392b; padding:18px;'>Error al cargar usuarios.</td></tr>";
+                tbody.innerHTML = "<tr><td colspan='4' data-label='Estado' style='text-align:center; color:#c0392b; padding:18px;'>Error al cargar usuarios.</td></tr>";
             }
         }
 
@@ -1475,7 +1588,15 @@
             });
         }
 
-        async function eliminarUsuario(id) {
+        function editarUsuarioDesdeBoton(button) {
+            const id = Number(button.dataset.id);
+            const usuario = decodeURIComponent(button.dataset.usuario || '');
+            const nombre = decodeURIComponent(button.dataset.nombre || '');
+            const rol = decodeURIComponent(button.dataset.rol || '');
+            editarUsuario(id, usuario, nombre, rol);
+        }
+
+        async function eliminarUsuario(id, boton) {
             const confirmacion = await Swal.fire({
                 title: '¿Eliminar usuario?',
                 text: 'Se revocará el acceso del usuario al sistema.',
@@ -1491,6 +1612,8 @@
                 return;
             }
 
+            setButtonLoading(boton, true, 'Eliminando...');
+
             try {
                 const res = await fetch(`${SUPABASE_URL}/rest/v1/usuarios?id=eq.${id}`, {
                     method: 'DELETE',
@@ -1503,6 +1626,8 @@
                 cargarUsuariosAdmin();
             } catch (error) {
                 Swal.fire('No se pudo eliminar', error.message || 'Ocurrió un problema al eliminar el usuario.', 'error');
+            } finally {
+                setButtonLoading(boton, false);
             }
         }
 
@@ -1511,18 +1636,24 @@
             const btnAuditoria = document.getElementById('btnAuditoria');
 
             btnRespaldo.addEventListener('click', async() => {
+                setButtonLoading(btnRespaldo, true, 'Generando...');
                 try {
                     await generarRespaldo(true);
                 } catch (error) {
                     Swal.fire('No se pudo generar respaldo', error.message || 'Intente nuevamente en unos minutos.', 'error');
+                } finally {
+                    setButtonLoading(btnRespaldo, false);
                 }
             });
 
             btnAuditoria.addEventListener('click', async() => {
+                setButtonLoading(btnAuditoria, true, 'Auditando...');
                 try {
                     await ejecutarAuditoriaIntegridad();
                 } catch (error) {
                     Swal.fire('No se pudo ejecutar auditoría', error.message || 'Revise la conexión e intente nuevamente.', 'error');
+                } finally {
+                    setButtonLoading(btnAuditoria, false);
                 }
             });
         }

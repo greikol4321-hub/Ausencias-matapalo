@@ -17,7 +17,7 @@
     <header class="header">
         <div class="header-container">
             <div class="header-logos-left">
-                <img src="img/LOGO_MEP-removebg-preview.png" class="logo-mep" alt="MEP Costa Rica">
+                <img src="img/LOGO_MEP-removebg-preview.png" class="logo-mep" alt="MEP Costa Rica" loading="lazy" decoding="async" fetchpriority="low">
                 <div class="divider"></div>
                 <div class="logo-gobierno">
                     <strong>Colegio Técnico Profesional</strong><br> de Matapalo
@@ -26,7 +26,7 @@
 
             <div class="nav-right">
                 <a href="index.html" title="Inicio">
-                    <img src="img/logo_colegio_nuevo.png" class="logo-escudo" alt="Escudo CTP Matapalo">
+                    <img src="img/logo_colegio_nuevo.png" class="logo-escudo" alt="Escudo CTP Matapalo" loading="lazy" decoding="async" fetchpriority="low">
                 </a>
             </div>
         </div>
@@ -122,7 +122,7 @@
                     </thead>
                     <tbody id="cuerpoTabla">
                         <tr>
-                            <td colspan="4" style="text-align:center; padding: 40px; color: var(--texto-gris);">
+                            <td colspan="4" data-label="Estado" style="text-align:center; padding: 40px; color: var(--texto-gris);">
                                 <i class="fas fa-spinner fa-spin fa-2x" style="color: var(--verde-claro); margin-bottom: 10px;"></i><br> Cargando sus registros...
                             </td>
                         </tr>
@@ -138,10 +138,10 @@
     <script>
         Notiflix.Notify.init({
             position: 'right-top',
-            timeout: 2800,
+            timeout: 3600,
             clickToClose: true,
-            fontSize: '14px',
-            borderRadius: '999px',
+            fontSize: '15px',
+            borderRadius: '16px',
             distance: '14px',
             showOnlyTheLastOne: true
         });
@@ -222,6 +222,26 @@
                 }
             }
         };
+
+        function setButtonLoading(button, isLoading, loadingText) {
+            if (!button) return;
+            if (isLoading) {
+                if (!button.dataset.originalHtml) {
+                    button.dataset.originalHtml = button.innerHTML;
+                }
+                button.disabled = true;
+                button.setAttribute('aria-busy', 'true');
+                button.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${loadingText || 'Procesando...'}`;
+                return;
+            }
+
+            button.disabled = false;
+            button.removeAttribute('aria-busy');
+            if (button.dataset.originalHtml) {
+                button.innerHTML = button.dataset.originalHtml;
+                delete button.dataset.originalHtml;
+            }
+        }
 
         // Manejar validaciones para asegurar que el código no se caiga
         try {
@@ -317,6 +337,7 @@
         document.getElementById('formMiAusencia').addEventListener('submit', async function(e) {
             e.preventDefault();
             const btn = document.getElementById('btnGuardar');
+            if (btn.disabled) return;
             const f1 = document.getElementById('fechaInicio').value;
             const f2 = document.getElementById('fechaFin').value;
             const razon = document.getElementById('razonAusencia').value;
@@ -359,7 +380,7 @@
                 return;
             }
 
-            btn.disabled = true;
+            setButtonLoading(btn, true, 'Registrando...');
             const datos = {
                 usuario: localStorage.getItem('usuario'),
                 nombre: localStorage.getItem('nombre'),
@@ -385,7 +406,6 @@
                 });
 
                 if (hayTraslape) {
-                    btn.disabled = false;
                     Swal.fire({
                         icon: 'warning',
                         title: 'Período traslapado',
@@ -400,55 +420,41 @@
                     body: JSON.stringify(datos)
                 });
 
-                Swal.fire({
-                    title: 'Guardando ausencia...',
-                    text: 'Estamos registrando la información en el sistema.',
-                    allowOutsideClick: false,
-                    showConfirmButton: false,
-                    didOpen: () => {
-                        Swal.showLoading();
-                        const actions = document.querySelector('.swal2-actions');
-                        if (actions) actions.style.display = 'none';
-                    }
-                });
-
-                if (res.ok) { // Notificar por correo via EmailJS al guardar la ausencia
-                    emailjs.send("service_lww6198", "template_htbp6yd", {
-                            nombre: datos.nombre,
-                            fecha_inicio: datos.fecha,
-                            fecha_fin: datos.fecha_fin,
-                            motivo: datos.razon,
-                            detalle: datos.detalle,
-                            actividad: datos.actividad
-                        }).then(() => console.log("Correo enviado a direccion"))
-                        .catch(err => {
-                            console.error("Fallo EmailJS:", err);
-                            Swal.fire('Aviso', 'La ausencia fue guardada, pero no se pudo enviar el correo automático.', 'warning');
-                        });
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Ausencia registrada',
-                        text: 'El período de ausencia se guardó correctamente.',
-                        timer: 2000,
-                        showConfirmButton: false,
-                        didOpen: () => {
-                            // Asegurar que los botones no se muestren
-                            const actions = document.querySelector('.swal2-actions');
-                            if (actions) actions.style.display = 'none';
-                        }
-                    });
-                    this.reset();
-                    cargarHistorial();
+                if (!res.ok) {
+                    const error = await res.json().catch(() => ({}));
+                    throw new Error(error.message || 'No se pudo guardar la ausencia.');
                 }
+
+                emailjs.send("service_lww6198", "template_htbp6yd", {
+                        nombre: datos.nombre,
+                        fecha_inicio: datos.fecha,
+                        fecha_fin: datos.fecha_fin,
+                        motivo: datos.razon,
+                        detalle: datos.detalle,
+                        actividad: datos.actividad
+                    }).then(() => console.log("Correo enviado a direccion"))
+                    .catch(err => {
+                        console.error("Fallo EmailJS:", err);
+                        Swal.fire('Aviso', 'La ausencia fue guardada, pero no se pudo enviar el correo automático.', 'warning');
+                    });
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Ausencia registrada',
+                    text: 'El período de ausencia se guardó correctamente.'
+                });
+                this.reset();
+                cargarHistorial();
             } catch (err) {
                 console.error(err);
                 Swal.fire({
                     icon: 'error',
                     title: 'Sin conexión',
-                    text: 'No se pudo conectar con el servidor. Intente nuevamente.'
+                    text: err.message || 'No se pudo conectar con el servidor. Intente nuevamente.'
                 });
+            } finally {
+                setButtonLoading(btn, false);
             }
-            btn.disabled = false;
         });
 
         // --- CARGAR HISTORIAL ---
@@ -464,7 +470,7 @@
 
                 tbody.innerHTML = "";
                 if (datos.length === 0) {
-                    tbody.innerHTML = "<tr><td colspan='4' style='text-align:center; padding: 40px; color: var(--texto-gris);'><i class='fas fa-folder-open fa-2x' style='color: #ccc; margin-bottom:15px;'></i><br>No tiene ausencias registradas en el sistema.</td></tr>";
+                    tbody.innerHTML = "<tr><td colspan='4' data-label='Estado' style='text-align:center; padding: 40px; color: var(--texto-gris);'><i class='fas fa-folder-open fa-2x' style='color: #ccc; margin-bottom:15px;'></i><br>No tiene ausencias registradas en el sistema.</td></tr>";
                     return;
                 }
 
@@ -475,16 +481,16 @@
                     const actividad = escapeHtml(a.actividad || 'Sin actividad asignada');
                     tbody.innerHTML += `
                 <tr>
-                    <td><b><i class="fas fa-calendar-day" style="color: var(--texto-gris); margin-right: 5px;"></i> ${fecha}</b></td>
-                    <td><b><i class="fas fa-calendar-check" style="color: var(--texto-gris); margin-right: 5px;"></i> ${fechaFin}</b></td>
-                    <td>
+                    <td data-label="Desde"><b><i class="fas fa-calendar-day" style="color: var(--texto-gris); margin-right: 5px;"></i> ${fecha}</b></td>
+                    <td data-label="Hasta"><b><i class="fas fa-calendar-check" style="color: var(--texto-gris); margin-right: 5px;"></i> ${fechaFin}</b></td>
+                    <td data-label="Motivo y Actividad">
                         <span class="badge-motivo">${razon}</span>
                         <div style="font-size: 0.85rem; margin-top: 6px; color: var(--texto-gris);">
                             <i class="fas fa-comment-dots" style="color: #999; margin-right:4px;"></i> ${actividad}
                         </div>
                     </td>
-                    <td style="text-align: center;">
-                        <button class="btn-eliminar" onclick="eliminarAusencia(${a.id})" title="Eliminar este periodo">
+                    <td data-label="Acción" style="text-align: center;">
+                        <button class="btn-eliminar" onclick="eliminarAusencia(${a.id}, this)" title="Eliminar este periodo">
                             <i class="fas fa-trash-alt"></i> Eliminar
                         </button>
                     </td>
@@ -492,11 +498,11 @@
                 });
             } catch (e) {
                 console.error(e);
-                tbody.innerHTML = "<tr><td colspan='4'>Error al cargar el historial.</td></tr>";
+                tbody.innerHTML = "<tr><td colspan='4' data-label='Estado'>Error al cargar el historial.</td></tr>";
             }
         }
 
-        async function eliminarAusencia(id) {
+        async function eliminarAusencia(id, boton) {
             const confirmacion = await Swal.fire({
                 title: '¿Eliminar ausencia?',
                 text: 'Esta acción no se puede deshacer.',
@@ -513,17 +519,7 @@
                 return;
             }
 
-            Swal.fire({
-                title: 'Eliminando ausencia...',
-                text: 'Espere un momento, por favor.',
-                allowOutsideClick: false,
-                showConfirmButton: false,
-                didOpen: () => {
-                    Swal.showLoading();
-                    const actions = document.querySelector('.swal2-actions');
-                    if (actions) actions.style.display = 'none';
-                }
-            });
+            setButtonLoading(boton, true, 'Eliminando...');
 
             try {
                 const res = await fetch(`${SUPABASE_URL}/rest/v1/ausencias?id=eq.${id}`, {
@@ -531,17 +527,7 @@
                     headers
                 });
                 if (res.ok) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Ausencia eliminada',
-                        text: 'El registro se eliminó correctamente.',
-                        timer: 1500,
-                        showConfirmButton: false,
-                        didOpen: () => {
-                            const actions = document.querySelector('.swal2-actions');
-                            if (actions) actions.style.display = 'none';
-                        }
-                    });
+                    Swal.fire('Ausencia eliminada', 'El registro se eliminó correctamente.', 'success');
                     cargarHistorial();
                 } else {
                     Swal.fire('No se pudo eliminar', 'Ocurrió un problema al eliminar la ausencia.', 'error');
@@ -549,6 +535,8 @@
             } catch (e) {
                 console.error(e);
                 Swal.fire('Sin conexión', 'No fue posible eliminar por un problema de red.', 'error');
+            } finally {
+                setButtonLoading(boton, false);
             }
         }
 
