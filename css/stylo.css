@@ -2093,7 +2093,8 @@ a:hover {
             .page-docentes .overflow-auto,
             .page-docentes .tabla-scroll {
                 width: 100%;
-                overflow: visible;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
                 display: block;
             }
 
