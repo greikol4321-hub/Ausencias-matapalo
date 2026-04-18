@@ -253,6 +253,13 @@
     </main>
 
     <style>
+        .page-admin {
+            background:
+                radial-gradient(circle at top right, rgba(26, 107, 58, 0.12), transparent 42%),
+                radial-gradient(circle at bottom left, rgba(10, 76, 35, 0.08), transparent 40%),
+                #ebe5d9;
+        }
+
         .page-admin .admin-shell {
             margin-top: 28px;
             margin-bottom: 40px;
@@ -263,12 +270,13 @@
             justify-content: space-between;
             align-items: flex-start;
             gap: 20px;
-            background: linear-gradient(125deg, #0a4c23 0%, #1a6b3a 65%, #d4a256 140%);
+            background: linear-gradient(125deg, #0a4c23 0%, #1a6b3a 72%, #2f8a50 120%);
             color: #fff;
             border-radius: 16px;
             padding: 26px;
             margin-bottom: 24px;
-            box-shadow: 0 16px 28px rgba(10, 76, 35, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 12px 24px rgba(10, 76, 35, 0.16);
         }
 
         .page-admin .hero-kicker {
@@ -304,7 +312,7 @@
             border: 1px solid #e7ded0;
             border-radius: 12px;
             padding: 16px;
-            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 12px rgba(10, 76, 35, 0.08);
             border-top: 4px solid #0a4c23;
         }
 
@@ -341,7 +349,7 @@
             border: 1px solid #d4ccc0;
             background: #fff;
             border-radius: 999px;
-            padding: 7px 14px;
+            padding: 9px 16px;
             font-weight: 700;
             color: #0a4c23;
             transition: 0.2s ease;
@@ -373,7 +381,7 @@
 
         .page-admin .admin-subtab-btn {
             border: 1px solid #d7cfbf;
-            background: #fff;
+            background: #f5f1e8;
             color: #0a4c23;
             border-radius: 10px;
             padding: 8px 14px;
@@ -420,7 +428,7 @@
             border: 1px solid #e5dccf;
             border-radius: 14px;
             padding: 20px;
-            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.06);
+            box-shadow: 0 6px 14px rgba(10, 76, 35, 0.09);
             border-top: 5px solid #1a6b3a;
         }
 
@@ -594,9 +602,9 @@
             width: 100%;
             padding: 12px 14px 12px 40px;
             border-radius: 8px;
-            border: 1px solid rgba(0, 0, 0, 0.14);
+            border: 1px solid #d4ccc0;
             font-size: 1rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 2px 6px rgba(10, 76, 35, 0.06);
         }
 
         .btn-editar-com {
@@ -662,6 +670,11 @@
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
         }
 
+        .page-admin #cuerpoTabla td:last-child,
+        .page-admin #cuerpoTablaUsuarios td:last-child {
+            min-width: 170px;
+        }
+
         .btn-secundario {
             background: #7f8c8d;
         }
@@ -725,10 +738,26 @@
             .page-admin .admin-hero {
                 flex-direction: column;
                 align-items: stretch;
+                padding: 20px;
             }
 
             .page-admin .resumen-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .page-admin .admin-tabs,
+            .page-admin .admin-subtabs {
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: thin;
+                padding-bottom: 2px;
+            }
+
+            .page-admin .admin-tab-btn,
+            .page-admin .admin-subtab-btn {
+                flex: 0 0 auto;
+                white-space: nowrap;
             }
 
             .page-admin .quick-actions-grid {
@@ -741,6 +770,22 @@
 
             .form-usuarios-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .page-admin .btn-volver,
+            .page-admin .btn-admin {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .btn-editar-com,
+            .btn-eliminar-com {
+                font-size: 0.82rem;
+                padding: 7px 10px;
+            }
+
+            .page-admin .panel-admin {
+                padding: 16px;
             }
         }
     </style>
