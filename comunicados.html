@@ -788,77 +788,20 @@
                 padding: 16px;
             }
 
-            .page-admin .tabla-container {
-                overflow: visible;
-            }
-
-            .page-admin .tabla-container table {
-                border-collapse: separate;
-                border-spacing: 0 12px;
-            }
-
-            .page-admin .tabla-container thead {
-                display: none;
-            }
-
-            .page-admin .tabla-container tbody,
-            .page-admin .tabla-container tr,
-            .page-admin .tabla-container td {
+            .page-admin .tabla-container,
+            .page-admin .overflow-auto,
+            .page-admin .tabla-scroll {
+                width: 100%;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
                 display: block;
-                width: 100%;
             }
 
-            .page-admin .tabla-container tr {
-                background: #fff;
-                border: 1px solid #e5dccf;
-                border-radius: 14px;
-                overflow: hidden;
-                box-shadow: 0 10px 20px rgba(10, 76, 35, 0.08);
-                margin-bottom: 12px;
-            }
-
-            .page-admin .tabla-container td {
-                display: flex;
-                align-items: flex-start;
-                gap: 10px;
-                text-align: left !important;
-                border-bottom: 1px solid rgba(212, 204, 192, 0.7);
-                padding: 12px 14px;
-            }
-
-            .page-admin .tabla-container td:last-child {
-                border-bottom: none;
-            }
-
-            .page-admin .tabla-container td[data-label]::before {
-                content: attr(data-label);
-                width: 40%;
-                max-width: 140px;
-                flex: 0 0 40%;
-                text-transform: uppercase;
-                letter-spacing: 0.4px;
-                font-size: 0.72rem;
-                font-weight: 800;
-                color: #0a4c23;
-            }
-
-            .page-admin .tabla-container td[data-label="Acción"],
-            .page-admin .tabla-container td[data-label="Acciones"] {
-                flex-direction: column;
-                align-items: stretch;
-            }
-
-            .page-admin .tabla-container td[data-label="Acción"]::before,
-            .page-admin .tabla-container td[data-label="Acciones"]::before {
-                width: auto;
-                max-width: none;
-                flex: 0 0 auto;
-            }
-
-            .page-admin .tabla-container td[data-label="Acción"] button,
-            .page-admin .tabla-container td[data-label="Acciones"] button {
-                width: 100%;
-                justify-content: center;
+            .page-admin .tabla-container table,
+            .page-admin .overflow-auto table,
+            .page-admin .tabla-scroll table {
+                white-space: nowrap;
+                min-width: max-content;
             }
         }
     </style>
