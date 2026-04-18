@@ -230,7 +230,7 @@
 
         // 🔒 VERIFICACIÓN DE SESIÓN INMEDIATA
         if (!localStorage.getItem('usuario') || !localStorage.getItem('nombre')) {
-            window.location.href = "registrarme.html";
+            globalThis.location.href = "registrarme.html";
         }
         const SUPABASE_URL = 'https://iowxlwnosyyqetbvvmuk.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlvd3hsd25vc3l5cWV0YnZ2bXVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYxOTk4NDYsImV4cCI6MjA5MTc3NTg0Nn0.VZ5VMu0z4nlsZ0hKvDSk4IUluA1yGx9eQCCXzDc5HmU';
@@ -241,10 +241,55 @@
             "Content-Type": "application/json"
         };
 
-        function inicializar() {
+        function escapeHtml(value) {
+            return String(value ?? '').replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#39;');
+        }
+
+        async function validarSesionActiva() {
+            const usuario = localStorage.getItem('usuario');
+            const nombre = localStorage.getItem('nombre');
+            const rol = localStorage.getItem('rol');
+
+            if (!usuario || !nombre || !rol) {
+                return false;
+            }
+
+            try {
+                const res = await fetch(`${SUPABASE_URL}/rest/v1/usuarios?select=usuario,nombre_completo,rol&usuario=eq.${encodeURIComponent(usuario)}&limit=1`, {
+                    headers
+                });
+
+                if (!res.ok) {
+                    return false;
+                }
+
+                const data = await res.json();
+                if (!Array.isArray(data) || data.length === 0) {
+                    return false;
+                }
+
+                const userDb = data[0];
+                const coincideNombre = String(userDb.nombre_completo || '') === String(nombre);
+                const coincideRol = String(userDb.rol || '') === String(rol);
+
+                return coincideNombre && coincideRol;
+            } catch (error) {
+                console.error('No se pudo validar la sesion:', error);
+                return false;
+            }
+        }
+
+        async function inicializar() {
             const nombre = localStorage.getItem('nombre');
             const rol = localStorage.getItem('rol');
             const usuario = localStorage.getItem('usuario');
+
+            const sesionValida = await validarSesionActiva();
+            if (!sesionValida) {
+                localStorage.clear();
+                globalThis.location.href = "registrarme.html";
+                return;
+            }
 
             if (!nombre || !usuario) {
                 globalThis.location.href = "index.html";
@@ -420,14 +465,18 @@
                 }
 
                 datos.forEach(a => {
+                    const fecha = escapeHtml(a.fecha || '---');
+                    const fechaFin = escapeHtml(a.fecha_fin || '---');
+                    const razon = escapeHtml(a.razon || 'Sin motivo');
+                    const actividad = escapeHtml(a.actividad || 'Sin actividad asignada');
                     tbody.innerHTML += `
                 <tr>
-                    <td><b><i class="fas fa-calendar-day" style="color: var(--texto-gris); margin-right: 5px;"></i> ${a.fecha}</b></td>
-                    <td><b><i class="fas fa-calendar-check" style="color: var(--texto-gris); margin-right: 5px;"></i> ${a.fecha_fin || '---'}</b></td>
+                    <td><b><i class="fas fa-calendar-day" style="color: var(--texto-gris); margin-right: 5px;"></i> ${fecha}</b></td>
+                    <td><b><i class="fas fa-calendar-check" style="color: var(--texto-gris); margin-right: 5px;"></i> ${fechaFin}</b></td>
                     <td>
-                        <span class="badge-motivo">${a.razon}</span>
+                        <span class="badge-motivo">${razon}</span>
                         <div style="font-size: 0.85rem; margin-top: 6px; color: var(--texto-gris);">
-                            <i class="fas fa-comment-dots" style="color: #999; margin-right:4px;"></i> ${a.actividad || 'Sin actividad asignada'}
+                            <i class="fas fa-comment-dots" style="color: #999; margin-right:4px;"></i> ${actividad}
                         </div>
                     </td>
                     <td style="text-align: center;">
@@ -541,7 +590,7 @@
                     let textDesde = tdDesde.textContent || tdDesde.innerText;
                     let textHasta = tdHasta.textContent || tdHasta.innerText;
 
-                    if (textMotivo.toUpperCase().indexOf(filter) > -1 || textDesde.toUpperCase().indexOf(filter) > -1 || textHasta.toUpperCase().indexOf(filter) > -1) {
+                    if (textMotivo.toUpperCase().includes(filter) || textDesde.toUpperCase().includes(filter) || textHasta.toUpperCase().includes(filter)) {
                         tr[i].style.display = "";
                     } else {
                         tr[i].style.display = "none";

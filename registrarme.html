@@ -89,7 +89,7 @@ form.addEventListener('submit', async (e) => {
     try {
 
         const response = await fetch(
-            `${SUPABASE_URL}/rest/v1/usuarios?usuario=eq.${encodeURIComponent(usuario)}&contrasena=eq.${encodeURIComponent(password)}`,
+            `${SUPABASE_URL}/rest/v1/usuarios?select=usuario,nombre_completo,rol,contrasena&usuario=eq.${encodeURIComponent(usuario)}&limit=1`,
             {
                 method: 'GET',
                 headers: {
@@ -101,7 +101,7 @@ form.addEventListener('submit', async (e) => {
 
         const data = await response.json();
 
-        if (data.length > 0) {
+        if (data.length > 0 && String(data[0].contrasena || '') === password) {
 
             const user = data[0];
 

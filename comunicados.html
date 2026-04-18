@@ -758,6 +758,45 @@
             "Content-Type": "application/json"
         };
 
+        function escapeHtml(value) {
+            return String(value ?? '').replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#39;');
+        }
+
+        async function validarSesionActivaAdmin() {
+            const usuario = localStorage.getItem('usuario');
+            const nombre = localStorage.getItem('nombre');
+            const rol = localStorage.getItem('rol');
+
+            if (!usuario || !nombre || !rol) {
+                return false;
+            }
+
+            try {
+                const res = await fetch(`${SUPABASE_URL}/rest/v1/usuarios?select=usuario,nombre_completo,rol&usuario=eq.${encodeURIComponent(usuario)}&limit=1`, {
+                    headers
+                });
+
+                if (!res.ok) {
+                    return false;
+                }
+
+                const data = await res.json();
+                if (!Array.isArray(data) || data.length === 0) {
+                    return false;
+                }
+
+                const userDb = data[0];
+                const coincideNombre = String(userDb.nombre_completo || '') === String(nombre);
+                const coincideRol = String(userDb.rol || '') === String(rol);
+                const esAdmin = String(userDb.rol || '') === 'admin';
+
+                return coincideNombre && coincideRol && esAdmin;
+            } catch (error) {
+                console.error('No se pudo validar la sesion de admin:', error);
+                return false;
+            }
+        }
+
         function actualizarResumen({
             totalComunicados,
             totalUsuarios,
@@ -806,10 +845,17 @@
         }
 
 
-        function inicializar() {
+        async function inicializar() {
             const nombre = localStorage.getItem('nombre');
             const rol = localStorage.getItem('rol');
             const usuario = localStorage.getItem('usuario');
+
+            const sesionValida = await validarSesionActivaAdmin();
+            if (!sesionValida) {
+                localStorage.clear();
+                globalThis.location.href = "registrarme.html";
+                return;
+            }
 
             console.log('🔍 Datos en localStorage:', {
                 nombre,
@@ -877,19 +923,22 @@
                 datos.forEach(c => {
                     const date = new Date(c.creado_en);
                     const formattedDate = date.toLocaleDateString('es-CR');
+                    const tituloSeguro = escapeHtml(c.titulo || 'Sin titulo');
+                    const contenidoSeguro = escapeHtml(c.contenido || 'Sin contenido');
+                    const autorSeguro = escapeHtml(c.autor || '---');
 
                     tbody.innerHTML += `
                 <tr>
                     <td><b>${formattedDate}</b></td>
                     <td>
-                        <strong style="color: ${c.color_borde};">${c.titulo}</strong>
+                        <strong style="color: ${c.color_borde};">${tituloSeguro}</strong>
                         <div style="font-size: 0.85rem; margin-top: 6px; color: var(--texto-gris);">
-                            ${c.contenido}
+                            ${contenidoSeguro}
                         </div>
                     </td>
-                    <td>${c.autor}</td>
+                    <td>${autorSeguro}</td>
                     <td style="text-align: center; display: flex; gap: 8px; justify-content: center;">
-                        <button class="btn-editar-com" onclick="editarComunicado(${c.id}, '${c.titulo.replace(/'/g, "\\'")}', '${c.contenido.replace(/'/g, "\\'").replace(/\n/g, "\\n")}', '${c.color_borde}')" title="Editar este comunicado">
+                        <button class="btn-editar-com" onclick="editarComunicado(${c.id}, '${String(c.titulo || '').replaceAll("'", "\\'")}', '${String(c.contenido || '').replaceAll("'", "\\'").replaceAll('\n', "\\n")}', '${c.color_borde}')" title="Editar este comunicado">
                             <i class="fas fa-edit"></i> Editar
                         </button>
                         <button class="btn-eliminar-com" onclick="eliminarComunicado(${c.id})" title="Eliminar este comunicado">
@@ -1186,13 +1235,16 @@
                 });
 
                 usuarios.forEach(u => {
+                    const usuarioSeguro = escapeHtml(u.usuario || '---');
+                    const nombreSeguro = escapeHtml(u.nombre_completo || '---');
+                    const rolSeguro = escapeHtml(u.rol || '---');
                     tbody.innerHTML += `
                     <tr>
-                        <td><b>${u.usuario || '---'}</b></td>
-                        <td>${u.nombre_completo || '---'}</td>
-                        <td><span class="badge-motivo">${u.rol || '---'}</span></td>
+                        <td><b>${usuarioSeguro}</b></td>
+                        <td>${nombreSeguro}</td>
+                        <td><span class="badge-motivo">${rolSeguro}</span></td>
                         <td style="display:flex; gap:8px; justify-content:center;">
-                            <button class="btn-editar-com" onclick="editarUsuario(${u.id}, '${(u.usuario || '').replace(/'/g, "\\'")}', '${(u.nombre_completo || '').replace(/'/g, "\\'")}', '${(u.rol || '').replace(/'/g, "\\'")}')"><i class="fas fa-edit"></i> Editar</button>
+                            <button class="btn-editar-com" onclick="editarUsuario(${u.id}, '${String(u.usuario || '').replaceAll("'", "\\'")}', '${String(u.nombre_completo || '').replaceAll("'", "\\'")}', '${String(u.rol || '').replaceAll("'", "\\'")}')"><i class="fas fa-edit"></i> Editar</button>
                             <button class="btn-eliminar-com" onclick="eliminarUsuario(${u.id})"><i class="fas fa-trash-alt"></i> Eliminar</button>
                         </td>
                     </tr>`;
@@ -1322,10 +1374,10 @@
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
-                a.download = `respaldo_ctp_${new Date().toISOString().replace(/[:.]/g, '-')}.json`;
+                a.download = `respaldo_ctp_${new Date().toISOString().replaceAll(':', '-').replaceAll('.', '-')}.json`;
                 document.body.appendChild(a);
                 a.click();
-                document.body.removeChild(a);
+                a.remove();
                 URL.revokeObjectURL(url);
                 Swal.fire('Respaldo generado', 'La copia de seguridad se descargó correctamente en formato JSON.', 'success');
             }
@@ -1401,7 +1453,8 @@
             if (hallazgos.length === 0) {
                 resultado.innerHTML = '<b style="color:#27ae60;">No se detectaron inconsistencias de integridad.</b>';
             } else {
-                resultado.innerHTML = `<b style="color:#c0392b;">Se detectaron ${hallazgos.length} hallazgos:</b><ul>${hallazgos.map(h => `<li>${h}</li>`).join('')}</ul>`;
+                const hallazgosHtml = hallazgos.map(h => `<li>${escapeHtml(h)}</li>`).join('');
+                resultado.innerHTML = `<b style="color:#c0392b;">Se detectaron ${hallazgos.length} hallazgos:</b><ul>${hallazgosHtml}</ul>`;
             }
         }
 
@@ -1442,7 +1495,7 @@
                 let textDesde = tds.length > 0 ? (tds[0].textContent || tds[0].innerText) : "";
                 let textMotivo = tds.length > 1 ? (tds[1].textContent || tds[1].innerText) : "";
 
-                if (textMotivo.toUpperCase().indexOf(filter) > -1 || textDesde.toUpperCase().indexOf(filter) > -1) {
+                if (textMotivo.toUpperCase().includes(filter) || textDesde.toUpperCase().includes(filter)) {
                     tr[i].style.display = "";
                 } else {
                     tr[i].style.display = "none";

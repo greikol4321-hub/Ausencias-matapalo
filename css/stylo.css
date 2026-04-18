@@ -647,8 +647,8 @@ a:hover {
             border: 2px solid var(--verde-base);
         }
 
-        .page-index .carousel { overflow: hidden; border-radius: 8px; height: 380px; }
-        .page-index .slides { display: flex; transition: transform 0.8s ease; height: 100%; }
+        .page-index .carousel { overflow: hidden; border-radius: 8px; height: 380px; contain: layout paint; }
+        .page-index .slides { display: flex; transition: transform 0.8s ease; height: 100%; will-change: transform; }
         .page-index .slides img { width: 100%; min-width: 100%; object-fit: cover; }
 
         .page-index .titulo-seccion {
@@ -830,16 +830,21 @@ a:hover {
                 min-width: max-content;
             }
             .page-index .logo-mep { height: 40px; }
-            .page-index .logo-escudo { height: 60px; }
+            .page-index .logo-escudo { height: 60px; filter: none; }
             .page-index .main-title-bar h1 { font-size: 1.3rem; padding: 0 12px; }
             .page-index .container { margin: 24px auto; padding: 0 14px; }
             .page-index .card-steam { padding: 22px; }
+            .page-index .card-steam img { width: 96px; }
             .page-index .comunicados-grid { grid-template-columns: 1fr; }
             .page-index .comunicado-card .com-encabezado { flex-direction: column; }
             .page-index .titulo-seccion { font-size: 1.15rem; margin-bottom: 16px; }
             .page-index th, .page-index tbody td { padding: 10px; font-size: 0.86rem; }
             .page-index .btn-login { padding: 8px 12px; font-size: 0.65rem; }
             .page-index .carousel { height: 240px; }
+            .page-index .comunicado-card:hover {
+                transform: none;
+                box-shadow: none;
+            }
         }
     
 
