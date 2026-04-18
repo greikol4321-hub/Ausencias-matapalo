@@ -2193,10 +2193,11 @@ a:hover {
             }
 
             .page-docentes .btn-cerrar {
-                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-                transform-origin: top;
+                transition: opacity 0.28s ease, transform 0.28s ease, max-height 0.28s ease, padding 0.28s ease, margin 0.28s ease;
+                transform-origin: top right;
                 max-height: 60px;
                 overflow: hidden;
+                will-change: transform, opacity, max-height;
             }
 
             .page-docentes .btn-cerrar.hide-on-scroll {
@@ -2206,7 +2207,7 @@ a:hover {
                 padding-bottom: 0;
                 margin-top: -15px; /* Compensa el gap del navbar flex */
                 border-width: 0;
-                transform: translateY(-10px) scaleY(0);
+                transform: translateY(-8px) scale(0.98);
                 pointer-events: none;
             }
         }

@@ -156,6 +156,7 @@
         const Swal = {
             async fire(arg1, arg2, arg3) {
                 if (typeof arg1 === 'string') {
+                    this.close();
                     this.notifyByIcon(arg3 || 'info', arg1, arg2 || '');
                     return {
                         isConfirmed: true
@@ -165,6 +166,7 @@
                 const opts = arg1 || {};
 
                 if (opts.showCancelButton) {
+                    this.close();
                     const confirmado = await new Promise(resolve => {
                         Notiflix.Confirm.show(
                             opts.title || 'Confirmación',
@@ -182,6 +184,7 @@
                 }
 
                 if (opts.showConfirmButton === false && !opts.icon) {
+                    this.close();
                     Notiflix.Loading.standard(opts.text || opts.title || 'Procesando...');
                     return {
                         isConfirmed: true
@@ -189,6 +192,7 @@
                 }
 
                 if (opts.icon || opts.title || opts.text) {
+                    this.close();
                     this.notifyByIcon(opts.icon || 'info', opts.title || 'Aviso', opts.text || '');
                 }
 
