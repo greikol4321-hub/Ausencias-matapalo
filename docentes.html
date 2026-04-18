@@ -605,25 +605,34 @@
 
         // ANIMACION DE OCULTAMIENTO EN CELULAR AL BAJAR
         let lastScrollY = window.scrollY;
+        let scrollFrameId = null;
         window.addEventListener('scroll', () => {
-            if (window.innerWidth <= 600) {
+            if (scrollFrameId !== null) {
+                return;
+            }
+
+            scrollFrameId = requestAnimationFrame(() => {
+                scrollFrameId = null;
+
                 const btn = document.querySelector('.btn-cerrar');
                 if (!btn) return;
 
-                if (window.scrollY > lastScrollY && window.scrollY > 60) {
-                    // Scroll hacia abajo: ocultar (animación de plegado)
-                    btn.classList.add('hide-on-scroll');
+                if (window.innerWidth <= 600) {
+                    const scrollingDown = window.scrollY > lastScrollY + 6;
+                    const nearTop = window.scrollY <= 72;
+
+                    if (scrollingDown && !nearTop) {
+                        btn.classList.add('hide-on-scroll');
+                    } else {
+                        btn.classList.remove('hide-on-scroll');
+                    }
                 } else {
-                    // Scroll hacia arriba o arriba del top: mostrar
                     btn.classList.remove('hide-on-scroll');
                 }
-            } else {
-                // Restaurar si volviera mágicamente a desktop
-                const btnX = document.querySelector('.btn-cerrar');
-                if (btnX) btnX.classList.remove('hide-on-scroll');
-            }
-            lastScrollY = window.scrollY;
-        });
+
+                lastScrollY = window.scrollY;
+            });
+        }, { passive: true });
     </script>
 </body>
 
