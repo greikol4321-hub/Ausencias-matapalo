@@ -2193,15 +2193,8 @@ a:hover {
             }
 
             .page-docentes .btn-cerrar {
-                transition: opacity 0.22s ease, transform 0.22s ease;
-                transform-origin: top right;
-                will-change: transform, opacity;
-            }
-
-            .page-docentes .btn-cerrar.hide-on-scroll {
-                opacity: 0;
-                transform: translateY(-10px) scale(0.98);
-                pointer-events: none;
+                transition: transform 0.22s ease, box-shadow 0.22s ease, background-color 0.22s ease;
+                transform-origin: center;
             }
         }
 
