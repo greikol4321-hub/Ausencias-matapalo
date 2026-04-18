@@ -67,30 +67,60 @@
             </div>
         </div>
 
-        <section class="resumen-grid" aria-label="Resumen rápido del panel">
-            <article class="resumen-card comunicados">
-                <p>Total de comunicados</p>
-                <strong id="resumenComunicados">--</strong>
-            </article>
-            <article class="resumen-card usuarios">
-                <p>Usuarios registrados</p>
-                <strong id="resumenUsuarios">--</strong>
-            </article>
-            <article class="resumen-card actividad">
-                <p>Último comunicado</p>
-                <strong id="resumenUltimoComunicado">Sin datos</strong>
-            </article>
-        </section>
-
-        <nav class="admin-shortcuts" aria-label="Accesos directos">
-            <a href="#moduloComunicados"><i class="fas fa-bullhorn"></i> Publicar</a>
-            <a href="#moduloUsuarios"><i class="fas fa-users-cog"></i> Usuarios</a>
-            <a href="#moduloMantenimiento"><i class="fas fa-database"></i> Mantenimiento</a>
-            <a href="#moduloActivos"><i class="fas fa-newspaper"></i> Activos</a>
+        <nav class="admin-tabs" aria-label="Pestañas del panel administrativo">
+            <button type="button" class="admin-tab-btn active" data-admin-tab="resumen"><i class="fas fa-chart-line"></i> Resumen</button>
+            <button type="button" class="admin-tab-btn" data-admin-tab="comunicados"><i class="fas fa-bullhorn"></i> Comunicados</button>
+            <button type="button" class="admin-tab-btn" data-admin-tab="usuarios"><i class="fas fa-users-cog"></i> Usuarios</button>
+            <button type="button" class="admin-tab-btn" data-admin-tab="mantenimiento"><i class="fas fa-database"></i> Mantenimiento</button>
         </nav>
 
-        <section class="admin-layout">
-            <div class="admin-column">
+        <section class="admin-pane active" id="tab-resumen" data-admin-pane="resumen">
+            <section class="resumen-grid" aria-label="Resumen rápido del panel">
+                <article class="resumen-card comunicados">
+                    <p>Total de comunicados</p>
+                    <strong id="resumenComunicados">--</strong>
+                </article>
+                <article class="resumen-card usuarios">
+                    <p>Usuarios registrados</p>
+                    <strong id="resumenUsuarios">--</strong>
+                </article>
+                <article class="resumen-card actividad">
+                    <p>Último comunicado</p>
+                    <strong id="resumenUltimoComunicado">Sin datos</strong>
+                </article>
+            </section>
+
+            <section class="quick-actions-grid" aria-label="Accesos rápidos">
+                <article class="panel-admin panel-comunicados">
+                    <h3><i class="fas fa-pencil-alt"></i> Crear Comunicado</h3>
+                    <p class="panel-subtext">Publique avisos urgentes, informativos o generales para todo el personal.</p>
+                    <button type="button" class="btn-admin" onclick="irATab('comunicados', 'crear-comunicado')"><i class="fas fa-paper-plane"></i> Ir a Crear Comunicado</button>
+                </article>
+                <article class="panel-admin panel-activos">
+                    <h3><i class="fas fa-newspaper"></i> Gestionar Comunicados</h3>
+                    <p class="panel-subtext">Edite o elimine comunicados activos rápidamente.</p>
+                    <button type="button" class="btn-admin" onclick="irATab('comunicados', 'gestionar-comunicados')"><i class="fas fa-list-check"></i> Ir a Gestionar Comunicados</button>
+                </article>
+                <article class="panel-admin panel-usuarios">
+                    <h3><i class="fas fa-user-plus"></i> Crear Usuario</h3>
+                    <p class="panel-subtext">Cree cuentas docentes y administrativas con control por rol.</p>
+                    <button type="button" class="btn-admin" onclick="irATab('usuarios', 'crear-usuario')"><i class="fas fa-user-plus"></i> Ir a Crear Usuario</button>
+                </article>
+                <article class="panel-admin panel-mantenimiento">
+                    <h3><i class="fas fa-user-gear"></i> Gestionar Usuarios</h3>
+                    <p class="panel-subtext">Busque, edite y depure accesos existentes.</p>
+                    <button type="button" class="btn-admin" onclick="irATab('usuarios', 'gestionar-usuarios')"><i class="fas fa-users"></i> Ir a Gestionar Usuarios</button>
+                </article>
+            </section>
+        </section>
+
+        <section class="admin-pane" id="tab-comunicados" data-admin-pane="comunicados">
+            <nav class="admin-subtabs" aria-label="Pestañas de comunicados">
+                <button type="button" class="admin-subtab-btn active" data-admin-subtab="comunicados" data-subpane="crear-comunicado"><i class="fas fa-pen"></i> Crear Comunicado</button>
+                <button type="button" class="admin-subtab-btn" data-admin-subtab="comunicados" data-subpane="gestionar-comunicados"><i class="fas fa-list"></i> Gestionar y Editar</button>
+            </nav>
+
+            <section class="admin-subpane active" data-subpane-group="comunicados" data-subpane="crear-comunicado">
                 <article class="panel-admin panel-comunicados" id="moduloComunicados">
                     <h3><i class="fas fa-megaphone"></i> Publicar Comunicado Oficial</h3>
                     <form id="formComunicado" class="form-panel">
@@ -121,22 +151,50 @@
                         <button type="button" class="btn-volver btn-secundario" id="btnCancelarComEdit" style="display:none;"><i class="fas fa-times"></i> Cancelar Edición</button>
                     </form>
                 </article>
+            </section>
 
-                <article class="panel-admin panel-mantenimiento" id="moduloMantenimiento">
-                    <h3><i class="fas fa-database"></i> Datos y Mantenimiento</h3>
-                    <p class="panel-subtext">Genere respaldos y valide consistencia de datos del sistema.</p>
-                    <div class="mantenimiento-actions">
-                        <button type="button" class="btn-admin" id="btnRespaldo"><i class="fas fa-download"></i> Generar Respaldo</button>
-                        <button type="button" class="btn-admin btn-auditoria" id="btnAuditoria"><i class="fas fa-search"></i> Ejecutar Auditoría</button>
+            <section class="admin-subpane" data-subpane-group="comunicados" data-subpane="gestionar-comunicados">
+                <article class="panel-admin panel-activos" id="moduloActivos">
+                    <h3><i class="fas fa-newspaper"></i> Comunicados Activos</h3>
+                    <div class="busqueda-wrap">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="busquedaComunicados" onkeyup="filtrarTabla()" placeholder="Buscar por contenido o fecha...">
                     </div>
-                    <p id="estadoRespaldo" class="estado-respaldo">Sin respaldo generado en esta sesión.</p>
-                    <div id="resultadoAuditoria" class="resultado-auditoria" style="display:none;"></div>
-                </article>
-            </div>
 
-            <div class="admin-column">
+                    <div class="overflow-auto">
+                        <div class="tabla-container">
+                            <table id="tablaComunicados">
+                                <thead>
+                                    <tr>
+                                        <th><i class="fas fa-calendar"></i> Fecha</th>
+                                        <th><i class="fas fa-heading"></i> Título y Contenido</th>
+                                        <th><i class="fas fa-user"></i> Autor</th>
+                                        <th><i class="fas fa-cog"></i> Acción</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="cuerpoTabla">
+                                    <tr>
+                                        <td colspan="4" style="text-align:center; padding: 40px; color: var(--texto-gris);">
+                                            <i class="fas fa-spinner fa-spin fa-2x" style="color: var(--verde-claro); margin-bottom: 10px;"></i><br> Cargando sus registros...
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </article>
+            </section>
+        </section>
+
+        <section class="admin-pane" id="tab-usuarios" data-admin-pane="usuarios">
+            <nav class="admin-subtabs" aria-label="Pestañas de usuarios">
+                <button type="button" class="admin-subtab-btn active" data-admin-subtab="usuarios" data-subpane="crear-usuario"><i class="fas fa-user-plus"></i> Crear Usuario</button>
+                <button type="button" class="admin-subtab-btn" data-admin-subtab="usuarios" data-subpane="gestionar-usuarios"><i class="fas fa-users"></i> Gestionar y Editar</button>
+            </nav>
+
+            <section class="admin-subpane active" data-subpane-group="usuarios" data-subpane="crear-usuario">
                 <article class="panel-admin panel-usuarios" id="moduloUsuarios">
-                    <h3><i class="fas fa-users-cog"></i> Gestión de Usuarios</h3>
+                    <h3><i class="fas fa-users-cog"></i> Crear Usuario</h3>
                     <p class="panel-subtext">Cree, edite y controle accesos internos. El auto-registro está desactivado.</p>
                     <form id="formUsuario" class="form-usuarios-grid form-panel">
                         <input type="hidden" id="usuarioIdEdicion">
@@ -151,7 +209,12 @@
                         <button type="submit" class="btn-admin" id="btnGuardarUsuario"><i class="fas fa-user-plus"></i> Guardar Usuario</button>
                         <button type="button" class="btn-volver btn-secundario" id="btnCancelarEdicion" style="display:none;"><i class="fas fa-times"></i> Cancelar Edición</button>
                     </form>
+                </article>
+            </section>
 
+            <section class="admin-subpane" data-subpane-group="usuarios" data-subpane="gestionar-usuarios">
+                <article class="panel-admin panel-usuarios">
+                    <h3><i class="fas fa-users-cog"></i> Usuarios Registrados</h3>
                     <div class="overflow-auto tabla-interna">
                         <div class="tabla-container">
                             <table>
@@ -172,37 +235,20 @@
                         </div>
                     </div>
                 </article>
-            </div>
+            </section>
         </section>
 
-        <section class="panel-admin panel-activos" id="moduloActivos">
-            <h3><i class="fas fa-newspaper"></i> Comunicados Activos</h3>
-            <div class="busqueda-wrap">
-                <i class="fas fa-search"></i>
-                <input type="text" id="busquedaComunicados" onkeyup="filtrarTabla()" placeholder="Buscar por contenido o fecha...">
-            </div>
-
-            <div class="overflow-auto">
-                <div class="tabla-container">
-                    <table id="tablaComunicados">
-                        <thead>
-                            <tr>
-                                <th><i class="fas fa-calendar"></i> Fecha</th>
-                                <th><i class="fas fa-heading"></i> Título y Contenido</th>
-                                <th><i class="fas fa-user"></i> Autor</th>
-                                <th><i class="fas fa-cog"></i> Acción</th>
-                            </tr>
-                        </thead>
-                        <tbody id="cuerpoTabla">
-                            <tr>
-                                <td colspan="4" style="text-align:center; padding: 40px; color: var(--texto-gris);">
-                                    <i class="fas fa-spinner fa-spin fa-2x" style="color: var(--verde-claro); margin-bottom: 10px;"></i><br> Cargando sus registros...
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+        <section class="admin-pane" id="tab-mantenimiento" data-admin-pane="mantenimiento">
+            <article class="panel-admin panel-mantenimiento" id="moduloMantenimiento">
+                <h3><i class="fas fa-database"></i> Datos y Mantenimiento</h3>
+                <p class="panel-subtext">Genere respaldos y valide consistencia de datos del sistema.</p>
+                <div class="mantenimiento-actions">
+                    <button type="button" class="btn-admin" id="btnRespaldo"><i class="fas fa-download"></i> Generar Respaldo</button>
+                    <button type="button" class="btn-admin btn-auditoria" id="btnAuditoria"><i class="fas fa-search"></i> Ejecutar Auditoría</button>
                 </div>
-            </div>
+                <p id="estadoRespaldo" class="estado-respaldo">Sin respaldo generado en esta sesión.</p>
+                <div id="resultadoAuditoria" class="resultado-auditoria" style="display:none;"></div>
+            </article>
         </section>
     </main>
 
@@ -284,41 +330,89 @@
             border-top-color: #d4a256;
         }
 
-        .page-admin .admin-shortcuts {
+        .page-admin .admin-tabs {
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
             margin-bottom: 20px;
         }
 
-        .page-admin .admin-shortcuts a {
+        .page-admin .admin-tab-btn {
             border: 1px solid #d4ccc0;
             background: #fff;
             border-radius: 999px;
             padding: 7px 14px;
             font-weight: 700;
             color: #0a4c23;
-            text-decoration: none;
+            transition: 0.2s ease;
+            cursor: pointer;
+        }
+
+        .page-admin .admin-tab-btn:hover,
+        .page-admin .admin-tab-btn.active {
+            background: #0a4c23;
+            color: #fff;
+            box-shadow: 0 6px 14px rgba(10, 76, 35, 0.2);
+        }
+
+        .page-admin .admin-pane {
+            display: none;
+            animation: fadeInPane 0.25s ease;
+        }
+
+        .page-admin .admin-pane.active {
+            display: block;
+        }
+
+        .page-admin .admin-subtabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .page-admin .admin-subtab-btn {
+            border: 1px solid #d7cfbf;
+            background: #fff;
+            color: #0a4c23;
+            border-radius: 10px;
+            padding: 8px 14px;
+            font-weight: 700;
+            cursor: pointer;
             transition: 0.2s ease;
         }
 
-        .page-admin .admin-shortcuts a:hover {
-            background: #0a4c23;
+        .page-admin .admin-subtab-btn:hover,
+        .page-admin .admin-subtab-btn.active {
+            background: #1a6b3a;
+            border-color: #1a6b3a;
             color: #fff;
-            text-decoration: none;
         }
 
-        .page-admin .admin-layout {
+        .page-admin .admin-subpane {
+            display: none;
+        }
+
+        .page-admin .admin-subpane.active {
+            display: block;
+        }
+
+        .page-admin .quick-actions-grid {
             display: grid;
-            grid-template-columns: 1.35fr 1fr;
-            gap: 16px;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
             margin-bottom: 20px;
-            align-items: start;
         }
 
-        .page-admin .admin-column {
-            display: grid;
-            gap: 16px;
+        @keyframes fadeInPane {
+            from {
+                opacity: 0;
+                transform: translateY(4px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .page-admin .panel-admin {
@@ -617,10 +711,6 @@
         }
 
         @media (max-width: 1024px) {
-            .page-admin .admin-layout {
-                grid-template-columns: 1fr;
-            }
-
             .page-admin .comunicado-editor-grid {
                 grid-template-columns: 1fr;
             }
@@ -638,6 +728,10 @@
             }
 
             .page-admin .resumen-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .page-admin .quick-actions-grid {
                 grid-template-columns: 1fr;
             }
 
@@ -844,6 +938,63 @@
             conteo.style.borderColor = cantidad > 460 ? '#d9a19d' : '#e2d8c7';
         }
 
+        function abrirTabAdmin(tabId) {
+            const botones = document.querySelectorAll('[data-admin-tab]');
+            const paneles = document.querySelectorAll('[data-admin-pane]');
+
+            botones.forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.adminTab === tabId);
+            });
+
+            paneles.forEach(panel => {
+                panel.classList.toggle('active', panel.dataset.adminPane === tabId);
+            });
+        }
+
+        function abrirSubTabAdmin(grupo, subtabId) {
+            const botones = document.querySelectorAll(`[data-admin-subtab="${grupo}"]`);
+            const paneles = document.querySelectorAll(`[data-subpane-group="${grupo}"]`);
+
+            botones.forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.subpane === subtabId);
+            });
+
+            paneles.forEach(panel => {
+                panel.classList.toggle('active', panel.dataset.subpane === subtabId);
+            });
+        }
+
+        function setupTabsAdmin() {
+            const botonesTab = document.querySelectorAll('[data-admin-tab]');
+            const botonesSubTab = document.querySelectorAll('[data-admin-subtab]');
+
+            botonesTab.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    abrirTabAdmin(btn.dataset.adminTab);
+                });
+            });
+
+            botonesSubTab.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    abrirSubTabAdmin(btn.dataset.adminSubtab, btn.dataset.subpane);
+                });
+            });
+        }
+
+        function irATab(tabId, subtabId = '') {
+            abrirTabAdmin(tabId);
+
+            if (subtabId && tabId === 'comunicados') {
+                abrirSubTabAdmin('comunicados', subtabId);
+            }
+
+            if (subtabId && tabId === 'usuarios') {
+                abrirSubTabAdmin('usuarios', subtabId);
+            }
+        }
+
+        globalThis.irATab = irATab;
+
 
         async function inicializar() {
             const nombre = localStorage.getItem('nombre');
@@ -884,6 +1035,7 @@
             document.getElementById('rolBadge').textContent = rol;
 
             document.getElementById('rolBadge').style.background = '#e67e22';
+            setupTabsAdmin();
             setupComunicadoListener();
             setupUsuariosListener();
             setupMantenimientoListener();
@@ -1013,6 +1165,7 @@
         }
 
         function editarComunicado(id, tituloActual, contenidoActual, colorActual) {
+            irATab('comunicados', 'crear-comunicado');
             document.getElementById('comunicadoIdEdicion').value = String(id);
             document.getElementById('tituloCom').value = tituloActual;
             document.getElementById('contenidoCom').value = contenidoActual;
@@ -1259,6 +1412,7 @@
         }
 
         function editarUsuario(id, usuario, nombreCompleto, rol) {
+            irATab('usuarios', 'crear-usuario');
             document.getElementById('usuarioIdEdicion').value = id;
             document.getElementById('nombreCompletoUser').value = nombreCompleto;
             document.getElementById('usuarioUser').value = usuario;
