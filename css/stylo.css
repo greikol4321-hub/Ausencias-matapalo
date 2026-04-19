@@ -2412,21 +2412,6 @@ body .swal2-backdrop-show {
 
 /* Estilos del Panel Admin extraidos */
 
-        :root {
-            --verde-base: #0f5132;
-            --verde-claro: #198754;
-            --verde-brillante: #20c997;
-            --texto-oscuro: #212529;
-            --texto-gris: #6c757d;
-            --borde-claro: #e9ecef;
-            --fondo-crema: #f8f9fa;
-            --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.04);
-            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.06), 0 4px 6px -2px rgba(0, 0, 0, 0.03);
-            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-            --radius-md: 12px;
-            --radius-lg: 20px;
-        }
-
         body.page-admin {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
@@ -2766,6 +2751,94 @@ body .swal2-backdrop-show {
             line-height: 1.6;
         }
 
+        .page-admin .comunicado-panel-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 18px;
+            margin-bottom: 22px;
+        }
+
+        .page-admin .section-kicker {
+            margin: 0 0 8px;
+            color: var(--verde-claro);
+            font-size: 0.76rem;
+            font-weight: 800;
+            letter-spacing: 1.6px;
+            text-transform: uppercase;
+        }
+
+        .page-admin .comunicado-panel-head .panel-subtext {
+            margin-bottom: 0;
+            max-width: 720px;
+        }
+
+        .page-admin .comunicado-panel-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            border-radius: 999px;
+            background: rgba(25,135,84,0.08);
+            color: var(--verde-base);
+            font-size: 0.88rem;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .page-admin .comunicado-panel-badge i {
+            color: var(--verde-claro);
+        }
+
+        .page-admin .field-label {
+            display: block;
+            margin-bottom: 6px;
+            color: var(--texto-oscuro);
+            font-size: 0.82rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .page-admin .field-help {
+            margin: 0;
+            color: var(--texto-gris);
+            font-size: 0.88rem;
+            line-height: 1.5;
+        }
+
+        .page-admin .comunicado-tip-box {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            padding: 14px 16px;
+            border-radius: var(--radius-md);
+            border: 1px solid rgba(25,135,84,0.15);
+            background: rgba(25,135,84,0.05);
+        }
+
+        .page-admin .comunicado-tip-box i {
+            color: var(--verde-claro);
+            margin-top: 2px;
+            font-size: 1rem;
+        }
+
+        .page-admin .comunicado-tip-box strong {
+            display: block;
+            margin-bottom: 4px;
+            color: var(--texto-oscuro);
+        }
+
+        .page-admin .comunicado-tip-box span {
+            color: var(--texto-gris);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .page-admin .meta-select-wrap {
+            flex: 1;
+        }
+
         .page-admin .form-panel {
             background: transparent;
             border: none;
@@ -2788,6 +2861,13 @@ body .swal2-backdrop-show {
         .page-admin .comunicado-campos {
             display: grid;
             gap: 16px;
+        }
+
+        .page-admin .comunicado-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 4px;
         }
 
         .page-admin #contenidoCom {
@@ -2883,17 +2963,36 @@ body .swal2-backdrop-show {
             word-break: break-word;
         }
 
+        .page-admin .preview-card-body {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .page-admin .preview-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-top: auto;
+        }
+
         .page-admin .preview-tipo {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: rgba(25,135,84, 0.1);
-            color: #0c4226;
+            background: var(--verde-base);
+            color: #ffffff;
             border: none;
             border-radius: 999px;
             padding: 8px 16px;
             font-size: 0.85rem;
             font-weight: 600;
+        }
+
+        .page-admin .preview-note {
+            color: var(--texto-gris);
+            font-size: 0.85rem;
         }
 
         .page-admin .btn-admin {
@@ -2931,13 +3030,11 @@ body .swal2-backdrop-show {
         }
 
         .page-admin .btn-volver {
-            background: rgba(255,255,255,0.15);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            color: white;
+            background: #fff;
+            color: var(--verde-base);
             padding: 12px 24px;
             border-radius: 999px;
-            border: 1px solid rgba(255,255,255,0.3);
+            border: 1px solid var(--borde-claro);
             cursor: pointer;
             font-weight: 600;
             font-size: 1rem;
@@ -2948,8 +3045,8 @@ body .swal2-backdrop-show {
         }
 
         .page-admin .btn-volver:hover {
-            background: rgba(255,255,255,1);
-            color: var(--verde-base);
+            background: var(--verde-base);
+            color: #fff;
             transform: translateY(-2px);
             box-shadow: 0 10px 20px rgba(0,0,0,0.15);
         }
@@ -3253,6 +3350,21 @@ body .swal2-backdrop-show {
             }
         }
 
+        @media (max-width: 900px) {
+            .page-admin .comunicado-panel-head {
+                flex-direction: column;
+            }
+
+            .page-admin .comunicado-panel-badge {
+                align-self: flex-start;
+            }
+
+            .page-admin .preview-footer {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
         @media (max-width: 768px) {
             .page-admin .admin-hero {
                 flex-direction: column;
@@ -3318,6 +3430,10 @@ body .swal2-backdrop-show {
             .page-admin .btn-admin,
             .page-admin .btn-volver {
                 width: 100%;
+            }
+
+            .page-admin .comunicado-actions {
+                flex-direction: column;
             }
 
             .btn-editar-com,
@@ -3417,7 +3533,7 @@ body .swal2-backdrop-show {
             }
         }
 
-        /* NOTIFICACIONES - Personalización de Notiflix */
+        /* NOTIFICACIONES - Personalizaciï¿½n de Notiflix */
         .notiflix-notify {
             border-radius: 12px !important;
             font-family: 'Segoe UI', Arial, sans-serif !important;
