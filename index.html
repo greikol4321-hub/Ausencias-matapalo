@@ -138,18 +138,14 @@
 
             const nombre = sanitizarTexto(localStorage.getItem('nombre'));
             const usuario = sanitizarTexto(localStorage.getItem('usuario'));
-            const rol = sanitizarTexto(localStorage.getItem('rol')).toLowerCase();
 
             if (nombre && usuario) {
                 nombreEl.textContent = nombre;
                 chip.hidden = false;
                 chip.classList.add('visible');
 
-                if (rol === 'admin' || rol === 'administrador') {
-                    btnAcceso.href = 'comunicados.html';
-                } else {
-                    btnAcceso.href = 'docentes.html';
-                }
+                // Siempre volver al panel docente para registrar ausencias.
+                btnAcceso.href = 'docentes.html';
                 btnAcceso.textContent = 'Mi Panel';
             } else {
                 chip.hidden = true;
