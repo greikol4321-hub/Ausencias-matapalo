@@ -90,7 +90,7 @@
                 </select>
                 </div>
                 <div>
-                    <label for="detalleAusencia"><i class="fas fa-clipboard"></i> Detalle Breve</label>
+                    <label for="detalleAusencia" id="labelDetalleAusencia"><i class="fas fa-clipboard"></i> Detalle Breve</label>
                     <input type="text" id="detalleAusencia" placeholder="Ej: Cita en la Caja">
                 </div>
             </div>
@@ -296,6 +296,27 @@
             });
         }
 
+        function actualizarCampoDetalle() {
+            const razonEl = document.getElementById('razonAusencia');
+            const detalleEl = document.getElementById('detalleAusencia');
+            const labelEl = document.getElementById('labelDetalleAusencia');
+
+            if (!razonEl || !detalleEl || !labelEl) {
+                return;
+            }
+
+            const esOtro = razonEl.value === 'Otro';
+            detalleEl.required = esOtro;
+
+            if (esOtro) {
+                labelEl.innerHTML = '<i class="fas fa-clipboard"></i> Especifique cuál es el otro motivo';
+                detalleEl.placeholder = 'Ej: Viaje familiar, trámite personal, etc.';
+            } else {
+                labelEl.innerHTML = '<i class="fas fa-clipboard"></i> Detalle Breve';
+                detalleEl.placeholder = 'Ej: Cita en la Caja';
+            }
+        }
+
         async function validarSesionActiva() {
             const usuario = localStorage.getItem('usuario');
             const nombre = localStorage.getItem('nombre');
@@ -377,6 +398,15 @@
                     icon: 'warning',
                     title: 'Campos requeridos',
                     text: 'Complete fecha de inicio, fecha final y motivo de la ausencia.'
+                });
+                return;
+            }
+
+            if (razon === 'Otro' && !detalle) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Falta especificar',
+                    text: 'Si selecciona Otro motivo, debe indicar cuál es.'
                 });
                 return;
             }
@@ -505,11 +535,17 @@
                     const fecha = escapeHtml(a.fecha || '---');
                     const fechaFin = escapeHtml(a.fecha_fin || '---');
                     const razon = escapeHtml(a.razon || 'Sin motivo');
+                    const detalle = escapeHtml(a.detalle || 'Sin detalle breve');
                     tbody.innerHTML += `
                 <tr>
                     <td data-label="Desde"><b><i class="fas fa-calendar-day" style="color: var(--texto-gris); margin-right: 5px;"></i> ${fecha}</b></td>
                     <td data-label="Hasta"><b><i class="fas fa-calendar-check" style="color: var(--texto-gris); margin-right: 5px;"></i> ${fechaFin}</b></td>
-                    <td data-label="Motivo"><span class="badge-motivo">${razon}</span></td>
+                    <td data-label="Motivo">
+                        <span class="badge-motivo">${razon}</span>
+                        <div style="font-size: 0.85rem; margin-top: 6px; color: var(--texto-gris);">
+                            <i class="fas fa-pen-to-square" style="color: #999; margin-right:4px;"></i> ${detalle}
+                        </div>
+                    </td>
                     <td data-label="Acción" style="text-align: center;">
                         <button class="btn-eliminar" onclick="eliminarAusencia(${a.id}, this)" title="Eliminar este periodo">
                             <i class="fas fa-trash-alt"></i> Eliminar
@@ -585,6 +621,9 @@
         }
 
         window.onload = inicializar;
+
+        document.getElementById('razonAusencia').addEventListener('change', actualizarCampoDetalle);
+        actualizarCampoDetalle();
 
         // 🔎 FUNCIONALIDAD DE BUSQUEDA EN TABLA
         function filtrarTabla() {
