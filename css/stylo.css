@@ -2873,6 +2873,22 @@ body .swal2-backdrop-show {
             margin-bottom: 20px;
         }
 
+        .page-admin .comunicado-box {
+            background: #fff;
+            border: 1px solid var(--borde-claro);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .page-admin .comunicado-box-form {
+            background: linear-gradient(180deg, rgba(248, 249, 250, 0.92) 0%, #ffffff 100%);
+        }
+
+        .page-admin .comunicado-box-preview {
+            background: linear-gradient(180deg, #ffffff 0%, #fbfcfa 100%);
+        }
+
         .page-admin .comunicado-campos {
             display: grid;
             gap: 12px;
@@ -2939,13 +2955,24 @@ body .swal2-backdrop-show {
         .page-admin .comunicado-preview {
             border: none;
             border-radius: var(--radius-lg);
-            padding: 20px;
+            padding: 0;
             background: #fff;
             border-top: 6px solid var(--verde-base);
             min-height: 100%;
             position: sticky;
             top: 100px;
             box-shadow: var(--shadow-md);
+        }
+
+        .page-admin .comunicado-box-preview .preview-label,
+        .page-admin .comunicado-box-preview .preview-card-body,
+        .page-admin .comunicado-box-preview .preview-footer {
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        .page-admin .comunicado-box-preview .preview-label {
+            margin-top: 0;
         }
 
         .page-admin .preview-label {
