@@ -2906,6 +2906,9 @@ body .swal2-backdrop-show {
         .page-admin .comunicado-field-box-texto {
             background: linear-gradient(180deg, #ffffff 0%, #fbfbfb 100%);
             border-left-color: var(--verde-claro);
+            display: flex;
+            flex-direction: column;
+            min-height: 260px;
         }
 
         .page-admin .comunicado-field-box-meta {
@@ -2924,7 +2927,20 @@ body .swal2-backdrop-show {
         }
 
         .page-admin .comunicado-field-box textarea {
+            flex: 1;
             margin-bottom: 10px;
+        }
+
+        .page-admin .comunicado-content-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-top: auto;
+        }
+
+        .page-admin .comunicado-content-footer .field-help {
+            min-height: 1px;
         }
 
         .page-admin .comunicado-actions {
@@ -2962,8 +2978,16 @@ body .swal2-backdrop-show {
             align-items: stretch;
         }
 
+        .page-admin .comunicado-field-box-meta .meta-select-wrap {
+            width: 100%;
+        }
+
+        .page-admin .comunicado-field-box-meta .field-label {
+            margin-bottom: 8px;
+        }
+
         .page-admin .comunicado-meta-row select {
-            flex: 1;
+            width: 100%;
             padding: 12px 16px;
             border-radius: var(--radius-md);
             border: 1px solid rgba(15, 81, 50, 0.18);
@@ -3560,6 +3584,15 @@ body .swal2-backdrop-show {
             .page-admin .comunicado-preview {
                 padding: 14px;
                 min-height: 0;
+            }
+
+            .page-admin .comunicado-field-box-texto {
+                min-height: 220px;
+            }
+
+            .page-admin .comunicado-content-footer {
+                flex-direction: column;
+                align-items: stretch;
             }
 
             .page-admin #contenidoCom {
