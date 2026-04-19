@@ -139,33 +139,37 @@
                             <div class="comunicado-box comunicado-box-form">
                                 <div class="comunicado-campos">
                                     <input type="hidden" id="comunicadoIdEdicion">
-                                    <label class="field-label" for="tituloCom">Título del comunicado</label>
-                                    <input type="text" id="tituloCom" placeholder="Ej: Cambio de horario" required>
+                                    <div class="comunicado-field-box">
+                                        <label class="field-label" for="tituloCom">Título del comunicado</label>
+                                        <input type="text" id="tituloCom" placeholder="Ej: Cambio de horario" required>
+                                    </div>
 
-                                    <label class="field-label" for="contenidoCom">Contenido</label>
-                                    <textarea id="contenidoCom" rows="7" maxlength="500" placeholder="Escriba el mensaje detallado aquí..." required></textarea>
-
-                                    <p class="field-help">Redacte un texto claro, breve y directo. El comunicado puede tener hasta 500 caracteres.</p>
-
-                                    <div class="comunicado-tip-box">
-                                        <i class="fas fa-lightbulb"></i>
-                                        <div>
-                                            <strong>Tip rápido</strong>
-                                            <span>Empiece con la acción principal y luego agregue fecha, hora o indicaciones.</span>
+                                    <div class="comunicado-field-box comunicado-field-box-texto">
+                                        <label class="field-label" for="contenidoCom">Contenido</label>
+                                        <textarea id="contenidoCom" rows="7" maxlength="500" placeholder="Escriba el mensaje detallado aquí..." required></textarea>
+                                        <p class="field-help">Redacte un texto claro, breve y directo. El comunicado puede tener hasta 500 caracteres.</p>
+                                        <div class="comunicado-tip-box">
+                                            <i class="fas fa-lightbulb"></i>
+                                            <div>
+                                                <strong>Tip rápido</strong>
+                                                <span>Empiece con la acción principal y luego agregue fecha, hora o indicaciones.</span>
+                                            </div>
                                         </div>
                                     </div>
 
-                                    <div class="comunicado-meta-row">
-                                        <div class="meta-select-wrap">
-                                            <label class="field-label" for="colorCom">Prioridad</label>
-                                            <select id="colorCom">
-                                                <option value="#27ae60">Informativo (Verde)</option>
-                                                <option value="#3498db">General (Azul)</option>
-                                                <option value="#f39c12">Importante (Naranja)</option>
-                                                <option value="#e74c3c">Urgente (Rojo)</option>
-                                            </select>
+                                    <div class="comunicado-field-box comunicado-field-box-meta">
+                                        <div class="comunicado-meta-row">
+                                            <div class="meta-select-wrap">
+                                                <label class="field-label" for="colorCom">Prioridad</label>
+                                                <select id="colorCom">
+                                                    <option value="#27ae60">Informativo (Verde)</option>
+                                                    <option value="#3498db">General (Azul)</option>
+                                                    <option value="#f39c12">Importante (Naranja)</option>
+                                                    <option value="#e74c3c">Urgente (Rojo)</option>
+                                                </select>
+                                            </div>
+                                            <span id="conteoContenidoCom" class="conteo-contenido">0/500</span>
                                         </div>
-                                        <span id="conteoContenidoCom" class="conteo-contenido">0/500</span>
                                     </div>
                                 </div>
                             </div>
