@@ -243,7 +243,7 @@
         // Manejar validaciones para asegurar que el código no se caiga
         try {
             emailjs.init({
-                publicKey: "qAglmSdD5me55ae1-"
+                publicKey: "w1Mu-I7slR-qZNrm8"
             });
         } catch (error) {
             console.error("Error configurando EmailJS:", error);
@@ -490,13 +490,13 @@
                     throw new Error(error.message || 'No se pudo guardar la ausencia.');
                 }
 
-                emailjs.send("service_2wecd52", "template_htbp6yd", {
+                emailjs.send("service_2wecd52", "template_fbik8ht", {
                         nombre: datos.nombre,
                         fecha_inicio: datos.fecha,
                         fecha_fin: datos.fecha_fin,
                         motivo: datos.razon,
                         detalle: datos.detalle
-                    }).then(() => console.log("Correo enviado a direccion"))
+                    }).then(() => console.log("Correo enviado a greikol4321@gmail.com"))
                     .catch(err => {
                         console.error("Fallo EmailJS:", err);
                         Swal.fire('Aviso', 'La ausencia fue guardada, pero no se pudo enviar el correo automático.', 'warning');
