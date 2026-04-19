@@ -44,26 +44,26 @@
     <main class="container admin-shell">
         <section class="admin-hero">
             <div>
-                <p class="hero-kicker">Panel Admin</p>
-                <h1>Centro de Control Institucional</h1>
-                <p class="hero-description">Administre comunicados, usuarios y mantenimiento del sistema en un solo lugar.</p>
+                <p class="hero-kicker">Administración del Colegio</p>
+                <h1>Centro de Control</h1>
+                <p class="hero-description">Administre comunicados, usuarios y datos del sistema institucional en un solo lugar.</p>
             </div>
             <button type="button" class="btn-volver" onclick="window.location.href='docentes.html'" title="Volver a tu panel de ausencias">
-                <i class="fas fa-arrow-left"></i> Volver a Mi Panel de Ausencias
+                <i class="fas fa-arrow-left"></i> Mi Panel de Ausencias
             </button>
         </section>
 
         <div class="info-usuario">
             <div class="info-item">
-                <b><i class="fas fa-user-circle"></i> Nombre Completo</b>
+                <b><i class="fas fa-user-circle"></i> Nombre</b>
                 <span id="nombreUsuario">---</span>
             </div>
             <div class="info-item">
-                <b><i class="fas fa-id-card"></i> Usuario</b>
+                <b><i class="fas fa-at"></i> Usuario</b>
                 <span id="usuario">---</span>
             </div>
             <div class="info-item">
-                <b><i class="fas fa-briefcase"></i> Perfil</b>
+                <b><i class="fas fa-shield-alt"></i> Nivel de Acceso</b>
                 <span id="rol">---</span>
             </div>
         </div>
@@ -78,39 +78,39 @@
         <section class="admin-pane active" id="tab-resumen" data-admin-pane="resumen">
             <section class="resumen-grid" aria-label="Resumen rápido del panel">
                 <article class="resumen-card comunicados">
-                    <p>Total de comunicados</p>
+                    <p><i class="fas fa-megaphone"></i> Total de comunicados</p>
                     <strong id="resumenComunicados">--</strong>
                 </article>
                 <article class="resumen-card usuarios">
-                    <p>Usuarios registrados</p>
+                    <p><i class="fas fa-users"></i> Usuarios registrados</p>
                     <strong id="resumenUsuarios">--</strong>
                 </article>
                 <article class="resumen-card actividad">
-                    <p>Último comunicado</p>
+                    <p><i class="fas fa-clock"></i> Último comunicado</p>
                     <strong id="resumenUltimoComunicado">Sin datos</strong>
                 </article>
             </section>
 
-            <section class="quick-actions-grid" aria-label="Accesos rápidos">
+            <section class="quick-actions-grid" aria-label="Accesos rápidos a funciones principales">
                 <article class="panel-admin panel-comunicados">
-                    <h3><i class="fas fa-pencil-alt"></i> Crear Comunicado</h3>
-                    <p class="panel-subtext">Publique avisos urgentes, informativos o generales para todo el personal.</p>
-                    <button type="button" class="btn-admin" onclick="irATab('comunicados', 'crear-comunicado')"><i class="fas fa-paper-plane"></i> Ir a Crear Comunicado</button>
+                    <h3><i class="fas fa-pen-fancy"></i> Crear Comunicado</h3>
+                    <p class="panel-subtext">Publique avisos urgentes, informativos o generales para toda la comunidad educativa.</p>
+                    <button type="button" class="btn-admin" onclick="irATab('comunicados', 'crear-comunicado')"><i class="fas fa-arrow-right"></i> Crear Ahora</button>
                 </article>
                 <article class="panel-admin panel-activos">
-                    <h3><i class="fas fa-newspaper"></i> Gestionar Comunicados</h3>
-                    <p class="panel-subtext">Edite o elimine comunicados activos rápidamente.</p>
-                    <button type="button" class="btn-admin" onclick="irATab('comunicados', 'gestionar-comunicados')"><i class="fas fa-list-check"></i> Ir a Gestionar Comunicados</button>
+                    <h3><i class="fas fa-clipboard-list"></i> Gestionar Comunicados</h3>
+                    <p class="panel-subtext">Visualice, edite o elimine comunicados publicados fácilmente.</p>
+                    <button type="button" class="btn-admin" onclick="irATab('comunicados', 'gestionar-comunicados')"><i class="fas fa-arrow-right"></i> Gestionar</button>
                 </article>
                 <article class="panel-admin panel-usuarios">
                     <h3><i class="fas fa-user-plus"></i> Crear Usuario</h3>
-                    <p class="panel-subtext">Cree cuentas docentes y administrativas con control por rol.</p>
-                    <button type="button" class="btn-admin" onclick="irATab('usuarios', 'crear-usuario')"><i class="fas fa-user-plus"></i> Ir a Crear Usuario</button>
+                    <p class="panel-subtext">Agregue cuentas para docentes y personal administrativo del colegio.</p>
+                    <button type="button" class="btn-admin" onclick="irATab('usuarios', 'crear-usuario')"><i class="fas fa-arrow-right"></i> Crear Usuario</button>
                 </article>
                 <article class="panel-admin panel-mantenimiento">
-                    <h3><i class="fas fa-user-gear"></i> Gestionar Usuarios</h3>
-                    <p class="panel-subtext">Busque, edite y depure accesos existentes.</p>
-                    <button type="button" class="btn-admin" onclick="irATab('usuarios', 'gestionar-usuarios')"><i class="fas fa-users"></i> Ir a Gestionar Usuarios</button>
+                    <h3><i class="fas fa-users-cog"></i> Gestionar Usuarios</h3>
+                    <p class="panel-subtext">Modifique permisos, edite datos o desactive cuentas según sea necesario.</p>
+                    <button type="button" class="btn-admin" onclick="irATab('usuarios', 'gestionar-usuarios')"><i class="fas fa-arrow-right"></i> Gestionar Usuarios</button>
                 </article>
             </section>
         </section>
@@ -254,6 +254,14 @@
     </main>
 
     <style>
+        :root {
+            --verde-base: #0a4c23;
+            --verde-claro: #1a6b3a;
+            --texto-gris: #5a5a5a;
+            --borde-claro: #e7ded0;
+            --fondo-crema: #f5f1e8;
+        }
+
         .page-admin {
             background:
                 radial-gradient(circle at top right, rgba(26, 107, 58, 0.12), transparent 42%),
@@ -262,7 +270,7 @@
         }
 
         .page-admin .admin-shell {
-            margin-top: 28px;
+            margin-top: 20px;
             margin-bottom: 40px;
         }
 
@@ -271,7 +279,7 @@
             justify-content: space-between;
             align-items: flex-start;
             gap: 20px;
-            background: linear-gradient(125deg, #0a4c23 0%, #1a6b3a 72%, #2f8a50 120%);
+            background: linear-gradient(125deg, #083619 0%, var(--verde-base) 72%, #1f6b3b 120%);
             color: #fff;
             border-radius: 16px;
             padding: 26px;
@@ -299,35 +307,79 @@
             margin-top: 8px;
             color: rgba(255, 255, 255, 0.93);
             max-width: 650px;
+            font-size: 0.95rem;
+        }
+
+        .info-usuario {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin-bottom: 24px;
+            background: #fff;
+            padding: 18px;
+            border-radius: 12px;
+            border: 1px solid var(--borde-claro);
+            box-shadow: 0 4px 12px rgba(10, 76, 35, 0.06);
+        }
+
+        .info-usuario .info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .info-usuario .info-item b {
+            color: var(--verde-base);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-usuario .info-item b i {
+            font-size: 1rem;
+        }
+
+        .info-usuario .info-item span {
+            color: var(--texto-gris);
+            font-size: 0.95rem;
         }
 
         .page-admin .resumen-grid {
             display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 14px;
-            margin-bottom: 18px;
+            margin-bottom: 24px;
         }
 
         .page-admin .resumen-card {
             background: #fff;
-            border: 1px solid #e7ded0;
+            border: 1px solid var(--borde-claro);
             border-radius: 12px;
-            padding: 16px;
+            padding: 18px;
             box-shadow: 0 4px 12px rgba(10, 76, 35, 0.08);
-            border-top: 4px solid #0a4c23;
+            border-top: 4px solid var(--verde-base);
+            transition: all 0.3s ease;
+        }
+
+        .page-admin .resumen-card:hover {
+            box-shadow: 0 8px 20px rgba(10, 76, 35, 0.12);
+            transform: translateY(-2px);
         }
 
         .page-admin .resumen-card p {
             margin: 0;
-            color: #5a5a5a;
+            color: var(--texto-gris);
             font-size: 0.9rem;
         }
 
         .page-admin .resumen-card strong {
             display: block;
-            margin-top: 6px;
-            font-size: 1.4rem;
-            color: #0a4c23;
+            margin-top: 8px;
+            font-size: 1.6rem;
+            color: var(--verde-base);
             line-height: 1.2;
         }
 
@@ -347,19 +399,23 @@
         }
 
         .page-admin .admin-tab-btn {
-            border: 1px solid #d4ccc0;
+            border: 1px solid var(--borde-claro);
             background: #fff;
             border-radius: 999px;
-            padding: 9px 16px;
+            padding: 10px 18px;
             font-weight: 700;
-            color: #0a4c23;
-            transition: 0.2s ease;
+            color: var(--verde-base);
+            transition: all 0.2s ease;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.95rem;
         }
 
         .page-admin .admin-tab-btn:hover,
         .page-admin .admin-tab-btn.active {
-            background: #0a4c23;
+            background: var(--verde-base);
             color: #fff;
             box-shadow: 0 6px 14px rgba(10, 76, 35, 0.2);
         }
@@ -377,24 +433,28 @@
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
-            margin-bottom: 14px;
+            margin-bottom: 18px;
         }
 
         .page-admin .admin-subtab-btn {
-            border: 1px solid #d7cfbf;
-            background: #f5f1e8;
-            color: #0a4c23;
+            border: 1px solid var(--borde-claro);
+            background: var(--fondo-crema);
+            color: var(--verde-base);
             border-radius: 10px;
-            padding: 8px 14px;
+            padding: 9px 16px;
             font-weight: 700;
             cursor: pointer;
-            transition: 0.2s ease;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.9rem;
         }
 
         .page-admin .admin-subtab-btn:hover,
         .page-admin .admin-subtab-btn.active {
-            background: #1a6b3a;
-            border-color: #1a6b3a;
+            background: var(--verde-claro);
+            border-color: var(--verde-claro);
             color: #fff;
         }
 
@@ -408,9 +468,9 @@
 
         .page-admin .quick-actions-grid {
             display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 14px;
-            margin-bottom: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
         }
 
         @keyframes fadeInPane {
@@ -426,11 +486,11 @@
 
         .page-admin .panel-admin {
             background: #fff;
-            border: 1px solid #e5dccf;
+            border: 1px solid var(--borde-claro);
             border-radius: 14px;
             padding: 20px;
             box-shadow: 0 6px 14px rgba(10, 76, 35, 0.09);
-            border-top: 5px solid #1a6b3a;
+            border-top: 5px solid var(--verde-claro);
         }
 
         .page-admin .panel-comunicados {
@@ -446,20 +506,30 @@
         }
 
         .page-admin .panel-activos {
-            border-top-color: #0a4c23;
+            border-top-color: var(--verde-base);
         }
 
         .page-admin .panel-admin h3 {
             margin-top: 0;
             margin-bottom: 14px;
-            padding-left: 0;
-            border-left: 0;
+            padding: 0;
+            border: 0;
+            color: var(--verde-base);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1rem;
+        }
+
+        .page-admin .panel-admin h3 i {
+            font-size: 1.2rem;
         }
 
         .page-admin .panel-subtext {
-            margin: 0 0 14px;
-            color: #5a5a5a;
+            margin: 0 0 16px;
+            color: var(--texto-gris);
             font-size: 0.94rem;
+            line-height: 1.5;
         }
 
         .page-admin .form-panel {
@@ -474,18 +544,23 @@
         .page-admin .comunicado-editor-grid {
             display: grid;
             grid-template-columns: minmax(0, 1.45fr) minmax(240px, 0.85fr);
-            gap: 14px;
+            gap: 16px;
             align-items: start;
         }
 
         .page-admin .comunicado-campos {
             display: grid;
-            gap: 10px;
+            gap: 12px;
         }
 
         .page-admin #contenidoCom {
-            min-height: 260px;
+            min-height: 200px;
             resize: vertical;
+            padding: 12px;
+            border: 1px solid var(--borde-claro);
+            border-radius: 8px;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            font-size: 0.95rem;
         }
 
         .page-admin .comunicado-meta-row {
@@ -499,50 +574,55 @@
         }
 
         .page-admin .conteo-contenido {
-            background: #f4efe4;
-            color: #5f5f5f;
-            border: 1px solid #e2d8c7;
+            background: var(--fondo-crema);
+            color: var(--texto-gris);
+            border: 1px solid var(--borde-claro);
             border-radius: 999px;
-            padding: 6px 10px;
+            padding: 8px 12px;
             font-size: 0.82rem;
             font-weight: 700;
-            min-width: 72px;
+            min-width: 75px;
             text-align: center;
+            white-space: nowrap;
         }
 
         .page-admin .comunicado-preview {
-            border: 1px solid #e2d8c7;
+            border: 1px solid var(--borde-claro);
             border-radius: 12px;
             padding: 16px;
-            background: #fdfbf7;
-            border-left: 5px solid #27ae60;
+            background: var(--fondo-crema);
+            border-left: 5px solid var(--verde-base);
             min-height: 210px;
             position: sticky;
-            top: 90px;
+            top: 100px;
         }
 
         .page-admin .preview-label {
-            margin: 0 0 8px;
-            color: #6d6d6d;
-            font-size: 0.82rem;
+            margin: 0 0 10px;
+            color: var(--texto-gris);
+            font-size: 0.8rem;
             text-transform: uppercase;
-            letter-spacing: 0.4px;
+            letter-spacing: 0.5px;
             font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
         .page-admin .comunicado-preview h4 {
-            margin: 0;
-            color: #0a4c23;
+            margin: 0 0 10px;
+            color: var(--verde-base);
             font-size: 1.05rem;
             line-height: 1.3;
         }
 
         .page-admin .comunicado-preview p {
-            margin: 9px 0 12px;
-            color: #4f4f4f;
-            font-size: 0.93rem;
+            margin: 0 0 12px;
+            color: var(--texto-gris);
+            font-size: 0.92rem;
             line-height: 1.5;
             white-space: pre-wrap;
+            word-break: break-word;
         }
 
         .page-admin .preview-tipo {
@@ -553,13 +633,32 @@
             color: #06361b;
             border: 1px solid rgba(39, 174, 96, 0.3);
             border-radius: 999px;
-            padding: 4px 10px;
+            padding: 5px 12px;
             font-size: 0.79rem;
             font-weight: 700;
         }
 
         .page-admin .btn-admin {
+            background: var(--verde-base);
+            color: #fff;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
             justify-content: center;
+            gap: 8px;
+            font-size: 0.95rem;
+            text-transform: none;
+        }
+
+        .page-admin .btn-admin:hover {
+            background: var(--verde-claro);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 14px rgba(10, 76, 35, 0.2);
         }
 
         .page-admin .btn-auditoria {
@@ -571,52 +670,45 @@
             background: #117864;
         }
 
-        .page-admin .mantenimiento-actions {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
-
-        .page-admin .estado-respaldo {
-            margin-top: 10px;
-            color: #555;
-            font-size: 0.92rem;
-        }
-
-        .page-admin .tabla-interna {
-            margin-top: 12px;
-        }
-
-        .page-admin .busqueda-wrap {
-            margin-bottom: 14px;
-            position: relative;
-        }
-
-        .page-admin .busqueda-wrap i {
-            position: absolute;
-            left: 14px;
-            top: 13px;
-            color: #5a5a5a;
-        }
-
-        .page-admin .busqueda-wrap input {
-            width: 100%;
-            padding: 12px 14px 12px 40px;
+        .page-admin .btn-volver {
+            background: var(--texto-gris);
+            color: white;
+            padding: 12px 20px;
             border-radius: 8px;
-            border: 1px solid #d4ccc0;
-            font-size: 1rem;
-            box-shadow: 0 2px 6px rgba(10, 76, 35, 0.06);
+            border: none;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .page-admin .btn-volver:hover {
+            background: #454545;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-secundario {
+            background: #5a6c6d;
+            color: #fff;
+        }
+
+        .btn-secundario:hover {
+            background: #465758;
         }
 
         .btn-editar-com {
             background: #1f6fb2;
             color: white;
-            padding: 8px 14px;
-            border-radius: 5px;
+            padding: 8px 12px;
+            border-radius: 6px;
             border: none;
             cursor: pointer;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             transition: all 0.3s ease;
             display: inline-flex;
             align-items: center;
@@ -626,18 +718,18 @@
         .btn-editar-com:hover {
             background: #185a91;
             transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
+            box-shadow: 0 4px 8px rgba(31, 111, 178, 0.3);
         }
 
         .btn-eliminar-com {
             background: #c0392b;
             color: white;
-            padding: 8px 14px;
-            border-radius: 5px;
+            padding: 8px 12px;
+            border-radius: 6px;
             border: none;
             cursor: pointer;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             transition: all 0.3s ease;
             display: inline-flex;
             align-items: center;
@@ -647,73 +739,130 @@
         .btn-eliminar-com:hover {
             background: #a93226;
             transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(231, 76, 60, 0.3);
+            box-shadow: 0 4px 8px rgba(192, 57, 43, 0.3);
         }
 
-        .btn-volver {
-            background: #5a5a5a;
-            color: white;
-            padding: 12px 20px;
-            border-radius: 6px;
-            border: none;
-            cursor: pointer;
-            font-weight: bold;
+        .page-admin .mantenimiento-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .page-admin .estado-respaldo {
+            margin-top: 12px;
+            color: var(--texto-gris);
+            font-size: 0.92rem;
+        }
+
+        .page-admin .tabla-interna {
+            margin-top: 12px;
+        }
+
+        .page-admin .busqueda-wrap {
+            margin-bottom: 16px;
+            position: relative;
+        }
+
+        .page-admin .busqueda-wrap i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--texto-gris);
+            pointer-events: none;
+        }
+
+        .page-admin .busqueda-wrap input {
+            width: 100%;
+            padding: 12px 14px 12px 40px;
+            border-radius: 8px;
+            border: 1px solid var(--borde-claro);
             font-size: 0.95rem;
+            box-shadow: 0 2px 6px rgba(10, 76, 35, 0.06);
             transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
         }
 
-        .btn-volver:hover {
-            background: #454545;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        .page-admin .busqueda-wrap input:focus {
+            outline: none;
+            border-color: var(--verde-base);
+            box-shadow: 0 4px 12px rgba(10, 76, 35, 0.12);
         }
 
         .page-admin #cuerpoTabla td:last-child,
         .page-admin #cuerpoTablaUsuarios td:last-child {
-            min-width: 170px;
-        }
-
-        .btn-secundario {
-            background: #7f8c8d;
+            min-width: 150px;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
         }
 
         .form-usuarios-grid {
             display: grid;
-            grid-template-columns: repeat(2, minmax(220px, 1fr));
-            gap: 10px;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
             align-items: center;
         }
 
         .form-usuarios-grid input,
         .form-usuarios-grid select {
             width: 100%;
-            padding: 10px;
-            border: 1px solid #d9d9d9;
+            padding: 10px 12px;
+            border: 1px solid var(--borde-claro);
             border-radius: 8px;
             font-size: 0.95rem;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .form-usuarios-grid input:focus,
+        .form-usuarios-grid select:focus {
+            outline: none;
+            border-color: var(--verde-base);
+            box-shadow: 0 0 0 3px rgba(10, 76, 35, 0.1);
         }
 
         .resultado-auditoria {
             margin-top: 16px;
-            border: 1px solid #e0e0e0;
+            border: 1px solid var(--borde-claro);
             border-radius: 10px;
-            padding: 14px;
-            background: #fafafa;
+            padding: 16px;
+            background: var(--fondo-crema);
         }
 
         .resultado-auditoria ul {
-            margin: 10px 0 0 18px;
+            margin: 10px 0 0 20px;
             padding: 0;
+            color: var(--texto-gris);
         }
 
         .resultado-auditoria li {
-            margin-bottom: 6px;
+            margin-bottom: 8px;
+            line-height: 1.5;
         }
 
-        @media (max-width: 1400px) {
+        input[type="text"],
+        input[type="password"],
+        select,
+        textarea {
+            padding: 10px 12px;
+            border: 1px solid var(--borde-claro);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="password"]:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--verde-base);
+            box-shadow: 0 0 0 3px rgba(10, 76, 35, 0.1);
+        }
+
+        @media (max-width: 1200px) {
             .page-admin .comunicado-editor-grid {
                 grid-template-columns: 1fr;
             }
@@ -721,29 +870,38 @@
             .page-admin .comunicado-preview {
                 position: static;
                 min-height: 0;
+                top: auto;
             }
         }
 
-        @media (max-width: 1024px) {
-            .page-admin .comunicado-editor-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .page-admin .comunicado-preview {
-                position: static;
-                min-height: 0;
-            }
-        }
-
-        @media (max-width: 720px) {
+        @media (max-width: 768px) {
             .page-admin .admin-hero {
                 flex-direction: column;
                 align-items: stretch;
-                padding: 20px;
+                padding: 18px;
+            }
+
+            .page-admin .hero-description {
+                margin-bottom: 12px;
+            }
+
+            .page-admin .btn-volver {
+                width: 100%;
             }
 
             .page-admin .resumen-grid {
                 grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .page-admin .resumen-card strong {
+                font-size: 1.4rem;
+            }
+
+            .info-usuario {
+                grid-template-columns: 1fr;
+                gap: 12px;
+                padding: 14px;
             }
 
             .page-admin .admin-tabs,
@@ -752,17 +910,21 @@
                 overflow-x: auto;
                 -webkit-overflow-scrolling: touch;
                 scrollbar-width: thin;
-                padding-bottom: 2px;
+                padding-bottom: 4px;
+                gap: 8px;
             }
 
             .page-admin .admin-tab-btn,
             .page-admin .admin-subtab-btn {
                 flex: 0 0 auto;
                 white-space: nowrap;
+                font-size: 0.88rem;
+                padding: 8px 14px;
             }
 
             .page-admin .quick-actions-grid {
                 grid-template-columns: 1fr;
+                gap: 12px;
             }
 
             .page-admin .mantenimiento-actions {
@@ -771,22 +933,26 @@
 
             .form-usuarios-grid {
                 grid-template-columns: 1fr;
+                gap: 10px;
             }
 
-            .page-admin .btn-volver,
-            .page-admin .btn-admin {
+            .page-admin .btn-admin,
+            .page-admin .btn-volver {
                 width: 100%;
-                justify-content: center;
             }
 
             .btn-editar-com,
             .btn-eliminar-com {
-                font-size: 0.82rem;
-                padding: 7px 10px;
+                font-size: 0.78rem;
+                padding: 6px 10px;
             }
 
             .page-admin .panel-admin {
-                padding: 16px;
+                padding: 14px;
+            }
+
+            .page-admin .panel-admin h3 {
+                font-size: 1rem;
             }
 
             .page-admin .tabla-container,
@@ -803,7 +969,84 @@
             .page-admin .tabla-scroll table {
                 white-space: nowrap;
                 min-width: max-content;
+                font-size: 0.88rem;
             }
+
+            .page-admin #cuerpoTabla td:last-child,
+            .page-admin #cuerpoTablaUsuarios td:last-child {
+                min-width: 130px;
+            }
+
+            .page-admin .comunicado-preview {
+                padding: 12px;
+                min-height: 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .page-admin .admin-hero {
+                padding: 14px;
+            }
+
+            .page-admin .admin-hero h1 {
+                font-size: 1.3rem;
+            }
+
+            .page-admin .hero-description {
+                font-size: 0.9rem;
+            }
+
+            .page-admin .admin-tab-btn {
+                padding: 8px 12px;
+                font-size: 0.8rem;
+            }
+
+            .page-admin .panel-admin {
+                padding: 12px;
+            }
+
+            .page-admin .panel-admin h3 {
+                font-size: 0.95rem;
+                gap: 6px;
+            }
+
+            .page-admin .panel-admin h3 i {
+                font-size: 1rem;
+            }
+
+            .form-usuarios-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .page-admin .busqueda-wrap input {
+                font-size: 16px;
+            }
+        }
+
+        /* NOTIFICACIONES - Personalización de Notiflix */
+        .notiflix-notify {
+            border-radius: 12px !important;
+            font-family: 'Segoe UI', Arial, sans-serif !important;
+        }
+
+        .notiflix-notify.success-notify {
+            background: #27ae60 !important;
+            box-shadow: 0 6px 16px rgba(39, 174, 96, 0.2) !important;
+        }
+
+        .notiflix-notify.failure-notify {
+            background: #c0392b !important;
+            box-shadow: 0 6px 16px rgba(192, 57, 43, 0.2) !important;
+        }
+
+        .notiflix-notify.warning-notify {
+            background: #f39c12 !important;
+            box-shadow: 0 6px 16px rgba(243, 156, 18, 0.2) !important;
+        }
+
+        .notiflix-notify.info-notify {
+            background: #3498db !important;
+            box-shadow: 0 6px 16px rgba(52, 152, 219, 0.2) !important;
         }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/notiflix@3/dist/notiflix-aio-3.2.8.min.js"></script>
@@ -811,19 +1054,24 @@
     <script>
         Notiflix.Notify.init({
             position: 'right-top',
-            timeout: 3600,
+            timeout: 4000,
             clickToClose: true,
             fontSize: '15px',
-            borderRadius: '16px',
-            distance: '14px',
-            showOnlyTheLastOne: true
+            borderRadius: '12px',
+            distance: '12px',
+            showOnlyTheLastOne: false,
+            cssAnimationStyle: 'from-right'
         });
 
         Notiflix.Confirm.init({
             titleColor: '#0a4c23',
             okButtonBackground: '#0a4c23',
+            okButtonBorder: '#0a4c23',
             cancelButtonBackground: '#95a5a6',
-            borderRadius: '14px'
+            cancelButtonBorder: '#95a5a6',
+            borderRadius: '12px',
+            backOverlayColor: 'rgba(0, 0, 0, 0.4)',
+            fontFamily: "'Segoe UI', Arial, sans-serif"
         });
 
         const Swal = {
