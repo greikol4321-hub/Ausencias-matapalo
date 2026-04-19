@@ -95,10 +95,6 @@
                 </div>
             </div>
 
-            <div>
-                <label for="actividadRemplazo"><i class="fas fa-book"></i> Trabajo para los Estudiantes</label>
-                <textarea id="actividadRemplazo" rows="3" placeholder="Describa la práctica o actividad que deben realizar los grupos..."></textarea>
-            </div>
             <button type="submit" id="btnGuardar"><i class="fas fa-save"></i> Registrar Período de Ausencia</button>
         </form>
 
@@ -107,7 +103,7 @@
         <h3><i class="fas fa-history"></i> Mi Historial Reciente</h3>
         <div style="margin-bottom: 15px; position: relative;">
             <i class="fas fa-search" style="position: absolute; left: 15px; top: 12px; color: var(--texto-gris);"></i>
-            <input type="text" id="busquedaHistorial" onkeyup="filtrarTabla()" placeholder="Buscar por motivo, actividad o fecha..." style="width: 100%; padding: 12px 15px 12px 40px; border-radius: 8px; border: 1px solid rgba(0,0,0,0.1); font-size: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+            <input type="text" id="busquedaHistorial" onkeyup="filtrarTabla()" placeholder="Buscar por motivo o fecha..." style="width: 100%; padding: 12px 15px 12px 40px; border-radius: 8px; border: 1px solid rgba(0,0,0,0.1); font-size: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
         </div>
 
         <div class="overflow-auto">
@@ -117,7 +113,7 @@
                         <tr>
                             <th><i class="fas fa-calendar"></i> Desde</th>
                             <th><i class="fas fa-calendar-check"></i> Hasta</th>
-                            <th><i class="fas fa-info-circle"></i> Motivo y Actividad</th>
+                            <th><i class="fas fa-info-circle"></i> Motivo</th>
                             <th><i class="fas fa-cog"></i> Acción</th>
                         </tr>
                     </thead>
@@ -375,7 +371,6 @@
             const f2 = document.getElementById('fechaFin').value;
             const razon = document.getElementById('razonAusencia').value;
             const detalle = document.getElementById('detalleAusencia').value.trim();
-            const actividad = document.getElementById('actividadRemplazo').value.trim();
 
             if (!f1 || !f2 || !razon) {
                 Swal.fire({
@@ -391,15 +386,6 @@
                     icon: 'warning',
                     title: 'Detalle muy extenso',
                     text: 'El detalle breve no puede superar los 180 caracteres.'
-                });
-                return;
-            }
-
-            if (actividad && actividad.length < 8) {
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Actividad demasiado corta',
-                    text: 'Si ingresa una actividad, debe tener al menos 8 caracteres.'
                 });
                 return;
             }
@@ -430,8 +416,7 @@
                 fecha: f1,
                 fecha_fin: f2,
                 razon,
-                detalle,
-                actividad
+                detalle
             };
 
             try {
@@ -473,8 +458,7 @@
                         fecha_inicio: datos.fecha,
                         fecha_fin: datos.fecha_fin,
                         motivo: datos.razon,
-                        detalle: datos.detalle,
-                        actividad: datos.actividad
+                        detalle: datos.detalle
                     }).then(() => console.log("Correo enviado a direccion"))
                     .catch(err => {
                         console.error("Fallo EmailJS:", err);
@@ -521,17 +505,11 @@
                     const fecha = escapeHtml(a.fecha || '---');
                     const fechaFin = escapeHtml(a.fecha_fin || '---');
                     const razon = escapeHtml(a.razon || 'Sin motivo');
-                    const actividad = escapeHtml(a.actividad || 'Sin actividad asignada');
                     tbody.innerHTML += `
                 <tr>
                     <td data-label="Desde"><b><i class="fas fa-calendar-day" style="color: var(--texto-gris); margin-right: 5px;"></i> ${fecha}</b></td>
                     <td data-label="Hasta"><b><i class="fas fa-calendar-check" style="color: var(--texto-gris); margin-right: 5px;"></i> ${fechaFin}</b></td>
-                    <td data-label="Motivo y Actividad">
-                        <span class="badge-motivo">${razon}</span>
-                        <div style="font-size: 0.85rem; margin-top: 6px; color: var(--texto-gris);">
-                            <i class="fas fa-comment-dots" style="color: #999; margin-right:4px;"></i> ${actividad}
-                        </div>
-                    </td>
+                    <td data-label="Motivo"><span class="badge-motivo">${razon}</span></td>
                     <td data-label="Acción" style="text-align: center;">
                         <button class="btn-eliminar" onclick="eliminarAusencia(${a.id}, this)" title="Eliminar este periodo">
                             <i class="fas fa-trash-alt"></i> Eliminar
