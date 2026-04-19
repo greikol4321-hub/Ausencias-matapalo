@@ -3614,10 +3614,6 @@ body .swal2-backdrop-show {
                 gap: 12px;
             }
 
-            .page-admin .resumen-grid {
-                grid-template-columns: 1fr;
-            }
-
             .page-admin .mantenimiento-actions {
                 grid-template-columns: 1fr;
             }
