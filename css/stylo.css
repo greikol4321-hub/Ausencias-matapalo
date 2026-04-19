@@ -2476,6 +2476,7 @@ body .swal2-backdrop-show {
             margin-top: 30px;
             margin-bottom: 50px;
             max-width: 1200px;
+            width: min(1200px, 100% - 24px);
         }
 
         .page-admin .admin-hero {
@@ -3501,6 +3502,48 @@ body .swal2-backdrop-show {
             }
         }
 
+        @media (max-width: 1024px) {
+            .page-admin .admin-shell {
+                width: min(1200px, 100% - 18px);
+            }
+
+            .page-admin .admin-tabs {
+                width: 100%;
+                max-width: 100%;
+                overflow-x: auto;
+                flex-wrap: nowrap;
+                justify-content: flex-start;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: thin;
+            }
+
+            .page-admin .admin-tab-btn {
+                flex: 0 0 auto;
+                white-space: nowrap;
+            }
+
+            .page-admin .admin-subtabs {
+                overflow-x: auto;
+                flex-wrap: nowrap;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: thin;
+                padding-bottom: 4px;
+            }
+
+            .page-admin .admin-subtab-btn {
+                flex: 0 0 auto;
+                white-space: nowrap;
+            }
+
+            .page-admin .quick-actions-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .page-admin .resumen-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
         @media (max-width: 900px) {
             .page-admin .comunicado-panel-head {
                 flex-direction: column;
@@ -3554,6 +3597,8 @@ body .swal2-backdrop-show {
                 scrollbar-width: thin;
                 padding-bottom: 4px;
                 gap: 8px;
+                width: 100%;
+                max-width: 100%;
             }
 
             .page-admin .admin-tab-btn,
@@ -3567,6 +3612,10 @@ body .swal2-backdrop-show {
             .page-admin .quick-actions-grid {
                 grid-template-columns: 1fr;
                 gap: 12px;
+            }
+
+            .page-admin .resumen-grid {
+                grid-template-columns: 1fr;
             }
 
             .page-admin .mantenimiento-actions {
@@ -3614,7 +3663,7 @@ body .swal2-backdrop-show {
             .page-admin .overflow-auto table,
             .page-admin .tabla-scroll table {
                 white-space: nowrap;
-                min-width: max-content;
+                min-width: 700px;
                 font-size: 0.88rem;
             }
 
