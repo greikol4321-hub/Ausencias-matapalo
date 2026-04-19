@@ -2897,6 +2897,7 @@ body .swal2-backdrop-show {
         .page-admin .comunicado-field-box {
             background: #fff;
             border: 1px solid var(--borde-claro);
+            border-left: 4px solid var(--verde-base);
             border-radius: var(--radius-md);
             padding: 14px;
             box-shadow: inset 0 1px 0 rgba(255,255,255,0.6);
@@ -2904,10 +2905,12 @@ body .swal2-backdrop-show {
 
         .page-admin .comunicado-field-box-texto {
             background: linear-gradient(180deg, #ffffff 0%, #fbfbfb 100%);
+            border-left-color: var(--verde-claro);
         }
 
         .page-admin .comunicado-field-box-meta {
             background: rgba(248,249,250,0.9);
+            border-left-color: var(--verde-brillante);
         }
 
         .page-admin .comunicado-field-box .field-label {
