@@ -266,6 +266,13 @@
             return String(value ?? '').replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#39;');
         }
 
+        function formatearFechaLocal(fechaISO) {
+            if (!fechaISO) return '---';
+            const partes = String(fechaISO).split('-');
+            if (partes.length !== 3) return escapeHtml(fechaISO);
+            return `${partes[2]}/${partes[1]}/${partes[0]}`;
+        }
+
         function obtenerFechaHoyISO() {
             const ahora = new Date();
             const anio = ahora.getFullYear();
@@ -532,18 +539,18 @@
                 }
 
                 datos.forEach(a => {
-                    const fecha = escapeHtml(a.fecha || '---');
-                    const fechaFin = escapeHtml(a.fecha_fin || '---');
+                    const fecha = escapeHtml(formatearFechaLocal(a.fecha));
+                    const fechaFin = escapeHtml(formatearFechaLocal(a.fecha_fin));
                     const razon = escapeHtml(a.razon || 'Sin motivo');
                     const detalle = escapeHtml(a.detalle || 'Sin detalle breve');
                     tbody.innerHTML += `
                 <tr>
-                    <td data-label="Desde"><b><i class="fas fa-calendar-day" style="color: var(--texto-gris); margin-right: 5px;"></i> ${fecha}</b></td>
-                    <td data-label="Hasta"><b><i class="fas fa-calendar-check" style="color: var(--texto-gris); margin-right: 5px;"></i> ${fechaFin}</b></td>
+                    <td data-label="Desde"><span class="fecha-tabla"><i class="fas fa-calendar-day"></i> ${fecha}</span></td>
+                    <td data-label="Hasta"><span class="fecha-tabla"><i class="fas fa-calendar-check"></i> ${fechaFin}</span></td>
                     <td data-label="Motivo">
                         <span class="badge-motivo">${razon}</span>
-                        <div style="font-size: 0.85rem; margin-top: 6px; color: var(--texto-gris);">
-                            <i class="fas fa-pen-to-square" style="color: #999; margin-right:4px;"></i> ${detalle}
+                        <div class="detalle-motivo">
+                            <i class="fas fa-pen-to-square"></i> ${detalle}
                         </div>
                     </td>
                     <td data-label="Acción" style="text-align: center;">
