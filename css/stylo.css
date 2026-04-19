@@ -654,7 +654,18 @@ a:hover {
             color: var(--texto-gris);
         }
 
-        .page-index .card-steam img { width: 130px; margin-bottom: 15px; }
+        .page-index .card-steam picture {
+            display: block;
+            margin: 0 auto 15px;
+            max-width: 180px;
+        }
+
+        .page-index .card-steam img {
+            display: block;
+            width: 100%;
+            height: auto;
+            margin: 0;
+        }
 
         .page-index .carousel-box {
             background: var(--blanco);
@@ -851,7 +862,10 @@ a:hover {
             .page-index .main-title-bar h1 { font-size: 1.3rem; padding: 0 12px; }
             .page-index .container { margin: 24px auto; padding: 0 14px; }
             .page-index .card-steam { padding: 22px; }
-            .page-index .card-steam img { width: 96px; }
+            .page-index .card-steam picture {
+                max-width: 160px;
+                margin-bottom: 12px;
+            }
             .page-index .comunicados-grid { grid-template-columns: 1fr; }
             .page-index .comunicado-card .com-encabezado { flex-direction: column; }
             .page-index .titulo-seccion { font-size: 1.15rem; margin-bottom: 16px; }
