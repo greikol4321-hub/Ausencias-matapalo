@@ -27,7 +27,7 @@
                     <img src="img/logo_colegio_nuevo.png" class="logo-escudo" alt="Escudo CTP Matapalo" loading="lazy" decoding="async" fetchpriority="low">
                 </a>
                 <div class="acceso-wrap">
-                    <a href="registrarme.html" class="btn-login">Acceso Personal</a>
+                    <a id="indexBtnAcceso" href="registrarme.html" class="btn-login">Acceso Personal</a>
                     <span id="indexUsuarioChip" class="usuario-index" hidden>
                         Sesion activa: <strong id="indexNombreUsuario"></strong>
                     </span>
@@ -130,22 +130,33 @@
         function actualizarSesionEnHeader() {
             const chip = document.getElementById('indexUsuarioChip');
             const nombreEl = document.getElementById('indexNombreUsuario');
+            const btnAcceso = document.getElementById('indexBtnAcceso');
 
-            if (!chip || !nombreEl) {
+            if (!chip || !nombreEl || !btnAcceso) {
                 return;
             }
 
             const nombre = sanitizarTexto(localStorage.getItem('nombre'));
             const usuario = sanitizarTexto(localStorage.getItem('usuario'));
+            const rol = sanitizarTexto(localStorage.getItem('rol')).toLowerCase();
 
             if (nombre && usuario) {
                 nombreEl.textContent = nombre;
                 chip.hidden = false;
                 chip.classList.add('visible');
+
+                if (rol === 'admin' || rol === 'administrador') {
+                    btnAcceso.href = 'comunicados.html';
+                } else {
+                    btnAcceso.href = 'docentes.html';
+                }
+                btnAcceso.textContent = 'Mi Panel';
             } else {
                 chip.hidden = true;
                 chip.classList.remove('visible');
                 nombreEl.textContent = '';
+                btnAcceso.href = 'registrarme.html';
+                btnAcceso.textContent = 'Acceso Personal';
             }
         }
 
