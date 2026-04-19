@@ -3305,8 +3305,8 @@ body .swal2-backdrop-show {
         }
 
         .page-admin .tabla-container thead th {
-            background: #f8f9fa;
-            color: var(--texto-oscuro);
+            background: var(--verde-base);
+            color: #ffffff;
             padding: 18px 24px;
             font-size: 0.8rem;
             font-weight: 700;
@@ -3315,6 +3315,7 @@ body .swal2-backdrop-show {
             text-align: left;
             white-space: nowrap;
             border-bottom: 2px solid rgba(0,0,0,0.05);
+            opacity: 1;
         }
 
         .page-admin .tabla-container tbody td {
