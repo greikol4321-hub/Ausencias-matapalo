@@ -2545,6 +2545,10 @@ body .swal2-backdrop-show {
             gap: 8px;
             padding-left: 16px;
             border-left: 3px solid var(--borde-claro);
+            align-items: flex-start;
+            justify-content: center;
+            min-height: 72px;
+            text-align: left;
         }
 
         .info-usuario .info-item:first-child {
@@ -2560,12 +2564,16 @@ body .swal2-backdrop-show {
             align-items: center;
             gap: 6px;
             font-weight: 700;
+            width: 100%;
         }
 
         .info-usuario .info-item span {
             color: var(--texto-oscuro);
             font-size: 1.05rem;
             font-weight: 600;
+            width: 100%;
+            line-height: 1.2;
+            text-align: left;
         }
 
         .page-admin .resumen-grid {
