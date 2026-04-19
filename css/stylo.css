@@ -342,6 +342,21 @@ a:hover {
                 text-align: center;
             }
             .page-galeria .header-logos-left {
+
+        @media (max-width: 900px) {
+            .page-admin .comunicado-panel-head {
+                flex-direction: column;
+            }
+
+            .page-admin .comunicado-panel-badge {
+                align-self: flex-start;
+            }
+
+            .page-admin .preview-footer {
+                justify-content: flex-start;
+                align-items: flex-start;
+            }
+        }
                 flex-direction: column;
                 justify-content: center;
             }
@@ -2860,7 +2875,7 @@ body .swal2-backdrop-show {
 
         .page-admin .comunicado-campos {
             display: grid;
-            gap: 16px;
+            gap: 12px;
         }
 
         .page-admin .comunicado-actions {
@@ -2871,7 +2886,7 @@ body .swal2-backdrop-show {
         }
 
         .page-admin #contenidoCom {
-            min-height: 220px;
+            min-height: 170px;
             resize: vertical;
             padding: 16px;
             border: 1px solid var(--borde-claro);
@@ -2894,7 +2909,7 @@ body .swal2-backdrop-show {
         .page-admin .comunicado-meta-row {
             display: flex;
             gap: 10px;
-            align-items: center;
+            align-items: flex-end;
         }
 
         .page-admin .comunicado-meta-row select {
@@ -2924,10 +2939,10 @@ body .swal2-backdrop-show {
         .page-admin .comunicado-preview {
             border: none;
             border-radius: var(--radius-lg);
-            padding: 24px;
+            padding: 20px;
             background: #fff;
             border-top: 6px solid var(--verde-base);
-            min-height: 250px;
+            min-height: 100%;
             position: sticky;
             top: 100px;
             box-shadow: var(--shadow-md);
@@ -2966,15 +2981,16 @@ body .swal2-backdrop-show {
         .page-admin .preview-card-body {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
         }
 
         .page-admin .preview-footer {
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-start;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             margin-top: auto;
+            flex-wrap: wrap;
         }
 
         .page-admin .preview-tipo {
@@ -2992,7 +3008,7 @@ body .swal2-backdrop-show {
 
         .page-admin .preview-note {
             color: var(--texto-gris);
-            font-size: 0.85rem;
+            font-size: 0.8rem;
         }
 
         .page-admin .btn-admin {
@@ -3478,8 +3494,21 @@ body .swal2-backdrop-show {
             }
 
             .page-admin .comunicado-preview {
-                padding: 12px;
+                padding: 14px;
                 min-height: 0;
+            }
+
+            .page-admin #contenidoCom {
+                min-height: 150px;
+            }
+
+            .page-admin .comunicado-meta-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .page-admin .conteo-contenido {
+                width: fit-content;
             }
         }
 
