@@ -1122,6 +1122,16 @@ a:hover {
     box-shadow: none !important;
 }
 
+.page-registrarme input:-webkit-autofill,
+.page-registrarme input:-webkit-autofill:hover,
+.page-registrarme input:-webkit-autofill:focus,
+.page-registrarme input:-webkit-autofill:active {
+    -webkit-text-fill-color: #333 !important;
+    -webkit-box-shadow: 0 0 0 1000px #ffffff inset !important;
+    box-shadow: 0 0 0 1000px #ffffff inset !important;
+    transition: background-color 9999s ease-in-out 0s;
+}
+
 .page-registrarme .btn-container {
     display: flex;
     gap: 12px;
