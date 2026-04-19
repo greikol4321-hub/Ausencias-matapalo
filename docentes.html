@@ -270,6 +270,36 @@
             return String(value ?? '').replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#39;');
         }
 
+        function obtenerFechaHoyISO() {
+            const ahora = new Date();
+            const anio = ahora.getFullYear();
+            const mes = String(ahora.getMonth() + 1).padStart(2, '0');
+            const dia = String(ahora.getDate()).padStart(2, '0');
+            return `${anio}-${mes}-${dia}`;
+        }
+
+        function configurarLimitesFechas() {
+            const fechaInicioEl = document.getElementById('fechaInicio');
+            const fechaFinEl = document.getElementById('fechaFin');
+
+            if (!fechaInicioEl || !fechaFinEl) {
+                return;
+            }
+
+            const hoy = obtenerFechaHoyISO();
+            fechaInicioEl.min = hoy;
+            fechaFinEl.min = fechaInicioEl.value || hoy;
+
+            fechaInicioEl.addEventListener('change', () => {
+                const minimoFin = fechaInicioEl.value || hoy;
+                fechaFinEl.min = minimoFin;
+
+                if (fechaFinEl.value && fechaFinEl.value < minimoFin) {
+                    fechaFinEl.value = minimoFin;
+                }
+            });
+        }
+
         async function validarSesionActiva() {
             const usuario = localStorage.getItem('usuario');
             const nombre = localStorage.getItem('nombre');
@@ -308,6 +338,8 @@
             const nombre = localStorage.getItem('nombre');
             const rol = localStorage.getItem('rol');
             const usuario = localStorage.getItem('usuario');
+
+            configurarLimitesFechas();
 
             const sesionValida = await validarSesionActiva();
             if (!sesionValida) {
@@ -377,6 +409,16 @@
                     icon: 'warning',
                     title: 'Rango de fechas inválido',
                     text: 'La fecha final no puede ser anterior a la fecha de inicio.'
+                });
+                return;
+            }
+
+            const hoy = obtenerFechaHoyISO();
+            if (f1 < hoy || f2 < hoy) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Fecha no permitida',
+                    text: 'No se pueden registrar ausencias con fechas anteriores al día actual.'
                 });
                 return;
             }
