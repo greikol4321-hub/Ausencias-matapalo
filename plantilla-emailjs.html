@@ -4,93 +4,301 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Notificación de Ausencia Docente</title>
-    <link rel="icon" type="image/png" href="img/logo_colegio_nuevo.png">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #f5f1e8;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            color: #34495e;
+        }
+
+        .email-wrap {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 30px 12px;
+        }
+
+        .email-card {
+            background: #ffffff;
+            border: 1px solid #d4ccc0;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 28px rgba(10, 76, 35, 0.12);
+        }
+
+        .brand-header {
+            background: #f5f1e8;
+            border-bottom: 3px solid #0a4c23;
+            padding: 22px 26px;
+            text-align: center;
+        }
+
+        .brand-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            max-width: 100%;
+        }
+
+        .brand-side {
+            flex: 1;
+            display: flex;
+            align-items: center;
+        }
+
+        .brand-side.left {
+            justify-content: flex-end;
+        }
+
+        .brand-side.right {
+            justify-content: flex-start;
+        }
+
+        .brand-divider {
+            width: 1px;
+            height: 46px;
+            background: #0a4c23;
+            opacity: 0.45;
+        }
+
+        .brand-logo-mep {
+            height: 58px;
+            display: block;
+        }
+
+        .brand-logo-colegio {
+            height: 72px;
+            display: block;
+        }
+
+        .brand-title {
+            margin-top: 14px;
+            color: #0a4c23;
+            font-size: 18px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            line-height: 1.35;
+        }
+
+        .section-title {
+            background: #0a4c23;
+            color: #ffffff;
+            padding: 18px 26px;
+            font-size: 15px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .content {
+            padding: 34px 28px 28px 28px;
+        }
+
+        .intro {
+            margin: 0 0 18px 0;
+            font-size: 15px;
+            line-height: 1.7;
+            color: #34495e;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 22px 0 24px 0;
+            border: 1px solid #d1d9e6;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 12px 15px;
+            font-size: 13px;
+            border-bottom: 1px solid #d1d9e6;
+            vertical-align: top;
+            text-align: left;
+        }
+
+        .data-table th {
+            width: 36%;
+            background: #f8fafc;
+            font-weight: 800;
+            color: #0a4c23;
+        }
+
+        .data-table td {
+            background: #ffffff;
+            color: #1f2937;
+        }
+
+        .data-table tr:last-child th,
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .note,
+        .closing {
+            margin: 0 0 12px 0;
+            font-size: 14px;
+            line-height: 1.7;
+            color: #34495e;
+        }
+
+        .footer {
+            background: #eef2f5;
+            border-top: 1px solid #d1d9e6;
+            padding: 20px 28px;
+            text-align: center;
+        }
+
+        .footer p {
+            margin: 0;
+            font-size: 11px;
+            line-height: 1.5;
+            color: #7f8c8d;
+        }
+
+        .mobile-break {
+            display: inline;
+        }
+
+        @media screen and (max-width: 640px) {
+            .email-wrap {
+                padding: 18px 8px;
+            }
+
+            .brand-header,
+            .section-title,
+            .content,
+            .footer {
+                padding-left: 18px;
+                padding-right: 18px;
+            }
+
+            .brand-row {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .brand-side {
+                justify-content: center !important;
+            }
+
+            .brand-divider {
+                display: none;
+            }
+
+            .brand-logo-mep {
+                height: 52px;
+            }
+
+            .brand-logo-colegio {
+                height: 66px;
+            }
+
+            .brand-title {
+                font-size: 16px;
+            }
+
+            .data-table th,
+            .data-table td {
+                display: block;
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .data-table th {
+                border-bottom: none;
+                padding-bottom: 6px;
+            }
+
+            .data-table td {
+                padding-top: 0;
+                padding-bottom: 12px;
+            }
+
+            .data-table tr {
+                border-bottom: 1px solid #d1d9e6;
+                display: block;
+            }
+
+            .data-table tr:last-child {
+                border-bottom: none;
+            }
+
+            .mobile-break {
+                display: block;
+                margin-top: 2px;
+            }
+        }
+    </style>
 </head>
-<body style="margin: 0; padding: 0; background-color: #ebe5d9; font-family: 'Segoe UI', Arial, sans-serif;">
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse; background-color: #ebe5d9; padding: 28px 12px;">
-        <tr>
-            <td align="center">
-                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width: 680px; border-collapse: collapse; background-color: #ffffff; border: 1px solid #d4ccc0; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 28px rgba(10, 76, 35, 0.10);">
+<body>
+    <div class="email-wrap">
+        <div class="email-card">
+            <div class="brand-header">
+                <div class="brand-row">
+                    <div class="brand-side left">
+                        <img src="https://cole-xi.vercel.app/img/LOGO_MEP-removebg-preview.png" alt="Ministerio de Educación Pública" class="brand-logo-mep">
+                    </div>
+                    <div class="brand-divider"></div>
+                    <div class="brand-side right">
+                        <img src="https://cole-xi.vercel.app/img/logo_colegio_nuevo.png" alt="CTP Matapalo" class="brand-logo-colegio">
+                    </div>
+                </div>
+                <div class="brand-title">Colegio Técnico Profesional de Matapalo</div>
+            </div>
+
+            <div class="section-title">Notificación Oficial de Ausencia Docente</div>
+
+            <div class="content">
+                <p class="intro">
+                    <strong>Estimada Dirección y Área Administrativa:</strong><br><br>
+                    Por medio de la presente, el Sistema de Registro Institucional notifica de manera formal el reporte de un período de ausencia docente. A continuación, se presentan los datos registrados.
+                </p>
+
+                <table class="data-table" role="presentation" aria-label="Datos de la ausencia docente">
                     <tr>
-                        <td style="background-color: #f5f1e8; padding: 24px 28px; text-align: center; border-bottom: 3px solid #0a4c23;">
-                            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
-                                <tr>
-                                    <td style="text-align: right; width: 46%; vertical-align: middle;">
-                                        <img src="https://cole-xi.vercel.app/img/LOGO_MEP-removebg-preview.png" alt="Ministerio de Educación Pública" style="height: 60px; display: inline-block;">
-                                    </td>
-                                    <td style="width: 8%;"></td>
-                                    <td style="text-align: left; width: 46%; vertical-align: middle;">
-                                        <img src="https://cole-xi.vercel.app/img/logo_colegio_nuevo.png" alt="CTP Matapalo" style="height: 72px; display: inline-block;">
-                                    </td>
-                                </tr>
-                            </table>
-                            <div style="margin-top: 14px; color: #0a4c23; font-size: 18px; font-weight: 800; letter-spacing: 0.6px; text-transform: uppercase; line-height: 1.35;">
-                                Colegio Técnico Profesional de Matapalo
-                            </div>
-                        </td>
+                        <th scope="row">Nombre del Funcionario</th>
+                        <td>{{nombre}}</td>
                     </tr>
-
                     <tr>
-                        <td style="background-color: #0a4c23; padding: 18px 28px; text-align: left;">
-                            <div style="color: #ffffff; font-size: 15px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase;">
-                                Notificación Oficial de Ausencia Docente
-                            </div>
-                        </td>
+                        <th scope="row">Fecha de Inicio</th>
+                        <td>{{fecha_inicio}}</td>
                     </tr>
-
                     <tr>
-                        <td style="padding: 34px 28px 28px 28px; color: #2c3e50;">
-                            <p style="margin: 0 0 18px 0; font-size: 15px; line-height: 1.7; color: #34495e;">
-                                <strong>Estimada Dirección y Área Administrativa:</strong><br><br>
-                                Por medio de la presente, el Sistema de Registro Institucional notifica el reporte de un período de ausencia docente. A continuación, se detallan los datos registrados.
-                            </p>
-
-                            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse; margin: 22px 0 24px 0; border: 1px solid #d1d9e6; border-radius: 10px; overflow: hidden;">
-                                <tr>
-                                    <td style="width: 36%; background-color: #f8fafc; border-bottom: 1px solid #d1d9e6; padding: 12px 15px; font-size: 13px; font-weight: 800; color: #0a4c23;">Nombre del Funcionario</td>
-                                    <td style="background-color: #ffffff; border-bottom: 1px solid #d1d9e6; padding: 12px 15px; font-size: 13px; color: #1f2937;">{{nombre}}</td>
-                                </tr>
-                                <tr>
-                                    <td style="background-color: #f8fafc; border-bottom: 1px solid #d1d9e6; padding: 12px 15px; font-size: 13px; font-weight: 800; color: #0a4c23;">Fecha de Inicio</td>
-                                    <td style="background-color: #ffffff; border-bottom: 1px solid #d1d9e6; padding: 12px 15px; font-size: 13px; color: #1f2937;">{{fecha_inicio}}</td>
-                                </tr>
-                                <tr>
-                                    <td style="background-color: #f8fafc; border-bottom: 1px solid #d1d9e6; padding: 12px 15px; font-size: 13px; font-weight: 800; color: #0a4c23;">Fecha de Finalización</td>
-                                    <td style="background-color: #ffffff; border-bottom: 1px solid #d1d9e6; padding: 12px 15px; font-size: 13px; color: #1f2937;">{{fecha_fin}}</td>
-                                </tr>
-                                <tr>
-                                    <td style="background-color: #f8fafc; border-bottom: 1px solid #d1d9e6; padding: 12px 15px; font-size: 13px; font-weight: 800; color: #0a4c23;">Motivo</td>
-                                    <td style="background-color: #ffffff; border-bottom: 1px solid #d1d9e6; padding: 12px 15px; font-size: 13px; color: #1f2937;">{{motivo}}</td>
-                                </tr>
-                                <tr>
-                                    <td style="background-color: #f8fafc; padding: 12px 15px; font-size: 13px; font-weight: 800; color: #0a4c23;">Detalle Breve</td>
-                                    <td style="background-color: #ffffff; padding: 12px 15px; font-size: 13px; color: #1f2937; line-height: 1.55;">
-                                        {{detalle}}
-                                    </td>
-                                </tr>
-                            </table>
-
-                            <p style="margin: 0 0 12px 0; font-size: 14px; line-height: 1.7; color: #34495e;">
-                                <strong>Nota:</strong> si el motivo seleccionado fue <em>Otro Motivo</em>, el detalle breve contiene la especificación correspondiente registrada por el funcionario.
-                            </p>
-
-                            <p style="margin: 0; font-size: 14px; line-height: 1.7; color: #34495e;">
-                                Se ruega tomar nota de este reporte para los controles correspondientes de asistencia, suplencias y planeamiento académico dentro de la institución.
-                            </p>
-                        </td>
+                        <th scope="row">Fecha de Finalización</th>
+                        <td>{{fecha_fin}}</td>
                     </tr>
-
                     <tr>
-                        <td style="background-color: #eef2f5; padding: 20px 28px; text-align: center; border-top: 1px solid #d1d9e6;">
-                            <p style="margin: 0; font-size: 11px; line-height: 1.5; color: #7f8c8d;">
-                                Este mensaje fue generado automáticamente por el <strong>Sistema Integral de Ausencias</strong> del CTP de Matapalo.<br>
-                                Por favor, no responda a este correo electrónico.
-                            </p>
-                        </td>
+                        <th scope="row">Motivo</th>
+                        <td>{{motivo}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Detalle Breve</th>
+                        <td>{{detalle}}</td>
                     </tr>
                 </table>
-            </td>
-        </tr>
-    </table>
+
+                <p class="note">
+                    <strong>Nota:</strong> si se seleccionó <em>Otro Motivo</em>, el detalle breve contiene la especificación indicada por el funcionario.
+                </p>
+
+                <p class="closing">
+                    Se ruega tomar nota de este reporte para los controles correspondientes de asistencia, suplencias y planeamiento académico dentro de la institución.
+                </p>
+            </div>
+
+            <div class="footer">
+                <p>
+                    Este mensaje fue generado automáticamente por el <strong>Sistema Integral de Ausencias</strong> del CTP de Matapalo.<br>
+                    Por favor, no responda a este correo electrónico.
+                </p>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
