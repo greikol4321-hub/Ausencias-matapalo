@@ -2662,7 +2662,7 @@ body .swal2-backdrop-show {
             margin-bottom: 28px;
             background: #fff;
             padding: 8px;
-            border-radius: var(--radius-lg);
+            border-radius: 999px;
             box-shadow: var(--shadow-sm);
             width: fit-content;
         }
@@ -2670,7 +2670,7 @@ body .swal2-backdrop-show {
         .page-admin .admin-tab-btn {
             border: none;
             background: transparent;
-            border-radius: var(--radius-md);
+            border-radius: 999px;
             padding: 12px 24px;
             font-weight: 600;
             color: var(--texto-gris);
@@ -2724,7 +2724,7 @@ body .swal2-backdrop-show {
             border: 2px solid transparent;
             background: #fff;
             color: var(--texto-gris);
-            border-radius: var(--radius-md);
+            border-radius: 999px;
             padding: 10px 20px;
             font-weight: 600;
             cursor: pointer;
