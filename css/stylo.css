@@ -572,7 +572,7 @@ a:hover {
 
         /* BARRA DE TÍTULO */
         .page-index .main-title-bar {
-            background: var(--fondo-sitio);
+            background: var(--blanco);
             padding: 25px 0;
             text-align: center;
             border-bottom: 1px solid var(--borde);
@@ -580,7 +580,7 @@ a:hover {
 
         .page-index .main-title-bar h1 {
             margin: 0;
-            color: var(--blanco);
+            color: var(--texto-titulo);
             font-size: 1.8rem;
             font-weight: 800;
         }
