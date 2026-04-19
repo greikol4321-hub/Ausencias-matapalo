@@ -7,37 +7,16 @@
     <title>Notificación de Ausencia Docente</title>
     <style>
         @media (max-width: 600px) {
-            .dato-row {
-                flex-direction: column !important;
-            }
-            .dato-label {
-                width: 100% !important;
-                border-bottom: 1px solid #d1d9e6 !important;
-            }
-            .dato-valor {
-                width: 100% !important;
-            }
-            .email-container {
-                padding: 15px 10px !important;
-            }
-            .email-body {
-                padding: 20px 15px !important;
-            }
-            h1 {
-                font-size: 14px !important;
-            }
-            h2 {
-                font-size: 14px !important;
-            }
-            p {
-                font-size: 13px !important;
-            }
-            .logo-container {
-                gap: 10px !important;
-            }
-            .logo-container img {
-                height: 50px !important;
-            }
+            .dato-row { flex-direction: column !important; }
+            .dato-label { width: 100% !important; border-bottom: 1px solid #d1d9e6 !important; }
+            .dato-valor { width: 100% !important; }
+            .email-container { padding: 10px 5px !important; }
+            .email-body { padding: 20px 12px !important; }
+            h1 { font-size: 13px !important; margin: 10px 0 0 0 !important; }
+            h2 { font-size: 13px !important; }
+            p { font-size: 12px !important; }
+            .logo-container { gap: 8px !important; }
+            .logo-container img { height: 40px !important; max-width: 45% !important; }
         }
     </style>
 </head>
@@ -47,57 +26,64 @@
         <div style="max-width: 650px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; border: 1px solid #e1e8ed; width: 100%; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
 
             <!-- ENCABEZADO FORMAL CON LOGOS -->
-            <div style="background-color: #f5f1e8; padding: 25px; text-align: center; border-bottom: 3px solid #0a4c23;">
-                <div style="display: flex; align-items: center; justify-content: center; gap: 18px; width: 100%;" class="logo-container">
-                    <div style="flex: 1; text-align: right;">
-                        <img src="https://cole-xi.vercel.app/img/LOGO_MEP-removebg-preview.png" alt="MEP" style="height: 60px; display: inline-block;">
+            <div style="background-color: #f5f1e8; padding: 20px 15px; text-align: center; border-bottom: 3px solid #0a4c23;">
+                <div style="display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%;" class="logo-container">
+                    <div style="flex: 0 1 auto; text-align: right; min-width: 0;">
+                        <img src="https://cole-xi.vercel.app/img/LOGO_MEP-removebg-preview.png" alt="MEP" style="height: 50px; width: auto; display: inline-block; max-width: 100%;">
                     </div>
-                    <div style="width: 1px; height: 48px; background-color: #0a4c23; opacity: 0.35;"></div>
-                    <div style="flex: 1; text-align: left;">
-                        <img src="https://cole-xi.vercel.app/img/logo_colegio_nuevo.png" alt="CTP Matapalo" style="height: 70px; display: inline-block;">
+                    <div style="width: 1px; height: 40px; background-color: #0a4c23; opacity: 0.35; flex-shrink: 0;"></div>
+                    <div style="flex: 0 1 auto; text-align: left; min-width: 0;">
+                        <img src="https://cole-xi.vercel.app/img/logo_colegio_nuevo.png" alt="CTP Matapalo" style="height: 50px; width: auto; display: inline-block; max-width: 100%;">
                     </div>
                 </div>
                 <h1 style="color: #0a4c23; font-size: 18px; margin: 15px 0 0 0; font-weight: 600; letter-spacing: 0.5px;">COLEGIO TÉCNICO PROFESIONAL DE MATAPALO</h1>
             </div>
 
             <!-- CUERPO DEL CORREO -->
-            <div style="padding: 35px 40px; color: #2c3e50;" class="email-body">
+            <div style="padding: 30px 25px; color: #2c3e50;" class="email-body">
                 <h2 style="color: #0a4c23; font-size: 16px; border-bottom: 2px solid #0a4c23; padding-bottom: 8px; margin-top: 0; text-transform: uppercase;">
                     Notificación Oficial de Ausencia Docente
                 </h2>
 
                 <p style="font-size: 15px; line-height: 1.6; margin-top: 25px; color: #34495e;">
-                    <strong>Estimada Dirección y Área Administrativa,</strong><br><br> Por medio de la presente, el Sistema de Registro Institucional notifica de manera formal el reporte de un periodo de ausencia correspondiente al siguiente funcionario
-                    docente. Se detallan a continuación las especificaciones del caso:
+                    <strong>Estimada Dirección y Área Administrativa,</strong><br><br>
+                    Por medio de la presente, el Sistema de Registro Institucional notifica de manera formal el reporte de un periodo de ausencia correspondiente al siguiente funcionario docente. Se detallan a continuación las especificaciones del caso:
                 </p>
 
                 <!-- DATOS DE LA AUSENCIA -->
-                <div style="margin-top: 30px; margin-bottom: 30px; border: 1px solid #d1d9e6; background-color: #f8fafc; border-radius: 8px; overflow: hidden;">
-                    <div style="display: flex; border-bottom: 1px solid #d1d9e6;" class="dato-row">
-                        <div style="width: 35%; padding: 12px 15px; font-weight: 700; color: #0a4c23; background-color: #f8fafc; box-sizing: border-box;" class="dato-label">Nombre del Funcionario:</div>
-                        <div style="flex: 1; padding: 12px 15px; color: #000; background-color: #ffffff; box-sizing: border-box;" class="dato-valor">{{nombre}}</div>
-                    </div>
-                    <div style="display: flex; border-bottom: 1px solid #d1d9e6;" class="dato-row">
-                        <div style="width: 35%; padding: 12px 15px; font-weight: 700; color: #0a4c23; background-color: #f8fafc; box-sizing: border-box;" class="dato-label">Fecha de Inicio:</div>
-                        <div style="flex: 1; padding: 12px 15px; color: #000; background-color: #ffffff; box-sizing: border-box;" class="dato-valor">{{fecha_inicio}}</div>
-                    </div>
-                    <div style="display: flex; border-bottom: 1px solid #d1d9e6;" class="dato-row">
-                        <div style="width: 35%; padding: 12px 15px; font-weight: 700; color: #0a4c23; background-color: #f8fafc; box-sizing: border-box;" class="dato-label">Fecha de Finalización:</div>
-                        <div style="flex: 1; padding: 12px 15px; color: #000; background-color: #ffffff; box-sizing: border-box;" class="dato-valor">{{fecha_fin}}</div>
-                    </div>
-                    <div style="display: flex; border-bottom: 1px solid #d1d9e6;" class="dato-row">
-                        <div style="width: 35%; padding: 12px 15px; font-weight: 700; color: #0a4c23; background-color: #f8fafc; box-sizing: border-box;" class="dato-label">Motivo Declarado:</div>
-                        <div style="flex: 1; padding: 12px 15px; color: #000; background-color: #ffffff; box-sizing: border-box;" class="dato-valor">{{motivo}}</div>
-                    </div>
-                    <div style="display: flex;" class="dato-row">
-                        <div style="width: 35%; padding: 12px 15px; font-weight: 700; color: #0a4c23; background-color: #f8fafc; box-sizing: border-box;" class="dato-label">Detalle Breve:</div>
-                        <div style="flex: 1; padding: 12px 15px; color: #000; background-color: #ffffff; box-sizing: border-box;" class="dato-valor">{{detalle}}</div>
-                    </div>
-                </div>
+                <div style="margin-top: 30px; margin-bottom: 30px; border-collapse: collapse; background-color: #f8fafc; border: 1px solid #d1d9e6;">
 
-                <p style="font-size: 15px; line-height: 1.6; color: #34495e;">
-                    <strong>Nota:</strong> si se seleccionó <em>Otro Motivo</em>, el detalle breve contiene la especificación indicada por el funcionario.
-                </p>
+                    <div style="display: flex;" class="dato-row">
+                        <div style="width: 35%; padding: 12px 15px; border-bottom: 1px solid #d1d9e6; box-sizing: border-box;" class="dato-label"><strong>Nombre del Funcionario:</strong></div>
+                        <div style="flex: 1; padding: 12px 15px; border-bottom: 1px solid #d1d9e6; color: #000; box-sizing: border-box;" class="dato-valor">{{nombre}}</div>
+                    </div>
+
+                    <div style="display: flex;" class="dato-row">
+                        <div style="width: 35%; padding: 12px 15px; border-bottom: 1px solid #d1d9e6; box-sizing: border-box;" class="dato-label"><strong>Fecha de Inicio:</strong></div>
+                        <div style="flex: 1; padding: 12px 15px; border-bottom: 1px solid #d1d9e6; color: #000; box-sizing: border-box;" class="dato-valor">{{fecha_inicio}}</div>
+                    </div>
+
+                    <div style="display: flex;" class="dato-row">
+                        <div style="width: 35%; padding: 12px 15px; border-bottom: 1px solid #d1d9e6; box-sizing: border-box;" class="dato-label"><strong>Fecha de Finalización:</strong></div>
+                        <div style="flex: 1; padding: 12px 15px; border-bottom: 1px solid #d1d9e6; color: #000; box-sizing: border-box;" class="dato-valor">{{fecha_fin}}</div>
+                    </div>
+
+                    <div style="display: flex;" class="dato-row">
+                        <div style="width: 35%; padding: 12px 15px; border-bottom: 1px solid #d1d9e6; box-sizing: border-box;" class="dato-label"><strong>Motivo Declarado:</strong></div>
+                        <div style="flex: 1; padding: 12px 15px; border-bottom: 1px solid #d1d9e6; color: #000; box-sizing: border-box;" class="dato-valor">{{motivo}}</div>
+                    </div>
+
+                    <div style="display: flex;" class="dato-row">
+                        <div style="width: 35%; padding: 12px 15px; border-bottom: 1px solid #d1d9e6; box-sizing: border-box;" class="dato-label"><strong>Justificación / Detalle:</strong></div>
+                        <div style="flex: 1; padding: 12px 15px; border-bottom: 1px solid #d1d9e6; color: #000; box-sizing: border-box;" class="dato-valor">{{detalle}}</div>
+                    </div>
+
+                    <div style="display: flex;" class="dato-row">
+                        <div style="width: 35%; padding: 12px 15px; box-sizing: border-box;" class="dato-label"><strong>Disposición Académica:</strong></div>
+                        <div style="flex: 1; padding: 12px 15px; color: #000; box-sizing: border-box;" class="dato-valor">{{actividad}}</div>
+                    </div>
+
+                </div>
 
                 <p style="font-size: 15px; line-height: 1.6; color: #34495e;">
                     Se ruega tomar nota de este reporte para los controles correspondientes de asistencia, suplencias y planeamiento académico dentro de la institución.
@@ -115,5 +101,4 @@
         </div>
     </div>
 </body>
-
 </html>
