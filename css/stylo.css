@@ -570,6 +570,26 @@ a:hover {
             color: var(--verde-base);
         }
 
+        .page-index .usuario-index {
+            display: none;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 12px;
+            border-radius: 999px;
+            background: #f6f2e8;
+            border: 1px solid var(--borde);
+            color: var(--verde-base);
+            font-size: 0.75rem;
+            max-width: 320px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .page-index .usuario-index.visible {
+            display: inline-flex;
+        }
+
         /* BARRA DE TÍTULO */
         .page-index .main-title-bar {
             background: var(--blanco);
@@ -829,6 +849,7 @@ a:hover {
             .page-index .titulo-seccion { font-size: 1.15rem; margin-bottom: 16px; }
             .page-index th, .page-index tbody td { padding: 10px; font-size: 0.86rem; }
             .page-index .btn-login { padding: 8px 12px; font-size: 0.65rem; }
+            .page-index .usuario-index { font-size: 0.67rem; max-width: 240px; }
             .page-index .carousel { height: 240px; }
             .page-index .comunicado-card:hover {
                 transform: none;
