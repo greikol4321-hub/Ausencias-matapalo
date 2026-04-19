@@ -1073,6 +1073,17 @@ a:hover {
     border: 1px solid var(--borde);
     border-radius: 8px;
     background: var(--blanco);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.page-registrarme .form-group:focus-within {
+    border-color: var(--verde-claro);
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(10, 76, 35, 0.12);
+}
+
+.page-registrarme .form-group:focus-within i {
+    color: var(--verde-claro);
 }
 
 .page-registrarme .form-group i {
