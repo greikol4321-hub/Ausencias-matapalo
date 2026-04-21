@@ -200,7 +200,7 @@
 
         <div id="panelGuia" class="panel-guia">
             <h3 style="margin-top:0;"><i class="fas fa-users"></i> Modo Docente Guia</h3>
-            <p style="margin:0;">Solo se mostraran boletas de la seccion guia asignada: <b id="seccionGuiaLabel">---</b>.</p>
+            <p style="margin:0;">Se mostraran boletas de las secciones guia asignadas: <b id="seccionGuiaLabel">---</b>.</p>
         </div>
 
         <div class="boletas-wrap">
@@ -360,6 +360,8 @@
         let seccionGuia = '';
         let rolActual = '';
         let usuarioActual = '';
+        let seccionesDocente = [];
+        let seccionesGuia = [];
 
         function generarNumeroBoleta() {
             const fecha = new Date();
@@ -385,6 +387,72 @@
             const url = `${SUPABASE_URL}/rest/v1/usuarios?${params.toString()}`;
             const data = await fetchJson(url, { headers });
             return Array.isArray(data) && data.length ? data[0] : null;
+        }
+
+        function normalizarSecciones(listado) {
+            return [...new Set((listado || []).map((s) => String(s || '').trim()).filter(Boolean))];
+        }
+
+        function setFiltroSecciones(params, campo, secciones) {
+            const limpias = normalizarSecciones(secciones);
+            if (!limpias.length) {
+                return;
+            }
+            if (limpias.length === 1) {
+                params.set(campo, `eq.${limpias[0]}`);
+                return;
+            }
+            params.set(campo, `in.(${limpias.join(',')})`);
+        }
+
+        async function cargarSeccionesAsignadas(usuario, userDb) {
+            const todas = new Set();
+            const guias = new Set();
+
+            if (userDb && userDb.seccion) {
+                todas.add(userDb.seccion);
+            }
+            if (userDb && userDb.seccion_guia) {
+                todas.add(userDb.seccion_guia);
+                guias.add(userDb.seccion_guia);
+            }
+
+            try {
+                const params = new URLSearchParams();
+                params.set('select', 'seccion,es_guia');
+                params.set('usuario', `eq.${usuario}`);
+                const data = await fetchJson(`${SUPABASE_URL}/rest/v1/docente_secciones?${params.toString()}`, { headers });
+                data.forEach((item) => {
+                    const sec = String(item.seccion || '').trim();
+                    if (!sec) return;
+                    todas.add(sec);
+                    if (item.es_guia === true || String(item.es_guia).toLowerCase() === 'true') {
+                        guias.add(sec);
+                    }
+                });
+            } catch (error) {
+                console.info('Tabla docente_secciones no disponible, usando fallback en usuarios.', error.message || error);
+            }
+
+            try {
+                const params = new URLSearchParams();
+                params.set('select', 'seccion');
+                params.set('usuario', `eq.${usuario}`);
+                const data = await fetchJson(`${SUPABASE_URL}/rest/v1/docente_guia_secciones?${params.toString()}`, { headers });
+                data.forEach((item) => {
+                    const sec = String(item.seccion || '').trim();
+                    if (!sec) return;
+                    todas.add(sec);
+                    guias.add(sec);
+                });
+            } catch (error) {
+                console.info('Tabla docente_guia_secciones no disponible, usando fallback en usuarios.', error.message || error);
+            }
+
+            return {
+                todas: normalizarSecciones([...todas]),
+                guias: normalizarSecciones([...guias])
+            };
         }
 
         function actualizarInterfazSesion(nombre, usuario, rol) {
@@ -442,12 +510,12 @@
         }
 
         async function cargarBoletasSeccion() {
-            if (!seccionGuia) {
+            if (!seccionesGuia.length) {
                 return;
             }
             const params = new URLSearchParams();
             params.set('select', 'fecha,numero_boleta,estudiante_nombre,estudiante_cedula,docente_nombre');
-            params.set('seccion', `eq.${seccionGuia}`);
+            setFiltroSecciones(params, 'seccion', seccionesGuia);
             params.set('order', 'fecha.desc');
             params.set('limit', '30');
 
@@ -457,7 +525,7 @@
                 renderBoletas(
                     'cuerpoBoletasSeccion',
                     data,
-                    `No hay boletas para la seccion ${seccionGuia}.`,
+                    `No hay boletas para las secciones guia ${seccionesGuia.join(', ')}.`,
                     (b) => `<tr>
                         <td>${b.fecha || ''}</td>
                         <td>${b.numero_boleta || ''}</td>
@@ -482,8 +550,8 @@
             params.set('select', 'cedula,nombre_completo,seccion,correo_encargado');
             params.set('or', `(cedula.ilike.*${valor}*,nombre_completo.ilike.*${valor}*)`);
             params.set('limit', '8');
-            if (rolActual === 'docente_guia' && seccionGuia) {
-                params.set('seccion', `eq.${seccionGuia}`);
+            if (rolActual !== 'admin' && seccionesDocente.length) {
+                setFiltroSecciones(params, 'seccion', seccionesDocente);
             }
 
             const url = `${SUPABASE_URL}/rest/v1/estudiantes?${params.toString()}`;
@@ -544,8 +612,8 @@
             } else {
                 params.set('nombre_completo', `ilike.*${valor}*`);
             }
-            if (rolActual === 'docente_guia' && seccionGuia) {
-                params.set('seccion', `eq.${seccionGuia}`);
+            if (rolActual !== 'admin' && seccionesDocente.length) {
+                setFiltroSecciones(params, 'seccion', seccionesDocente);
             }
 
             const url = `${SUPABASE_URL}/rest/v1/estudiantes?${params.toString()}`;
@@ -603,8 +671,8 @@
                 return;
             }
 
-            if (rolActual === 'docente_guia' && seccionGuia && payload.seccion !== seccionGuia) {
-                Swal.fire('Seccion no permitida', `Como docente guia solo puede registrar boletas de la seccion ${seccionGuia}.`, 'warning');
+            if (rolActual !== 'admin' && seccionesDocente.length && !seccionesDocente.includes(payload.seccion)) {
+                Swal.fire('Seccion no permitida', `Solo puede registrar boletas de sus secciones asignadas: ${seccionesDocente.join(', ')}.`, 'warning');
                 return;
             }
 
@@ -667,6 +735,9 @@
             rolActual = (userDb && userDb.rol) || rolStorage;
             usuarioActual = usuario;
             seccionGuia = (userDb && (userDb.seccion_guia || userDb.seccion)) || '';
+            const asignaciones = await cargarSeccionesAsignadas(usuario, userDb);
+            seccionesDocente = asignaciones.todas;
+            seccionesGuia = asignaciones.guias;
 
             if (!ROLES_PERMITIDOS.has(rolActual)) {
                 Swal.fire('Sin acceso', 'Solo docentes, docentes guia o admin pueden usar boletas.', 'warning').then(() => {
@@ -686,9 +757,14 @@
             if (rolActual === 'docente_guia') {
                 const panel = document.getElementById('panelGuia');
                 panel.style.display = 'block';
-                document.getElementById('seccionGuiaLabel').textContent = seccionGuia || 'SIN ASIGNAR';
-                document.getElementById('bloqueBoletasSeccion').style.display = 'block';
-                await cargarBoletasSeccion();
+                document.getElementById('seccionGuiaLabel').textContent = seccionesGuia.length ? seccionesGuia.join(', ') : (seccionGuia || 'SIN ASIGNAR');
+                if (seccionesGuia.length || seccionGuia) {
+                    document.getElementById('bloqueBoletasSeccion').style.display = 'block';
+                    if (!seccionesGuia.length && seccionGuia) {
+                        seccionesGuia = [seccionGuia];
+                    }
+                    await cargarBoletasSeccion();
+                }
             }
         }
 

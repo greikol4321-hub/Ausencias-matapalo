@@ -120,3 +120,81 @@ set nombre_completo = excluded.nombre_completo,
 
 - Este script NO cambia ni encripta la columna `contrasena`.
 - Solo crea/ajusta estructura para boletas y docentes guia.
+
+## Soporte para varias secciones por docente
+
+Si un docente imparte varias secciones, ejecuta este bloque adicional.
+
+```sql
+begin;
+
+-- Tabla para secciones impartidas por cada docente
+create table if not exists public.docente_secciones (
+  id bigint generated always as identity primary key,
+  usuario text not null references public.usuarios(usuario) on delete cascade,
+  seccion text not null,
+  es_guia boolean not null default false,
+  creado_en timestamp without time zone default now(),
+  constraint docente_secciones_unq unique (usuario, seccion)
+);
+
+-- Tabla opcional para multiples secciones guia
+create table if not exists public.docente_guia_secciones (
+  id bigint generated always as identity primary key,
+  usuario text not null references public.usuarios(usuario) on delete cascade,
+  seccion text not null,
+  creado_en timestamp without time zone default now(),
+  constraint docente_guia_secciones_unq unique (usuario, seccion)
+);
+
+create index if not exists idx_docente_secciones_usuario on public.docente_secciones(usuario);
+create index if not exists idx_docente_secciones_seccion on public.docente_secciones(seccion);
+create index if not exists idx_docente_guia_secciones_usuario on public.docente_guia_secciones(usuario);
+create index if not exists idx_docente_guia_secciones_seccion on public.docente_guia_secciones(seccion);
+
+-- Migracion inicial desde columnas viejas (seccion / seccion_guia)
+insert into public.docente_secciones (usuario, seccion, es_guia)
+select u.usuario, u.seccion, false
+from public.usuarios u
+where u.seccion is not null and trim(u.seccion) <> ''
+on conflict (usuario, seccion) do nothing;
+
+insert into public.docente_secciones (usuario, seccion, es_guia)
+select u.usuario, u.seccion_guia, true
+from public.usuarios u
+where u.seccion_guia is not null and trim(u.seccion_guia) <> ''
+on conflict (usuario, seccion)
+do update set es_guia = true;
+
+insert into public.docente_guia_secciones (usuario, seccion)
+select u.usuario, u.seccion_guia
+from public.usuarios u
+where u.seccion_guia is not null and trim(u.seccion_guia) <> ''
+on conflict (usuario, seccion) do nothing;
+
+-- Permisos para frontend sin RLS
+grant select, insert, update, delete on public.docente_secciones to anon, authenticated;
+grant select, insert, update, delete on public.docente_guia_secciones to anon, authenticated;
+grant usage, select on all sequences in schema public to anon, authenticated;
+
+commit;
+```
+
+### Ejemplos de asignacion de varias secciones
+
+```sql
+insert into public.docente_secciones (usuario, seccion, es_guia)
+values
+  ('docente1', '10-1', false),
+  ('docente1', '10-2', false),
+  ('guia101', '10-1', true),
+  ('guia101', '11-2', true)
+on conflict (usuario, seccion)
+do update set es_guia = excluded.es_guia;
+
+insert into public.docente_guia_secciones (usuario, seccion)
+values
+  ('guia101', '10-1'),
+  ('guia101', '11-2')
+on conflict (usuario, seccion) do nothing;
+```
