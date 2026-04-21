@@ -537,23 +537,32 @@
                 return;
             }
 
-            const panel = document.getElementById('panelDetalleBoleta');
-            const grid = document.getElementById('detalleBoletaGrid');
-            const falta = document.getElementById('detalleBoletaFalta');
+            const fila = (label, value) => `<tr><th style="text-align:left; padding:8px 10px; width:38%; background:#f5f5f5;">${label}</th><td style="padding:8px 10px;">${value || ''}</td></tr>`;
+            const html = `
+                <div style="text-align:left;">
+                    <table style="width:100%; border-collapse:collapse; border:1px solid #ddd; margin-bottom:12px;">
+                        ${fila('Fecha', boleta.fecha)}
+                        ${fila('Numero', boleta.numero_boleta)}
+                        ${fila('Estudiante', boleta.estudiante_nombre)}
+                        ${fila('Cedula', boleta.estudiante_cedula)}
+                        ${fila('Seccion', boleta.seccion)}
+                        ${fila('Docente', boleta.docente_nombre)}
+                        ${fila('Usuario docente', boleta.docente_usuario)}
+                        ${fila('Correo encargado', boleta.correo_encargado || 'No registrado')}
+                    </table>
+                    <div style="border:1px solid #ddd; border-radius:6px; padding:10px; background:#fff;">
+                        <b>Falta cometida:</b>
+                        <div style="margin-top:6px; white-space:pre-wrap;">${boleta.falta_cometida || 'Sin descripcion'}</div>
+                    </div>
+                </div>`;
 
-            grid.innerHTML = `
-                <div class="detalle-item"><b>Fecha:</b> ${boleta.fecha || ''}</div>
-                <div class="detalle-item"><b>Numero:</b> ${boleta.numero_boleta || ''}</div>
-                <div class="detalle-item"><b>Estudiante:</b> ${boleta.estudiante_nombre || ''}</div>
-                <div class="detalle-item"><b>Cedula:</b> ${boleta.estudiante_cedula || ''}</div>
-                <div class="detalle-item"><b>Seccion:</b> ${boleta.seccion || ''}</div>
-                <div class="detalle-item"><b>Docente:</b> ${boleta.docente_nombre || ''}</div>
-                <div class="detalle-item"><b>Usuario docente:</b> ${boleta.docente_usuario || ''}</div>
-                <div class="detalle-item"><b>Correo encargado:</b> ${boleta.correo_encargado || 'No registrado'}</div>
-            `;
-            falta.textContent = boleta.falta_cometida || 'Sin descripcion';
-            panel.style.display = 'block';
-            panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            Swal.fire({
+                title: 'Detalle de Boleta',
+                html,
+                width: 'min(920px, 92vw)',
+                confirmButtonText: 'Cerrar',
+                confirmButtonColor: '#0a4c23'
+            });
         }
 
         async function cargarBoletasPropias() {
