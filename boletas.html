@@ -505,7 +505,17 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script>
+        // Inicializar EmailJS simulando lo hecho en comunicados.html
+        try {
+            emailjs.init({
+                publicKey: "w1Mu-I7slR-qZNrm8" 
+            });
+        } catch (error) {
+            console.error("Error configurando EmailJS en Boletas:", error);
+        }
+
         const SUPABASE_URL = 'https://iowxlwnosyyqetbvvmuk.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlvd3hsd25vc3l5cWV0YnZ2bXVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYxOTk4NDYsImV4cCI6MjA5MTc3NTg0Nn0.VZ5VMu0z4nlsZ0hKvDSk4IUluA1yGx9eQCCXzDc5HmU';
 
@@ -936,6 +946,27 @@
                     headers,
                     body: JSON.stringify(payload)
                 });
+
+                // NOTIFICAR POR EMAIL VÍA EMAILJS AL PADRE / ENCARGADO
+                if (payload.correo_encargado) {
+                    try {
+                        emailjs.send("service_2wecd52", "template_boletas", {
+                            to_email: payload.correo_encargado,
+                            estudiante_nombre: payload.estudiante_nombre,
+                            numero_boleta: payload.numero_boleta,
+                            fecha_boleta: payload.fecha,
+                            docente_nombre: payload.docente_nombre,
+                            falta_cometida: payload.falta_cometida,
+                            seccion: payload.seccion
+                        }).then(() => {
+                            console.log("Correo de boleta enviado exitosamente al encargado.");
+                        }).catch(err => {
+                            console.error("No se pudo enviar el correo:", err);
+                        });
+                    } catch (e) {
+                        console.error("Error ejecutando EmailJS:", e);
+                    }
+                }
 
                 Swal.fire('Guardada', 'La boleta se registro correctamente.', 'success');
                 document.getElementById('formBoleta').reset();
