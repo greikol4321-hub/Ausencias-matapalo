@@ -603,10 +603,11 @@
             Swal.fire({
                 html: html,
                 width: 'min(800px, 95vw)',
-                showCloseButton: true,
-                showCancelButton: false,
-                showDenyButton: false,
-                confirmButtonText: 'Cerrar Boleta',
+                showCloseButton: false,      // Ocultar la X superior derecha
+                showConfirmButton: true,     // Solo dejar este botón principal
+                showCancelButton: false,     // Asegurar que no salga "Cancel"
+                showDenyButton: false,       // Asegurar que no salga "No"
+                confirmButtonText: 'Cerrar',
                 confirmButtonColor: '#0a4c23',
                 buttonsStyling: true,
                 focusConfirm: false
