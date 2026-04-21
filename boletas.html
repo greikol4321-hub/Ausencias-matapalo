@@ -537,31 +537,51 @@
                 return;
             }
 
-            const fila = (label, value) => `<tr><th style="text-align:left; padding:8px 10px; width:38%; background:#f5f5f5;">${label}</th><td style="padding:8px 10px;">${value || ''}</td></tr>`;
+            const cardStyle = "background: #f8f9fa; border-left: 4px solid #0a4c23; padding: 12px; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);";
+            const labelStyle = "font-size: 0.8rem; color: #6c757d; font-weight: 700; text-transform: uppercase; margin-bottom: 4px; letter-spacing: 0.5px;";
+            const valueStyle = "font-size: 1.05rem; color: #212529; font-weight: 500;";
+
+            const createCard = (label, value) => `
+                <div style="${cardStyle}">
+                    <div style="${labelStyle}">${label}</div>
+                    <div style="${valueStyle}">${value || '-'}</div>
+                </div>
+            `;
+
             const html = `
-                <div style="text-align:left;">
-                    <table style="width:100%; border-collapse:collapse; border:1px solid #ddd; margin-bottom:12px;">
-                        ${fila('Fecha', boleta.fecha)}
-                        ${fila('Numero', boleta.numero_boleta)}
-                        ${fila('Estudiante', boleta.estudiante_nombre)}
-                        ${fila('Cedula', boleta.estudiante_cedula)}
-                        ${fila('Seccion', boleta.seccion)}
-                        ${fila('Docente', boleta.docente_nombre)}
-                        ${fila('Usuario docente', boleta.docente_usuario)}
-                        ${fila('Correo encargado', boleta.correo_encargado || 'No registrado')}
-                    </table>
-                    <div style="border:1px solid #ddd; border-radius:6px; padding:10px; background:#fff;">
-                        <b>Falta cometida:</b>
-                        <div style="margin-top:6px; white-space:pre-wrap;">${boleta.falta_cometida || 'Sin descripcion'}</div>
+                <div style="text-align: left; font-family: 'Segoe UI', system-ui, sans-serif;">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px;">
+                        ${createCard('Número de Boleta', boleta.numero_boleta)}
+                        ${createCard('Fecha', boleta.fecha)}
+                        ${createCard('Estudiante', boleta.estudiante_nombre)}
+                        ${createCard('Cédula', boleta.estudiante_cedula)}
+                        ${createCard('Sección', boleta.seccion)}
+                        ${createCard('Docente', boleta.docente_nombre)}
+                        ${createCard('Usuario Docente', boleta.docente_usuario)}
+                        ${createCard('Correo Encargado', boleta.correo_encargado || 'No registrado')}
                     </div>
-                </div>`;
+                    
+                    <div style="background: #fff; border: 1px solid #e9ecef; border-top: 4px solid #dc3545; border-radius: 8px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+                        <div style="font-size: 0.9rem; color: #dc3545; font-weight: 700; text-transform: uppercase; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
+                            <i class="fas fa-exclamation-circle"></i> Detalle de la Falta Cometida
+                        </div>
+                        <div style="font-size: 1.1rem; line-height: 1.6; color: #333; white-space: pre-wrap; background: #fafafa; padding: 12px; border-radius: 6px; border: 1px solid #f1f3f5;">${boleta.falta_cometida || 'Sin descripción'}</div>
+                    </div>
+                </div>
+            `;
 
             Swal.fire({
-                title: 'Detalle de Boleta',
+                title: '<h2 style="color: #0a4c23; margin: 0; font-weight: 700;">Detalle de Boleta</h2>',
                 html,
-                width: 'min(920px, 92vw)',
-                confirmButtonText: 'Cerrar',
-                confirmButtonColor: '#0a4c23'
+                width: 'min(850px, 95vw)',
+                showCloseButton: true,
+                focusConfirm: false,
+                confirmButtonText: '<i class="fas fa-times"></i> Cerrar',
+                confirmButtonColor: '#6c757d',
+                customClass: {
+                    popup: 'swal-wide-custom',
+                    title: 'swal-title-custom'
+                }
             });
         }
 
