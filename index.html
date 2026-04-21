@@ -16,23 +16,19 @@
     <header class="header">
         <div class="header-container">
             <div class="header-logos-left">
-                <img src="img/LOGO_MEP-removebg-preview.png" class="logo-mep" alt="MEP Costa Rica" loading="lazy" decoding="async" fetchpriority="low">
+                <img src="img/LOGO_MEP-removebg-preview.png" class="logo-mep" alt="MEP Costa Rica">
                 <div class="divider"></div>
                 <div class="logo-gobierno">
-                    <strong>Colegio Técnico Profesional</strong><br>de Matapalo
+                    <strong>Dirección Regional de Educación Central del Pacífico</strong><br>
+                    <strong>Colegio Técnico Profesional de Matapalo</strong><br>
                 </div>
             </div>
 
             <div class="nav-right">
                 <a href="index.html" title="Inicio">
-                    <img src="img/logo_colegio_nuevo.png" class="logo-escudo" alt="Escudo CTP Matapalo" loading="lazy" decoding="async" fetchpriority="low">
+                    <img src="img/logo_colegio_nuevo.png" class="logo-escudo" alt="Escudo CTP Matapalo">
                 </a>
-                <div class="acceso-wrap">
-                    <a id="indexBtnAcceso" href="registrarme.html" class="btn-login">Acceso Personal</a>
-                    <span id="indexUsuarioChip" class="usuario-index" hidden>
-                        Sesion activa: <strong id="indexNombreUsuario"></strong>
-                    </span>
-                </div>
+                <a href="registrarme.html" class="btn-login">Acceso Personal</a>
             </div>
         </div>
     </header>
@@ -44,13 +40,7 @@
     <main class="container">
         <div class="grid-superior">
             <section class="card-steam">
-                <a href="galeria.html">
-                    <picture>
-                        <source srcset="img/steam-optimized.jpg" media="(max-width: 600px)">
-                        <source srcset="img/steam-optimized.jpg" media="(min-width: 601px)">
-                        <img src="img/steam-optimized.jpg" alt="STEAM" loading="lazy" decoding="async" fetchpriority="low">
-                    </picture>
-                </a>
+                <a href="galeria.html"><img src="img/steam.png" alt="STEAM"></a>
                 <h3>Ingresa a STEAM</h3>
                 <p>Conservación y Promoción de la Reserva Ecológica Institucional como estrategia para la Educación Ambiental desde un enfoque STEAM. </p>
             </section>
@@ -58,9 +48,8 @@
             <section class="carousel-box">
                 <div class="carousel">
                     <div class="slides" id="slides">
-                        <img src="img/1.jpeg" alt="Actividad institucional 1" loading="eager" decoding="async" fetchpriority="high"> <img src="img/2.jpeg" alt="Actividad institucional 2" loading="lazy" decoding="async" fetchpriority="low"> <img src="img/3.jpeg" alt="Actividad institucional 3" loading="lazy" decoding="async" fetchpriority="low"> <img src="img/4.jpeg" alt="Actividad institucional 4" loading="lazy" decoding="async" fetchpriority="low"> <img src="img/5.jpeg"
-                            loading="lazy" decoding="async" fetchpriority="low"
-                            alt="Actividad institucional 5">
+                        <img src="img/1.jpeg" alt="Actividad institucional 1"> <img src="img/20abril2.jpeg" alt="Actividad institucional 2"> <img src="img/2oabril1.jpeg" alt="Actividad institucional 3"> <img src="img/4.jpeg" alt="Actividad institucional 4">
+                        <img src="img/5.jpeg" alt="Actividad institucional 5"><img src="img/20abril.jpeg" alt="Actividad institucional 6">
                     </div>
                 </div>
             </section>
@@ -99,63 +88,13 @@
 
     <script>
         let idx = 0;
-        let carouselTimer = null;
-
-        function sanitizarTexto(valor) {
-            return String(valor ?? '').trim();
-        }
-
-        function iniciarCarrusel() {
-            if (carouselTimer) {
-                return;
-            }
-
-            carouselTimer = setInterval(() => {
-                const slides = document.getElementById("slides");
-                if (!slides) {
-                    return;
-                }
-
+        setInterval(() => {
+            const slides = document.getElementById("slides");
+            if (slides) {
                 idx = (idx + 1) % 5;
-                slides.style.transform = `translate3d(-${idx * 100}%, 0, 0)`;
-            }, 5000);
-        }
-
-        function pausarCarrusel() {
-            if (carouselTimer) {
-                clearInterval(carouselTimer);
-                carouselTimer = null;
+                slides.style.transform = `translateX(-${idx * 100}%)`;
             }
-        }
-
-        function actualizarSesionEnHeader() {
-            const chip = document.getElementById('indexUsuarioChip');
-            const nombreEl = document.getElementById('indexNombreUsuario');
-            const btnAcceso = document.getElementById('indexBtnAcceso');
-
-            if (!chip || !nombreEl || !btnAcceso) {
-                return;
-            }
-
-            const nombre = sanitizarTexto(localStorage.getItem('nombre'));
-            const usuario = sanitizarTexto(localStorage.getItem('usuario'));
-
-            if (nombre && usuario) {
-                nombreEl.textContent = nombre;
-                chip.hidden = false;
-                chip.classList.add('visible');
-
-                // Siempre volver al panel docente para registrar ausencias.
-                btnAcceso.href = 'docentes.html';
-                btnAcceso.textContent = 'Mi Panel';
-            } else {
-                chip.hidden = true;
-                chip.classList.remove('visible');
-                nombreEl.textContent = '';
-                btnAcceso.href = 'registrarme.html';
-                btnAcceso.textContent = 'Acceso Personal';
-            }
-        }
+        }, 5000);
 
         const SUPABASE_URL = 'https://iowxlwnosyyqetbvvmuk.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlvd3hsd25vc3l5cWV0YnZ2bXVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYxOTk4NDYsImV4cCI6MjA5MTc3NTg0Nn0.VZ5VMu0z4nlsZ0hKvDSk4IUluA1yGx9eQCCXzDc5HmU';
@@ -165,40 +104,6 @@
             "Authorization": `Bearer ${SUPABASE_KEY}`,
             "Content-Type": "application/json"
         };
-
-        function obtenerPrioridadComunicado(colorBorde) {
-            const color = String(colorBorde || '').toLowerCase();
-
-            if (color === '#e74c3c') {
-                return {
-                    texto: 'Urgente',
-                    clase: 'prioridad-urgente',
-                    color: '#e74c3c'
-                };
-            }
-
-            if (color === '#f39c12') {
-                return {
-                    texto: 'Importante',
-                    clase: 'prioridad-importante',
-                    color: '#f39c12'
-                };
-            }
-
-            if (color === '#3498db') {
-                return {
-                    texto: 'General',
-                    clase: 'prioridad-general',
-                    color: '#3498db'
-                };
-            }
-
-            return {
-                texto: 'Informativo',
-                clase: 'prioridad-informativo',
-                color: '#27ae60'
-            };
-        }
 
         async function cargarComunicados() {
             const contenedor = document.getElementById("contenedorComunicados");
@@ -212,55 +117,18 @@
                     return;
                 }
                 contenedor.innerHTML = "";
-                const fragmento = document.createDocumentFragment();
-
                 datos.forEach(c => {
-                    const prioridad = obtenerPrioridadComunicado(c.color_borde);
-                    const article = document.createElement('article');
-                    article.className = 'comunicado-card';
-                    article.style.setProperty('--com-color', prioridad.color);
-
-                    const content = document.createElement('div');
-                    content.className = 'com-content';
-
-                    const encabezado = document.createElement('div');
-                    encabezado.className = 'com-encabezado';
-
-                    const titulo = document.createElement('h3');
-                    titulo.className = 'com-titulo';
-                    titulo.textContent = sanitizarTexto(c.titulo) || 'Sin título';
-
-                    const badge = document.createElement('span');
-                    badge.className = `com-prioridad ${prioridad.clase}`;
-                    badge.textContent = prioridad.texto;
-
-                    const contenido = document.createElement('p');
-                    contenido.className = 'com-contenido';
-                    contenido.textContent = sanitizarTexto(c.contenido) || 'Sin contenido';
-
-                    const footer = document.createElement('div');
-                    footer.className = 'com-footer';
-
-                    const autor = document.createElement('span');
-                    autor.className = 'com-autor';
-
-                    const icono = document.createElement('i');
-                    icono.className = 'fas fa-user-circle';
-
-                    autor.appendChild(icono);
-                    autor.append(` ${sanitizarTexto(c.autor) || 'DIRECCIÓN'}`);
-
-                    encabezado.appendChild(titulo);
-                    encabezado.appendChild(badge);
-                    content.appendChild(encabezado);
-                    content.appendChild(contenido);
-                    footer.appendChild(autor);
-                    article.appendChild(content);
-                    article.appendChild(footer);
-                    fragmento.appendChild(article);
+                    contenedor.innerHTML += `
+                        <article class="comunicado-card">
+                            <div class="com-content">
+                                <h3 class="com-titulo">${c.titulo}</h3>
+                                <p class="com-contenido">${c.contenido}</p>
+                            </div>
+                            <div class="com-footer">
+                                <span class="com-autor"><i class="fas fa-user-circle"></i> ${c.autor || 'DIRECCIÓN'}</span>
+                            </div>
+                        </article>`;
                 });
-
-                contenedor.appendChild(fragmento);
             } catch (e) {
                 console.error(e);
                 contenedor.innerHTML = "<p style='grid-column:1/-1; text-align:center; color:#e74c3c;'><i class='fas fa-exclamation-circle'></i> No se pudieron cargar los comunicados.</p>";
@@ -282,7 +150,6 @@
                 }
 
                 tabla.innerHTML = "";
-                const fragmento = document.createDocumentFragment();
                 datos.forEach(a => {
                     const formatearFecha = (fechaOriginal) => {
                         if (!fechaOriginal) return 'N/A';
@@ -295,77 +162,29 @@
                     const fechaInicio = formatearFecha(a.fecha);
                     const fechaFin = formatearFecha(a.fecha_fin);
 
-                    const tr = document.createElement('tr');
-
-                    const tdNombre = document.createElement('td');
-                    const strongNombre = document.createElement('strong');
-                    strongNombre.textContent = sanitizarTexto(a.nombre) || 'Sin nombre';
-                    tdNombre.appendChild(strongNombre);
-
-                    const tdEstado = document.createElement('td');
-                    tdEstado.style.color = '#c62828';
-                    tdEstado.style.fontWeight = 'bold';
-                    tdEstado.textContent = 'Ausente';
-
-                    const tdMotivo = document.createElement('td');
-                    const spanMotivo = document.createElement('span');
-                    spanMotivo.style.background = '#ffebee';
-                    spanMotivo.style.color = '#c62828';
-                    spanMotivo.style.padding = '3px 8px';
-                    spanMotivo.style.borderRadius = '4px';
-                    spanMotivo.style.fontSize = '0.75rem';
-                    spanMotivo.textContent = sanitizarTexto(a.razon) || 'Sin motivo';
-                    tdMotivo.appendChild(spanMotivo);
-
-                    const tdFechas = document.createElement('td');
-                    const small = document.createElement('small');
-                    small.textContent = `${fechaInicio} al ${fechaFin}`;
-                    tdFechas.appendChild(small);
-
-                    tr.appendChild(tdNombre);
-                    tr.appendChild(tdEstado);
-                    tr.appendChild(tdMotivo);
-                    tr.appendChild(tdFechas);
-                    fragmento.appendChild(tr);
+                    tabla.innerHTML += `
+                        <tr>
+                            <td><strong>${a.nombre}</strong></td>
+                            <td style="color:#c62828; font-weight:bold;">Ausente</td>
+                            <td><span style="background:#ffebee; color:#c62828; padding:3px 8px; border-radius:4px; font-size:0.75rem;">${a.razon}</span></td>
+                            <td><small>${fechaInicio} al ${fechaFin}</small></td>
+                        </tr>`;
                 });
-
-                tabla.appendChild(fragmento);
             } catch (e) {
                 console.error(e);
                 tabla.innerHTML = "<tr><td colspan='4' style='text-align:center; padding:20px; color:#e74c3c;'><i class='fas fa-exclamation-triangle'></i> Hubo un problema al cargar los datos.</td></tr>";
             }
         }
 
-        document.addEventListener('visibilitychange', () => {
-            if (document.hidden) {
-                pausarCarrusel();
-            } else {
-                iniciarCarrusel();
-            }
-        });
-
         window.onload = () => {
-            actualizarSesionEnHeader();
-            iniciarCarrusel();
-
-            const trabajoDiferido = () => {
-                cargarComunicados();
-                cargarAusencias();
-            };
-
-            if ('requestIdleCallback' in globalThis) {
-                globalThis.requestIdleCallback(trabajoDiferido, {
-                    timeout: 1200
-                });
-            } else {
-                setTimeout(trabajoDiferido, 250);
-            }
+            cargarComunicados();
+            cargarAusencias();
         };
     </script>
-
-    <footer class="site-footer">
-        <p>Desarrollado por la Especialidad de Informatica (2026) - CTP de Matapalo. Todos los derechos reservados.</p>
-    </footer>
 </body>
+
+<footer>
+    Desarrollado por la Especialidad de Informatica. ( 2026 ) - CTP de Matapalo. Todos los derechos reservados.
+</footer>
 
 </html>

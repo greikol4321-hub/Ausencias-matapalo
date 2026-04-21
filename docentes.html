@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 
 <head>
@@ -18,16 +18,17 @@
     <header class="header">
         <div class="header-container">
             <div class="header-logos-left">
-                <img src="img/LOGO_MEP-removebg-preview.png" class="logo-mep" alt="MEP Costa Rica" loading="lazy" decoding="async" fetchpriority="low">
+                <img src="img/LOGO_MEP-removebg-preview.png" class="logo-mep" alt="MEP Costa Rica">
                 <div class="divider"></div>
                 <div class="logo-gobierno">
-                    <strong>Colegio Técnico Profesional</strong><br> de Matapalo
+                    <strong>Dirección Regional de Educación Central del Pacífico</strong><br>
+                    <strong>Colegio Técnico Profesional de Matapalo</strong><br>
                 </div>
             </div>
 
             <div class="nav-right">
                 <a href="index.html" title="Inicio">
-                    <img src="img/logo_colegio_nuevo.png" class="logo-escudo" alt="Escudo CTP Matapalo" loading="lazy" decoding="async" fetchpriority="low">
+                    <img src="img/logo_colegio_nuevo.png" class="logo-escudo" alt="Escudo CTP Matapalo">
                 </a>
             </div>
         </div>
@@ -61,7 +62,7 @@
         <div id="seccionAdmin">
             <h3 style="color: #e67e22; margin-top: 0;"><i class="fas fa-user-shield"></i> Panel de Administración</h3>
             <p style="margin-bottom: 20px; font-size: 0.95rem;">Usted cuenta con acceso al gestor de comunicados institucionales.</p>
-            <button type="button" class="btn-admin" onclick="window.location.href='panel-admin.html'"><i class="fas fa-megaphone"></i> Ir al Panel Admin</button>
+            <button type="button" class="btn-admin" onclick="window.location.href='comunicados.html'"><i class="fas fa-megaphone"></i> Ir a Gestión de Comunicados</button>
         </div>
 
         <h3><i class="fas fa-clipboard-plus"></i> Registrar Nueva Ausencia</h3>
@@ -90,11 +91,15 @@
                 </select>
                 </div>
                 <div>
-                    <label for="detalleAusencia" id="labelDetalleAusencia"><i class="fas fa-clipboard"></i> Detalle Breve</label>
+                    <label for="detalleAusencia"><i class="fas fa-clipboard"></i> Detalle Breve</label>
                     <input type="text" id="detalleAusencia" placeholder="Ej: Cita en la Caja">
                 </div>
             </div>
 
+            <div>
+                <label for="actividadRemplazo"><i class="fas fa-book"></i> Trabajo para los Estudiantes</label>
+                <textarea id="actividadRemplazo" rows="3" placeholder="Describa la práctica o actividad que deben realizar los grupos..."></textarea>
+            </div>
             <button type="submit" id="btnGuardar"><i class="fas fa-save"></i> Registrar Período de Ausencia</button>
         </form>
 
@@ -103,7 +108,7 @@
         <h3><i class="fas fa-history"></i> Mi Historial Reciente</h3>
         <div style="margin-bottom: 15px; position: relative;">
             <i class="fas fa-search" style="position: absolute; left: 15px; top: 12px; color: var(--texto-gris);"></i>
-            <input type="text" id="busquedaHistorial" onkeyup="filtrarTabla()" placeholder="Buscar por motivo o fecha..." style="width: 100%; padding: 12px 15px 12px 40px; border-radius: 8px; border: 1px solid rgba(0,0,0,0.1); font-size: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+            <input type="text" id="busquedaHistorial" onkeyup="filtrarTabla()" placeholder="Buscar por motivo, actividad o fecha..." style="width: 100%; padding: 12px 15px 12px 40px; border-radius: 8px; border: 1px solid rgba(0,0,0,0.1); font-size: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
         </div>
 
         <div class="overflow-auto">
@@ -113,13 +118,13 @@
                         <tr>
                             <th><i class="fas fa-calendar"></i> Desde</th>
                             <th><i class="fas fa-calendar-check"></i> Hasta</th>
-                            <th><i class="fas fa-info-circle"></i> Motivo</th>
+                            <th><i class="fas fa-info-circle"></i> Motivo y Actividad</th>
                             <th><i class="fas fa-cog"></i> Acción</th>
                         </tr>
                     </thead>
                     <tbody id="cuerpoTabla">
                         <tr>
-                            <td colspan="4" data-label="Estado" style="text-align:center; padding: 40px; color: var(--texto-gris);">
+                            <td colspan="4" style="text-align:center; padding: 40px; color: var(--texto-gris);">
                                 <i class="fas fa-spinner fa-spin fa-2x" style="color: var(--verde-claro); margin-bottom: 10px;"></i><br> Cargando sus registros...
                             </td>
                         </tr>
@@ -130,116 +135,9 @@
 
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/notiflix@3/dist/notiflix-aio-3.2.8.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script>
-        Notiflix.Notify.init({
-            position: 'right-top',
-            timeout: 3600,
-            clickToClose: true,
-            fontSize: '15px',
-            borderRadius: '16px',
-            distance: '14px',
-            showOnlyTheLastOne: true
-        });
-
-        Notiflix.Confirm.init({
-            titleColor: '#0a4c23',
-            okButtonBackground: '#0a4c23',
-            cancelButtonBackground: '#95a5a6',
-            borderRadius: '14px'
-        });
-
-        const Swal = {
-            async fire(arg1, arg2, arg3) {
-                if (typeof arg1 === 'string') {
-                    this.close();
-                    this.notifyByIcon(arg3 || 'info', arg1, arg2 || '');
-                    return {
-                        isConfirmed: true
-                    };
-                }
-
-                const opts = arg1 || {};
-
-                if (opts.showCancelButton) {
-                    this.close();
-                    const confirmado = await new Promise(resolve => {
-                        Notiflix.Confirm.show(
-                            opts.title || 'Confirmación',
-                            opts.text || '',
-                            opts.confirmButtonText || 'Aceptar',
-                            opts.cancelButtonText || 'Cancelar',
-                            () => resolve(true),
-                            () => resolve(false)
-                        );
-                    });
-
-                    return {
-                        isConfirmed: confirmado
-                    };
-                }
-
-                if (opts.showConfirmButton === false && !opts.icon) {
-                    this.close();
-                    Notiflix.Loading.standard(opts.text || opts.title || 'Procesando...');
-                    return {
-                        isConfirmed: true
-                    };
-                }
-
-                if (opts.icon || opts.title || opts.text) {
-                    this.close();
-                    this.notifyByIcon(opts.icon || 'info', opts.title || 'Aviso', opts.text || '');
-                }
-
-                return {
-                    isConfirmed: true
-                };
-            },
-            close() {
-                Notiflix.Loading.remove();
-            },
-            showLoading() {
-                Notiflix.Loading.standard('Procesando...');
-            },
-            showValidationMessage(message) {
-                Notiflix.Notify.warning(message);
-            },
-            notifyByIcon(icon, title, text) {
-                const message = [title, text].filter(Boolean).join(': ');
-                if (icon === 'success') {
-                    Notiflix.Notify.success(message || 'Operación exitosa');
-                } else if (icon === 'error') {
-                    Notiflix.Notify.failure(message || 'Ocurrió un error');
-                } else if (icon === 'warning') {
-                    Notiflix.Notify.warning(message || 'Atención');
-                } else {
-                    Notiflix.Notify.info(message || 'Información');
-                }
-            }
-        };
-
-        function setButtonLoading(button, isLoading, loadingText) {
-            if (!button) return;
-            if (isLoading) {
-                if (!button.dataset.originalHtml) {
-                    button.dataset.originalHtml = button.innerHTML;
-                }
-                button.disabled = true;
-                button.setAttribute('aria-busy', 'true');
-                button.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${loadingText || 'Procesando...'}`;
-                return;
-            }
-
-            button.disabled = false;
-            button.removeAttribute('aria-busy');
-            if (button.dataset.originalHtml) {
-                button.innerHTML = button.dataset.originalHtml;
-                delete button.dataset.originalHtml;
-            }
-        }
-
         // Manejar validaciones para asegurar que el código no se caiga
         try {
             emailjs.init({
@@ -251,7 +149,7 @@
 
         // 🔒 VERIFICACIÓN DE SESIÓN INMEDIATA
         if (!localStorage.getItem('usuario') || !localStorage.getItem('nombre')) {
-            globalThis.location.href = "registrarme.html";
+            window.location.href = "registrarme.html";
         }
         const SUPABASE_URL = 'https://iowxlwnosyyqetbvvmuk.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlvd3hsd25vc3l5cWV0YnZ2bXVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYxOTk4NDYsImV4cCI6MjA5MTc3NTg0Nn0.VZ5VMu0z4nlsZ0hKvDSk4IUluA1yGx9eQCCXzDc5HmU';
@@ -262,115 +160,10 @@
             "Content-Type": "application/json"
         };
 
-        function escapeHtml(value) {
-            return String(value ?? '').replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#39;');
-        }
-
-        function formatearFechaLocal(fechaISO) {
-            if (!fechaISO) return '---';
-            const partes = String(fechaISO).split('-');
-            if (partes.length !== 3) return escapeHtml(fechaISO);
-            return `${partes[2]}/${partes[1]}/${partes[0]}`;
-        }
-
-        function obtenerFechaHoyISO() {
-            const ahora = new Date();
-            const anio = ahora.getFullYear();
-            const mes = String(ahora.getMonth() + 1).padStart(2, '0');
-            const dia = String(ahora.getDate()).padStart(2, '0');
-            return `${anio}-${mes}-${dia}`;
-        }
-
-        function configurarLimitesFechas() {
-            const fechaInicioEl = document.getElementById('fechaInicio');
-            const fechaFinEl = document.getElementById('fechaFin');
-
-            if (!fechaInicioEl || !fechaFinEl) {
-                return;
-            }
-
-            const hoy = obtenerFechaHoyISO();
-            fechaInicioEl.min = hoy;
-            fechaFinEl.min = fechaInicioEl.value || hoy;
-
-            fechaInicioEl.addEventListener('change', () => {
-                const minimoFin = fechaInicioEl.value || hoy;
-                fechaFinEl.min = minimoFin;
-
-                if (fechaFinEl.value && fechaFinEl.value < minimoFin) {
-                    fechaFinEl.value = minimoFin;
-                }
-            });
-        }
-
-        function actualizarCampoDetalle() {
-            const razonEl = document.getElementById('razonAusencia');
-            const detalleEl = document.getElementById('detalleAusencia');
-            const labelEl = document.getElementById('labelDetalleAusencia');
-
-            if (!razonEl || !detalleEl || !labelEl) {
-                return;
-            }
-
-            const esOtro = razonEl.value === 'Otro';
-            detalleEl.required = esOtro;
-
-            if (esOtro) {
-                labelEl.innerHTML = '<i class="fas fa-clipboard"></i> Especifique cuál es el otro motivo';
-                detalleEl.placeholder = 'Ej: Viaje familiar, trámite personal, etc.';
-            } else {
-                labelEl.innerHTML = '<i class="fas fa-clipboard"></i> Detalle Breve';
-                detalleEl.placeholder = 'Ej: Cita en la Caja';
-            }
-        }
-
-        async function validarSesionActiva() {
-            const usuario = localStorage.getItem('usuario');
-            const nombre = localStorage.getItem('nombre');
-            const rol = localStorage.getItem('rol');
-
-            if (!usuario || !nombre || !rol) {
-                return false;
-            }
-
-            try {
-                const res = await fetch(`${SUPABASE_URL}/rest/v1/usuarios?select=usuario,nombre_completo,rol&usuario=eq.${encodeURIComponent(usuario)}&limit=1`, {
-                    headers
-                });
-
-                if (!res.ok) {
-                    return false;
-                }
-
-                const data = await res.json();
-                if (!Array.isArray(data) || data.length === 0) {
-                    return false;
-                }
-
-                const userDb = data[0];
-                const coincideNombre = String(userDb.nombre_completo || '') === String(nombre);
-                const coincideRol = String(userDb.rol || '') === String(rol);
-
-                return coincideNombre && coincideRol;
-            } catch (error) {
-                console.error('No se pudo validar la sesion:', error);
-                return false;
-            }
-        }
-
-        async function inicializar() {
+        function inicializar() {
             const nombre = localStorage.getItem('nombre');
             const rol = localStorage.getItem('rol');
             const usuario = localStorage.getItem('usuario');
-
-            configurarLimitesFechas();
-
-            const sesionValida = await validarSesionActiva();
-            if (!sesionValida) {
-                localStorage.clear();
-                globalThis.location.href = "registrarme.html";
-                return;
-            }
 
             if (!nombre || !usuario) {
                 globalThis.location.href = "index.html";
@@ -394,131 +187,85 @@
         document.getElementById('formMiAusencia').addEventListener('submit', async function(e) {
             e.preventDefault();
             const btn = document.getElementById('btnGuardar');
-            if (btn.disabled) return;
             const f1 = document.getElementById('fechaInicio').value;
             const f2 = document.getElementById('fechaFin').value;
-            const razon = document.getElementById('razonAusencia').value;
-            const detalle = document.getElementById('detalleAusencia').value.trim();
-
-            if (!f1 || !f2 || !razon) {
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Campos requeridos',
-                    text: 'Complete fecha de inicio, fecha final y motivo de la ausencia.'
-                });
-                return;
-            }
-
-            if (razon === 'Otro' && !detalle) {
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Falta especificar',
-                    text: 'Si selecciona Otro motivo, debe indicar cuál es.'
-                });
-                return;
-            }
-
-            if (detalle.length > 180) {
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Detalle muy extenso',
-                    text: 'El detalle breve no puede superar los 180 caracteres.'
-                });
-                return;
-            }
 
             if (f2 < f1) {
                 Swal.fire({
                     icon: 'warning',
-                    title: 'Rango de fechas inválido',
+                    title: 'Fechas incorrectas',
                     text: 'La fecha final no puede ser anterior a la fecha de inicio.'
                 });
                 return;
             }
 
-            const hoy = obtenerFechaHoyISO();
-            if (f1 < hoy || f2 < hoy) {
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Fecha no permitida',
-                    text: 'No se pueden registrar ausencias con fechas anteriores al día actual.'
-                });
-                return;
-            }
-
-            setButtonLoading(btn, true, 'Registrando...');
+            btn.disabled = true;
             const datos = {
                 usuario: localStorage.getItem('usuario'),
                 nombre: localStorage.getItem('nombre'),
                 fecha: f1,
                 fecha_fin: f2,
-                razon,
-                detalle
+                razon: document.getElementById('razonAusencia').value,
+                detalle: document.getElementById('detalleAusencia').value,
+                actividad: document.getElementById('actividadRemplazo').value
             };
 
             try {
-                const prevRes = await fetch(`${SUPABASE_URL}/rest/v1/ausencias?usuario=eq.${encodeURIComponent(datos.usuario)}&select=id,fecha,fecha_fin,razon`, {
-                    headers
-                });
-                const prevData = await prevRes.json();
-                const inicioNuevo = new Date(datos.fecha).getTime();
-                const finNuevo = new Date(datos.fecha_fin).getTime();
-
-                const hayTraslape = (Array.isArray(prevData) ? prevData : []).some(item => {
-                    const inicioExistente = new Date(item.fecha).getTime();
-                    const finExistente = new Date(item.fecha_fin).getTime();
-                    return inicioNuevo <= finExistente && finNuevo >= inicioExistente;
-                });
-
-                if (hayTraslape) {
-                    Swal.fire({
-                        icon: 'warning',
-                        title: 'Período traslapado',
-                        text: 'Ya existe una ausencia registrada en ese rango de fechas.'
-                    });
-                    return;
-                }
-
                 const res = await fetch(`${SUPABASE_URL}/rest/v1/ausencias`, {
                     method: "POST",
                     headers,
                     body: JSON.stringify(datos)
                 });
 
-                if (!res.ok) {
-                    const error = await res.json().catch(() => ({}));
-                    throw new Error(error.message || 'No se pudo guardar la ausencia.');
-                }
-
-                emailjs.send("service_2wecd52", "template_fbik8ht", {
-                        nombre: datos.nombre,
-                        fecha_inicio: datos.fecha,
-                        fecha_fin: datos.fecha_fin,
-                        motivo: datos.razon,
-                        detalle: datos.detalle
-                    }).then(() => console.log("Correo enviado a greikol4321@gmail.com"))
-                    .catch(err => {
-                        console.error("Fallo EmailJS:", err);
-                        Swal.fire('Aviso', 'La ausencia fue guardada, pero no se pudo enviar el correo automático.', 'warning');
-                    });
-
                 Swal.fire({
-                    icon: 'success',
-                    title: 'Ausencia registrada',
-                    text: 'El período de ausencia se guardó correctamente.'
+                    title: 'Guardando...',
+                    text: 'Registrando la ausencia, espere un momento.',
+                    allowOutsideClick: false,
+                    showConfirmButton: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                        const actions = document.querySelector('.swal2-actions');
+                        if (actions) actions.style.display = 'none';
+                    }
                 });
-                this.reset();
-                cargarHistorial();
+
+                if (res.ok) { // Notificar por correo vÃ­a EmailJS al guardar la ausencia
+                    emailjs.send("service_2wecd52", "template_fbik8ht", {
+                            nombre: datos.nombre,
+                            fecha_inicio: datos.fecha,
+                            fecha_fin: datos.fecha_fin,
+                            motivo: datos.razon,
+                            detalle: datos.detalle,
+                            actividad: datos.actividad
+                        }).then(() => console.log("Correo enviado a direcciÃ³n"))
+                        .catch(err => {
+                            console.error("Fallo EmailJS:", err);
+                            Swal.fire('Atención', 'Datos guardados, pero hubo un error enviando el correo: ' + (err.text || JSON.stringify(err)), 'warning');
+                        });
+                    Swal.fire({
+                        icon: 'success',
+                        title: '¡Guardado!',
+                        text: 'Período de ausencia guardado correctamente.',
+                        timer: 2000,
+                        showConfirmButton: false,
+                        didOpen: () => {
+                            // Asegurar que los botones no se muestren
+                            const actions = document.querySelector('.swal2-actions');
+                            if (actions) actions.style.display = 'none';
+                        }
+                    });
+                    this.reset();
+                    cargarHistorial();
+                }
             } catch (err) {
                 console.error(err);
                 Swal.fire({
                     icon: 'error',
-                    title: 'Sin conexión',
-                    text: err.message || 'No se pudo conectar con el servidor. Intente nuevamente.'
+                    title: 'Error',
+                    text: 'Error de conexión con el servidor.'
                 });
-            } finally {
-                setButtonLoading(btn, false);
             }
+            btn.disabled = false;
         });
 
         // --- CARGAR HISTORIAL ---
@@ -534,27 +281,23 @@
 
                 tbody.innerHTML = "";
                 if (datos.length === 0) {
-                    tbody.innerHTML = "<tr><td colspan='4' data-label='Estado' style='text-align:center; padding: 40px; color: var(--texto-gris);'><i class='fas fa-folder-open fa-2x' style='color: #ccc; margin-bottom:15px;'></i><br>No tiene ausencias registradas en el sistema.</td></tr>";
+                    tbody.innerHTML = "<tr><td colspan='4' style='text-align:center; padding: 40px; color: var(--texto-gris);'><i class='fas fa-folder-open fa-2x' style='color: #ccc; margin-bottom:15px;'></i><br>No tiene ausencias registradas en el sistema.</td></tr>";
                     return;
                 }
 
                 datos.forEach(a => {
-                    const fecha = escapeHtml(formatearFechaLocal(a.fecha));
-                    const fechaFin = escapeHtml(formatearFechaLocal(a.fecha_fin));
-                    const razon = escapeHtml(a.razon || 'Sin motivo');
-                    const detalle = escapeHtml(a.detalle || 'Sin detalle breve');
                     tbody.innerHTML += `
                 <tr>
-                    <td data-label="Desde"><span class="fecha-tabla"><i class="fas fa-calendar-day"></i> ${fecha}</span></td>
-                    <td data-label="Hasta"><span class="fecha-tabla"><i class="fas fa-calendar-check"></i> ${fechaFin}</span></td>
-                    <td data-label="Motivo">
-                        <span class="badge-motivo">${razon}</span>
-                        <div class="detalle-motivo">
-                            <i class="fas fa-pen-to-square"></i> ${detalle}
+                    <td><b><i class="fas fa-calendar-day" style="color: var(--texto-gris); margin-right: 5px;"></i> ${a.fecha}</b></td>
+                    <td><b><i class="fas fa-calendar-check" style="color: var(--texto-gris); margin-right: 5px;"></i> ${a.fecha_fin || '---'}</b></td>
+                    <td>
+                        <span class="badge-motivo">${a.razon}</span>
+                        <div style="font-size: 0.85rem; margin-top: 6px; color: var(--texto-gris);">
+                            <i class="fas fa-comment-dots" style="color: #999; margin-right:4px;"></i> ${a.actividad || 'Sin actividad asignada'}
                         </div>
                     </td>
-                    <td data-label="Acción" style="text-align: center;">
-                        <button class="btn-eliminar" onclick="eliminarAusencia(${a.id}, this)" title="Eliminar este periodo">
+                    <td style="text-align: center;">
+                        <button class="btn-eliminar" onclick="eliminarAusencia(${a.id})" title="Eliminar este periodo">
                             <i class="fas fa-trash-alt"></i> Eliminar
                         </button>
                     </td>
@@ -562,28 +305,35 @@
                 });
             } catch (e) {
                 console.error(e);
-                tbody.innerHTML = "<tr><td colspan='4' data-label='Estado'>Error al cargar el historial.</td></tr>";
+                tbody.innerHTML = "<tr><td colspan='4'>Error al cargar el historial.</td></tr>";
             }
         }
 
-        async function eliminarAusencia(id, boton) {
+        async function eliminarAusencia(id) {
             const confirmacion = await Swal.fire({
                 title: '¿Eliminar ausencia?',
-                text: 'Esta acción no se puede deshacer.',
+                text: "Esta acción no se puede deshacer.",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#e74c3c',
                 cancelButtonColor: '#95a5a6',
                 confirmButtonText: 'Sí, eliminar',
-                cancelButtonText: 'Conservar'
+                cancelButtonText: 'Cancelar'
             });
 
-            if (!confirmacion.isConfirmed) {
-                Swal.close();
-                return;
-            }
+            if (!confirmacion.isConfirmed) return;
 
-            setButtonLoading(boton, true, 'Eliminando...');
+            Swal.fire({
+                title: 'Borrando...',
+                text: 'Por favor espere un momento',
+                allowOutsideClick: false,
+                showConfirmButton: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                    const actions = document.querySelector('.swal2-actions');
+                    if (actions) actions.style.display = 'none';
+                }
+            });
 
             try {
                 const res = await fetch(`${SUPABASE_URL}/rest/v1/ausencias?id=eq.${id}`, {
@@ -591,35 +341,38 @@
                     headers
                 });
                 if (res.ok) {
-                    Swal.fire('Ausencia eliminada', 'El registro se eliminó correctamente.', 'success');
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Eliminado',
+                        text: 'La ausencia fue eliminada con éxito.',
+                        timer: 1500,
+                        showConfirmButton: false,
+                        didOpen: () => {
+                            const actions = document.querySelector('.swal2-actions');
+                            if (actions) actions.style.display = 'none';
+                        }
+                    });
                     cargarHistorial();
                 } else {
-                    Swal.fire('No se pudo eliminar', 'Ocurrió un problema al eliminar la ausencia.', 'error');
+                    Swal.fire('Error', 'No se pudo eliminar: ' + res.statusText, 'error');
                 }
             } catch (e) {
                 console.error(e);
-                Swal.fire('Sin conexión', 'No fue posible eliminar por un problema de red.', 'error');
-            } finally {
-                setButtonLoading(boton, false);
+                Swal.fire('Error', 'Problema de conexión con el servidor.', 'error');
             }
         }
 
         async function cerrarSesion() {
             const confirmacion = await Swal.fire({
-                title: '¿Desea cerrar sesión?',
-                text: 'Su sesión finalizará y volverá a la pantalla de inicio.',
-                icon: 'warning',
+                title: '¿Cerrar Sesión?',
+                text: '¿Seguro que desea salir del panel?',
+                icon: 'question',
                 showCancelButton: true,
-                confirmButtonColor: '#e74c3c',
+                confirmButtonColor: '#3498db',
                 cancelButtonColor: '#95a5a6',
                 confirmButtonText: 'Sí, salir',
                 cancelButtonText: 'Cancelar'
             });
-
-            if (!confirmacion.isConfirmed) {
-                Swal.close();
-                return;
-            }
 
             if (confirmacion.isConfirmed) {
                 localStorage.clear();
@@ -628,9 +381,6 @@
         }
 
         window.onload = inicializar;
-
-        document.getElementById('razonAusencia').addEventListener('change', actualizarCampoDetalle);
-        actualizarCampoDetalle();
 
         // 🔎 FUNCIONALIDAD DE BUSQUEDA EN TABLA
         function filtrarTabla() {
@@ -649,7 +399,7 @@
                     let textDesde = tdDesde.textContent || tdDesde.innerText;
                     let textHasta = tdHasta.textContent || tdHasta.innerText;
 
-                    if (textMotivo.toUpperCase().includes(filter) || textDesde.toUpperCase().includes(filter) || textHasta.toUpperCase().includes(filter)) {
+                    if (textMotivo.toUpperCase().indexOf(filter) > -1 || textDesde.toUpperCase().indexOf(filter) > -1 || textHasta.toUpperCase().indexOf(filter) > -1) {
                         tr[i].style.display = "";
                     } else {
                         tr[i].style.display = "none";
@@ -658,6 +408,27 @@
             }
         }
 
+        // ANIMACION DE OCULTAMIENTO EN CELULAR AL BAJAR
+        let lastScrollY = window.scrollY;
+        window.addEventListener('scroll', () => {
+            if (window.innerWidth <= 600) {
+                const btn = document.querySelector('.btn-cerrar');
+                if (!btn) return;
+
+                if (window.scrollY > lastScrollY && window.scrollY > 60) {
+                    // Scroll hacia abajo: ocultar (animación de plegado)
+                    btn.classList.add('hide-on-scroll');
+                } else {
+                    // Scroll hacia arriba o arriba del top: mostrar
+                    btn.classList.remove('hide-on-scroll');
+                }
+            } else {
+                // Restaurar si volviera mágicamente a desktop
+                const btnX = document.querySelector('.btn-cerrar');
+                if (btnX) btnX.classList.remove('hide-on-scroll');
+            }
+            lastScrollY = window.scrollY;
+        });
     </script>
 </body>
 

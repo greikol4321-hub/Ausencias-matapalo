@@ -1,10 +1,10 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel Admin - CTP Matapalo</title>
+    <title>Gestión de Comunicados - CTP Matapalo</title>
     <link rel="icon" type="image/png" href="img/logo_colegio_nuevo.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -13,21 +13,22 @@
     <link rel="stylesheet" href="css/stylo.css">
 </head>
 
-<body class="page-docentes page-admin">
+<body class="page-docentes">
 
     <header class="header">
         <div class="header-container">
             <div class="header-logos-left">
-                <img src="img/LOGO_MEP-removebg-preview.png" class="logo-mep" alt="MEP Costa Rica" loading="lazy" decoding="async" fetchpriority="low">
+                <img src="img/LOGO_MEP-removebg-preview.png" class="logo-mep" alt="MEP Costa Rica">
                 <div class="divider"></div>
                 <div class="logo-gobierno">
-                    <strong>Colegio Técnico Profesional</strong><br> de Matapalo
+                    <strong>Dirección Regional de Educación Central del Pacífico</strong><br>
+                    <strong>Colegio Técnico Profesional de Matapalo</strong><br>
                 </div>
             </div>
 
             <div class="nav-right">
                 <a href="index.html" title="Inicio">
-                    <img src="img/logo_colegio_nuevo.png" class="logo-escudo" alt="Escudo CTP Matapalo" loading="lazy" decoding="async" fetchpriority="low">
+                    <img src="img/logo_colegio_nuevo.png" class="logo-escudo" alt="Escudo CTP Matapalo">
                 </a>
             </div>
         </div>
@@ -41,17 +42,7 @@
         <button class="btn-cerrar" onclick="cerrarSesion()"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</button>
     </div>
 
-    <main class="container admin-shell">
-        <section class="admin-hero">
-            <div>
-                <p class="hero-kicker">Panel Admin</p>
-                <h1>Centro de Control Institucional</h1>
-                <p class="hero-description">Administre comunicados, usuarios y mantenimiento del sistema en un solo lugar.</p>
-            </div>
-            <button type="button" class="btn-volver" onclick="window.location.href='docentes.html'" title="Volver a tu panel de ausencias">
-                <i class="fas fa-arrow-left"></i> Volver a Mi Panel de Ausencias
-            </button>
-        </section>
+    <div class="container">
 
         <div class="info-usuario">
             <div class="info-item">
@@ -68,583 +59,64 @@
             </div>
         </div>
 
-        <nav class="admin-tabs" aria-label="Pestañas del panel administrativo">
-            <button type="button" class="admin-tab-btn active" data-admin-tab="resumen"><i class="fas fa-chart-line"></i> Resumen</button>
-            <button type="button" class="admin-tab-btn" data-admin-tab="comunicados"><i class="fas fa-bullhorn"></i> Comunicados</button>
-            <button type="button" class="admin-tab-btn" data-admin-tab="usuarios"><i class="fas fa-users-cog"></i> Usuarios</button>
-            <button type="button" class="admin-tab-btn" data-admin-tab="mantenimiento"><i class="fas fa-database"></i> Mantenimiento</button>
-        </nav>
 
-        <section class="admin-pane active" id="tab-resumen" data-admin-pane="resumen">
-            <section class="resumen-grid" aria-label="Resumen rápido del panel">
-                <article class="resumen-card comunicados">
-                    <p>Total de comunicados</p>
-                    <strong id="resumenComunicados">--</strong>
-                </article>
-                <article class="resumen-card usuarios">
-                    <p>Usuarios registrados</p>
-                    <strong id="resumenUsuarios">--</strong>
-                </article>
-                <article class="resumen-card actividad">
-                    <p>Último comunicado</p>
-                    <strong id="resumenUltimoComunicado">Sin datos</strong>
-                </article>
-            </section>
+        <div class="panel-admin" style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 30px; border-top: 5px solid #e67e22;">
+            <h3 style="color: #e67e22; margin-top: 0;"><i class="fas fa-megaphone"></i> Publicar Comunicado Oficial</h3>
+            <form id="formComunicado">
+                <input type="text" id="tituloCom" placeholder="Título del comunicado (Ej: Cambio de horario)" required>
+                <textarea id="contenidoCom" rows="2" placeholder="Escriba el mensaje detallado aquí..." required></textarea>
+                <select id="colorCom">
+                <option value="#27ae60"><i class="fas fa-circle"></i> Informativo (Verde)</option>
+                <option value="#3498db"><i class="fas fa-circle"></i> General (Azul)</option>
+                <option value="#f39c12"><i class="fas fa-circle"></i> Importante (Naranja)</option>
+                <option value="#e74c3c"><i class="fas fa-circle"></i> Urgente (Rojo)</option>
+            </select>
+                <button type="submit" class="btn-admin" id="btnPublicar"><i class="fas fa-paper-plane"></i> Publicar Comunicado ahora</button>
+            </form>
+        </div>
 
-            <section class="quick-actions-grid" aria-label="Accesos rápidos">
-                <article class="panel-admin panel-comunicados">
-                    <h3><i class="fas fa-pencil-alt"></i> Crear Comunicado</h3>
-                    <p class="panel-subtext">Publique avisos urgentes, informativos o generales para todo el personal.</p>
-                    <button type="button" class="btn-admin" onclick="irATab('comunicados', 'crear-comunicado')"><i class="fas fa-paper-plane"></i> Ir a Crear Comunicado</button>
-                </article>
-                <article class="panel-admin panel-activos">
-                    <h3><i class="fas fa-newspaper"></i> Gestionar Comunicados</h3>
-                    <p class="panel-subtext">Edite o elimine comunicados activos rápidamente.</p>
-                    <button type="button" class="btn-admin" onclick="irATab('comunicados', 'gestionar-comunicados')"><i class="fas fa-list-check"></i> Ir a Gestionar Comunicados</button>
-                </article>
-                <article class="panel-admin panel-usuarios">
-                    <h3><i class="fas fa-user-plus"></i> Crear Usuario</h3>
-                    <p class="panel-subtext">Cree cuentas docentes y administrativas con control por rol.</p>
-                    <button type="button" class="btn-admin" onclick="irATab('usuarios', 'crear-usuario')"><i class="fas fa-user-plus"></i> Ir a Crear Usuario</button>
-                </article>
-                <article class="panel-admin panel-mantenimiento">
-                    <h3><i class="fas fa-user-gear"></i> Gestionar Usuarios</h3>
-                    <p class="panel-subtext">Busque, edite y depure accesos existentes.</p>
-                    <button type="button" class="btn-admin" onclick="irATab('usuarios', 'gestionar-usuarios')"><i class="fas fa-users"></i> Ir a Gestionar Usuarios</button>
-                </article>
-            </section>
-        </section>
 
-        <section class="admin-pane" id="tab-comunicados" data-admin-pane="comunicados">
-            <nav class="admin-subtabs" aria-label="Pestañas de comunicados">
-                <button type="button" class="admin-subtab-btn active" data-admin-subtab="comunicados" data-subpane="crear-comunicado"><i class="fas fa-pen"></i> Crear Comunicado</button>
-                <button type="button" class="admin-subtab-btn" data-admin-subtab="comunicados" data-subpane="gestionar-comunicados"><i class="fas fa-list"></i> Gestionar y Editar</button>
-            </nav>
 
-            <section class="admin-subpane active" data-subpane-group="comunicados" data-subpane="crear-comunicado">
-                <article class="panel-admin panel-comunicados" id="moduloComunicados">
-                    <div class="comunicado-panel-head">
-                        <div>
-                            <p class="section-kicker">Nuevo comunicado</p>
-                            <h3><i class="fas fa-megaphone"></i> Publicar Comunicado Oficial</h3>
-                            <p class="panel-subtext">Escriba el mensaje, elija el nivel de prioridad y revise cómo se verá antes de publicarlo.</p>
-                        </div>
-                        <div class="comunicado-panel-badge">
-                            <i class="fas fa-pen-nib"></i>
-                            <span>Edición rápida</span>
-                        </div>
-                    </div>
-                    <form id="formComunicado" class="form-panel">
-                        <div class="comunicado-editor-grid">
-                            <div class="comunicado-box comunicado-box-form">
-                                <div class="comunicado-campos">
-                                    <input type="hidden" id="comunicadoIdEdicion">
-                                    <div class="comunicado-field-box">
-                                        <label class="field-label" for="tituloCom">Título del comunicado</label>
-                                        <input type="text" id="tituloCom" placeholder="Ej: Cambio de horario" required>
-                                    </div>
 
-                                    <div class="comunicado-field-box comunicado-field-box-texto">
-                                        <label class="field-label" for="contenidoCom">Contenido</label>
-                                        <textarea id="contenidoCom" rows="7" maxlength="500" placeholder="Escriba el mensaje detallado aquí..." required></textarea>
-                                        <div class="comunicado-content-footer">
-                                            <span class="field-help"></span>
-                                            <span id="conteoContenidoCom" class="conteo-contenido">0/500</span>
-                                        </div>
-                                    </div>
+        <h3><i class="fas fa-newspaper"></i> Comunicados Activos</h3>
+        <div style="margin-bottom: 15px; position: relative;">
+            <i class="fas fa-search" style="position: absolute; left: 15px; top: 12px; color: var(--texto-gris);"></i>
+            <input type="text" id="busquedaComunicados" onkeyup="filtrarTabla()" placeholder="Buscar por motivo, actividad o fecha..." style="width: 100%; padding: 12px 15px 12px 40px; border-radius: 8px; border: 1px solid rgba(0,0,0,0.1); font-size: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+        </div>
 
-                                    <div class="comunicado-field-box comunicado-field-box-meta">
-                                        <div class="comunicado-meta-row">
-                                            <div class="meta-select-wrap">
-                                                <label class="field-label" for="colorCom">Prioridad</label>
-                                                <select id="colorCom">
-                                                    <option value="#27ae60">Informativo (Verde)</option>
-                                                    <option value="#3498db">General (Azul)</option>
-                                                    <option value="#f39c12">Importante (Naranja)</option>
-                                                    <option value="#e74c3c">Urgente (Rojo)</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+        <div class="overflow-auto">
+            <div class="tabla-container">
+                <table id="tablaComunicados">
+                    <thead>
+                        <tr>
+                            <th><i class="fas fa-calendar"></i> Fecha</th>
+                            <th><i class="fas fa-heading"></i> Título y Contenido</th>
+                            <th><i class="fas fa-user"></i> Autor</th>
+                            <th><i class="fas fa-cog"></i> Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cuerpoTabla">
+                        <tr>
+                            <td colspan="4" style="text-align:center; padding: 40px; color: var(--texto-gris);">
+                                <i class="fas fa-spinner fa-spin fa-2x" style="color: var(--verde-claro); margin-bottom: 10px;"></i><br> Cargando sus registros...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-                            <aside class="comunicado-box comunicado-box-preview comunicado-preview" id="previewComunicado">
-                                <p class="preview-label"><i class="fas fa-eye"></i> Vista previa</p>
-                                <div class="preview-card-body">
-                                    <h4 id="previewTituloCom">Sin título</h4>
-                                    <p id="previewContenidoCom">Escriba el contenido para visualizar cómo se publicará.</p>
-                                </div>
-                                <div class="preview-footer">
-                                    <span id="previewTipoCom" class="preview-tipo">Informativo</span>
-                                    <span class="preview-note">Se mostrará en portada al publicarse.</span>
-                                </div>
-                            </aside>
-                        </div>
-                        <div class="comunicado-actions">
-                            <button type="submit" class="btn-admin" id="btnPublicar"><i class="fas fa-paper-plane"></i> Publicar Comunicado</button>
-                            <button type="button" class="btn-volver btn-secundario" id="btnCancelarComEdit" style="display:none;"><i class="fas fa-times"></i> Cancelar Edición</button>
-                        </div>
-                    </form>
-                </article>
-            </section>
+        <div style="margin-top: 30px; text-align: center;">
+            <button type="button" class="btn-volver" onclick="window.location.href='docentes.html'" title="Volver a tu panel de ausencias">
+            <i class="fas fa-arrow-left"></i> Volver a Mi Panel de Ausencias
+        </button>
+        </div>
 
-            <section class="admin-subpane" data-subpane-group="comunicados" data-subpane="gestionar-comunicados">
-                <article class="panel-admin panel-activos" id="moduloActivos">
-                    <h3><i class="fas fa-newspaper"></i> Comunicados Activos</h3>
-                    <div class="busqueda-wrap">
-                        <i class="fas fa-search"></i>
-                        <input type="text" id="busquedaComunicados" onkeyup="filtrarTabla()" placeholder="Buscar por contenido o fecha...">
-                    </div>
-
-                    <div class="overflow-auto">
-                        <div class="tabla-container">
-                            <table id="tablaComunicados">
-                                <thead>
-                                    <tr>
-                                        <th><i class="fas fa-calendar"></i> Fecha</th>
-                                        <th><i class="fas fa-heading"></i> Título y Contenido</th>
-                                        <th><i class="fas fa-user"></i> Autor</th>
-                                        <th><i class="fas fa-cog"></i> Acción</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="cuerpoTabla">
-                                    <tr>
-                                        <td colspan="4" data-label="Estado" style="text-align:center; padding: 40px; color: var(--texto-gris);">
-                                            <i class="fas fa-spinner fa-spin fa-2x" style="color: var(--verde-claro); margin-bottom: 10px;"></i><br> Cargando sus registros...
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </article>
-            </section>
-        </section>
-
-        <section class="admin-pane" id="tab-usuarios" data-admin-pane="usuarios">
-            <nav class="admin-subtabs" aria-label="Pestañas de usuarios">
-                <button type="button" class="admin-subtab-btn active" data-admin-subtab="usuarios" data-subpane="crear-usuario"><i class="fas fa-user-plus"></i> Crear Usuario</button>
-                <button type="button" class="admin-subtab-btn" data-admin-subtab="usuarios" data-subpane="gestionar-usuarios"><i class="fas fa-users"></i> Gestionar y Editar</button>
-            </nav>
-
-            <section class="admin-subpane active" data-subpane-group="usuarios" data-subpane="crear-usuario">
-                <article class="panel-admin panel-usuarios" id="moduloUsuarios">
-                    <h3><i class="fas fa-users-cog"></i> Crear Usuario</h3>
-                    <p class="panel-subtext">Cree, edite y controle accesos internos. El auto-registro está desactivado.</p>
-                    <form id="formUsuario" class="form-usuarios-grid form-panel">
-                        <input type="hidden" id="usuarioIdEdicion">
-                        <input type="text" id="nombreCompletoUser" placeholder="Nombre completo" required>
-                        <input type="text" id="usuarioUser" placeholder="Usuario (ej: jlopez)" required>
-                        <select id="rolUser" required>
-                            <option value="">Seleccione rol...</option>
-                            <option value="docente">Docente</option>
-                            <option value="admin">Administrador</option>
-                        </select>
-                        <input type="password" id="contrasenaUser" placeholder="Contraseña (min 8 caracteres)">
-                        <button type="submit" class="btn-admin" id="btnGuardarUsuario"><i class="fas fa-user-plus"></i> Guardar Usuario</button>
-                        <button type="button" class="btn-volver btn-secundario" id="btnCancelarEdicion" style="display:none;"><i class="fas fa-times"></i> Cancelar Edición</button>
-                    </form>
-                </article>
-            </section>
-
-            <section class="admin-subpane" data-subpane-group="usuarios" data-subpane="gestionar-usuarios">
-                <article class="panel-admin panel-usuarios">
-                    <h3><i class="fas fa-users-cog"></i> Usuarios Registrados</h3>
-                    <div class="overflow-auto tabla-interna">
-                        <div class="tabla-container">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Usuario</th>
-                                        <th>Nombre</th>
-                                        <th>Rol</th>
-                                        <th>Acciones</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="cuerpoTablaUsuarios">
-                                    <tr>
-                                        <td colspan="4" data-label="Estado" style="text-align:center; color:#666; padding:18px;">Cargando usuarios...</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </article>
-            </section>
-        </section>
-
-        <section class="admin-pane" id="tab-mantenimiento" data-admin-pane="mantenimiento">
-            <article class="panel-admin panel-mantenimiento" id="moduloMantenimiento">
-                <h3><i class="fas fa-database"></i> Datos y Mantenimiento</h3>
-                <p class="panel-subtext">Genere respaldos y valide consistencia de datos del sistema.</p>
-                <div class="mantenimiento-actions">
-                    <button type="button" class="btn-admin" id="btnRespaldo"><i class="fas fa-download"></i> Generar Respaldo</button>
-                    <button type="button" class="btn-admin btn-auditoria" id="btnAuditoria"><i class="fas fa-search"></i> Ejecutar Auditoría</button>
-                </div>
-                <p id="estadoRespaldo" class="estado-respaldo">Sin respaldo generado en esta sesión.</p>
-                <div id="resultadoAuditoria" class="resultado-auditoria" style="display:none;"></div>
-            </article>
-        </section>
-    </main>
+    </div>
 
     <style>
-        .page-admin {
-            background:
-                radial-gradient(circle at top right, rgba(26, 107, 58, 0.12), transparent 42%),
-                radial-gradient(circle at bottom left, rgba(10, 76, 35, 0.08), transparent 40%),
-                #ebe5d9;
-        }
-
-        .page-admin .admin-shell {
-            margin-top: 28px;
-            margin-bottom: 40px;
-        }
-
-        .page-admin .admin-hero {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 20px;
-            background: linear-gradient(125deg, #0a4c23 0%, #1a6b3a 72%, #2f8a50 120%);
-            color: #fff;
-            border-radius: 16px;
-            padding: 26px;
-            margin-bottom: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            box-shadow: 0 12px 24px rgba(10, 76, 35, 0.16);
-        }
-
-        .page-admin .hero-kicker {
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-size: 0.75rem;
-            opacity: 0.9;
-            margin-bottom: 8px;
-        }
-
-        .page-admin .admin-hero h1 {
-            color: #fff;
-            margin: 0;
-            font-size: clamp(1.4rem, 2.6vw, 2rem);
-            line-height: 1.15;
-        }
-
-        .page-admin .hero-description {
-            margin-top: 8px;
-            color: rgba(255, 255, 255, 0.93);
-            max-width: 650px;
-        }
-
-        .page-admin .resumen-grid {
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 14px;
-            margin-bottom: 18px;
-        }
-
-        .page-admin .resumen-card {
-            background: #fff;
-            border: 1px solid #e7ded0;
-            border-radius: 12px;
-            padding: 16px;
-            box-shadow: 0 4px 12px rgba(10, 76, 35, 0.08);
-            border-top: 4px solid #0a4c23;
-        }
-
-        .page-admin .resumen-card p {
-            margin: 0;
-            color: #5a5a5a;
-            font-size: 0.9rem;
-        }
-
-        .page-admin .resumen-card strong {
-            display: block;
-            margin-top: 6px;
-            font-size: 1.4rem;
-            color: #0a4c23;
-            line-height: 1.2;
-        }
-
-        .page-admin .resumen-card.usuarios {
-            border-top-color: #3498db;
-        }
-
-        .page-admin .resumen-card.actividad {
-            border-top-color: #d4a256;
-        }
-
-        .page-admin .admin-tabs {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .page-admin .admin-tab-btn {
-            border: 1px solid #d4ccc0;
-            background: #fff;
-            border-radius: 999px;
-            padding: 9px 16px;
-            font-weight: 700;
-            color: #0a4c23;
-            transition: 0.2s ease;
-            cursor: pointer;
-        }
-
-        .page-admin .admin-tab-btn:hover,
-        .page-admin .admin-tab-btn.active {
-            background: #0a4c23;
-            color: #fff;
-            box-shadow: 0 6px 14px rgba(10, 76, 35, 0.2);
-        }
-
-        .page-admin .admin-pane {
-            display: none;
-            animation: fadeInPane 0.25s ease;
-        }
-
-        .page-admin .admin-pane.active {
-            display: block;
-        }
-
-        .page-admin .admin-subtabs {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 14px;
-        }
-
-        .page-admin .admin-subtab-btn {
-            border: 1px solid #d7cfbf;
-            background: #f5f1e8;
-            color: #0a4c23;
-            border-radius: 10px;
-            padding: 8px 14px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: 0.2s ease;
-        }
-
-        .page-admin .admin-subtab-btn:hover,
-        .page-admin .admin-subtab-btn.active {
-            background: #1a6b3a;
-            border-color: #1a6b3a;
-            color: #fff;
-        }
-
-        .page-admin .admin-subpane {
-            display: none;
-        }
-
-        .page-admin .admin-subpane.active {
-            display: block;
-        }
-
-        .page-admin .quick-actions-grid {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 14px;
-            margin-bottom: 20px;
-        }
-
-        @keyframes fadeInPane {
-            from {
-                opacity: 0;
-                transform: translateY(4px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .page-admin .panel-admin {
-            background: #fff;
-            border: 1px solid #e5dccf;
-            border-radius: 14px;
-            padding: 20px;
-            box-shadow: 0 6px 14px rgba(10, 76, 35, 0.09);
-            border-top: 5px solid #1a6b3a;
-        }
-
-        .page-admin .panel-comunicados {
-            border-top-color: #e67e22;
-        }
-
-        .page-admin .panel-usuarios {
-            border-top-color: #3498db;
-        }
-
-        .page-admin .panel-mantenimiento {
-            border-top-color: #16a085;
-        }
-
-        .page-admin .panel-activos {
-            border-top-color: #0a4c23;
-        }
-
-        .page-admin .panel-admin h3 {
-            margin-top: 0;
-            margin-bottom: 14px;
-            padding-left: 0;
-            border-left: 0;
-        }
-
-        .page-admin .panel-subtext {
-            margin: 0 0 14px;
-            color: #5a5a5a;
-            font-size: 0.94rem;
-        }
-
-        .page-admin .form-panel {
-            background: transparent;
-            border: none;
-            box-shadow: none;
-            padding: 0;
-            gap: 12px;
-            animation: none;
-        }
-
-        .page-admin .comunicado-editor-grid {
-            display: grid;
-            grid-template-columns: minmax(0, 1.45fr) minmax(240px, 0.85fr);
-            gap: 14px;
-            align-items: start;
-        }
-
-        .page-admin .comunicado-campos {
-            display: grid;
-            gap: 10px;
-        }
-
-        .page-admin #contenidoCom {
-            min-height: 260px;
-            resize: vertical;
-        }
-
-        .page-admin .comunicado-meta-row {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
-
-        .page-admin .comunicado-meta-row select {
-            flex: 1;
-        }
-
-        .page-admin .conteo-contenido {
-            background: #f4efe4;
-            color: #5f5f5f;
-            border: 1px solid #e2d8c7;
-            border-radius: 999px;
-            padding: 6px 10px;
-            font-size: 0.82rem;
-            font-weight: 700;
-            min-width: 72px;
-            text-align: center;
-        }
-
-        .page-admin .comunicado-preview {
-            border: 1px solid #e2d8c7;
-            border-radius: 12px;
-            padding: 16px;
-            background: #fdfbf7;
-            border-left: 5px solid #27ae60;
-            min-height: 210px;
-            position: sticky;
-            top: 90px;
-        }
-
-        .page-admin .preview-label {
-            margin: 0 0 8px;
-            color: #6d6d6d;
-            font-size: 0.82rem;
-            text-transform: uppercase;
-            letter-spacing: 0.4px;
-            font-weight: 700;
-        }
-
-        .page-admin .comunicado-preview h4 {
-            margin: 0;
-            color: #0a4c23;
-            font-size: 1.05rem;
-            line-height: 1.3;
-        }
-
-        .page-admin .comunicado-preview p {
-            margin: 9px 0 12px;
-            color: #4f4f4f;
-            font-size: 0.93rem;
-            line-height: 1.5;
-            white-space: pre-wrap;
-        }
-
-        .page-admin .preview-tipo {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: rgba(39, 174, 96, 0.12);
-            color: #06361b;
-            border: 1px solid rgba(39, 174, 96, 0.3);
-            border-radius: 999px;
-            padding: 4px 10px;
-            font-size: 0.79rem;
-            font-weight: 700;
-        }
-
-        .page-admin .btn-admin {
-            justify-content: center;
-        }
-
-        .page-admin .btn-auditoria {
-            background: #0f6f60;
-            color: #fff;
-        }
-
-        .page-admin .btn-auditoria:hover {
-            background: #117864;
-        }
-
-        .page-admin .mantenimiento-actions {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
-
-        .page-admin .estado-respaldo {
-            margin-top: 10px;
-            color: #555;
-            font-size: 0.92rem;
-        }
-
-        .page-admin .tabla-interna {
-            margin-top: 12px;
-        }
-
-        .page-admin .busqueda-wrap {
-            margin-bottom: 14px;
-            position: relative;
-        }
-
-        .page-admin .busqueda-wrap i {
-            position: absolute;
-            left: 14px;
-            top: 13px;
-            color: #5a5a5a;
-        }
-
-        .page-admin .busqueda-wrap input {
-            width: 100%;
-            padding: 12px 14px 12px 40px;
-            border-radius: 8px;
-            border: 1px solid #d4ccc0;
-            font-size: 1rem;
-            box-shadow: 0 2px 6px rgba(10, 76, 35, 0.06);
-        }
-
         .btn-editar-com {
-            background: #1f6fb2;
+            background: #3498db;
             color: white;
             padding: 8px 14px;
             border-radius: 5px;
@@ -657,15 +129,15 @@
             align-items: center;
             gap: 6px;
         }
-
+        
         .btn-editar-com:hover {
-            background: #185a91;
+            background: #2980b9;
             transform: translateY(-2px);
             box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
         }
-
+        
         .btn-eliminar-com {
-            background: #c0392b;
+            background: #e74c3c;
             color: white;
             padding: 8px 14px;
             border-radius: 5px;
@@ -678,299 +150,37 @@
             align-items: center;
             gap: 6px;
         }
-
+        
         .btn-eliminar-com:hover {
-            background: #a93226;
+            background: #c0392b;
             transform: translateY(-2px);
             box-shadow: 0 4px 8px rgba(231, 76, 60, 0.3);
         }
-
+        
         .btn-volver {
             background: #5a5a5a;
             color: white;
-            padding: 12px 20px;
+            padding: 12px 30px;
             border-radius: 6px;
             border: none;
             cursor: pointer;
             font-weight: bold;
-            font-size: 0.95rem;
+            font-size: 1rem;
             transition: all 0.3s ease;
             display: inline-flex;
             align-items: center;
             gap: 8px;
         }
-
+        
         .btn-volver:hover {
             background: #454545;
             transform: translateY(-2px);
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
         }
-
-        .page-admin #cuerpoTabla td:last-child,
-        .page-admin #cuerpoTablaUsuarios td:last-child {
-            min-width: 170px;
-        }
-
-        .btn-secundario {
-            background: #7f8c8d;
-        }
-
-        .form-usuarios-grid {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(220px, 1fr));
-            gap: 10px;
-            align-items: center;
-        }
-
-        .form-usuarios-grid input,
-        .form-usuarios-grid select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #d9d9d9;
-            border-radius: 8px;
-            font-size: 0.95rem;
-        }
-
-        .resultado-auditoria {
-            margin-top: 16px;
-            border: 1px solid #e0e0e0;
-            border-radius: 10px;
-            padding: 14px;
-            background: #fafafa;
-        }
-
-        .resultado-auditoria ul {
-            margin: 10px 0 0 18px;
-            padding: 0;
-        }
-
-        .resultado-auditoria li {
-            margin-bottom: 6px;
-        }
-
-        @media (max-width: 1400px) {
-            .page-admin .comunicado-editor-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .page-admin .comunicado-preview {
-                position: static;
-                min-height: 0;
-            }
-        }
-
-        @media (max-width: 1024px) {
-            .page-admin .comunicado-editor-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .page-admin .comunicado-preview {
-                position: static;
-                min-height: 0;
-            }
-        }
-
-        @media (max-width: 720px) {
-            .page-admin .admin-hero {
-                flex-direction: column;
-                align-items: stretch;
-                padding: 20px;
-            }
-
-            .page-admin .resumen-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .page-admin .admin-tabs,
-            .page-admin .admin-subtabs {
-                flex-wrap: nowrap;
-                overflow-x: auto;
-                -webkit-overflow-scrolling: touch;
-                scrollbar-width: thin;
-                padding-bottom: 2px;
-            }
-
-            .page-admin .admin-tab-btn,
-            .page-admin .admin-subtab-btn {
-                flex: 0 0 auto;
-                white-space: nowrap;
-            }
-
-            .page-admin .quick-actions-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .page-admin .mantenimiento-actions {
-                grid-template-columns: 1fr;
-            }
-
-            .form-usuarios-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .page-admin .btn-volver,
-            .page-admin .btn-admin {
-                width: 100%;
-                justify-content: center;
-            }
-
-            .btn-editar-com,
-            .btn-eliminar-com {
-                font-size: 0.82rem;
-                padding: 7px 10px;
-            }
-
-            .page-admin .panel-admin {
-                padding: 16px;
-            }
-
-            .page-admin .tabla-container,
-            .page-admin .overflow-auto,
-            .page-admin .tabla-scroll {
-                width: 100%;
-                overflow-x: auto;
-                -webkit-overflow-scrolling: touch;
-                display: block;
-            }
-
-            .page-admin .tabla-container table,
-            .page-admin .overflow-auto table,
-            .page-admin .tabla-scroll table {
-                white-space: nowrap;
-                min-width: max-content;
-            }
-        }
     </style>
-    <script src="https://cdn.jsdelivr.net/npm/notiflix@3/dist/notiflix-aio-3.2.8.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script>
-        Notiflix.Notify.init({
-            position: 'right-top',
-            timeout: 3600,
-            clickToClose: true,
-            fontSize: '15px',
-            borderRadius: '16px',
-            distance: '14px',
-            showOnlyTheLastOne: true
-        });
-
-        Notiflix.Confirm.init({
-            titleColor: '#0a4c23',
-            okButtonBackground: '#0a4c23',
-            cancelButtonBackground: '#95a5a6',
-            borderRadius: '14px'
-        });
-
-        const Swal = {
-            async fire(arg1, arg2, arg3) {
-                if (typeof arg1 === 'string') {
-                    this.close();
-                    this.notifyByIcon(arg3 || 'info', arg1, arg2 || '');
-                    return {
-                        isConfirmed: true
-                    };
-                }
-
-                const opts = arg1 || {};
-
-                if (opts.showCancelButton) {
-                    this.close();
-                    const confirmado = await new Promise(resolve => {
-                        Notiflix.Confirm.show(
-                            opts.title || 'Confirmación',
-                            opts.text || '',
-                            opts.confirmButtonText || 'Aceptar',
-                            opts.cancelButtonText || 'Cancelar',
-                            () => resolve(true),
-                            () => resolve(false)
-                        );
-                    });
-
-                    return {
-                        isConfirmed: confirmado
-                    };
-                }
-
-                if (opts.showConfirmButton === false && !opts.icon) {
-                    this.close();
-                    Notiflix.Loading.standard(opts.text || opts.title || 'Procesando...');
-                    return {
-                        isConfirmed: true
-                    };
-                }
-
-                if (opts.icon || opts.title || opts.text) {
-                    this.close();
-                    this.notifyByIcon(opts.icon || 'info', opts.title || 'Aviso', opts.text || '');
-                }
-
-                return {
-                    isConfirmed: true
-                };
-            },
-            close() {
-                Notiflix.Loading.remove();
-            },
-            showLoading() {
-                Notiflix.Loading.standard('Procesando...');
-            },
-            showValidationMessage(message) {
-                Notiflix.Notify.warning(message);
-            },
-            notifyByIcon(icon, title, text) {
-                const message = [title, text].filter(Boolean).join(': ');
-                if (icon === 'success') {
-                    Notiflix.Notify.success(message || 'Operación exitosa');
-                } else if (icon === 'error') {
-                    Notiflix.Notify.failure(message || 'Ocurrió un error');
-                } else if (icon === 'warning') {
-                    Notiflix.Notify.warning(message || 'Atención');
-                } else {
-                    Notiflix.Notify.info(message || 'Información');
-                }
-            }
-        };
-
-        let usuariosYaCargados = false;
-
-        function setButtonLoading(button, isLoading, loadingText) {
-            if (!button) return;
-            if (isLoading) {
-                if (!button.dataset.originalHtml) {
-                    button.dataset.originalHtml = button.innerHTML;
-                }
-                button.disabled = true;
-                button.setAttribute('aria-busy', 'true');
-                button.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${loadingText || 'Procesando...'}`;
-                return;
-            }
-
-            button.disabled = false;
-            button.removeAttribute('aria-busy');
-            if (button.dataset.originalHtml) {
-                button.innerHTML = button.dataset.originalHtml;
-                delete button.dataset.originalHtml;
-            }
-        }
-
-        function cargarTareasDiferidas() {
-            const ejecutar = () => {
-                if (!usuariosYaCargados) {
-                    usuariosYaCargados = true;
-                    cargarUsuariosAdmin();
-                }
-                inicializarRespaldoAutomatico();
-            };
-
-            if (typeof requestIdleCallback === 'function') {
-                requestIdleCallback(ejecutar, {
-                    timeout: 1200
-                });
-            } else {
-                setTimeout(ejecutar, 600);
-            }
-        }
-
         // Manejar validaciones para asegurar que el código no se caiga
         try {
             emailjs.init({
@@ -982,7 +192,7 @@
 
         // 🔒 VERIFICACIÓN DE SESIÓN INMEDIATA
         if (!localStorage.getItem('usuario') || !localStorage.getItem('nombre')) {
-            globalThis.location.href = "registrarme.html";
+            window.location.href = "registrarme.html";
         }
 
         const SUPABASE_URL = 'https://iowxlwnosyyqetbvvmuk.supabase.co';
@@ -993,165 +203,11 @@
             "Content-Type": "application/json"
         };
 
-        function escapeHtml(value) {
-            return String(value ?? '').replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#39;');
-        }
 
-        async function validarSesionActivaAdmin() {
-            const usuario = localStorage.getItem('usuario');
-            const nombre = localStorage.getItem('nombre');
-            const rol = localStorage.getItem('rol');
-
-            if (!usuario || !nombre || !rol) {
-                return false;
-            }
-
-            try {
-                const res = await fetch(`${SUPABASE_URL}/rest/v1/usuarios?select=usuario,nombre_completo,rol&usuario=eq.${encodeURIComponent(usuario)}&limit=1`, {
-                    headers
-                });
-
-                if (!res.ok) {
-                    return false;
-                }
-
-                const data = await res.json();
-                if (!Array.isArray(data) || data.length === 0) {
-                    return false;
-                }
-
-                const userDb = data[0];
-                const coincideNombre = String(userDb.nombre_completo || '') === String(nombre);
-                const coincideRol = String(userDb.rol || '') === String(rol);
-                const esAdmin = String(userDb.rol || '') === 'admin';
-
-                return coincideNombre && coincideRol && esAdmin;
-            } catch (error) {
-                console.error('No se pudo validar la sesion de admin:', error);
-                return false;
-            }
-        }
-
-        function actualizarResumen({
-            totalComunicados,
-            totalUsuarios,
-            ultimoComunicado
-        } = {}) {
-            const elCom = document.getElementById('resumenComunicados');
-            const elUsers = document.getElementById('resumenUsuarios');
-            const elUltimo = document.getElementById('resumenUltimoComunicado');
-
-            if (elCom && typeof totalComunicados === 'number') {
-                elCom.textContent = totalComunicados;
-            }
-            if (elUsers && typeof totalUsuarios === 'number') {
-                elUsers.textContent = totalUsuarios;
-            }
-            if (elUltimo && typeof ultimoComunicado === 'string') {
-                elUltimo.textContent = ultimoComunicado;
-            }
-        }
-
-        function actualizarPreviewComunicado() {
-            const titulo = document.getElementById('tituloCom').value.trim();
-            const contenido = document.getElementById('contenidoCom').value.trim();
-            const selectorColor = document.getElementById('colorCom');
-            const color = selectorColor.value;
-            const tipoTexto = (selectorColor.options[selectorColor.selectedIndex]?.text || 'Informativo').split('(')[0].trim();
-
-            const previewTitulo = document.getElementById('previewTituloCom');
-            const previewContenido = document.getElementById('previewContenidoCom');
-            const previewTipo = document.getElementById('previewTipoCom');
-            const previewCard = document.getElementById('previewComunicado');
-            const conteo = document.getElementById('conteoContenidoCom');
-
-            previewTitulo.textContent = titulo || 'Sin título';
-            previewContenido.textContent = contenido || 'Escriba el contenido para visualizar cómo se publicará.';
-            previewTipo.textContent = tipoTexto || 'Informativo';
-            previewCard.style.borderLeftColor = color;
-            previewTipo.style.color = color;
-            previewTipo.style.borderColor = color + '66';
-            previewTipo.style.backgroundColor = color + '1f';
-
-            const cantidad = document.getElementById('contenidoCom').value.length;
-            conteo.textContent = `${cantidad}/500`;
-            conteo.style.color = cantidad > 460 ? '#b0342b' : '#5f5f5f';
-            conteo.style.borderColor = cantidad > 460 ? '#d9a19d' : '#e2d8c7';
-        }
-
-        function abrirTabAdmin(tabId) {
-            const botones = document.querySelectorAll('[data-admin-tab]');
-            const paneles = document.querySelectorAll('[data-admin-pane]');
-
-            botones.forEach(btn => {
-                btn.classList.toggle('active', btn.dataset.adminTab === tabId);
-            });
-
-            paneles.forEach(panel => {
-                panel.classList.toggle('active', panel.dataset.adminPane === tabId);
-            });
-        }
-
-        function abrirSubTabAdmin(grupo, subtabId) {
-            const botones = document.querySelectorAll(`[data-admin-subtab="${grupo}"]`);
-            const paneles = document.querySelectorAll(`[data-subpane-group="${grupo}"]`);
-
-            botones.forEach(btn => {
-                btn.classList.toggle('active', btn.dataset.subpane === subtabId);
-            });
-
-            paneles.forEach(panel => {
-                panel.classList.toggle('active', panel.dataset.subpane === subtabId);
-            });
-        }
-
-        function setupTabsAdmin() {
-            const botonesTab = document.querySelectorAll('[data-admin-tab]');
-            const botonesSubTab = document.querySelectorAll('[data-admin-subtab]');
-
-            botonesTab.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    abrirTabAdmin(btn.dataset.adminTab);
-                    if (btn.dataset.adminTab === 'usuarios' && !usuariosYaCargados) {
-                        usuariosYaCargados = true;
-                        cargarUsuariosAdmin();
-                    }
-                });
-            });
-
-            botonesSubTab.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    abrirSubTabAdmin(btn.dataset.adminSubtab, btn.dataset.subpane);
-                });
-            });
-        }
-
-        function irATab(tabId, subtabId = '') {
-            abrirTabAdmin(tabId);
-
-            if (subtabId && tabId === 'comunicados') {
-                abrirSubTabAdmin('comunicados', subtabId);
-            }
-
-            if (subtabId && tabId === 'usuarios') {
-                abrirSubTabAdmin('usuarios', subtabId);
-            }
-        }
-
-        globalThis.irATab = irATab;
-
-
-        async function inicializar() {
+        function inicializar() {
             const nombre = localStorage.getItem('nombre');
             const rol = localStorage.getItem('rol');
             const usuario = localStorage.getItem('usuario');
-
-            const sesionValida = await validarSesionActivaAdmin();
-            if (!sesionValida) {
-                localStorage.clear();
-                globalThis.location.href = "registrarme.html";
-                return;
-            }
 
             console.log('🔍 Datos en localStorage:', {
                 nombre,
@@ -1180,12 +236,8 @@
             document.getElementById('rolBadge').textContent = rol;
 
             document.getElementById('rolBadge').style.background = '#e67e22';
-            setupTabsAdmin();
             setupComunicadoListener();
-            setupUsuariosListener();
-            setupMantenimientoListener();
             cargarComunicadosAdmin();
-            cargarTareasDiferidas();
         }
 
 
@@ -1202,45 +254,29 @@
 
                 tbody.innerHTML = "";
                 if (datos.length === 0) {
-                    actualizarResumen({
-                        totalComunicados: 0,
-                        ultimoComunicado: 'Sin registros'
-                    });
-                    tbody.innerHTML = "<tr><td colspan='4' data-label='Estado' style='text-align:center; padding: 40px; color: var(--texto-gris);'><i class='fas fa-folder-open fa-2x' style='color: #ccc; margin-bottom:15px;'></i><br>No hay comunicados registrados.</td></tr>";
+                    tbody.innerHTML = "<tr><td colspan='4' style='text-align:center; padding: 40px; color: var(--texto-gris);'><i class='fas fa-folder-open fa-2x' style='color: #ccc; margin-bottom:15px;'></i><br>No hay comunicados registrados.</td></tr>";
                     return;
                 }
-
-                const fechaUltimo = new Date(datos[0].creado_en);
-                actualizarResumen({
-                    totalComunicados: datos.length,
-                    ultimoComunicado: fechaUltimo.toLocaleDateString('es-CR')
-                });
 
                 datos.forEach(c => {
                     const date = new Date(c.creado_en);
                     const formattedDate = date.toLocaleDateString('es-CR');
-                    const tituloSeguro = escapeHtml(c.titulo || 'Sin titulo');
-                    const contenidoSeguro = escapeHtml(c.contenido || 'Sin contenido');
-                    const autorSeguro = escapeHtml(c.autor || '---');
-                    const tituloRaw = encodeURIComponent(String(c.titulo || ''));
-                    const contenidoRaw = encodeURIComponent(String(c.contenido || ''));
-                    const colorRaw = encodeURIComponent(String(c.color_borde || '#27ae60'));
 
                     tbody.innerHTML += `
                 <tr>
-                    <td data-label="Fecha"><b>${formattedDate}</b></td>
-                    <td data-label="Título y Contenido">
-                        <strong style="color: ${c.color_borde};">${tituloSeguro}</strong>
+                    <td><b>${formattedDate}</b></td>
+                    <td>
+                        <strong style="color: ${c.color_borde};">${c.titulo}</strong>
                         <div style="font-size: 0.85rem; margin-top: 6px; color: var(--texto-gris);">
-                            ${contenidoSeguro}
+                            ${c.contenido}
                         </div>
                     </td>
-                    <td data-label="Autor">${autorSeguro}</td>
-                    <td data-label="Acción" style="text-align: center; display: flex; gap: 8px; justify-content: center;">
-                        <button class="btn-editar-com" data-id="${c.id}" data-titulo="${tituloRaw}" data-contenido="${contenidoRaw}" data-color="${colorRaw}" onclick="editarComunicadoDesdeBoton(this)" title="Editar este comunicado" type="button">
+                    <td>${c.autor}</td>
+                    <td style="text-align: center; display: flex; gap: 8px; justify-content: center;">
+                        <button class="btn-editar-com" onclick="editarComunicado(${c.id}, '${c.titulo.replace(/'/g, "\\'")}', '${c.contenido.replace(/'/g, "\\'").replace(/\n/g, "\\n")}', '${c.color_borde}')" title="Editar este comunicado">
                             <i class="fas fa-edit"></i> Editar
                         </button>
-                        <button class="btn-eliminar-com" onclick="eliminarComunicado(${c.id}, this)" title="Eliminar este comunicado" type="button">
+                        <button class="btn-eliminar-com" onclick="eliminarComunicado(${c.id})" title="Eliminar este comunicado">
                             <i class="fas fa-trash-alt"></i> Eliminar
                         </button>
                     </td>
@@ -1248,31 +284,35 @@
                 });
             } catch (e) {
                 console.error(e);
-                actualizarResumen({
-                    ultimoComunicado: 'No disponible'
-                });
-                tbody.innerHTML = "<tr><td colspan='4' data-label='Estado'>Error al cargar los comunicados.</td></tr>";
+                tbody.innerHTML = "<tr><td colspan='4'>Error al cargar los comunicados.</td></tr>";
             }
         }
 
-        async function eliminarComunicado(id, boton) {
+        async function eliminarComunicado(id) {
             const confirmacion = await Swal.fire({
                 title: '¿Eliminar comunicado?',
-                text: 'Este comunicado dejará de mostrarse para todo el personal. Esta acción no se puede deshacer.',
+                text: "Esta acción no se puede deshacer y desaparecerá para todos los usuarios.",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#e74c3c',
                 cancelButtonColor: '#95a5a6',
                 confirmButtonText: 'Sí, eliminar',
-                cancelButtonText: 'Conservar'
+                cancelButtonText: 'Cancelar'
             });
 
-            if (!confirmacion.isConfirmed) {
-                Swal.close();
-                return;
-            }
+            if (!confirmacion.isConfirmed) return;
 
-            setButtonLoading(boton, true, 'Eliminando...');
+            Swal.fire({
+                title: 'Borrando...',
+                text: 'Por favor espere un momento',
+                allowOutsideClick: false,
+                showConfirmButton: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                    const actions = document.querySelector('.swal2-actions');
+                    if (actions) actions.style.display = 'none';
+                }
+            });
 
             try {
                 const res = await fetch(`${SUPABASE_URL}/rest/v1/comunicados?id=eq.${id}`, {
@@ -1280,75 +320,112 @@
                     headers
                 });
                 if (res.ok) {
-                    Swal.fire('Comunicado eliminado', 'La publicación se eliminó correctamente.', 'success');
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Eliminado',
+                        text: 'El comunicado fue eliminado con éxito.',
+                        timer: 1500,
+                        showConfirmButton: false,
+                        didOpen: () => {
+                            const actions = document.querySelector('.swal2-actions');
+                            if (actions) actions.style.display = 'none';
+                        }
+                    });
                     cargarComunicadosAdmin();
                 } else {
-                    Swal.fire('No se pudo eliminar', 'Ocurrió un problema al eliminar el comunicado. Intente nuevamente.', 'error');
+                    Swal.fire('Error', 'No se pudo eliminar: ' + res.statusText, 'error');
                 }
             } catch (e) {
-                console.error(e);
-                Swal.fire('Sin conexión', 'No fue posible completar la acción por un problema de red.', 'error');
-            } finally {
-                setButtonLoading(boton, false);
+                Swal.fire('Error', 'Problema de conexión.', 'error');
             }
         }
 
-        function editarComunicado(id, tituloActual, contenidoActual, colorActual) {
-            irATab('comunicados', 'crear-comunicado');
-            document.getElementById('comunicadoIdEdicion').value = String(id);
-            document.getElementById('tituloCom').value = tituloActual;
-            document.getElementById('contenidoCom').value = contenidoActual;
-            document.getElementById('colorCom').value = colorActual || '#27ae60';
-            actualizarPreviewComunicado();
-            document.getElementById('btnPublicar').innerHTML = '<i class="fas fa-save"></i> Guardar Cambios';
-            document.getElementById('btnCancelarComEdit').style.display = 'inline-flex';
-            Notiflix.Notify.info('Modo edición activado para el comunicado seleccionado.');
-            globalThis.scrollTo({
-                top: document.getElementById('formComunicado').offsetTop - 110,
-                behavior: 'smooth'
+        async function editarComunicado(id, tituloActual, contenidoActual, colorActual) {
+            const {
+                value: formValues
+            } = await Swal.fire({
+                title: 'Editar Comunicado',
+                html: `
+            <input id="swal-input-titulo" class="swal2-input" value="${tituloActual}" placeholder="Título">
+            <textarea id="swal-input-contenido" class="swal2-textarea" placeholder="Contenido" rows="4" style="margin-top: 15px;">${contenidoActual}</textarea>
+            <select id="swal-input-color" class="swal2-input" style="width: 80%; display: flex; margin: 15px auto;">
+                <option value="#27ae60" ${colorActual === '#27ae60' ? 'selected' : ''}>Informativo (Verde)</option>
+                <option value="#3498db" ${colorActual === '#3498db' ? 'selected' : ''}>General (Azul)</option>
+                <option value="#f39c12" ${colorActual === '#f39c12' ? 'selected' : ''}>Importante (Naranja)</option>
+                <option value="#e74c3c" ${colorActual === '#e74c3c' ? 'selected' : ''}>Urgente (Rojo)</option>
+            </select>
+        `,
+                focusConfirm: false,
+                showCancelButton: true,
+                confirmButtonColor: '#3498db',
+                cancelButtonColor: '#95a5a6',
+                confirmButtonText: 'Guardar Cambios',
+                cancelButtonText: 'Cancelar',
+                preConfirm: () => {
+                    const valTitulo = document.getElementById('swal-input-titulo').value.trim();
+                    const valContenido = document.getElementById('swal-input-contenido').value.trim();
+                    const valColor = document.getElementById('swal-input-color').value;
+
+                    if (!valTitulo || !valContenido) {
+                        Swal.showValidationMessage('El título y contenido son requeridos');
+                    }
+                    return {
+                        titulo: valTitulo,
+                        contenido: valContenido,
+                        color_borde: valColor
+                    };
+                }
             });
-        }
 
-        function editarComunicadoDesdeBoton(button) {
-            const id = Number(button.dataset.id);
-            const titulo = decodeURIComponent(button.dataset.titulo || '');
-            const contenido = decodeURIComponent(button.dataset.contenido || '');
-            const color = decodeURIComponent(button.dataset.color || '#27ae60');
-            editarComunicado(id, titulo, contenido, color);
-        }
+            if (formValues) {
+                Swal.fire({
+                    title: 'Actualizando...',
+                    text: 'Por favor espere',
+                    allowOutsideClick: false,
+                    showConfirmButton: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                        const actions = document.querySelector('.swal2-actions');
+                        if (actions) actions.style.display = 'none';
+                    }
+                });
 
-        function limpiarFormularioComunicado() {
-            const form = document.getElementById('formComunicado');
-            form.reset();
-            document.getElementById('comunicadoIdEdicion').value = '';
-            document.getElementById('btnPublicar').innerHTML = '<i class="fas fa-paper-plane"></i> Publicar Comunicado';
-            document.getElementById('btnCancelarComEdit').style.display = 'none';
-            actualizarPreviewComunicado();
+                try {
+                    const res = await fetch(`${SUPABASE_URL}/rest/v1/comunicados?id=eq.${id}`, {
+                        method: "PATCH",
+                        headers,
+                        body: JSON.stringify(formValues)
+                    });
+
+                    if (res.ok) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: '¡Actualizado!',
+                            text: 'El comunicado se actualizó con éxito.',
+                            timer: 2000,
+                            showConfirmButton: false,
+                            didOpen: () => {
+                                const actions = document.querySelector('.swal2-actions');
+                                if (actions) actions.style.display = 'none';
+                            }
+                        });
+                        cargarComunicadosAdmin();
+                    } else {
+                        Swal.fire('Error', 'No se pudo actualizar el comunicado.', 'error');
+                    }
+                } catch (e) {
+                    Swal.fire('Error', 'Problema de red al actualizar.', 'error');
+                }
+            }
         }
 
         function setupComunicadoListener() {
             const form = document.getElementById('formComunicado');
-            const btnCancelarComEdit = document.getElementById('btnCancelarComEdit');
-            const titulo = document.getElementById('tituloCom');
-            const contenido = document.getElementById('contenidoCom');
-            const color = document.getElementById('colorCom');
-
-            titulo.addEventListener('input', actualizarPreviewComunicado);
-            contenido.addEventListener('input', actualizarPreviewComunicado);
-            color.addEventListener('change', actualizarPreviewComunicado);
-            actualizarPreviewComunicado();
-
-            if (btnCancelarComEdit) {
-                btnCancelarComEdit.addEventListener('click', limpiarFormularioComunicado);
-            }
-
             if (form) {
                 form.addEventListener('submit', async function(e) {
                     e.preventDefault();
                     const btn = document.getElementById('btnPublicar');
-                    const idEdicion = document.getElementById('comunicadoIdEdicion').value;
-                    if (btn.disabled) return;
-                    setButtonLoading(btn, true, idEdicion ? 'Guardando...' : 'Publicando...');
+                    btn.disabled = true;
                     const datos = {
                         titulo: document.getElementById('tituloCom').value,
                         contenido: document.getElementById('contenidoCom').value,
@@ -1356,437 +433,58 @@
                         autor: localStorage.getItem('nombre')
                     };
                     try {
-                        const url = idEdicion ? `${SUPABASE_URL}/rest/v1/comunicados?id=eq.${idEdicion}` : `${SUPABASE_URL}/rest/v1/comunicados`;
-                        const method = idEdicion ? 'PATCH' : 'POST';
-
-                        const res = await fetch(url, {
-                            method,
+                        Swal.fire({
+                            title: 'Publicando...',
+                            allowOutsideClick: false,
+                            showConfirmButton: false,
+                            didOpen: () => {
+                                Swal.showLoading();
+                                const actions = document.querySelector('.swal2-actions');
+                                if (actions) actions.style.display = 'none';
+                            }
+                        });
+                        const res = await fetch(`${SUPABASE_URL}/rest/v1/comunicados`, {
+                            method: "POST",
                             headers,
                             body: JSON.stringify(datos)
                         });
-
                         if (res.ok) {
-                            Swal.fire('Operación exitosa', idEdicion ? 'El comunicado fue actualizado correctamente.' : 'El comunicado fue publicado y ya está activo para todo el personal.', 'success');
-                            limpiarFormularioComunicado();
+                            Swal.fire({
+                                icon: 'success',
+                                title: '¡Publicado!',
+                                text: 'Comunicado publicado exitosamente.',
+                                timer: 2000,
+                                showConfirmButton: false,
+                                didOpen: () => {
+                                    const actions = document.querySelector('.swal2-actions');
+                                    if (actions) actions.style.display = 'none';
+                                }
+                            });
+                            this.reset();
                             cargarComunicadosAdmin(); // Reload the table automatically
                         } else {
                             const error = await res.json();
-                            Swal.fire('No se pudo publicar', error.message || 'Revise la información e intente nuevamente.', 'error');
+                            Swal.fire('Error', 'No se pudo publicar: ' + (error.message || res.statusText), 'error');
                         }
                     } catch (e) {
-                        Swal.fire('Error de conexión', e.message || 'No fue posible publicar en este momento.', 'error');
-                    } finally {
-                        setButtonLoading(btn, false);
+                        Swal.fire('Error', 'Error al publicar: ' + e.message, 'error');
                     }
+                    btn.disabled = false;
                 });
-            }
-        }
-
-        function validarUsuarioInput(datos, esEdicion = false) {
-            if (!datos.nombre_completo || datos.nombre_completo.trim().length < 4) {
-                return 'El nombre completo debe tener al menos 4 caracteres.';
-            }
-
-            if (!datos.usuario || !/^[a-zA-Z0-9._-]{4,20}$/.test(datos.usuario)) {
-                return 'El usuario debe tener entre 4 y 20 caracteres y solo usar letras, numeros, punto, guion o guion bajo.';
-            }
-
-            if (!['admin', 'docente'].includes(datos.rol)) {
-                return 'Debe seleccionar un rol valido.';
-            }
-
-            if (!esEdicion && (!datos.contrasena || datos.contrasena.length < 8)) {
-                return 'La contraseña debe tener al menos 8 caracteres.';
-            }
-
-            if (esEdicion && datos.contrasena && datos.contrasena.length < 8) {
-                return 'Si desea cambiar la contraseña, debe tener al menos 8 caracteres.';
-            }
-
-            return null;
-        }
-
-        async function existeUsuarioDuplicado(usuario, idActual = null) {
-            const res = await fetch(`${SUPABASE_URL}/rest/v1/usuarios?select=id,usuario&usuario=eq.${encodeURIComponent(usuario)}`, {
-                headers
-            });
-            const data = await res.json();
-
-            if (!Array.isArray(data) || data.length === 0) return false;
-            if (!idActual) return true;
-
-            return data.some(u => String(u.id) !== String(idActual));
-        }
-
-        function limpiarFormularioUsuario() {
-            document.getElementById('usuarioIdEdicion').value = '';
-            document.getElementById('nombreCompletoUser').value = '';
-            document.getElementById('usuarioUser').value = '';
-            document.getElementById('rolUser').value = '';
-            document.getElementById('contrasenaUser').value = '';
-            document.getElementById('btnGuardarUsuario').innerHTML = '<i class="fas fa-user-plus"></i> Guardar Usuario';
-            document.getElementById('btnCancelarEdicion').style.display = 'none';
-        }
-
-        function setupUsuariosListener() {
-            const form = document.getElementById('formUsuario');
-            const btnCancelar = document.getElementById('btnCancelarEdicion');
-
-            btnCancelar.addEventListener('click', limpiarFormularioUsuario);
-
-            form.addEventListener('submit', async function(e) {
-                e.preventDefault();
-
-                const btn = document.getElementById('btnGuardarUsuario');
-                const idEdicion = document.getElementById('usuarioIdEdicion').value;
-
-                if (btn.disabled) return;
-                setButtonLoading(btn, true, idEdicion ? 'Actualizando...' : 'Guardando...');
-
-                const datos = {
-                    nombre_completo: document.getElementById('nombreCompletoUser').value.trim(),
-                    usuario: document.getElementById('usuarioUser').value.trim(),
-                    rol: document.getElementById('rolUser').value,
-                    contrasena: document.getElementById('contrasenaUser').value
-                };
-
-                const errorValidacion = validarUsuarioInput(datos, Boolean(idEdicion));
-                if (errorValidacion) {
-                    Swal.fire('Validación', errorValidacion, 'warning');
-                    setButtonLoading(btn, false);
-                    return;
-                }
-
-                try {
-                    if (await existeUsuarioDuplicado(datos.usuario, idEdicion || null)) {
-                        Swal.fire('Usuario duplicado', 'Ya existe una cuenta con ese nombre de usuario.', 'warning');
-                        setButtonLoading(btn, false);
-                        return;
-                    }
-
-                    let payload = {
-                        nombre_completo: datos.nombre_completo,
-                        usuario: datos.usuario,
-                        rol: datos.rol
-                    };
-
-                    if (datos.contrasena) payload.contrasena = datos.contrasena;
-
-                    let res;
-                    if (idEdicion) {
-                        res = await fetch(`${SUPABASE_URL}/rest/v1/usuarios?id=eq.${idEdicion}`, {
-                            method: 'PATCH',
-                            headers,
-                            body: JSON.stringify(payload)
-                        });
-                    } else {
-                        payload.contrasena = datos.contrasena;
-                        res = await fetch(`${SUPABASE_URL}/rest/v1/usuarios`, {
-                            method: 'POST',
-                            headers,
-                            body: JSON.stringify(payload)
-                        });
-                    }
-
-                    if (!res.ok) {
-                        const err = await res.json().catch(() => ({}));
-                        throw new Error(err.message || 'No se pudo guardar el usuario.');
-                    }
-
-                    Swal.fire('Operación exitosa', idEdicion ? 'Usuario actualizado correctamente.' : 'Usuario creado correctamente.', 'success');
-                    limpiarFormularioUsuario();
-                    cargarUsuariosAdmin();
-                } catch (error) {
-                    Swal.fire('No se pudo guardar', error.message || 'Ocurrió un error al guardar el usuario.', 'error');
-                } finally {
-                    setButtonLoading(btn, false);
-                }
-            });
-        }
-
-        async function cargarUsuariosAdmin() {
-            const tbody = document.getElementById('cuerpoTablaUsuarios');
-            try {
-                const res = await fetch(`${SUPABASE_URL}/rest/v1/usuarios?select=id,usuario,nombre_completo,rol&order=nombre_completo.asc`, {
-                    headers
-                });
-                const usuarios = await res.json();
-
-                tbody.innerHTML = '';
-                if (!Array.isArray(usuarios) || usuarios.length === 0) {
-                    actualizarResumen({
-                        totalUsuarios: 0
-                    });
-                    tbody.innerHTML = "<tr><td colspan='4' data-label='Estado' style='text-align:center; color:#666; padding:18px;'>No hay usuarios registrados.</td></tr>";
-                    return;
-                }
-
-                actualizarResumen({
-                    totalUsuarios: usuarios.length
-                });
-
-                usuarios.forEach(u => {
-                    const usuarioSeguro = escapeHtml(u.usuario || '---');
-                    const nombreSeguro = escapeHtml(u.nombre_completo || '---');
-                    const rolSeguro = escapeHtml(u.rol || '---');
-                    const usuarioRaw = encodeURIComponent(String(u.usuario || ''));
-                    const nombreRaw = encodeURIComponent(String(u.nombre_completo || ''));
-                    const rolRaw = encodeURIComponent(String(u.rol || ''));
-                    tbody.innerHTML += `
-                    <tr>
-                        <td data-label="Usuario"><b>${usuarioSeguro}</b></td>
-                        <td data-label="Nombre">${nombreSeguro}</td>
-                        <td data-label="Rol"><span class="badge-motivo">${rolSeguro}</span></td>
-                        <td data-label="Acciones" style="display:flex; gap:8px; justify-content:center;">
-                            <button class="btn-editar-com" data-id="${u.id}" data-usuario="${usuarioRaw}" data-nombre="${nombreRaw}" data-rol="${rolRaw}" onclick="editarUsuarioDesdeBoton(this)" type="button"><i class="fas fa-edit"></i> Editar</button>
-                            <button class="btn-eliminar-com" onclick="eliminarUsuario(${u.id}, this)" type="button"><i class="fas fa-trash-alt"></i> Eliminar</button>
-                        </td>
-                    </tr>`;
-                });
-            } catch (error) {
-                console.error(error);
-                actualizarResumen({
-                    totalUsuarios: 0
-                });
-                tbody.innerHTML = "<tr><td colspan='4' data-label='Estado' style='text-align:center; color:#c0392b; padding:18px;'>Error al cargar usuarios.</td></tr>";
-            }
-        }
-
-        function editarUsuario(id, usuario, nombreCompleto, rol) {
-            irATab('usuarios', 'crear-usuario');
-            document.getElementById('usuarioIdEdicion').value = id;
-            document.getElementById('nombreCompletoUser').value = nombreCompleto;
-            document.getElementById('usuarioUser').value = usuario;
-            document.getElementById('rolUser').value = rol;
-            document.getElementById('contrasenaUser').value = '';
-            document.getElementById('btnGuardarUsuario').innerHTML = '<i class="fas fa-save"></i> Actualizar Usuario';
-            document.getElementById('btnCancelarEdicion').style.display = 'inline-flex';
-            window.scrollTo({
-                top: document.getElementById('formUsuario').offsetTop - 100,
-                behavior: 'smooth'
-            });
-        }
-
-        function editarUsuarioDesdeBoton(button) {
-            const id = Number(button.dataset.id);
-            const usuario = decodeURIComponent(button.dataset.usuario || '');
-            const nombre = decodeURIComponent(button.dataset.nombre || '');
-            const rol = decodeURIComponent(button.dataset.rol || '');
-            editarUsuario(id, usuario, nombre, rol);
-        }
-
-        async function eliminarUsuario(id, boton) {
-            const confirmacion = await Swal.fire({
-                title: '¿Eliminar usuario?',
-                text: 'Se revocará el acceso del usuario al sistema.',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Sí, eliminar',
-                cancelButtonText: 'Conservar',
-                confirmButtonColor: '#e74c3c'
-            });
-
-            if (!confirmacion.isConfirmed) {
-                Swal.close();
-                return;
-            }
-
-            setButtonLoading(boton, true, 'Eliminando...');
-
-            try {
-                const res = await fetch(`${SUPABASE_URL}/rest/v1/usuarios?id=eq.${id}`, {
-                    method: 'DELETE',
-                    headers
-                });
-
-                if (!res.ok) throw new Error('No se pudo eliminar el usuario.');
-
-                Swal.fire('Usuario eliminado', 'El acceso fue removido correctamente.', 'success');
-                cargarUsuariosAdmin();
-            } catch (error) {
-                Swal.fire('No se pudo eliminar', error.message || 'Ocurrió un problema al eliminar el usuario.', 'error');
-            } finally {
-                setButtonLoading(boton, false);
-            }
-        }
-
-        function setupMantenimientoListener() {
-            const btnRespaldo = document.getElementById('btnRespaldo');
-            const btnAuditoria = document.getElementById('btnAuditoria');
-
-            btnRespaldo.addEventListener('click', async() => {
-                setButtonLoading(btnRespaldo, true, 'Generando...');
-                try {
-                    await generarRespaldo(true);
-                } catch (error) {
-                    Swal.fire('No se pudo generar respaldo', error.message || 'Intente nuevamente en unos minutos.', 'error');
-                } finally {
-                    setButtonLoading(btnRespaldo, false);
-                }
-            });
-
-            btnAuditoria.addEventListener('click', async() => {
-                setButtonLoading(btnAuditoria, true, 'Auditando...');
-                try {
-                    await ejecutarAuditoriaIntegridad();
-                } catch (error) {
-                    Swal.fire('No se pudo ejecutar auditoría', error.message || 'Revise la conexión e intente nuevamente.', 'error');
-                } finally {
-                    setButtonLoading(btnAuditoria, false);
-                }
-            });
-        }
-
-        async function fetchTabla(nombreTabla, select = '*') {
-            const res = await fetch(`${SUPABASE_URL}/rest/v1/${nombreTabla}?select=${encodeURIComponent(select)}`, {
-                headers
-            });
-            if (!res.ok) {
-                const error = await res.json().catch(() => ({}));
-                throw new Error(error.message || `No se pudo leer la tabla ${nombreTabla}.`);
-            }
-            return res.json();
-        }
-
-        async function generarRespaldo(descargar = false) {
-            const [usuarios, ausencias, comunicados] = await Promise.all([
-                fetchTabla('usuarios', 'id,usuario,nombre_completo,rol,contrasena'),
-                fetchTabla('ausencias'),
-                fetchTabla('comunicados')
-            ]);
-
-            const respaldo = {
-                generado_en: new Date().toISOString(),
-                generado_por: localStorage.getItem('usuario') || 'admin',
-                version: 1,
-                tablas: {
-                    usuarios,
-                    ausencias,
-                    comunicados
-                }
-            };
-
-            const key = `backup_ctp_${Date.now()}`;
-            localStorage.setItem(key, JSON.stringify(respaldo));
-
-            const indice = JSON.parse(localStorage.getItem('backup_ctp_index') || '[]');
-            indice.push(key);
-            while (indice.length > 10) {
-                const eliminar = indice.shift();
-                if (eliminar) localStorage.removeItem(eliminar);
-            }
-            localStorage.setItem('backup_ctp_index', JSON.stringify(indice));
-
-            const estado = document.getElementById('estadoRespaldo');
-            estado.textContent = `Último respaldo: ${new Date().toLocaleString('es-CR')} (${usuarios.length} usuarios, ${ausencias.length} ausencias, ${comunicados.length} comunicados).`;
-
-            if (descargar) {
-                const blob = new Blob([JSON.stringify(respaldo, null, 2)], {
-                    type: 'application/json'
-                });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `respaldo_ctp_${new Date().toISOString().replaceAll(':', '-').replaceAll('.', '-')}.json`;
-                document.body.appendChild(a);
-                a.click();
-                a.remove();
-                URL.revokeObjectURL(url);
-                Swal.fire('Respaldo generado', 'La copia de seguridad se descargó correctamente en formato JSON.', 'success');
-            }
-        }
-
-        function inicializarRespaldoAutomatico() {
-            const ultima = localStorage.getItem('backup_ctp_ultimo_auto');
-            const ahora = Date.now();
-            if (!ultima || (ahora - Number(ultima) > 2 * 60 * 60 * 1000)) {
-                generarRespaldo(false).then(() => {
-                    localStorage.setItem('backup_ctp_ultimo_auto', String(Date.now()));
-                }).catch(console.error);
-            }
-
-            setInterval(async() => {
-                try {
-                    await generarRespaldo(false);
-                    localStorage.setItem('backup_ctp_ultimo_auto', String(Date.now()));
-                } catch (error) {
-                    console.error('Error en respaldo automático:', error);
-                }
-            }, 2 * 60 * 60 * 1000);
-        }
-
-        async function ejecutarAuditoriaIntegridad() {
-            const [usuarios, ausencias, comunicados] = await Promise.all([
-                fetchTabla('usuarios', 'id,usuario,nombre_completo,rol,contrasena'),
-                fetchTabla('ausencias', 'id,usuario,nombre,fecha,fecha_fin,razon'),
-                fetchTabla('comunicados', 'id,titulo,contenido,autor,creado_en')
-            ]);
-
-            const hallazgos = [];
-            const usuariosMap = new Map();
-
-            usuarios.forEach(u => {
-                if (!u.usuario || !u.nombre_completo || !u.contrasena || !u.rol) {
-                    hallazgos.push(`Usuario incompleto (id ${u.id || 'sin id'}): faltan campos obligatorios.`);
-                }
-                if (!['admin', 'docente'].includes(u.rol)) {
-                    hallazgos.push(`Usuario ${u.usuario || '(sin usuario)'} con rol no válido: ${u.rol || 'vacío'}.`);
-                }
-                const keyUser = (u.usuario || '').toLowerCase();
-                if (keyUser) {
-                    usuariosMap.set(keyUser, (usuariosMap.get(keyUser) || 0) + 1);
-                }
-            });
-
-            usuariosMap.forEach((cantidad, usuario) => {
-                if (cantidad > 1) hallazgos.push(`Usuario duplicado detectado: ${usuario} (${cantidad} registros).`);
-            });
-
-            ausencias.forEach(a => {
-                if (!a.usuario || !a.nombre || !a.fecha || !a.fecha_fin || !a.razon) {
-                    hallazgos.push(`Ausencia incompleta (id ${a.id || 'sin id'}).`);
-                }
-                if (a.fecha && a.fecha_fin && a.fecha_fin < a.fecha) {
-                    hallazgos.push(`Ausencia con rango inválido (id ${a.id || 'sin id'}): fecha_fin menor que fecha.`);
-                }
-                if (a.usuario && !usuariosMap.has(a.usuario.toLowerCase())) {
-                    hallazgos.push(`Ausencia con usuario no registrado: ${a.usuario} (id ${a.id || 'sin id'}).`);
-                }
-            });
-
-            comunicados.forEach(c => {
-                if (!c.titulo || !c.contenido || !c.autor) {
-                    hallazgos.push(`Comunicado incompleto (id ${c.id || 'sin id'}).`);
-                }
-            });
-
-            const resultado = document.getElementById('resultadoAuditoria');
-            resultado.style.display = 'block';
-
-            if (hallazgos.length === 0) {
-                resultado.innerHTML = '<b style="color:#27ae60;">No se detectaron inconsistencias de integridad.</b>';
-            } else {
-                const hallazgosHtml = hallazgos.map(h => `<li>${escapeHtml(h)}</li>`).join('');
-                resultado.innerHTML = `<b style="color:#c0392b;">Se detectaron ${hallazgos.length} hallazgos:</b><ul>${hallazgosHtml}</ul>`;
             }
         }
 
         async function cerrarSesion() {
             const confirmacion = await Swal.fire({
-                title: '¿Desea cerrar sesión?',
-                text: 'Su sesión actual finalizará y volverá al inicio.',
-                icon: 'warning',
+                title: '¿Cerrar Sesión?',
+                text: '¿Seguro que desea salir del panel?',
+                icon: 'question',
                 showCancelButton: true,
-                confirmButtonColor: '#e74c3c',
+                confirmButtonColor: '#3498db',
                 cancelButtonColor: '#95a5a6',
                 confirmButtonText: 'Sí, salir',
                 cancelButtonText: 'Cancelar'
             });
-
-            if (!confirmacion.isConfirmed) {
-                Swal.close();
-                return;
-            }
 
             if (confirmacion.isConfirmed) {
                 localStorage.clear();
@@ -1808,7 +506,7 @@
                 let textDesde = tds.length > 0 ? (tds[0].textContent || tds[0].innerText) : "";
                 let textMotivo = tds.length > 1 ? (tds[1].textContent || tds[1].innerText) : "";
 
-                if (textMotivo.toUpperCase().includes(filter) || textDesde.toUpperCase().includes(filter)) {
+                if (textMotivo.toUpperCase().indexOf(filter) > -1 || textDesde.toUpperCase().indexOf(filter) > -1) {
                     tr[i].style.display = "";
                 } else {
                     tr[i].style.display = "none";
