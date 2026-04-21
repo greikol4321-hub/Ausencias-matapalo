@@ -138,6 +138,44 @@
             margin-bottom: 10px;
         }
 
+        .panel-detalle-boleta {
+            display: none;
+            margin-top: 18px;
+            background: #ffffff;
+            border: 1px solid #d9d9d9;
+            border-left: 5px solid #0a4c23;
+            border-radius: 8px;
+            padding: 16px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .panel-detalle-boleta h4 {
+            margin: 0 0 12px;
+            color: #0a4c23;
+        }
+
+        .detalle-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(160px, 1fr));
+            gap: 10px 14px;
+            margin-bottom: 10px;
+        }
+
+        .detalle-item {
+            font-size: 0.92rem;
+            color: #333;
+        }
+
+        .btn-ver-detalle {
+            border: none;
+            border-radius: 6px;
+            padding: 7px 12px;
+            color: #fff;
+            background: #0a4c23;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
         @media (max-width: 900px) {
             .boletas-row {
                 flex-direction: column;
@@ -330,14 +368,24 @@
                                 <th>Estudiante</th>
                                 <th>Cedula</th>
                                 <th>Docente</th>
+                                <th>Accion</th>
                             </tr>
                         </thead>
                         <tbody id="cuerpoBoletasSeccion">
                             <tr>
-                                <td colspan="5" style="text-align:center; padding: 24px; color:#666;">Cargando boletas de la seccion...</td>
+                                <td colspan="6" style="text-align:center; padding: 24px; color:#666;">Cargando boletas de la seccion...</td>
                             </tr>
                         </tbody>
                     </table>
+                </div>
+            </div>
+
+            <div id="panelDetalleBoleta" class="panel-detalle-boleta">
+                <h4><i class="fas fa-file-lines"></i> Detalle de Boleta</h4>
+                <div id="detalleBoletaGrid" class="detalle-grid"></div>
+                <div class="detalle-item">
+                    <b>Falta cometida:</b>
+                    <div id="detalleBoletaFalta" style="margin-top: 4px; white-space: pre-wrap;"></div>
                 </div>
             </div>
         </div>
@@ -356,6 +404,7 @@
 
         const ROLES_PERMITIDOS = new Set(['docente', 'docente_guia', 'admin']);
         const cacheEstudiantes = new Map();
+        const cacheBoletasPorId = new Map();
 
         let seccionGuia = '';
         let rolActual = '';
@@ -473,12 +522,38 @@
             const tbody = document.getElementById(tbodyId);
             tbody.innerHTML = '';
             if (!boletas.length) {
-                tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:24px; color:#666;">${emptyText}</td></tr>`;
+                const colspan = tbodyId === 'cuerpoBoletasSeccion' ? 6 : 5;
+                tbody.innerHTML = `<tr><td colspan="${colspan}" style="text-align:center; padding:24px; color:#666;">${emptyText}</td></tr>`;
                 return;
             }
             boletas.forEach((b) => {
                 tbody.innerHTML += rowBuilder(b);
             });
+        }
+
+        function mostrarDetalleBoleta(idBoleta) {
+            const boleta = cacheBoletasPorId.get(Number(idBoleta));
+            if (!boleta) {
+                return;
+            }
+
+            const panel = document.getElementById('panelDetalleBoleta');
+            const grid = document.getElementById('detalleBoletaGrid');
+            const falta = document.getElementById('detalleBoletaFalta');
+
+            grid.innerHTML = `
+                <div class="detalle-item"><b>Fecha:</b> ${boleta.fecha || ''}</div>
+                <div class="detalle-item"><b>Numero:</b> ${boleta.numero_boleta || ''}</div>
+                <div class="detalle-item"><b>Estudiante:</b> ${boleta.estudiante_nombre || ''}</div>
+                <div class="detalle-item"><b>Cedula:</b> ${boleta.estudiante_cedula || ''}</div>
+                <div class="detalle-item"><b>Seccion:</b> ${boleta.seccion || ''}</div>
+                <div class="detalle-item"><b>Docente:</b> ${boleta.docente_nombre || ''}</div>
+                <div class="detalle-item"><b>Usuario docente:</b> ${boleta.docente_usuario || ''}</div>
+                <div class="detalle-item"><b>Correo encargado:</b> ${boleta.correo_encargado || 'No registrado'}</div>
+            `;
+            falta.textContent = boleta.falta_cometida || 'Sin descripcion';
+            panel.style.display = 'block';
+            panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
         async function cargarBoletasPropias() {
@@ -514,7 +589,7 @@
                 return;
             }
             const params = new URLSearchParams();
-            params.set('select', 'fecha,numero_boleta,estudiante_nombre,estudiante_cedula,docente_nombre');
+            params.set('select', 'id,fecha,numero_boleta,estudiante_nombre,estudiante_cedula,seccion,docente_nombre,docente_usuario,correo_encargado,falta_cometida');
             setFiltroSecciones(params, 'seccion', seccionesGuia);
             params.set('order', 'fecha.desc');
             params.set('limit', '30');
@@ -522,6 +597,10 @@
             const url = `${SUPABASE_URL}/rest/v1/boletas?${params.toString()}`;
             try {
                 const data = await fetchJson(url, { headers });
+                cacheBoletasPorId.clear();
+                data.forEach((b) => {
+                    cacheBoletasPorId.set(Number(b.id), b);
+                });
                 renderBoletas(
                     'cuerpoBoletasSeccion',
                     data,
@@ -532,6 +611,7 @@
                         <td>${b.estudiante_nombre || ''}</td>
                         <td>${b.estudiante_cedula || ''}</td>
                         <td>${b.docente_nombre || ''}</td>
+                        <td><button type="button" class="btn-ver-detalle" onclick="mostrarDetalleBoleta(${Number(b.id)})"><i class="fas fa-eye"></i> Ver</button></td>
                     </tr>`
                 );
             } catch (error) {
