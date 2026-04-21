@@ -1491,11 +1491,6 @@ a:hover {
         .page-docentes .logo-mep {
             height: 50px;
             object-fit: contain;
-            transition: transform 0.3s;
-        }
-
-        .page-docentes .logo-mep:hover {
-            transform: scale(1.05);
         }
 
         .page-docentes .divider {
