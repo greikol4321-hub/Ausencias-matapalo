@@ -9,47 +9,59 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/stylo.css">
     <style>
+        /* === ESTILOS MEJORADOS INSTITUCIONALES === */
         .boletas-wrap {
-            margin-top: 24px;
+            margin-top: 30px;
             background: #ffffff;
-            border: 1px solid #d9d9d9;
-            border-radius: 10px;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05); /* Sombra más suave y moderna */
+            font-family: 'Segoe UI', system-ui, sans-serif;
         }
 
         .boletas-header {
-            background: #f5f1e8;
-            padding: 20px;
-            border-bottom: 3px solid #0a4c23;
+            background: #f8f9fa; /* Gris muy claro, más limpio */
+            padding: 24px 30px;
+            border-bottom: 4px solid #0a4c23; /* Verde CTP */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .boletas-header table {
             width: 100%;
+            margin-bottom: 15px;
         }
 
         .boletas-header h2 {
             text-align: center;
-            margin: 10px 0 0;
+            margin: 0;
             color: #0a4c23;
-            font-size: 18px;
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
         }
 
         .boletas-header h3 {
             text-align: center;
             margin: 5px 0 0;
-            color: #0a4c23;
-            font-size: 14px;
+            color: #6c757d;
+            font-size: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
         }
 
         .boletas-content {
-            padding: 20px;
+            padding: 30px;
+            background: #ffffff;
         }
 
         .boletas-row {
             display: flex;
-            gap: 15px;
-            margin-bottom: 15px;
+            gap: 20px;
+            margin-bottom: 20px;
         }
 
         .boletas-field {
@@ -60,86 +72,203 @@
 
         .boletas-field label {
             font-size: 13px;
-            margin-bottom: 5px;
+            color: #495057;
+            margin-bottom: 8px;
             font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
         }
 
+        /* Estilo de Inputs moderno tipo Material/Bootstrap */
         .boletas-field input,
         .boletas-field textarea {
-            padding: 9px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 13px;
+            padding: 12px 14px;
+            border: 1px solid #ced4da;
+            border-radius: 6px;
+            font-size: 14px;
             font-family: inherit;
+            color: #212529;
+            background-color: #fcfcfc;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .boletas-field input:focus,
+        .boletas-field textarea:focus {
+            outline: none;
+            border-color: #0a4c23;
+            background-color: #ffffff;
+            box-shadow: 0 0 0 3px rgba(10, 76, 35, 0.15);
+        }
+        
+        .boletas-field input[readonly], 
+        .boletas-field input[readonly]:focus {
+            background-color: #e9ecef;
+            border-color: #ced4da;
+            color: #495057;
+            box-shadow: none;
+            cursor: not-allowed;
+            font-weight: 600;
         }
 
         .boletas-field textarea {
             resize: vertical;
-            min-height: 90px;
+            min-height: 110px;
+            line-height: 1.5;
         }
 
         .boletas-btn {
-            background-color: #218838;
+            background-color: #0a4c23; /* Verde principal unificado */
             color: #fff;
-            padding: 11px 14px;
+            padding: 14px 20px;
             border: none;
-            border-radius: 4px;
+            border-radius: 6px;
             cursor: pointer;
             font-weight: 700;
+            font-size: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            width: 100%; /* Botón guardar expandido */
+            margin-top: 10px;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+            box-shadow: 0 4px 6px rgba(10, 76, 35, 0.2);
         }
 
         .boletas-btn:hover {
-            background-color: #1a6f2d;
+            background-color: #083d1c;
+            transform: translateY(-1px);
+        }
+
+        .boletas-btn:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 3px rgba(10, 76, 35, 0.2);
         }
 
         .boletas-btn:disabled {
-            opacity: 0.7;
+            background-color: #6c757d;
+            box-shadow: none;
             cursor: not-allowed;
+            transform: none;
         }
 
         .boletas-footer {
-            background-color: #eef2f5;
+            background-color: #f8f9fa;
             padding: 15px;
             text-align: center;
-            font-size: 12px;
+            font-size: 13px;
+            color: #6c757d;
+            border-top: 1px solid #e0e0e0;
         }
 
         .panel-guia {
             display: none;
-            background: #e8f8f5;
-            border-left: 5px solid #16a085;
-            padding: 16px;
-            border-radius: 8px;
-            margin-bottom: 20px;
+            background: #f0fdf4; /* Verde muy sutil */
+            border: 1px solid #bbf7d0;
+            border-left: 5px solid #16a34a;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            color: #166534;
+            box-shadow: 0 2px 8px rgba(22, 163, 74, 0.05);
+        }
+
+        .panel-guia h3 {
+            color: #14532d;
+            font-size: 16px;
+            margin-bottom: 8px;
         }
 
         .acciones-superiores {
             display: flex;
-            gap: 10px;
+            gap: 12px;
             justify-content: flex-end;
-            margin-top: 16px;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
         }
 
         .btn-secundario {
-            background: #5a5a5a;
+            background: #6c757d;
             color: white;
             border: none;
             border-radius: 6px;
-            padding: 10px 14px;
+            padding: 12px 18px;
             cursor: pointer;
-            font-weight: 700;
+            font-weight: 600;
+            font-size: 14px;
+            transition: background-color 0.2s ease;
+        }
+        
+        .btn-secundario:hover {
+            background: #5a6268;
         }
 
         .tabla-boletas {
-            margin-top: 30px;
+            margin-top: 40px;
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+            border: 1px solid #eaeaea;
         }
 
         .tabla-boletas h3 {
-            margin-bottom: 10px;
+            margin-top: 0;
+            margin-bottom: 20px;
+            color: #0a4c23;
+            font-size: 18px;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 12px;
+        }
+
+        /* Estilización de Tablas General para boletas.html */
+        .tabla-container table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .tabla-container th {
+            background-color: #f8f9fa;
+            color: #495057;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            padding: 14px;
+            border-bottom: 2px solid #dee2e6;
+            text-align: left;
+        }
+
+        .tabla-container td {
+            padding: 14px;
+            vertical-align: middle;
+            border-bottom: 1px solid #e9ecef;
+            color: #212529;
+            font-size: 0.95rem;
+        }
+
+        .tabla-container tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .btn-ver-detalle {
+            border: none;
+            border-radius: 5px;
+            padding: 8px 14px;
+            color: #fff;
+            background: #0a4c23;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: background 0.2s ease, transform 0.1s ease;
+            box-shadow: 0 2px 4px rgba(10, 76, 35, 0.15);
+        }
+        
+        .btn-ver-detalle:hover {
+            background: #083d1c;
+            transform: translateY(-1px);
         }
 
         .panel-detalle-boleta {
-            display: none;
+            display: none; /* Se mantiene oculto ya que usamos modals ahora, pero por si acaso se activa */
             margin-top: 18px;
             background: #ffffff;
             border: 1px solid #d9d9d9;
