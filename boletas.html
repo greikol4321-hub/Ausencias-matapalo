@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boletas Disciplinarias - CTP Matapalo</title>
+    <link rel="icon" type="image/png" href="img/logo_colegio_nuevo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/stylo.css">
+    <style>
+        .boletas-wrap {
+            margin-top: 24px;
+            background: #ffffff;
+            border: 1px solid #d9d9d9;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+        }
+
+        .boletas-header {
+            background: #f5f1e8;
+            padding: 20px;
+            border-bottom: 3px solid #0a4c23;
+        }
+
+        .boletas-header table {
+            width: 100%;
+        }
+
+        .boletas-header h2 {
+            text-align: center;
+            margin: 10px 0 0;
+            color: #0a4c23;
+            font-size: 18px;
+        }
+
+        .boletas-header h3 {
+            text-align: center;
+            margin: 5px 0 0;
+            color: #0a4c23;
+            font-size: 14px;
+        }
+
+        .boletas-content {
+            padding: 20px;
+        }
+
+        .boletas-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .boletas-field {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .boletas-field label {
+            font-size: 13px;
+            margin-bottom: 5px;
+            font-weight: 700;
+        }
+
+        .boletas-field input,
+        .boletas-field textarea {
+            padding: 9px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 13px;
+            font-family: inherit;
+        }
+
+        .boletas-field textarea {
+            resize: vertical;
+            min-height: 90px;
+        }
+
+        .boletas-btn {
+            background-color: #218838;
+            color: #fff;
+            padding: 11px 14px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        .boletas-btn:hover {
+            background-color: #1a6f2d;
+        }
+
+        .boletas-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .boletas-footer {
+            background-color: #eef2f5;
+            padding: 15px;
+            text-align: center;
+            font-size: 12px;
+        }
+
+        .panel-guia {
+            display: none;
+            background: #e8f8f5;
+            border-left: 5px solid #16a085;
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .acciones-superiores {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 16px;
+        }
+
+        .btn-secundario {
+            background: #5a5a5a;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 10px 14px;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        .tabla-boletas {
+            margin-top: 30px;
+        }
+
+        .tabla-boletas h3 {
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 900px) {
+            .boletas-row {
+                flex-direction: column;
+            }
+
+            .acciones-superiores {
+                justify-content: stretch;
+            }
+
+            .acciones-superiores button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body class="page-docentes">
+    <header class="header">
+        <div class="header-container">
+            <div class="header-logos-left">
+                <img src="img/LOGO_MEP-removebg-preview.png" class="logo-mep" alt="MEP Costa Rica">
+                <div class="divider"></div>
+                <div class="logo-gobierno">
+                    <strong>Direccion Regional de Educacion Central del Pacifico</strong><br>
+                    <strong>Colegio Tecnico Profesional de Matapalo</strong><br>
+                </div>
+            </div>
+
+            <div class="nav-right">
+                <a href="index.html" title="Inicio">
+                    <img src="img/logo_colegio_nuevo.png" class="logo-escudo" alt="Escudo CTP Matapalo">
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <div class="navbar">
+        <div class="navbar-info">
+            <span><i class="fas fa-file-signature"></i> Sesion:</span>
+            <span id="rolBadge" class="badge-rol">Cargando...</span>
+        </div>
+        <button class="btn-cerrar" onclick="cerrarSesion()"><i class="fas fa-sign-out-alt"></i> Cerrar Sesion</button>
+    </div>
+
+    <div class="container">
+        <div class="info-usuario">
+            <div class="info-item">
+                <b><i class="fas fa-user-circle"></i> Nombre Completo</b>
+                <span id="nombreUsuario">---</span>
+            </div>
+            <div class="info-item">
+                <b><i class="fas fa-id-card"></i> Usuario</b>
+                <span id="usuario">---</span>
+            </div>
+            <div class="info-item">
+                <b><i class="fas fa-briefcase"></i> Perfil</b>
+                <span id="rol">---</span>
+            </div>
+        </div>
+
+        <div id="panelGuia" class="panel-guia">
+            <h3 style="margin-top:0;"><i class="fas fa-users"></i> Modo Docente Guia</h3>
+            <p style="margin:0;">Solo se mostraran boletas de la seccion guia asignada: <b id="seccionGuiaLabel">---</b>.</p>
+        </div>
+
+        <div class="boletas-wrap">
+            <div class="boletas-header">
+                <table>
+                    <thead style="display:none;">
+                        <tr>
+                            <th>Logo MEP</th>
+                            <th>Logo CTP Matapalo</th>
+                        </tr>
+                    </thead>
+                    <tr>
+                        <td style="text-align:left;">
+                            <img src="img/LOGO_MEP-removebg-preview.png" width="90" alt="Logo MEP">
+                        </td>
+                        <td style="text-align:right;">
+                            <img src="img/logo_colegio_nuevo.png" width="70" alt="Logo CTP">
+                        </td>
+                    </tr>
+                </table>
+                <h2>COLEGIO TECNICO PROFESIONAL DE MATAPALO</h2>
+                <h3>BOLETA DISCIPLINARIA</h3>
+            </div>
+
+            <div class="boletas-content">
+                <form id="formBoleta">
+                    <datalist id="sugerenciasEstudiantes"></datalist>
+
+                    <div class="boletas-row">
+                        <div class="boletas-field">
+                            <label for="numeroBoleta">Numero Boleta:</label>
+                            <input id="numeroBoleta" type="text" readonly>
+                        </div>
+
+                        <div class="boletas-field">
+                            <label for="fechaBoleta">Fecha:</label>
+                            <input id="fechaBoleta" type="date" required>
+                        </div>
+                    </div>
+
+                    <div class="boletas-row">
+                        <div class="boletas-field">
+                            <label for="nombreEstudiante">Nombre del estudiante:</label>
+                            <input id="nombreEstudiante" type="text" list="sugerenciasEstudiantes" required>
+                        </div>
+                    </div>
+
+                    <div class="boletas-row">
+                        <div class="boletas-field">
+                            <label for="cedulaEstudiante">Cedula del estudiante:</label>
+                            <input id="cedulaEstudiante" type="text" list="sugerenciasEstudiantes" required>
+                        </div>
+
+                        <div class="boletas-field">
+                            <label for="seccionEstudiante">Seccion:</label>
+                            <input id="seccionEstudiante" type="text" required>
+                        </div>
+                    </div>
+
+                    <div class="boletas-row">
+                        <div class="boletas-field">
+                            <label for="docenteAplica">Docente que aplica la boleta:</label>
+                            <input id="docenteAplica" type="text" readonly>
+                        </div>
+                    </div>
+
+                    <div class="boletas-row">
+                        <div class="boletas-field">
+                            <label for="correoEncargado">Correo del encargado legal:</label>
+                            <input id="correoEncargado" type="email">
+                        </div>
+                    </div>
+
+                    <div class="boletas-row">
+                        <div class="boletas-field">
+                            <label for="faltaCometida">Falta cometida:</label>
+                            <textarea id="faltaCometida" required></textarea>
+                        </div>
+                    </div>
+
+                    <button id="btnGuardarBoleta" class="boletas-btn" type="submit"><i class="fas fa-save"></i> Guardar Boleta</button>
+                </form>
+
+                <div class="acciones-superiores">
+                    <button type="button" class="btn-secundario" onclick="window.location.href='docentes.html'"><i class="fas fa-arrow-left"></i> Volver al Panel</button>
+                </div>
+            </div>
+
+            <div class="boletas-footer">
+                Documento institucional - CTP Matapalo
+            </div>
+        </div>
+
+        <div class="tabla-boletas">
+            <h3><i class="fas fa-history"></i> Mis boletas recientes</h3>
+            <div class="overflow-auto">
+                <div class="tabla-container">
+                    <table id="tablaBoletasPropias">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Boleta</th>
+                                <th>Estudiante</th>
+                                <th>Seccion</th>
+                                <th>Falta</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cuerpoBoletasPropias">
+                            <tr>
+                                <td colspan="5" style="text-align:center; padding: 24px; color:#666;">Cargando boletas...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="bloqueBoletasSeccion" class="tabla-boletas" style="display:none;">
+            <h3><i class="fas fa-layer-group"></i> Boletas de mi seccion guia</h3>
+            <div class="overflow-auto">
+                <div class="tabla-container">
+                    <table id="tablaBoletasSeccion">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Boleta</th>
+                                <th>Estudiante</th>
+                                <th>Cedula</th>
+                                <th>Docente</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cuerpoBoletasSeccion">
+                            <tr>
+                                <td colspan="5" style="text-align:center; padding: 24px; color:#666;">Cargando boletas de la seccion...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        const SUPABASE_URL = 'https://iowxlwnosyyqetbvvmuk.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlvd3hsd25vc3l5cWV0YnZ2bXVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYxOTk4NDYsImV4cCI6MjA5MTc3NTg0Nn0.VZ5VMu0z4nlsZ0hKvDSk4IUluA1yGx9eQCCXzDc5HmU';
+
+        const headers = {
+            apikey: SUPABASE_KEY,
+            Authorization: `Bearer ${SUPABASE_KEY}`,
+            'Content-Type': 'application/json'
+        };
+
+        const ROLES_PERMITIDOS = new Set(['docente', 'docente_guia', 'admin']);
+        const cacheEstudiantes = new Map();
+
+        let seccionGuia = '';
+        let rolActual = '';
+        let usuarioActual = '';
+
+        function generarNumeroBoleta() {
+            const fecha = new Date();
+            const prefijo = `${fecha.getFullYear()}${String(fecha.getMonth() + 1).padStart(2, '0')}${String(fecha.getDate()).padStart(2, '0')}`;
+            const aleatorio = String(Math.floor(Math.random() * 900) + 100);
+            return `BOL-${prefijo}-${aleatorio}`;
+        }
+
+        async function fetchJson(url, options = {}) {
+            const res = await fetch(url, options);
+            const data = await res.json().catch(() => []);
+            if (!res.ok) {
+                throw new Error(data.message || data.error || `Error ${res.status}`);
+            }
+            return data;
+        }
+
+        async function cargarDatosUsuarioDesdeBD(usuario) {
+            const params = new URLSearchParams();
+            params.set('select', 'usuario,nombre_completo,rol,seccion_guia,seccion');
+            params.set('usuario', `eq.${usuario}`);
+            params.set('limit', '1');
+            const url = `${SUPABASE_URL}/rest/v1/usuarios?${params.toString()}`;
+            const data = await fetchJson(url, { headers });
+            return Array.isArray(data) && data.length ? data[0] : null;
+        }
+
+        function actualizarInterfazSesion(nombre, usuario, rol) {
+            document.getElementById('nombreUsuario').textContent = nombre;
+            document.getElementById('usuario').textContent = usuario;
+            document.getElementById('rol').textContent = rol;
+            document.getElementById('rolBadge').textContent = rol;
+            document.getElementById('docenteAplica').value = nombre;
+
+            if (rol === 'docente_guia') {
+                document.getElementById('rolBadge').style.background = '#16a085';
+            } else if (rol === 'admin') {
+                document.getElementById('rolBadge').style.background = '#e67e22';
+            }
+        }
+
+        function renderBoletas(tbodyId, boletas, emptyText, rowBuilder) {
+            const tbody = document.getElementById(tbodyId);
+            tbody.innerHTML = '';
+            if (!boletas.length) {
+                tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:24px; color:#666;">${emptyText}</td></tr>`;
+                return;
+            }
+            boletas.forEach((b) => {
+                tbody.innerHTML += rowBuilder(b);
+            });
+        }
+
+        async function cargarBoletasPropias() {
+            const params = new URLSearchParams();
+            params.set('select', 'fecha,numero_boleta,estudiante_nombre,seccion,falta_cometida');
+            params.set('docente_usuario', `eq.${usuarioActual}`);
+            params.set('order', 'fecha.desc');
+            params.set('limit', '20');
+
+            const url = `${SUPABASE_URL}/rest/v1/boletas?${params.toString()}`;
+            try {
+                const data = await fetchJson(url, { headers });
+                renderBoletas(
+                    'cuerpoBoletasPropias',
+                    data,
+                    'No hay boletas registradas por este docente.',
+                    (b) => `<tr>
+                        <td>${b.fecha || ''}</td>
+                        <td>${b.numero_boleta || ''}</td>
+                        <td>${b.estudiante_nombre || ''}</td>
+                        <td>${b.seccion || ''}</td>
+                        <td>${b.falta_cometida || ''}</td>
+                    </tr>`
+                );
+            } catch (error) {
+                renderBoletas('cuerpoBoletasPropias', [], 'No se pudo cargar la tabla boletas. Verifique que la tabla boletas exista.', () => '');
+                console.error(error);
+            }
+        }
+
+        async function cargarBoletasSeccion() {
+            if (!seccionGuia) {
+                return;
+            }
+            const params = new URLSearchParams();
+            params.set('select', 'fecha,numero_boleta,estudiante_nombre,estudiante_cedula,docente_nombre');
+            params.set('seccion', `eq.${seccionGuia}`);
+            params.set('order', 'fecha.desc');
+            params.set('limit', '30');
+
+            const url = `${SUPABASE_URL}/rest/v1/boletas?${params.toString()}`;
+            try {
+                const data = await fetchJson(url, { headers });
+                renderBoletas(
+                    'cuerpoBoletasSeccion',
+                    data,
+                    `No hay boletas para la seccion ${seccionGuia}.`,
+                    (b) => `<tr>
+                        <td>${b.fecha || ''}</td>
+                        <td>${b.numero_boleta || ''}</td>
+                        <td>${b.estudiante_nombre || ''}</td>
+                        <td>${b.estudiante_cedula || ''}</td>
+                        <td>${b.docente_nombre || ''}</td>
+                    </tr>`
+                );
+            } catch (error) {
+                renderBoletas('cuerpoBoletasSeccion', [], 'No se pudo cargar la tabla boletas para seccion guia.', () => '');
+                console.error(error);
+            }
+        }
+
+        async function buscarEstudiantes(termino) {
+            const valor = (termino || '').trim();
+            if (valor.length < 2) {
+                return [];
+            }
+
+            const params = new URLSearchParams();
+            params.set('select', 'cedula,nombre_completo,seccion,correo_encargado');
+            params.set('or', `(cedula.ilike.*${valor}*,nombre_completo.ilike.*${valor}*)`);
+            params.set('limit', '8');
+            if (rolActual === 'docente_guia' && seccionGuia) {
+                params.set('seccion', `eq.${seccionGuia}`);
+            }
+
+            const url = `${SUPABASE_URL}/rest/v1/estudiantes?${params.toString()}`;
+            try {
+                const data = await fetchJson(url, { headers });
+                return Array.isArray(data) ? data : [];
+            } catch (error) {
+                console.error(error);
+                return [];
+            }
+        }
+
+        function aplicarEstudiante(estudiante) {
+            if (!estudiante) return;
+            document.getElementById('nombreEstudiante').value = estudiante.nombre_completo || '';
+            document.getElementById('cedulaEstudiante').value = estudiante.cedula || '';
+            document.getElementById('seccionEstudiante').value = estudiante.seccion || '';
+            document.getElementById('correoEncargado').value = estudiante.correo_encargado || '';
+        }
+
+        function actualizarSugerencias(estudiantes) {
+            const datalist = document.getElementById('sugerenciasEstudiantes');
+            datalist.innerHTML = '';
+            estudiantes.forEach((e) => {
+                if (!e || !e.cedula) return;
+                cacheEstudiantes.set(e.cedula, e);
+                cacheEstudiantes.set((e.nombre_completo || '').toLowerCase(), e);
+
+                const optCedula = document.createElement('option');
+                optCedula.value = e.cedula;
+                optCedula.label = `${e.nombre_completo || ''} | ${e.seccion || ''}`;
+                datalist.appendChild(optCedula);
+
+                if (e.nombre_completo) {
+                    const optNombre = document.createElement('option');
+                    optNombre.value = e.nombre_completo;
+                    optNombre.label = `${e.cedula} | ${e.seccion || ''}`;
+                    datalist.appendChild(optNombre);
+                }
+            });
+        }
+
+        async function intentarAutocompletarPorCampo(campo, tipo) {
+            const valor = campo.value.trim();
+            if (!valor) return;
+
+            const cacheKey = tipo === 'cedula' ? valor : valor.toLowerCase();
+            if (cacheEstudiantes.has(cacheKey)) {
+                aplicarEstudiante(cacheEstudiantes.get(cacheKey));
+                return;
+            }
+
+            const params = new URLSearchParams();
+            params.set('select', 'cedula,nombre_completo,seccion,correo_encargado');
+            params.set('limit', '1');
+            if (tipo === 'cedula') {
+                params.set('cedula', `eq.${valor}`);
+            } else {
+                params.set('nombre_completo', `ilike.*${valor}*`);
+            }
+            if (rolActual === 'docente_guia' && seccionGuia) {
+                params.set('seccion', `eq.${seccionGuia}`);
+            }
+
+            const url = `${SUPABASE_URL}/rest/v1/estudiantes?${params.toString()}`;
+            try {
+                const data = await fetchJson(url, { headers });
+                if (Array.isArray(data) && data.length) {
+                    aplicarEstudiante(data[0]);
+                    cacheEstudiantes.set(data[0].cedula, data[0]);
+                    cacheEstudiantes.set((data[0].nombre_completo || '').toLowerCase(), data[0]);
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        function prepararEventosAutocomplete() {
+            const nombreInput = document.getElementById('nombreEstudiante');
+            const cedulaInput = document.getElementById('cedulaEstudiante');
+            let timer;
+
+            async function onInput(ev) {
+                clearTimeout(timer);
+                timer = setTimeout(async() => {
+                    const lista = await buscarEstudiantes(ev.target.value);
+                    actualizarSugerencias(lista);
+                }, 250);
+            }
+
+            nombreInput.addEventListener('input', onInput);
+            cedulaInput.addEventListener('input', onInput);
+            nombreInput.addEventListener('change', () => intentarAutocompletarPorCampo(nombreInput, 'nombre'));
+            cedulaInput.addEventListener('change', () => intentarAutocompletarPorCampo(cedulaInput, 'cedula'));
+            nombreInput.addEventListener('blur', () => intentarAutocompletarPorCampo(nombreInput, 'nombre'));
+            cedulaInput.addEventListener('blur', () => intentarAutocompletarPorCampo(cedulaInput, 'cedula'));
+        }
+
+        async function guardarBoleta(event) {
+            event.preventDefault();
+            const btn = document.getElementById('btnGuardarBoleta');
+
+            const payload = {
+                numero_boleta: document.getElementById('numeroBoleta').value.trim(),
+                fecha: document.getElementById('fechaBoleta').value,
+                estudiante_nombre: document.getElementById('nombreEstudiante').value.trim(),
+                estudiante_cedula: document.getElementById('cedulaEstudiante').value.trim(),
+                seccion: document.getElementById('seccionEstudiante').value.trim(),
+                docente_nombre: document.getElementById('docenteAplica').value.trim(),
+                docente_usuario: usuarioActual,
+                correo_encargado: document.getElementById('correoEncargado').value.trim(),
+                falta_cometida: document.getElementById('faltaCometida').value.trim()
+            };
+
+            if (!payload.fecha || !payload.estudiante_nombre || !payload.estudiante_cedula || !payload.seccion || !payload.falta_cometida) {
+                Swal.fire('Campos incompletos', 'Debe completar todos los campos obligatorios de la boleta.', 'warning');
+                return;
+            }
+
+            if (rolActual === 'docente_guia' && seccionGuia && payload.seccion !== seccionGuia) {
+                Swal.fire('Seccion no permitida', `Como docente guia solo puede registrar boletas de la seccion ${seccionGuia}.`, 'warning');
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Guardando...';
+
+            try {
+                await fetchJson(`${SUPABASE_URL}/rest/v1/boletas`, {
+                    method: 'POST',
+                    headers,
+                    body: JSON.stringify(payload)
+                });
+
+                Swal.fire('Guardada', 'La boleta se registro correctamente.', 'success');
+                document.getElementById('formBoleta').reset();
+                document.getElementById('numeroBoleta').value = generarNumeroBoleta();
+                document.getElementById('fechaBoleta').value = new Date().toISOString().slice(0, 10);
+                document.getElementById('docenteAplica').value = localStorage.getItem('nombre') || '';
+
+                await cargarBoletasPropias();
+                if (rolActual === 'docente_guia') {
+                    await cargarBoletasSeccion();
+                }
+            } catch (error) {
+                console.error(error);
+                Swal.fire('Error', `No fue posible guardar la boleta. ${error.message}`, 'error');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-save"></i> Guardar Boleta';
+            }
+        }
+
+        async function cerrarSesion() {
+            const confirmacion = await Swal.fire({
+                title: 'Cerrar Sesion',
+                text: 'Seguro que desea salir del sistema?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Si, salir',
+                cancelButtonText: 'Cancelar'
+            });
+
+            if (confirmacion.isConfirmed) {
+                localStorage.clear();
+                globalThis.location.href = 'index.html';
+            }
+        }
+
+        async function inicializar() {
+            const nombre = localStorage.getItem('nombre');
+            const usuario = localStorage.getItem('usuario');
+            const rolStorage = localStorage.getItem('rol');
+
+            if (!nombre || !usuario || !rolStorage) {
+                globalThis.location.href = 'registrarme.html';
+                return;
+            }
+
+            const userDb = await cargarDatosUsuarioDesdeBD(usuario).catch(() => null);
+            rolActual = (userDb && userDb.rol) || rolStorage;
+            usuarioActual = usuario;
+            seccionGuia = (userDb && (userDb.seccion_guia || userDb.seccion)) || '';
+
+            if (!ROLES_PERMITIDOS.has(rolActual)) {
+                Swal.fire('Sin acceso', 'Solo docentes, docentes guia o admin pueden usar boletas.', 'warning').then(() => {
+                    globalThis.location.href = 'docentes.html';
+                });
+                return;
+            }
+
+            actualizarInterfazSesion(nombre, usuario, rolActual);
+            document.getElementById('numeroBoleta').value = generarNumeroBoleta();
+            document.getElementById('fechaBoleta').value = new Date().toISOString().slice(0, 10);
+            prepararEventosAutocomplete();
+            document.getElementById('formBoleta').addEventListener('submit', guardarBoleta);
+
+            await cargarBoletasPropias();
+
+            if (rolActual === 'docente_guia') {
+                const panel = document.getElementById('panelGuia');
+                panel.style.display = 'block';
+                document.getElementById('seccionGuiaLabel').textContent = seccionGuia || 'SIN ASIGNAR';
+                document.getElementById('bloqueBoletasSeccion').style.display = 'block';
+                await cargarBoletasSeccion();
+            }
+        }
+
+        window.onload = inicializar;
+    </script>
+</body>
+
+</html>

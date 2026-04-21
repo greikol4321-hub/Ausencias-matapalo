@@ -65,6 +65,12 @@
             <button type="button" class="btn-admin" onclick="window.location.href='comunicados.html'"><i class="fas fa-megaphone"></i> Ir a Gestión de Comunicados</button>
         </div>
 
+        <div style="background: white; padding: 20px; border-radius: 10px; border-left: 5px solid #0a4c23; margin-bottom: 30px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+            <h3 style="margin-top: 0; color: #0a4c23;"><i class="fas fa-file-signature"></i> Gestión de Boletas Disciplinarias</h3>
+            <p style="margin-bottom: 15px; color: #666;">Docentes y docentes guía pueden registrar boletas disciplinarias y consultar su historial.</p>
+            <button type="button" class="btn-admin" onclick="window.location.href='boletas.html'"><i class="fas fa-plus-circle"></i> Abrir Sistema de Boletas</button>
+        </div>
+
         <h3><i class="fas fa-clipboard-plus"></i> Registrar Nueva Ausencia</h3>
         <form id="formMiAusencia">
             <div class="row">
@@ -179,6 +185,8 @@
             if (rol === 'admin') {
                 document.getElementById('seccionAdmin').style.display = 'block';
                 document.getElementById('rolBadge').style.background = '#e67e22';
+            } else if (rol === 'docente_guia') {
+                document.getElementById('rolBadge').style.background = '#16a085';
             }
 
             cargarHistorial();
