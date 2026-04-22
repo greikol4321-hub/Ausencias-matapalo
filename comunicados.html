@@ -264,22 +264,26 @@
         }
         .noti-dialog-footer {
             display: flex;
-            gap: 10px;
-            padding: 0 20px 20px;
+            gap: 12px;
+            padding: 0 20px 24px;
         }
         .noti-dialog-cancel {
             flex: 1;
             padding: 11px 0;
             border-radius: 8px;
-            border: 1.5px solid #d0d7de;
-            background: #f5f5f5;
-            color: #555;
+            border: 2px solid #e1e4e8;
+            background: #ffffff;
+            color: #444;
             font-size: 0.97rem;
             font-weight: 600;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: all 0.2s ease;
         }
-        .noti-dialog-cancel:hover { background: #e8e8e8; }
+        .noti-dialog-cancel:hover { 
+            background: #f8f9fa;
+            border-color: #d0d7de;
+            color: #222;
+        }
         .noti-dialog-confirm {
             flex: 1;
             padding: 11px 0;
@@ -290,11 +294,22 @@
             font-size: 0.97rem;
             font-weight: 600;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(10, 76, 35, 0.2);
         }
-        .noti-dialog-confirm:hover  { background: #0d6b32; }
-        .noti-dialog-confirm.danger { background: #e74c3c; }
-        .noti-dialog-confirm.danger:hover { background: #c0392b; }
+        .noti-dialog-confirm:hover  { 
+            background: #0d6b32; 
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(10, 76, 35, 0.3);
+        }
+        .noti-dialog-confirm.danger { 
+            background: #e74c3c; 
+            box-shadow: 0 4px 12px rgba(231, 76, 60, 0.2);
+        }
+        .noti-dialog-confirm.danger:hover { 
+            background: #c0392b; 
+            box-shadow: 0 6px 16px rgba(231, 76, 60, 0.3);
+        }
 
         /* Loading overlay */
         #noti-loading {
