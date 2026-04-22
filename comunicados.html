@@ -178,37 +178,147 @@
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
         }
 
-        /* === SweetAlert2 Modern Overrides === */
-        .swal-popup-modern {
-            border-radius: 16px !important;
-            padding: 2rem 2rem 1.5rem !important;
-            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.18) !important;
+        /* === SISTEMA DE NOTIFICACIONES PROPIO === */
+        #noti-toast-container {
+            position: fixed;
+            top: 18px;
+            right: 18px;
+            z-index: 99999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            pointer-events: none;
         }
-        .swal-popup-modern .swal2-title {
-            font-size: 1.3rem !important;
-            font-weight: 700 !important;
-            color: #1a1a2e !important;
+        .noti-toast {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.16);
+            padding: 14px 18px;
+            min-width: 260px;
+            max-width: 340px;
+            pointer-events: all;
+            animation: noti-in 0.28s cubic-bezier(.4,0,.2,1);
+            border-left: 5px solid #0a4c23;
         }
-        .swal-popup-modern .swal2-html-container {
-            color: #555 !important;
-            font-size: 0.95rem !important;
-            line-height: 1.5 !important;
+        .noti-toast.error  { border-left-color: #e74c3c; }
+        .noti-toast.warning{ border-left-color: #f39c12; }
+        .noti-toast.info   { border-left-color: #3498db; }
+        .noti-toast-icon { font-size: 1.3rem; margin-top: 1px; }
+        .noti-toast.success .noti-toast-icon { color: #0a4c23; }
+        .noti-toast.error   .noti-toast-icon { color: #e74c3c; }
+        .noti-toast.warning .noti-toast-icon { color: #f39c12; }
+        .noti-toast.info    .noti-toast-icon { color: #3498db; }
+        .noti-toast-text { flex: 1; font-size: 0.93rem; color: #222; font-weight: 600; line-height: 1.4; }
+        .noti-toast-sub  { font-weight: 400; color: #666; font-size: 0.85rem; margin-top: 2px; }
+        .noti-toast-close { background: none; border: none; cursor: pointer; color: #aaa; font-size: 1.1rem; line-height: 1; padding: 0; margin-left: 4px; transition: color 0.2s; }
+        .noti-toast-close:hover { color: #555; }
+        .noti-toast-bar { position: absolute; bottom: 0; left: 0; height: 3px; background: currentColor; border-radius: 0 0 0 12px; animation: noti-bar 2.8s linear forwards; }
+        @keyframes noti-in  { from { opacity:0; transform:translateX(30px); } to { opacity:1; transform:translateX(0); } }
+        @keyframes noti-out { from { opacity:1; transform:translateX(0); } to { opacity:0; transform:translateX(30px); } }
+        @keyframes noti-bar { from { width:100%; } to { width:0%; } }
+
+        /* Confirm dialog */
+        .noti-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.52);
+            backdrop-filter: blur(3px);
+            z-index: 99998;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            animation: cedit-fadein 0.2s ease;
         }
-        .swal-popup-modern .swal2-actions {
-            gap: 10px !important;
-            margin-top: 1.25rem !important;
+        .noti-overlay.active { display: flex; }
+        .noti-dialog {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 24px 64px rgba(0,0,0,0.22);
+            width: 100%;
+            max-width: 400px;
+            overflow: hidden;
+            animation: cedit-slidein 0.25s ease;
         }
-        .swal-popup-modern .swal2-confirm,
-        .swal-popup-modern .swal2-cancel {
-            border-radius: 8px !important;
-            padding: 10px 22px !important;
-            font-size: 0.95rem !important;
-            font-weight: 600 !important;
+        .noti-dialog-icon {
+            text-align: center;
+            padding: 28px 24px 0;
+            font-size: 2.8rem;
         }
-        .swal-toast-modern {
-            border-radius: 10px !important;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.13) !important;
+        .noti-dialog-title {
+            text-align: center;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #1a1a2e;
+            padding: 12px 24px 4px;
         }
+        .noti-dialog-text {
+            text-align: center;
+            font-size: 0.93rem;
+            color: #666;
+            padding: 0 24px 16px;
+            line-height: 1.5;
+        }
+        .noti-dialog-footer {
+            display: flex;
+            gap: 10px;
+            padding: 0 20px 20px;
+        }
+        .noti-dialog-cancel {
+            flex: 1;
+            padding: 11px 0;
+            border-radius: 8px;
+            border: 1.5px solid #d0d7de;
+            background: #f5f5f5;
+            color: #555;
+            font-size: 0.97rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .noti-dialog-cancel:hover { background: #e8e8e8; }
+        .noti-dialog-confirm {
+            flex: 1;
+            padding: 11px 0;
+            border-radius: 8px;
+            border: none;
+            background: #0a4c23;
+            color: white;
+            font-size: 0.97rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .noti-dialog-confirm:hover  { background: #0d6b32; }
+        .noti-dialog-confirm.danger { background: #e74c3c; }
+        .noti-dialog-confirm.danger:hover { background: #c0392b; }
+
+        /* Loading overlay */
+        #noti-loading {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.45);
+            backdrop-filter: blur(2px);
+            z-index: 99997;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 14px;
+        }
+        #noti-loading.active { display: flex; }
+        .noti-spinner {
+            width: 48px; height: 48px;
+            border: 5px solid rgba(255,255,255,0.25);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+        }
+        .noti-loading-text { color: #fff; font-size: 1rem; font-weight: 600; letter-spacing: 0.03em; }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
         /* === MODAL EDITAR COMUNICADO PERSONALIZADO === */
         .cedit-overlay {
@@ -356,6 +466,26 @@
         .cedit-btn-save:hover { background: #0d6b32; transform: translateY(-1px); }
         .cedit-btn-save:disabled { background: #8aab94; cursor: not-allowed; transform: none; }
     </style>
+    <!-- ===== NOTIFICACIONES PROPIAS ===== -->
+    <div id="noti-toast-container"></div>
+
+    <div id="noti-loading">
+        <div class="noti-spinner"></div>
+        <span class="noti-loading-text" id="noti-loading-text">Procesando...</span>
+    </div>
+
+    <div id="noti-confirm-overlay" class="noti-overlay">
+        <div class="noti-dialog">
+            <div class="noti-dialog-icon" id="noti-confirm-icon"></div>
+            <div class="noti-dialog-title" id="noti-confirm-title"></div>
+            <div class="noti-dialog-text" id="noti-confirm-text"></div>
+            <div class="noti-dialog-footer">
+                <button class="noti-dialog-cancel" onclick="noti.closeConfirm()">Cancelar</button>
+                <button class="noti-dialog-confirm" id="noti-confirm-btn" onclick="noti._doConfirm()">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
     <!-- ===== MODAL EDITAR COMUNICADO (personalizado) ===== -->
     <div id="modalEditarCom" class="cedit-overlay" onclick="cerrarModalEditar(event)">
         <div class="cedit-card" onclick="event.stopPropagation()">
@@ -394,8 +524,66 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script>
+        /* ============================================================
+           SISTEMA DE NOTIFICACIONES PROPIO
+        ============================================================ */
+        const noti = {
+            _confirmCb: null,
+
+            toast(type, title, subtitle = '') {
+                const icons = { success: 'fa-check-circle', error: 'fa-times-circle', warning: 'fa-exclamation-triangle', info: 'fa-info-circle' };
+                const icon = icons[type] || icons.info;
+                const el = document.createElement('div');
+                el.className = `noti-toast ${type}`;
+                el.style.position = 'relative';
+                el.innerHTML = `
+                    <i class="fas ${icon} noti-toast-icon"></i>
+                    <div class="noti-toast-text">${title}${subtitle ? `<div class="noti-toast-sub">${subtitle}</div>` : ''}</div>
+                    <button class="noti-toast-close" onclick="this.closest('.noti-toast').remove()">&times;</button>
+                `;
+                document.getElementById('noti-toast-container').appendChild(el);
+                setTimeout(() => {
+                    el.style.animation = 'noti-out 0.3s forwards';
+                    setTimeout(() => el.remove(), 300);
+                }, 2800);
+            },
+
+            error(title, msg = '') {
+                this.toast('error', title, msg);
+            },
+
+            confirm(title, text, onConfirm, danger = false) {
+                this._confirmCb = onConfirm;
+                const icons = { warning: '⚠️', question: '❓', danger: '🗑️' };
+                document.getElementById('noti-confirm-icon').textContent = danger ? '🗑️' : '⚠️';
+                document.getElementById('noti-confirm-title').textContent = title;
+                document.getElementById('noti-confirm-text').innerHTML = text;
+                const btn = document.getElementById('noti-confirm-btn');
+                btn.className = 'noti-dialog-confirm' + (danger ? ' danger' : '');
+                btn.textContent = danger ? 'Sí, eliminar' : 'Confirmar';
+                document.getElementById('noti-confirm-overlay').classList.add('active');
+            },
+
+            closeConfirm() {
+                document.getElementById('noti-confirm-overlay').classList.remove('active');
+                this._confirmCb = null;
+            },
+
+            _doConfirm() {
+                document.getElementById('noti-confirm-overlay').classList.remove('active');
+                const cb = this._confirmCb;
+                this._confirmCb = null;
+                if (cb) cb();
+            },
+
+            loading(show, text = 'Procesando...') {
+                document.getElementById('noti-loading-text').textContent = text;
+                document.getElementById('noti-loading').classList.toggle('active', show);
+            }
+        };
+    </script>
     <script>
         // Manejar validaciones para asegurar que el código no se caiga
         try {
@@ -504,45 +692,31 @@
             }
         }
 
-        async function eliminarComunicado(id) {
-            const confirmacion = await Swal.fire({
-                title: '¿Eliminar comunicado?',
-                html: '<span style="color:#555;font-size:0.95rem;">Esta acción <b>no se puede deshacer</b> y el comunicado desaparecerá para todos los usuarios.</span>',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#e74c3c',
-                cancelButtonColor: '#6c757d',
-                confirmButtonText: '<i class="fas fa-trash-alt"></i>&nbsp; Sí, eliminar',
-                cancelButtonText: 'Cancelar',
-                reverseButtons: true,
-                customClass: { popup: 'swal-popup-modern' }
-            });
-
-            if (!confirmacion.isConfirmed) return;
-
-            Swal.fire({
-                title: 'Eliminando...',
-                text: 'Por favor espere un momento',
-                allowOutsideClick: false,
-                showConfirmButton: false,
-                customClass: { popup: 'swal-popup-modern' },
-                didOpen: () => { Swal.showLoading(); }
-            });
-
-            try {
-                const res = await fetch(`${SUPABASE_URL}/rest/v1/comunicados?id=eq.${id}`, {
-                    method: "DELETE",
-                    headers
-                });
-                if (res.ok) {
-                    Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'Comunicado eliminado', showConfirmButton: false, timer: 2500, timerProgressBar: true, customClass: { popup: 'swal-toast-modern' } });
-                    cargarComunicadosAdmin();
-                } else {
-                    Swal.fire({ icon: 'error', title: 'Error', text: 'No se pudo eliminar: ' + res.statusText, confirmButtonColor: '#0a4c23', customClass: { popup: 'swal-popup-modern' } });
-                }
-            } catch (e) {
-                Swal.fire({ icon: 'error', title: 'Error de conexión', text: 'Problema de conexión.', confirmButtonColor: '#0a4c23', customClass: { popup: 'swal-popup-modern' } });
-            }
+        function eliminarComunicado(id) {
+            noti.confirm(
+                '¿Eliminar comunicado?',
+                'Esta acción <b>no se puede deshacer</b> y el comunicado desaparecerá para todos los usuarios.',
+                async () => {
+                    noti.loading(true, 'Eliminando...');
+                    try {
+                        const res = await fetch(`${SUPABASE_URL}/rest/v1/comunicados?id=eq.${id}`, {
+                            method: 'DELETE',
+                            headers
+                        });
+                        if (res.ok) {
+                            noti.toast('success', 'Comunicado eliminado');
+                            cargarComunicadosAdmin();
+                        } else {
+                            noti.error('Error al eliminar', res.statusText);
+                        }
+                    } catch (e) {
+                        noti.error('Error de conexión', 'No se pudo conectar al servidor.');
+                    } finally {
+                        noti.loading(false);
+                    }
+                },
+                true
+            );
         }
 
         let _editId = null;
@@ -590,13 +764,13 @@
                 document.getElementById('modalEditarCom').classList.remove('active');
 
                 if (res.ok) {
-                    Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'Comunicado actualizado', showConfirmButton: false, timer: 2500, timerProgressBar: true, customClass: { popup: 'swal-toast-modern' } });
+                    noti.toast('success', 'Comunicado actualizado');
                     cargarComunicadosAdmin();
                 } else {
-                    Swal.fire({ icon: 'error', title: 'Error', text: 'No se pudo actualizar el comunicado.', confirmButtonColor: '#0a4c23', customClass: { popup: 'swal-popup-modern' } });
+                    noti.error('Error al actualizar', 'No se pudo guardar el comunicado.');
                 }
             } catch (e) {
-                Swal.fire({ icon: 'error', title: 'Error de red', text: 'Problema de red al actualizar.', confirmButtonColor: '#0a4c23', customClass: { popup: 'swal-popup-modern' } });
+                noti.error('Error de red', 'Problema de conexión al actualizar.');
             } finally {
                 btnSave.disabled = false;
                 btnSave.innerHTML = '<i class="fas fa-save"></i> Guardar cambios';
@@ -617,53 +791,41 @@
                         autor: localStorage.getItem('nombre')
                     };
                     try {
-                        Swal.fire({
-                            title: 'Publicando...',
-                            text: 'Guardando el comunicado',
-                            allowOutsideClick: false,
-                            showConfirmButton: false,
-                            customClass: { popup: 'swal-popup-modern' },
-                            didOpen: () => { Swal.showLoading(); }
-                        });
+                        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Publicando...';
+                        noti.loading(true, 'Publicando comunicado...');
                         const res = await fetch(`${SUPABASE_URL}/rest/v1/comunicados`, {
                             method: "POST",
                             headers,
                             body: JSON.stringify(datos)
                         });
                         if (res.ok) {
-                            Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'Comunicado publicado', showConfirmButton: false, timer: 2500, timerProgressBar: true, customClass: { popup: 'swal-toast-modern' } });
+                            noti.toast('success', 'Comunicado publicado', 'Visible para todos los usuarios');
                             this.reset();
-                            cargarComunicadosAdmin(); // Reload the table automatically
+                            cargarComunicadosAdmin();
                         } else {
                             const error = await res.json();
-                            Swal.fire({ icon: 'error', title: 'Error al publicar', text: 'No se pudo publicar: ' + (error.message || res.statusText), confirmButtonColor: '#0a4c23', customClass: { popup: 'swal-popup-modern' } });
+                            noti.error('Error al publicar', error.message || res.statusText);
                         }
                     } catch (e) {
-                        Swal.fire({ icon: 'error', title: 'Error', text: 'Error al publicar: ' + e.message, confirmButtonColor: '#0a4c23', customClass: { popup: 'swal-popup-modern' } });
+                        noti.error('Error', e.message);
+                    } finally {
+                        noti.loading(false);
+                        btn.innerHTML = '<i class="fas fa-paper-plane"></i> Publicar Comunicado ahora';
                     }
                     btn.disabled = false;
                 });
             }
         }
 
-        async function cerrarSesion() {
-            const confirmacion = await Swal.fire({
-                title: '¿Cerrar Sesión?',
-                text: '¿Seguro que desea salir del panel?',
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonColor: '#0a4c23',
-                cancelButtonColor: '#6c757d',
-                confirmButtonText: '<i class="fas fa-sign-out-alt"></i>&nbsp; Sí, salir',
-                cancelButtonText: 'Cancelar',
-                reverseButtons: true,
-                customClass: { popup: 'swal-popup-modern' }
-            });
-
-            if (confirmacion.isConfirmed) {
-                localStorage.clear();
-                globalThis.location.href = "index.html";
-            }
+        function cerrarSesion() {
+            noti.confirm(
+                '¿Cerrar Sesión?',
+                '¿Seguro que desea salir del panel?',
+                () => {
+                    localStorage.clear();
+                    globalThis.location.href = 'index.html';
+                }
+            );
         }
 
         window.onload = inicializar;
