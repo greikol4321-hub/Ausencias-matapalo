@@ -177,6 +177,92 @@
             transform: translateY(-2px);
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
         }
+
+        /* === SweetAlert2 Modern Overrides === */
+        .swal-popup-modern {
+            border-radius: 16px !important;
+            padding: 2rem 2rem 1.5rem !important;
+            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.18) !important;
+        }
+        .swal-popup-modern .swal2-title {
+            font-size: 1.3rem !important;
+            font-weight: 700 !important;
+            color: #1a1a2e !important;
+        }
+        .swal-popup-modern .swal2-html-container {
+            color: #555 !important;
+            font-size: 0.95rem !important;
+            line-height: 1.5 !important;
+        }
+        .swal-popup-modern .swal2-actions {
+            gap: 10px !important;
+            margin-top: 1.25rem !important;
+        }
+        .swal-popup-modern .swal2-confirm,
+        .swal-popup-modern .swal2-cancel {
+            border-radius: 8px !important;
+            padding: 10px 22px !important;
+            font-size: 0.95rem !important;
+            font-weight: 600 !important;
+        }
+        .swal-popup-edit {
+            border-radius: 16px !important;
+            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.18) !important;
+            max-width: 500px !important;
+            width: 96% !important;
+        }
+        .swal-popup-edit .swal2-title {
+            font-size: 1.25rem !important;
+            font-weight: 700 !important;
+            color: #0a4c23 !important;
+            border-bottom: 2px solid #e8f5ee !important;
+            padding-bottom: 0.6rem !important;
+            width: 100% !important;
+        }
+        .swal-popup-edit .swal2-html-container {
+            overflow: visible !important;
+            margin: 0 !important;
+            padding: 0.5rem 0 0 !important;
+        }
+        .swal-popup-edit .swal2-actions {
+            gap: 10px !important;
+        }
+        .swal-popup-edit .swal2-confirm,
+        .swal-popup-edit .swal2-cancel {
+            border-radius: 8px !important;
+            padding: 10px 24px !important;
+            font-weight: 600 !important;
+        }
+        .swal2-popup .swal2-input,
+        .swal2-popup .swal2-textarea,
+        .swal2-popup .swal2-select {
+            border-radius: 8px !important;
+            border: 1.5px solid #d0d7de !important;
+            font-size: 0.95rem !important;
+            transition: border-color 0.2s, box-shadow 0.2s !important;
+        }
+        .swal2-popup .swal2-input:focus,
+        .swal2-popup .swal2-textarea:focus,
+        .swal2-popup .swal2-select:focus {
+            border-color: #0a4c23 !important;
+            box-shadow: 0 0 0 3px rgba(10, 76, 35, 0.12) !important;
+            outline: none !important;
+        }
+        .swal-toast-modern {
+            border-radius: 10px !important;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.13) !important;
+        }
+        .swal-form-label {
+            display: block;
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: #777;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin: 14px 0 5px;
+            text-align: left;
+        }
+        .swal-form-label:first-child { margin-top: 4px; }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
@@ -291,22 +377,25 @@
         async function eliminarComunicado(id) {
             const confirmacion = await Swal.fire({
                 title: '¿Eliminar comunicado?',
-                text: "Esta acción no se puede deshacer y desaparecerá para todos los usuarios.",
+                html: '<span style="color:#555;font-size:0.95rem;">Esta acción <b>no se puede deshacer</b> y el comunicado desaparecerá para todos los usuarios.</span>',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#e74c3c',
-                cancelButtonColor: '#95a5a6',
-                confirmButtonText: 'Sí, eliminar',
-                cancelButtonText: 'Cancelar'
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: '<i class="fas fa-trash-alt"></i>&nbsp; Sí, eliminar',
+                cancelButtonText: 'Cancelar',
+                reverseButtons: true,
+                customClass: { popup: 'swal-popup-modern' }
             });
 
             if (!confirmacion.isConfirmed) return;
 
             Swal.fire({
-                title: 'Borrando...',
+                title: 'Eliminando...',
                 text: 'Por favor espere un momento',
                 allowOutsideClick: false,
                 showConfirmButton: false,
+                customClass: { popup: 'swal-popup-modern' },
                 didOpen: () => { Swal.showLoading(); }
             });
 
@@ -316,13 +405,13 @@
                     headers
                 });
                 if (res.ok) {
-                    Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'Comunicado eliminado', showConfirmButton: false, timer: 2500, timerProgressBar: true });
+                    Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'Comunicado eliminado', showConfirmButton: false, timer: 2500, timerProgressBar: true, customClass: { popup: 'swal-toast-modern' } });
                     cargarComunicadosAdmin();
                 } else {
-                    Swal.fire({ icon: 'error', title: 'Error', text: 'No se pudo eliminar: ' + res.statusText, confirmButtonColor: '#0a4c23' });
+                    Swal.fire({ icon: 'error', title: 'Error', text: 'No se pudo eliminar: ' + res.statusText, confirmButtonColor: '#0a4c23', customClass: { popup: 'swal-popup-modern' } });
                 }
             } catch (e) {
-                Swal.fire({ icon: 'error', title: 'Error de conexión', text: 'Problema de conexión.', confirmButtonColor: '#0a4c23' });
+                Swal.fire({ icon: 'error', title: 'Error de conexión', text: 'Problema de conexión.', confirmButtonColor: '#0a4c23', customClass: { popup: 'swal-popup-modern' } });
             }
         }
 
@@ -330,21 +419,29 @@
             const {
                 value: formValues
             } = await Swal.fire({
-                title: 'Editar Comunicado',
+                title: '<i class="fas fa-edit" style="margin-right:8px;font-size:1.1rem;"></i>Editar Comunicado',
                 html: `
-            <input id="swal-input-titulo" class="swal2-input" value="${tituloActual}" placeholder="Título">
-            <textarea id="swal-input-contenido" class="swal2-textarea" placeholder="Contenido" rows="4" style="margin-top: 15px;">${contenidoActual}</textarea>
-            <select id="swal-input-color" class="swal2-input" style="width: 80%; display: flex; margin: 15px auto;">
-                <option value="#27ae60" ${colorActual === '#27ae60' ? 'selected' : ''}>Informativo (Verde)</option>
-                <option value="#3498db" ${colorActual === '#3498db' ? 'selected' : ''}>General (Azul)</option>
-                <option value="#f39c12" ${colorActual === '#f39c12' ? 'selected' : ''}>Importante (Naranja)</option>
-                <option value="#e74c3c" ${colorActual === '#e74c3c' ? 'selected' : ''}>Urgente (Rojo)</option>
-            </select>
+            <div style="padding: 0 2px;">
+                <label class="swal-form-label">Título</label>
+                <input id="swal-input-titulo" class="swal2-input" value="${tituloActual}" placeholder="Título del comunicado" style="margin: 0 0 4px; width: 100%;">
+                <label class="swal-form-label">Contenido</label>
+                <textarea id="swal-input-contenido" class="swal2-textarea" placeholder="Escriba el mensaje aquí..." rows="4" style="margin: 0 0 4px; width: 100%;">${contenidoActual}</textarea>
+                <label class="swal-form-label">Tipo de comunicado</label>
+                <select id="swal-input-color" class="swal2-select" style="width: 100%; margin: 0; padding: 10px 14px; cursor: pointer;">
+                    <option value="#27ae60" ${colorActual === '#27ae60' ? 'selected' : ''}>🟢 Informativo (Verde)</option>
+                    <option value="#3498db" ${colorActual === '#3498db' ? 'selected' : ''}>🔵 General (Azul)</option>
+                    <option value="#f39c12" ${colorActual === '#f39c12' ? 'selected' : ''}>🟡 Importante (Naranja)</option>
+                    <option value="#e74c3c" ${colorActual === '#e74c3c' ? 'selected' : ''}>🔴 Urgente (Rojo)</option>
+                </select>
+            </div>
         `,
                 focusConfirm: false,
                 showCancelButton: true,
                 confirmButtonColor: '#0a4c23',
                 cancelButtonColor: '#6c757d',
+                confirmButtonText: '<i class="fas fa-save"></i>&nbsp; Guardar cambios',
+                cancelButtonText: 'Cancelar',
+                customClass: { popup: 'swal-popup-edit' },
                 preConfirm: () => {
                     const valTitulo = document.getElementById('swal-input-titulo').value.trim();
                     const valContenido = document.getElementById('swal-input-contenido').value.trim();
@@ -367,6 +464,7 @@
                     text: 'Por favor espere',
                     allowOutsideClick: false,
                     showConfirmButton: false,
+                    customClass: { popup: 'swal-popup-modern' },
                     didOpen: () => { Swal.showLoading(); }
                 });
 
@@ -378,13 +476,13 @@
                     });
 
                     if (res.ok) {
-                        Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'Comunicado actualizado', showConfirmButton: false, timer: 2500, timerProgressBar: true });
+                        Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'Comunicado actualizado', showConfirmButton: false, timer: 2500, timerProgressBar: true, customClass: { popup: 'swal-toast-modern' } });
                         cargarComunicadosAdmin();
                     } else {
-                        Swal.fire({ icon: 'error', title: 'Error', text: 'No se pudo actualizar el comunicado.', confirmButtonColor: '#0a4c23' });
+                        Swal.fire({ icon: 'error', title: 'Error', text: 'No se pudo actualizar el comunicado.', confirmButtonColor: '#0a4c23', customClass: { popup: 'swal-popup-modern' } });
                     }
                 } catch (e) {
-                    Swal.fire({ icon: 'error', title: 'Error de red', text: 'Problema de red al actualizar.', confirmButtonColor: '#0a4c23' });
+                    Swal.fire({ icon: 'error', title: 'Error de red', text: 'Problema de red al actualizar.', confirmButtonColor: '#0a4c23', customClass: { popup: 'swal-popup-modern' } });
                 }
             }
         }
@@ -405,8 +503,10 @@
                     try {
                         Swal.fire({
                             title: 'Publicando...',
+                            text: 'Guardando el comunicado',
                             allowOutsideClick: false,
                             showConfirmButton: false,
+                            customClass: { popup: 'swal-popup-modern' },
                             didOpen: () => { Swal.showLoading(); }
                         });
                         const res = await fetch(`${SUPABASE_URL}/rest/v1/comunicados`, {
@@ -415,15 +515,15 @@
                             body: JSON.stringify(datos)
                         });
                         if (res.ok) {
-                            Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'Comunicado publicado', showConfirmButton: false, timer: 2500, timerProgressBar: true });
+                            Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'Comunicado publicado', showConfirmButton: false, timer: 2500, timerProgressBar: true, customClass: { popup: 'swal-toast-modern' } });
                             this.reset();
                             cargarComunicadosAdmin(); // Reload the table automatically
                         } else {
                             const error = await res.json();
-                            Swal.fire({ icon: 'error', title: 'Error al publicar', text: 'No se pudo publicar: ' + (error.message || res.statusText), confirmButtonColor: '#0a4c23' });
+                            Swal.fire({ icon: 'error', title: 'Error al publicar', text: 'No se pudo publicar: ' + (error.message || res.statusText), confirmButtonColor: '#0a4c23', customClass: { popup: 'swal-popup-modern' } });
                         }
                     } catch (e) {
-                        Swal.fire({ icon: 'error', title: 'Error', text: 'Error al publicar: ' + e.message, confirmButtonColor: '#0a4c23' });
+                        Swal.fire({ icon: 'error', title: 'Error', text: 'Error al publicar: ' + e.message, confirmButtonColor: '#0a4c23', customClass: { popup: 'swal-popup-modern' } });
                     }
                     btn.disabled = false;
                 });
@@ -438,8 +538,10 @@
                 showCancelButton: true,
                 confirmButtonColor: '#0a4c23',
                 cancelButtonColor: '#6c757d',
-                confirmButtonText: 'Sí, salir',
-                cancelButtonText: 'Cancelar'
+                confirmButtonText: '<i class="fas fa-sign-out-alt"></i>&nbsp; Sí, salir',
+                cancelButtonText: 'Cancelar',
+                reverseButtons: true,
+                customClass: { popup: 'swal-popup-modern' }
             });
 
             if (confirmacion.isConfirmed) {
