@@ -210,36 +210,45 @@
             box-shadow: 0 24px 64px rgba(0, 0, 0, 0.18) !important;
             max-width: 500px !important;
             width: 96% !important;
+            padding-top: 0 !important;
+        }
+        .swal-popup-edit .swal2-header {
+            padding: 1.2rem 1.5rem 0.6rem !important;
+            border-bottom: 2px solid #e8f5ee !important;
+            background: #f8fdf9 !important;
+            border-radius: 16px 16px 0 0 !important;
         }
         .swal-popup-edit .swal2-title {
-            font-size: 1.25rem !important;
+            font-size: 1.2rem !important;
             font-weight: 700 !important;
             color: #0a4c23 !important;
-            border-bottom: 2px solid #e8f5ee !important;
-            padding-bottom: 0.6rem !important;
-            width: 100% !important;
+            padding: 0 !important;
+            margin: 0 !important;
         }
         .swal-popup-edit .swal2-html-container {
             overflow: visible !important;
             margin: 0 !important;
-            padding: 0.5rem 0 0 !important;
+            padding: 0.75rem 1.5rem 0 !important;
         }
         .swal-popup-edit .swal2-actions {
             display: flex !important;
             flex-direction: row !important;
+            flex-wrap: nowrap !important;
             justify-content: center !important;
             gap: 10px !important;
-            margin-top: 1rem !important;
-            padding: 0 1rem !important;
+            margin: 1rem 1.5rem 1.25rem !important;
+            padding: 0 !important;
         }
         .swal-popup-edit .swal2-confirm,
         .swal-popup-edit .swal2-cancel {
             border-radius: 8px !important;
-            padding: 11px 28px !important;
+            padding: 11px 0 !important;
             font-weight: 600 !important;
             font-size: 0.95rem !important;
             white-space: nowrap !important;
-            min-width: 140px !important;
+            flex: 1 !important;
+            width: auto !important;
+            min-width: 0 !important;
         }
         .swal2-popup .swal2-input,
         .swal2-popup .swal2-textarea,
@@ -450,6 +459,12 @@
                 confirmButtonText: 'Guardar cambios',
                 cancelButtonText: 'Cancelar',
                 customClass: { popup: 'swal-popup-edit' },
+                didOpen: () => {
+                    const actions = Swal.getActions();
+                    if (actions) {
+                        actions.style.cssText += 'display:flex!important;flex-direction:row!important;flex-wrap:nowrap!important;';
+                    }
+                },
                 preConfirm: () => {
                     const valTitulo = document.getElementById('swal-input-titulo').value.trim();
                     const valContenido = document.getElementById('swal-input-contenido').value.trim();
