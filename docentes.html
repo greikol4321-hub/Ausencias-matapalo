@@ -11,9 +11,126 @@
 
 
     <link rel="stylesheet" href="css/stylo.css">
+    <style>
+        /* === SISTEMA DE NOTIFICACIONES PROPIO === */
+        #noti-toast-container {
+            position: fixed;
+            top: 18px;
+            right: 18px;
+            z-index: 99999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            pointer-events: none;
+        }
+        .noti-toast {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.16);
+            padding: 14px 18px;
+            min-width: 260px;
+            max-width: 340px;
+            pointer-events: all;
+            animation: noti-in 0.28s cubic-bezier(.4,0,.2,1);
+            border-left: 5px solid #0a4c23;
+        }
+        .noti-toast.error   { border-left-color: #e74c3c; }
+        .noti-toast.warning { border-left-color: #f39c12; }
+        .noti-toast.info    { border-left-color: #3498db; }
+        .noti-toast-icon { font-size: 1.3rem; margin-top: 1px; }
+        .noti-toast.success .noti-toast-icon { color: #0a4c23; }
+        .noti-toast.error   .noti-toast-icon { color: #e74c3c; }
+        .noti-toast.warning .noti-toast-icon { color: #f39c12; }
+        .noti-toast.info    .noti-toast-icon { color: #3498db; }
+        .noti-toast-text { flex: 1; font-size: 0.93rem; color: #222; font-weight: 600; line-height: 1.4; }
+        .noti-toast-sub  { font-weight: 400; color: #666; font-size: 0.85rem; margin-top: 2px; }
+        @keyframes noti-in  { from { opacity:0; transform:translateX(30px); } to { opacity:1; transform:translateX(0); } }
+        @keyframes noti-out { from { opacity:1; transform:translateX(0); } to { opacity:0; transform:translateX(30px); } }
+        /* Confirm dialog */
+        .noti-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.52);
+            backdrop-filter: blur(3px);
+            z-index: 99998;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+        .noti-overlay.active { display: flex; }
+        .noti-dialog {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 24px 64px rgba(0,0,0,0.22);
+            width: 100%;
+            max-width: 400px;
+            overflow: hidden;
+            animation: noti-slidein 0.25s ease;
+        }
+        @keyframes noti-slidein {
+            from { transform: translateY(-20px); opacity: 0; }
+            to   { transform: translateY(0);     opacity: 1; }
+        }
+        .noti-dialog-icon  { text-align: center; padding: 28px 24px 0; font-size: 2.8rem; }
+        .noti-dialog-title { text-align: center; font-size: 1.15rem; font-weight: 700; color: #1a1a2e; padding: 12px 24px 4px; }
+        .noti-dialog-text  { text-align: center; font-size: 0.93rem; color: #666; padding: 0 24px 16px; line-height: 1.5; }
+        .noti-dialog-footer { display: flex; gap: 12px; padding: 0 20px 24px; }
+        .noti-dialog-cancel {
+            flex: 1; padding: 11px 0; border-radius: 8px;
+            border: 2px solid #e1e4e8; background: #fff; color: #444;
+            font-size: 0.97rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease;
+        }
+        .noti-dialog-cancel:hover { background: #f8f9fa; border-color: #d0d7de; color: #222; }
+        .noti-dialog-confirm {
+            flex: 1; padding: 11px 0; border-radius: 8px; border: none;
+            background: #0a4c23; color: #fff; font-size: 0.97rem; font-weight: 600;
+            cursor: pointer; transition: all 0.2s ease; box-shadow: 0 4px 12px rgba(10,76,35,0.2);
+        }
+        .noti-dialog-confirm:hover { background: #0d6b32; transform: translateY(-1px); box-shadow: 0 6px 16px rgba(10,76,35,0.3); }
+        .noti-dialog-confirm.danger { background: #e74c3c; box-shadow: 0 4px 12px rgba(231,76,60,0.2); }
+        .noti-dialog-confirm.danger:hover { background: #c0392b; box-shadow: 0 6px 16px rgba(231,76,60,0.3); }
+        /* Loading overlay */
+        #noti-loading {
+            display: none; position: fixed; inset: 0;
+            background: rgba(0,0,0,0.45); backdrop-filter: blur(2px);
+            z-index: 99997; align-items: center; justify-content: center;
+            flex-direction: column; gap: 14px;
+        }
+        #noti-loading.active { display: flex; }
+        .noti-spinner {
+            width: 48px; height: 48px;
+            border: 5px solid rgba(255,255,255,0.25);
+            border-top-color: #fff; border-radius: 50%;
+            animation: noti-spin 0.7s linear infinite;
+        }
+        .noti-loading-text { color: #fff; font-size: 1rem; font-weight: 600; letter-spacing: 0.03em; }
+        @keyframes noti-spin { to { transform: rotate(360deg); } }
+    </style>
 </head>
 
 <body class="page-docentes">
+
+    <!-- ===== NOTIFICACIONES PROPIAS ===== -->
+    <div id="noti-toast-container"></div>
+    <div id="noti-loading">
+        <div class="noti-spinner"></div>
+        <span class="noti-loading-text" id="noti-loading-text">Procesando...</span>
+    </div>
+    <div id="noti-confirm-overlay" class="noti-overlay">
+        <div class="noti-dialog">
+            <div class="noti-dialog-icon" id="noti-confirm-icon"></div>
+            <div class="noti-dialog-title" id="noti-confirm-title"></div>
+            <div class="noti-dialog-text" id="noti-confirm-text"></div>
+            <div class="noti-dialog-footer">
+                <button class="noti-dialog-cancel" onclick="noti.closeConfirm()">Cancelar</button>
+                <button class="noti-dialog-confirm" id="noti-confirm-btn" onclick="noti._doConfirm()">Confirmar</button>
+            </div>
+        </div>
+    </div>
 
     <header class="header">
         <div class="header-container">
@@ -141,7 +258,52 @@
 
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        /* ============================================================
+           SISTEMA DE NOTIFICACIONES PROPIO
+        ============================================================ */
+        const noti = {
+            _confirmCb: null,
+            toast(type, title, subtitle = '') {
+                const icons = { success: 'fa-check-circle', error: 'fa-times-circle', warning: 'fa-exclamation-triangle', info: 'fa-info-circle' };
+                const el = document.createElement('div');
+                el.className = `noti-toast ${type}`;
+                el.innerHTML = `
+                    <i class="fas ${icons[type] || icons.info} noti-toast-icon"></i>
+                    <div class="noti-toast-text">${title}${subtitle ? `<div class="noti-toast-sub">${subtitle}</div>` : ''}</div>
+                `;
+                document.getElementById('noti-toast-container').appendChild(el);
+                setTimeout(() => {
+                    el.style.animation = 'noti-out 0.3s forwards';
+                    setTimeout(() => el.remove(), 300);
+                }, 3200);
+            },
+            confirm(title, text, onConfirm, danger = false) {
+                this._confirmCb = onConfirm;
+                document.getElementById('noti-confirm-icon').textContent = danger ? '🗑️' : '⚠️';
+                document.getElementById('noti-confirm-title').textContent = title;
+                document.getElementById('noti-confirm-text').innerHTML = text;
+                const btn = document.getElementById('noti-confirm-btn');
+                btn.className = 'noti-dialog-confirm' + (danger ? ' danger' : '');
+                btn.textContent = danger ? 'Sí, eliminar' : 'Confirmar';
+                document.getElementById('noti-confirm-overlay').classList.add('active');
+            },
+            closeConfirm() {
+                document.getElementById('noti-confirm-overlay').classList.remove('active');
+                this._confirmCb = null;
+            },
+            _doConfirm() {
+                document.getElementById('noti-confirm-overlay').classList.remove('active');
+                const cb = this._confirmCb;
+                this._confirmCb = null;
+                if (cb) cb();
+            },
+            loading(show, text = 'Procesando...') {
+                document.getElementById('noti-loading-text').textContent = text;
+                document.getElementById('noti-loading').classList.toggle('active', show);
+            }
+        };
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script>
         // Manejar validaciones para asegurar que el código no se caiga
@@ -199,7 +361,7 @@
             const f2 = document.getElementById('fechaFin').value;
 
             if (f2 < f1) {
-                Swal.fire({ icon: 'warning', title: 'Fechas incorrectas', text: 'La fecha final no puede ser anterior a la fecha de inicio.', confirmButtonColor: '#0a4c23' });
+                noti.toast('warning', 'Fechas incorrectas', 'La fecha final no puede ser anterior a la fecha de inicio.');
                 return;
             }
 
@@ -214,6 +376,7 @@
                 actividad: document.getElementById('actividadRemplazo').value
             };
 
+            noti.loading(true, 'Guardando...');
             try {
                 const res = await fetch(`${SUPABASE_URL}/rest/v1/ausencias`, {
                     method: "POST",
@@ -221,15 +384,7 @@
                     body: JSON.stringify(datos)
                 });
 
-                Swal.fire({
-                    title: 'Guardando...',
-                    text: 'Registrando la ausencia, espere un momento.',
-                    allowOutsideClick: false,
-                    showConfirmButton: false,
-                    didOpen: () => { Swal.showLoading(); }
-                });
-
-                if (res.ok) { // Notificar por correo vÃ­a EmailJS al guardar la ausencia
+                if (res.ok) { // Notificar por correo vía EmailJS al guardar la ausencia
                     emailjs.send("service_2wecd52", "template_fbik8ht", {
                             nombre: datos.nombre,
                             fecha_inicio: datos.fecha,
@@ -237,18 +392,20 @@
                             motivo: datos.razon,
                             detalle: datos.detalle,
                             actividad: datos.actividad
-                        }).then(() => console.log("Correo enviado a direcciÃ³n"))
+                        }).then(() => console.log("Correo enviado a dirección"))
                         .catch(err => {
                             console.error("Fallo EmailJS:", err);
-                            Swal.fire({ icon: 'warning', title: 'Atención', text: 'Datos guardados, pero hubo un error enviando el correo: ' + (err.text || JSON.stringify(err)), confirmButtonColor: '#0a4c23' });
+                            noti.toast('warning', 'Atención', 'Datos guardados, pero hubo un error enviando el correo: ' + (err.text || JSON.stringify(err)));
                         });
-                    Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: '¡Período de ausencia guardado!', showConfirmButton: false, timer: 3000, timerProgressBar: true });
+                    noti.loading(false);
+                    noti.toast('success', '¡Período de ausencia guardado!');
                     this.reset();
                     cargarHistorial();
                 }
             } catch (err) {
                 console.error(err);
-                Swal.fire({ icon: 'error', title: 'Error de conexión', text: 'Error de conexión con el servidor.', confirmButtonColor: '#0a4c23' });
+                noti.loading(false);
+                noti.toast('error', 'Error de conexión', 'Error de conexión con el servidor.');
             }
             btn.disabled = false;
         });
@@ -294,61 +451,34 @@
             }
         }
 
-        async function eliminarAusencia(id) {
-            const confirmacion = await Swal.fire({
-                title: '¿Eliminar ausencia?',
-                text: "Esta acción no se puede deshacer.",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#e74c3c',
-                cancelButtonColor: '#95a5a6',
-                confirmButtonText: 'Sí, eliminar',
-                cancelButtonText: 'Cancelar'
-            });
-
-            if (!confirmacion.isConfirmed) return;
-
-            Swal.fire({
-                title: 'Borrando...',
-                text: 'Por favor espere un momento',
-                allowOutsideClick: false,
-                showConfirmButton: false,
-                didOpen: () => { Swal.showLoading(); }
-            });
-
-            try {
-                const res = await fetch(`${SUPABASE_URL}/rest/v1/ausencias?id=eq.${id}`, {
-                    method: "DELETE",
-                    headers
-                });
-                if (res.ok) {
-                    Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'Ausencia eliminada con éxito', showConfirmButton: false, timer: 2500, timerProgressBar: true });
-                    cargarHistorial();
-                } else {
-                    Swal.fire({ icon: 'error', title: 'Error', text: 'No se pudo eliminar: ' + res.statusText, confirmButtonColor: '#0a4c23' });
+        function eliminarAusencia(id) {
+            noti.confirm('¿Eliminar ausencia?', 'Esta acción no se puede deshacer.', async () => {
+                noti.loading(true, 'Borrando...');
+                try {
+                    const res = await fetch(`${SUPABASE_URL}/rest/v1/ausencias?id=eq.${id}`, {
+                        method: "DELETE",
+                        headers
+                    });
+                    noti.loading(false);
+                    if (res.ok) {
+                        noti.toast('success', 'Ausencia eliminada con éxito');
+                        cargarHistorial();
+                    } else {
+                        noti.toast('error', 'Error', 'No se pudo eliminar: ' + res.statusText);
+                    }
+                } catch (e) {
+                    console.error(e);
+                    noti.loading(false);
+                    noti.toast('error', 'Error de conexión', 'Problema de conexión con el servidor.');
                 }
-            } catch (e) {
-                console.error(e);
-                Swal.fire({ icon: 'error', title: 'Error de conexión', text: 'Problema de conexión con el servidor.', confirmButtonColor: '#0a4c23' });
-            }
+            }, true);
         }
 
-        async function cerrarSesion() {
-            const confirmacion = await Swal.fire({
-                title: '¿Cerrar Sesión?',
-                text: '¿Seguro que desea salir del panel?',
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonColor: '#0a4c23',
-                cancelButtonColor: '#6c757d',
-                confirmButtonText: 'Sí, salir',
-                cancelButtonText: 'Cancelar'
-            });
-
-            if (confirmacion.isConfirmed) {
+        function cerrarSesion() {
+            noti.confirm('¿Cerrar Sesión?', '¿Seguro que desea salir del panel?', () => {
                 localStorage.clear();
                 globalThis.location.href = "index.html";
-            }
+            });
         }
 
         window.onload = inicializar;

@@ -318,10 +318,121 @@
                 width: 100%;
             }
         }
+
+        /* === SISTEMA DE NOTIFICACIONES PROPIO === */
+        #noti-toast-container {
+            position: fixed; top: 18px; right: 18px; z-index: 99999;
+            display: flex; flex-direction: column; gap: 10px; pointer-events: none;
+        }
+        .noti-toast {
+            display: flex; align-items: flex-start; gap: 12px;
+            background: #fff; border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.16);
+            padding: 14px 18px; min-width: 260px; max-width: 340px;
+            pointer-events: all;
+            animation: noti-in 0.28s cubic-bezier(.4,0,.2,1);
+            border-left: 5px solid #0a4c23;
+        }
+        .noti-toast.error   { border-left-color: #e74c3c; }
+        .noti-toast.warning { border-left-color: #f39c12; }
+        .noti-toast.info    { border-left-color: #3498db; }
+        .noti-toast-icon { font-size: 1.3rem; margin-top: 1px; }
+        .noti-toast.success .noti-toast-icon { color: #0a4c23; }
+        .noti-toast.error   .noti-toast-icon { color: #e74c3c; }
+        .noti-toast.warning .noti-toast-icon { color: #f39c12; }
+        .noti-toast.info    .noti-toast-icon { color: #3498db; }
+        .noti-toast-text { flex: 1; font-size: 0.93rem; color: #222; font-weight: 600; line-height: 1.4; }
+        .noti-toast-sub  { font-weight: 400; color: #666; font-size: 0.85rem; margin-top: 2px; }
+        @keyframes noti-in  { from { opacity:0; transform:translateX(30px); } to { opacity:1; transform:translateX(0); } }
+        @keyframes noti-out { from { opacity:1; transform:translateX(0); } to { opacity:0; transform:translateX(30px); } }
+        /* Confirm / overlay dialogs */
+        .noti-overlay {
+            display: none; position: fixed; inset: 0;
+            background: rgba(0,0,0,0.52); backdrop-filter: blur(3px);
+            z-index: 99998; align-items: center; justify-content: center;
+            padding: 16px;
+        }
+        .noti-overlay.active { display: flex; }
+        .noti-dialog {
+            background: #fff; border-radius: 16px;
+            box-shadow: 0 24px 64px rgba(0,0,0,0.22);
+            width: 100%; max-width: 400px; overflow: hidden;
+            animation: noti-slidein 0.25s ease;
+        }
+        .noti-modal-card {
+            background: #fff; border-radius: 16px;
+            box-shadow: 0 24px 64px rgba(0,0,0,0.22);
+            width: min(820px, 95vw); max-height: 90vh;
+            overflow-y: auto; animation: noti-slidein 0.25s ease;
+        }
+        @keyframes noti-slidein {
+            from { transform: translateY(-20px); opacity: 0; }
+            to   { transform: translateY(0);     opacity: 1; }
+        }
+        .noti-dialog-icon  { text-align: center; padding: 28px 24px 0; font-size: 2.8rem; }
+        .noti-dialog-title { text-align: center; font-size: 1.15rem; font-weight: 700; color: #1a1a2e; padding: 12px 24px 4px; }
+        .noti-dialog-text  { text-align: center; font-size: 0.93rem; color: #666; padding: 0 24px 16px; line-height: 1.5; }
+        .noti-dialog-footer { display: flex; gap: 12px; padding: 0 20px 24px; }
+        .noti-dialog-cancel {
+            flex: 1; padding: 11px 0; border-radius: 8px;
+            border: 2px solid #e1e4e8; background: #fff; color: #444;
+            font-size: 0.97rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease;
+        }
+        .noti-dialog-cancel:hover { background: #f8f9fa; border-color: #d0d7de; color: #222; }
+        .noti-dialog-confirm {
+            flex: 1; padding: 11px 0; border-radius: 8px; border: none;
+            background: #0a4c23; color: #fff; font-size: 0.97rem; font-weight: 600;
+            cursor: pointer; transition: all 0.2s ease; box-shadow: 0 4px 12px rgba(10,76,35,0.2);
+        }
+        .noti-dialog-confirm:hover { background: #0d6b32; transform: translateY(-1px); box-shadow: 0 6px 16px rgba(10,76,35,0.3); }
+        .noti-dialog-confirm.danger { background: #e74c3c; box-shadow: 0 4px 12px rgba(231,76,60,0.2); }
+        .noti-dialog-confirm.danger:hover { background: #c0392b; box-shadow: 0 6px 16px rgba(231,76,60,0.3); }
+        #noti-loading {
+            display: none; position: fixed; inset: 0;
+            background: rgba(0,0,0,0.45); backdrop-filter: blur(2px);
+            z-index: 99997; align-items: center; justify-content: center;
+            flex-direction: column; gap: 14px;
+        }
+        #noti-loading.active { display: flex; }
+        .noti-spinner {
+            width: 48px; height: 48px;
+            border: 5px solid rgba(255,255,255,0.25);
+            border-top-color: #fff; border-radius: 50%;
+            animation: noti-spin 0.7s linear infinite;
+        }
+        .noti-loading-text { color: #fff; font-size: 1rem; font-weight: 600; letter-spacing: 0.03em; }
+        @keyframes noti-spin { to { transform: rotate(360deg); } }
     </style>
 </head>
 
 <body class="page-docentes">
+
+    <!-- ===== NOTIFICACIONES PROPIAS ===== -->
+    <div id="noti-toast-container"></div>
+    <div id="noti-loading">
+        <div class="noti-spinner"></div>
+        <span class="noti-loading-text" id="noti-loading-text">Procesando...</span>
+    </div>
+    <div id="noti-confirm-overlay" class="noti-overlay">
+        <div class="noti-dialog">
+            <div class="noti-dialog-icon" id="noti-confirm-icon"></div>
+            <div class="noti-dialog-title" id="noti-confirm-title"></div>
+            <div class="noti-dialog-text" id="noti-confirm-text"></div>
+            <div class="noti-dialog-footer">
+                <button class="noti-dialog-cancel" onclick="noti.closeConfirm()">Cancelar</button>
+                <button class="noti-dialog-confirm" id="noti-confirm-btn" onclick="noti._doConfirm()">Confirmar</button>
+            </div>
+        </div>
+    </div>
+    <div id="noti-modal-overlay" class="noti-overlay" onclick="if(event.target===this)noti.closeModal()">
+        <div class="noti-modal-card">
+            <div id="noti-modal-content" style="padding:24px;"></div>
+            <div style="padding:12px 20px 20px;border-top:1px solid #e9ecef;text-align:center;">
+                <button onclick="noti.closeModal()" class="noti-dialog-confirm" style="width:auto;padding:10px 36px;flex:none;">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
     <header class="header">
         <div class="header-container">
             <div class="header-logos-left">
@@ -504,7 +615,59 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        /* ============================================================
+           SISTEMA DE NOTIFICACIONES PROPIO
+        ============================================================ */
+        const noti = {
+            _confirmCb: null,
+            toast(type, title, subtitle = '') {
+                const icons = { success: 'fa-check-circle', error: 'fa-times-circle', warning: 'fa-exclamation-triangle', info: 'fa-info-circle' };
+                const el = document.createElement('div');
+                el.className = `noti-toast ${type}`;
+                el.innerHTML = `
+                    <i class="fas ${icons[type] || icons.info} noti-toast-icon"></i>
+                    <div class="noti-toast-text">${title}${subtitle ? `<div class="noti-toast-sub">${subtitle}</div>` : ''}</div>
+                `;
+                document.getElementById('noti-toast-container').appendChild(el);
+                setTimeout(() => {
+                    el.style.animation = 'noti-out 0.3s forwards';
+                    setTimeout(() => el.remove(), 300);
+                }, 3200);
+            },
+            confirm(title, text, onConfirm, danger = false) {
+                this._confirmCb = onConfirm;
+                document.getElementById('noti-confirm-icon').textContent = danger ? '🗑️' : '⚠️';
+                document.getElementById('noti-confirm-title').textContent = title;
+                document.getElementById('noti-confirm-text').innerHTML = text;
+                const btn = document.getElementById('noti-confirm-btn');
+                btn.className = 'noti-dialog-confirm' + (danger ? ' danger' : '');
+                btn.textContent = danger ? 'Sí, eliminar' : 'Confirmar';
+                document.getElementById('noti-confirm-overlay').classList.add('active');
+            },
+            closeConfirm() {
+                document.getElementById('noti-confirm-overlay').classList.remove('active');
+                this._confirmCb = null;
+            },
+            _doConfirm() {
+                document.getElementById('noti-confirm-overlay').classList.remove('active');
+                const cb = this._confirmCb;
+                this._confirmCb = null;
+                if (cb) cb();
+            },
+            loading(show, text = 'Procesando...') {
+                document.getElementById('noti-loading-text').textContent = text;
+                document.getElementById('noti-loading').classList.toggle('active', show);
+            },
+            showModal(html) {
+                document.getElementById('noti-modal-content').innerHTML = html;
+                document.getElementById('noti-modal-overlay').classList.add('active');
+            },
+            closeModal() {
+                document.getElementById('noti-modal-overlay').classList.remove('active');
+            }
+        };
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script>
         // Inicializar EmailJS simulando lo hecho en comunicados.html
@@ -721,18 +884,7 @@
                 </div>
             `;
 
-            Swal.fire({
-                html: html,
-                width: 'min(800px, 95vw)',
-                showCloseButton: false,      // Ocultar la X superior derecha
-                showConfirmButton: true,     // Solo dejar este botón principal
-                showCancelButton: false,     // Asegurar que no salga "Cancel"
-                showDenyButton: false,       // Asegurar que no salga "No"
-                confirmButtonText: 'Cerrar',
-                confirmButtonColor: '#0a4c23',
-                buttonsStyling: true,
-                focusConfirm: false
-            });
+            noti.showModal(html);
         }
 
         async function cargarBoletasPropias() {
@@ -926,12 +1078,12 @@
             };
 
             if (!payload.fecha || !payload.estudiante_nombre || !payload.estudiante_cedula || !payload.seccion || !payload.falta_cometida) {
-                Swal.fire({ icon: 'warning', title: 'Campos incompletos', text: 'Debe completar todos los campos obligatorios de la boleta.', confirmButtonColor: '#0a4c23' });
+                noti.toast('warning', 'Campos incompletos', 'Debe completar todos los campos obligatorios de la boleta.');
                 return;
             }
 
             if (rolActual !== 'admin' && seccionesDocente.length && !seccionesDocente.includes(payload.seccion)) {
-                Swal.fire({ icon: 'warning', title: 'Sección no permitida', text: `Solo puede registrar boletas de sus secciones asignadas: ${seccionesDocente.join(', ')}.`, confirmButtonColor: '#0a4c23' });
+                noti.toast('warning', 'Sección no permitida', `Solo puede registrar boletas de sus secciones asignadas: ${seccionesDocente.join(', ')}.`);
                 return;
             }
 
@@ -966,7 +1118,7 @@
                     }
                 }
 
-                Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'Boleta registrada correctamente', showConfirmButton: false, timer: 3000, timerProgressBar: true });
+                noti.toast('success', 'Boleta registrada correctamente');
                 document.getElementById('formBoleta').reset();
                 document.getElementById('numeroBoleta').value = generarNumeroBoleta();
                 document.getElementById('fechaBoleta').value = new Date().toISOString().slice(0, 10);
@@ -978,29 +1130,18 @@
                 }
             } catch (error) {
                 console.error(error);
-                Swal.fire({ icon: 'error', title: 'Error al guardar', text: `No fue posible guardar la boleta. ${error.message}`, confirmButtonColor: '#0a4c23' });
+                noti.toast('error', 'Error al guardar', `No fue posible guardar la boleta. ${error.message}`);
             } finally {
                 btn.disabled = false;
                 btn.innerHTML = '<i class="fas fa-save"></i> Guardar Boleta';
             }
         }
 
-        async function cerrarSesion() {
-            const confirmacion = await Swal.fire({
-                title: '¿Cerrar Sesión?',
-                text: '¿Seguro que desea salir del sistema?',
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonColor: '#0a4c23',
-                cancelButtonColor: '#6c757d',
-                confirmButtonText: 'Sí, salir',
-                cancelButtonText: 'Cancelar'
-            });
-
-            if (confirmacion.isConfirmed) {
+        function cerrarSesion() {
+            noti.confirm('¿Cerrar Sesión?', '¿Seguro que desea salir del sistema?', () => {
                 localStorage.clear();
                 globalThis.location.href = 'index.html';
-            }
+            });
         }
 
         async function inicializar() {
@@ -1022,9 +1163,8 @@
             seccionesGuia = asignaciones.guias;
 
             if (!ROLES_PERMITIDOS.has(rolActual)) {
-                Swal.fire({ icon: 'warning', title: 'Sin acceso', text: 'Solo docentes, docentes guía o admin pueden usar boletas.', confirmButtonColor: '#0a4c23' }).then(() => {
-                    globalThis.location.href = 'docentes.html';
-                });
+                noti.toast('warning', 'Sin acceso', 'Solo docentes, docentes guía o admin pueden usar boletas.');
+                setTimeout(() => { globalThis.location.href = 'docentes.html'; }, 2500);
                 return;
             }
 
