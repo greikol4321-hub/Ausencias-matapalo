@@ -230,15 +230,16 @@
             justify-content: center !important;
             gap: 10px !important;
             margin-top: 1rem !important;
-            padding: 0 !important;
+            padding: 0 1rem !important;
         }
         .swal-popup-edit .swal2-confirm,
         .swal-popup-edit .swal2-cancel {
             border-radius: 8px !important;
-            padding: 10px 24px !important;
+            padding: 11px 28px !important;
             font-weight: 600 !important;
-            flex: 1 !important;
-            max-width: 200px !important;
+            font-size: 0.95rem !important;
+            white-space: nowrap !important;
+            min-width: 140px !important;
         }
         .swal2-popup .swal2-input,
         .swal2-popup .swal2-textarea,
@@ -446,7 +447,7 @@
                 showCancelButton: true,
                 confirmButtonColor: '#0a4c23',
                 cancelButtonColor: '#6c757d',
-                confirmButtonText: '<i class="fas fa-save"></i>&nbsp; Guardar cambios',
+                confirmButtonText: 'Guardar cambios',
                 cancelButtonText: 'Cancelar',
                 customClass: { popup: 'swal-popup-edit' },
                 preConfirm: () => {
