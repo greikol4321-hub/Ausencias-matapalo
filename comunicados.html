@@ -230,12 +230,16 @@
             margin: 0 !important;
             padding: 0.75rem 1.5rem 0 !important;
         }
+        .swal-popup-edit .swal2-loader {
+            display: none !important;
+        }
         .swal-popup-edit .swal2-actions {
             display: flex !important;
             flex-direction: row !important;
-            flex-wrap: wrap !important;
+            flex-wrap: nowrap !important;
             justify-content: center !important;
-            gap: 15px !important;
+            align-items: center !important;
+            gap: 12px !important;
             margin: 1.5rem 1.5rem 1.25rem !important;
             padding: 0 !important;
             width: auto !important;
@@ -243,15 +247,15 @@
         .swal-popup-edit .swal2-confirm,
         .swal-popup-edit .swal2-cancel {
             border-radius: 8px !important;
-            padding: 12px 24px !important;
+            padding: 12px 32px !important;
             font-weight: 600 !important;
             font-size: 1rem !important;
-            white-space: normal !important;
-            flex: 0 1 auto !important;
+            white-space: nowrap !important;
+            flex: 1 1 0 !important;
             width: auto !important;
-            min-width: 140px !important;
+            min-width: 130px !important;
+            max-width: 200px !important;
             margin: 0 !important;
-            line-height: 1.2 !important;
         }
         .swal2-popup .swal2-input,
         .swal2-popup .swal2-textarea,
@@ -465,7 +469,9 @@
                 didOpen: () => {
                     const actions = Swal.getActions();
                     if (actions) {
-                        actions.style.cssText += 'display:flex!important;flex-direction:row!important;flex-wrap:wrap!important;justify-content:center!important;gap:15px!important;';
+                        actions.style.cssText += 'display:flex!important;flex-direction:row!important;flex-wrap:nowrap!important;justify-content:center!important;gap:12px!important;';
+                        const loader = actions.querySelector('.swal2-loader');
+                        if (loader) loader.style.display = 'none';
                     }
                 },
                 preConfirm: () => {
