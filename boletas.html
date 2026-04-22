@@ -928,12 +928,12 @@
             };
 
             if (!payload.fecha || !payload.estudiante_nombre || !payload.estudiante_cedula || !payload.seccion || !payload.falta_cometida) {
-                Swal.fire('Campos incompletos', 'Debe completar todos los campos obligatorios de la boleta.', 'warning');
+                Swal.fire({ icon: 'warning', title: 'Campos incompletos', text: 'Debe completar todos los campos obligatorios de la boleta.', confirmButtonColor: '#0a4c23' });
                 return;
             }
 
             if (rolActual !== 'admin' && seccionesDocente.length && !seccionesDocente.includes(payload.seccion)) {
-                Swal.fire('Seccion no permitida', `Solo puede registrar boletas de sus secciones asignadas: ${seccionesDocente.join(', ')}.`, 'warning');
+                Swal.fire({ icon: 'warning', title: 'Sección no permitida', text: `Solo puede registrar boletas de sus secciones asignadas: ${seccionesDocente.join(', ')}.`, confirmButtonColor: '#0a4c23' });
                 return;
             }
 
@@ -968,7 +968,7 @@
                     }
                 }
 
-                Swal.fire('Guardada', 'La boleta se registro correctamente.', 'success');
+                Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'Boleta registrada correctamente', showConfirmButton: false, timer: 3000, timerProgressBar: true });
                 document.getElementById('formBoleta').reset();
                 document.getElementById('numeroBoleta').value = generarNumeroBoleta();
                 document.getElementById('fechaBoleta').value = new Date().toISOString().slice(0, 10);
@@ -980,7 +980,7 @@
                 }
             } catch (error) {
                 console.error(error);
-                Swal.fire('Error', `No fue posible guardar la boleta. ${error.message}`, 'error');
+                Swal.fire({ icon: 'error', title: 'Error al guardar', text: `No fue posible guardar la boleta. ${error.message}`, confirmButtonColor: '#0a4c23' });
             } finally {
                 btn.disabled = false;
                 btn.innerHTML = '<i class="fas fa-save"></i> Guardar Boleta';
@@ -989,11 +989,13 @@
 
         async function cerrarSesion() {
             const confirmacion = await Swal.fire({
-                title: 'Cerrar Sesion',
-                text: 'Seguro que desea salir del sistema?',
+                title: '¿Cerrar Sesión?',
+                text: '¿Seguro que desea salir del sistema?',
                 icon: 'question',
                 showCancelButton: true,
-                confirmButtonText: 'Si, salir',
+                confirmButtonColor: '#0a4c23',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Sí, salir',
                 cancelButtonText: 'Cancelar'
             });
 
@@ -1022,7 +1024,7 @@
             seccionesGuia = asignaciones.guias;
 
             if (!ROLES_PERMITIDOS.has(rolActual)) {
-                Swal.fire('Sin acceso', 'Solo docentes, docentes guia o admin pueden usar boletas.', 'warning').then(() => {
+                Swal.fire({ icon: 'warning', title: 'Sin acceso', text: 'Solo docentes, docentes guía o admin pueden usar boletas.', confirmButtonColor: '#0a4c23' }).then(() => {
                     globalThis.location.href = 'docentes.html';
                 });
                 return;

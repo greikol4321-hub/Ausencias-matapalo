@@ -307,11 +307,7 @@
                 text: 'Por favor espere un momento',
                 allowOutsideClick: false,
                 showConfirmButton: false,
-                didOpen: () => {
-                    Swal.showLoading();
-                    const actions = document.querySelector('.swal2-actions');
-                    if (actions) actions.style.display = 'none';
-                }
+                didOpen: () => { Swal.showLoading(); }
             });
 
             try {
@@ -320,23 +316,10 @@
                     headers
                 });
                 if (res.ok) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Eliminado',
-                        text: 'El comunicado fue eliminado con éxito.',
-                        timer: 1500,
-                        showConfirmButton: false,
-                        didOpen: () => {
-                            const actions = document.querySelector('.swal2-actions');
-                            if (actions) actions.style.display = 'none';
-                        }
-                    });
+                    Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'Comunicado eliminado', showConfirmButton: false, timer: 2500, timerProgressBar: true });
                     cargarComunicadosAdmin();
                 } else {
-                    Swal.fire('Error', 'No se pudo eliminar: ' + res.statusText, 'error');
-                }
-            } catch (e) {
-                Swal.fire('Error', 'Problema de conexión.', 'error');
+                    Swal.fire({ icon: 'error', title: 'Error', text: 'No se pudo eliminar: ' + res.statusText, confirmButtonColor: '#0a4c23' });
             }
         }
 
@@ -357,10 +340,8 @@
         `,
                 focusConfirm: false,
                 showCancelButton: true,
-                confirmButtonColor: '#3498db',
-                cancelButtonColor: '#95a5a6',
-                confirmButtonText: 'Guardar Cambios',
-                cancelButtonText: 'Cancelar',
+                confirmButtonColor: '#0a4c23',
+                cancelButtonColor: '#6c757d',
                 preConfirm: () => {
                     const valTitulo = document.getElementById('swal-input-titulo').value.trim();
                     const valContenido = document.getElementById('swal-input-contenido').value.trim();
@@ -383,11 +364,7 @@
                     text: 'Por favor espere',
                     allowOutsideClick: false,
                     showConfirmButton: false,
-                    didOpen: () => {
-                        Swal.showLoading();
-                        const actions = document.querySelector('.swal2-actions');
-                        if (actions) actions.style.display = 'none';
-                    }
+                    didOpen: () => { Swal.showLoading(); }
                 });
 
                 try {
@@ -398,23 +375,13 @@
                     });
 
                     if (res.ok) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: '¡Actualizado!',
-                            text: 'El comunicado se actualizó con éxito.',
-                            timer: 2000,
-                            showConfirmButton: false,
-                            didOpen: () => {
-                                const actions = document.querySelector('.swal2-actions');
-                                if (actions) actions.style.display = 'none';
-                            }
-                        });
+                        Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'Comunicado actualizado', showConfirmButton: false, timer: 2500, timerProgressBar: true });
                         cargarComunicadosAdmin();
                     } else {
-                        Swal.fire('Error', 'No se pudo actualizar el comunicado.', 'error');
+                        Swal.fire({ icon: 'error', title: 'Error', text: 'No se pudo actualizar el comunicado.', confirmButtonColor: '#0a4c23' });
                     }
                 } catch (e) {
-                    Swal.fire('Error', 'Problema de red al actualizar.', 'error');
+                    Swal.fire({ icon: 'error', title: 'Error de red', text: 'Problema de red al actualizar.', confirmButtonColor: '#0a4c23' });
                 }
             }
         }
@@ -437,11 +404,7 @@
                             title: 'Publicando...',
                             allowOutsideClick: false,
                             showConfirmButton: false,
-                            didOpen: () => {
-                                Swal.showLoading();
-                                const actions = document.querySelector('.swal2-actions');
-                                if (actions) actions.style.display = 'none';
-                            }
+                            didOpen: () => { Swal.showLoading(); }
                         });
                         const res = await fetch(`${SUPABASE_URL}/rest/v1/comunicados`, {
                             method: "POST",
@@ -449,25 +412,15 @@
                             body: JSON.stringify(datos)
                         });
                         if (res.ok) {
-                            Swal.fire({
-                                icon: 'success',
-                                title: '¡Publicado!',
-                                text: 'Comunicado publicado exitosamente.',
-                                timer: 2000,
-                                showConfirmButton: false,
-                                didOpen: () => {
-                                    const actions = document.querySelector('.swal2-actions');
-                                    if (actions) actions.style.display = 'none';
-                                }
-                            });
+                            Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'Comunicado publicado', showConfirmButton: false, timer: 2500, timerProgressBar: true });
                             this.reset();
                             cargarComunicadosAdmin(); // Reload the table automatically
                         } else {
                             const error = await res.json();
-                            Swal.fire('Error', 'No se pudo publicar: ' + (error.message || res.statusText), 'error');
+                            Swal.fire({ icon: 'error', title: 'Error al publicar', text: 'No se pudo publicar: ' + (error.message || res.statusText), confirmButtonColor: '#0a4c23' });
                         }
                     } catch (e) {
-                        Swal.fire('Error', 'Error al publicar: ' + e.message, 'error');
+                        Swal.fire({ icon: 'error', title: 'Error', text: 'Error al publicar: ' + e.message, confirmButtonColor: '#0a4c23' });
                     }
                     btn.disabled = false;
                 });
@@ -480,8 +433,8 @@
                 text: '¿Seguro que desea salir del panel?',
                 icon: 'question',
                 showCancelButton: true,
-                confirmButtonColor: '#3498db',
-                cancelButtonColor: '#95a5a6',
+                confirmButtonColor: '#0a4c23',
+                cancelButtonColor: '#6c757d',
                 confirmButtonText: 'Sí, salir',
                 cancelButtonText: 'Cancelar'
             });

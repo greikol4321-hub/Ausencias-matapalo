@@ -199,11 +199,7 @@
             const f2 = document.getElementById('fechaFin').value;
 
             if (f2 < f1) {
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Fechas incorrectas',
-                    text: 'La fecha final no puede ser anterior a la fecha de inicio.'
-                });
+                Swal.fire({ icon: 'warning', title: 'Fechas incorrectas', text: 'La fecha final no puede ser anterior a la fecha de inicio.', confirmButtonColor: '#0a4c23' });
                 return;
             }
 
@@ -230,11 +226,7 @@
                     text: 'Registrando la ausencia, espere un momento.',
                     allowOutsideClick: false,
                     showConfirmButton: false,
-                    didOpen: () => {
-                        Swal.showLoading();
-                        const actions = document.querySelector('.swal2-actions');
-                        if (actions) actions.style.display = 'none';
-                    }
+                    didOpen: () => { Swal.showLoading(); }
                 });
 
                 if (res.ok) { // Notificar por correo vÃ­a EmailJS al guardar la ausencia
@@ -248,30 +240,15 @@
                         }).then(() => console.log("Correo enviado a direcciÃ³n"))
                         .catch(err => {
                             console.error("Fallo EmailJS:", err);
-                            Swal.fire('Atención', 'Datos guardados, pero hubo un error enviando el correo: ' + (err.text || JSON.stringify(err)), 'warning');
+                            Swal.fire({ icon: 'warning', title: 'Atención', text: 'Datos guardados, pero hubo un error enviando el correo: ' + (err.text || JSON.stringify(err)), confirmButtonColor: '#0a4c23' });
                         });
-                    Swal.fire({
-                        icon: 'success',
-                        title: '¡Guardado!',
-                        text: 'Período de ausencia guardado correctamente.',
-                        timer: 2000,
-                        showConfirmButton: false,
-                        didOpen: () => {
-                            // Asegurar que los botones no se muestren
-                            const actions = document.querySelector('.swal2-actions');
-                            if (actions) actions.style.display = 'none';
-                        }
-                    });
+                    Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: '¡Período de ausencia guardado!', showConfirmButton: false, timer: 3000, timerProgressBar: true });
                     this.reset();
                     cargarHistorial();
                 }
             } catch (err) {
                 console.error(err);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'Error de conexión con el servidor.'
-                });
+                Swal.fire({ icon: 'error', title: 'Error de conexión', text: 'Error de conexión con el servidor.', confirmButtonColor: '#0a4c23' });
             }
             btn.disabled = false;
         });
@@ -336,11 +313,7 @@
                 text: 'Por favor espere un momento',
                 allowOutsideClick: false,
                 showConfirmButton: false,
-                didOpen: () => {
-                    Swal.showLoading();
-                    const actions = document.querySelector('.swal2-actions');
-                    if (actions) actions.style.display = 'none';
-                }
+                didOpen: () => { Swal.showLoading(); }
             });
 
             try {
@@ -349,24 +322,14 @@
                     headers
                 });
                 if (res.ok) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Eliminado',
-                        text: 'La ausencia fue eliminada con éxito.',
-                        timer: 1500,
-                        showConfirmButton: false,
-                        didOpen: () => {
-                            const actions = document.querySelector('.swal2-actions');
-                            if (actions) actions.style.display = 'none';
-                        }
-                    });
+                    Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'Ausencia eliminada con éxito', showConfirmButton: false, timer: 2500, timerProgressBar: true });
                     cargarHistorial();
                 } else {
-                    Swal.fire('Error', 'No se pudo eliminar: ' + res.statusText, 'error');
+                    Swal.fire({ icon: 'error', title: 'Error', text: 'No se pudo eliminar: ' + res.statusText, confirmButtonColor: '#0a4c23' });
                 }
             } catch (e) {
                 console.error(e);
-                Swal.fire('Error', 'Problema de conexión con el servidor.', 'error');
+                Swal.fire({ icon: 'error', title: 'Error de conexión', text: 'Problema de conexión con el servidor.', confirmButtonColor: '#0a4c23' });
             }
         }
 
@@ -376,8 +339,8 @@
                 text: '¿Seguro que desea salir del panel?',
                 icon: 'question',
                 showCancelButton: true,
-                confirmButtonColor: '#3498db',
-                cancelButtonColor: '#95a5a6',
+                confirmButtonColor: '#0a4c23',
+                cancelButtonColor: '#6c757d',
                 confirmButtonText: 'Sí, salir',
                 cancelButtonText: 'Cancelar'
             });
