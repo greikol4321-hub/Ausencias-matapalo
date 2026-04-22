@@ -60,8 +60,8 @@
         </div>
 
 
-        <div class="panel-admin" style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 30px; border-top: 5px solid #e67e22;">
-            <h3 style="color: #e67e22; margin-top: 0;"><i class="fas fa-megaphone"></i> Publicar Comunicado Oficial</h3>
+        <div class="panel-admin" style="background: white; padding: 25px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 30px; border-top: 5px solid #0a4c23;">
+            <h3 style="color: #0a4c23; margin-top: 0;"><i class="fas fa-megaphone"></i> Publicar Comunicado Oficial</h3>
             <form id="formComunicado">
                 <input type="text" id="tituloCom" placeholder="Título del comunicado (Ej: Cambio de horario)" required>
                 <textarea id="contenidoCom" rows="2" placeholder="Escriba el mensaje detallado aquí..." required></textarea>
@@ -235,7 +235,7 @@
             document.getElementById('rol').textContent = rol;
             document.getElementById('rolBadge').textContent = rol;
 
-            document.getElementById('rolBadge').style.background = '#e67e22';
+            document.getElementById('rolBadge').style.background = '#b45309';
             setupComunicadoListener();
             cargarComunicadosAdmin();
         }
