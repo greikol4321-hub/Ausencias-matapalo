@@ -205,89 +205,195 @@
             font-size: 0.95rem !important;
             font-weight: 600 !important;
         }
-        .swal-popup-edit {
-            border-radius: 16px !important;
-            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.18) !important;
-            max-width: 500px !important;
-            width: 96% !important;
-            padding-top: 0 !important;
-        }
-        .swal-popup-edit .swal2-header {
-            padding: 1.2rem 1.5rem 0.6rem !important;
-            border-bottom: 2px solid #e8f5ee !important;
-            background: #f8fdf9 !important;
-            border-radius: 16px 16px 0 0 !important;
-        }
-        .swal-popup-edit .swal2-title {
-            font-size: 1.2rem !important;
-            font-weight: 700 !important;
-            color: #0a4c23 !important;
-            padding: 0 !important;
-            margin: 0 !important;
-        }
-        .swal-popup-edit .swal2-html-container {
-            overflow: visible !important;
-            margin: 0 !important;
-            padding: 0.75rem 1.5rem 0 !important;
-        }
-        .swal-popup-edit .swal2-loader {
-            display: none !important;
-        }
-        .swal-popup-edit .swal2-actions {
-            display: flex !important;
-            flex-direction: row !important;
-            flex-wrap: nowrap !important;
-            justify-content: center !important;
-            align-items: center !important;
-            gap: 12px !important;
-            margin: 1.5rem 1.5rem 1.25rem !important;
-            padding: 0 !important;
-            width: auto !important;
-        }
-        .swal-popup-edit .swal2-confirm,
-        .swal-popup-edit .swal2-cancel {
-            border-radius: 8px !important;
-            padding: 12px 32px !important;
-            font-weight: 600 !important;
-            font-size: 1rem !important;
-            white-space: nowrap !important;
-            flex: 1 1 0 !important;
-            width: auto !important;
-            min-width: 130px !important;
-            max-width: 200px !important;
-            margin: 0 !important;
-        }
-        .swal2-popup .swal2-input,
-        .swal2-popup .swal2-textarea,
-        .swal2-popup .swal2-select {
-            border-radius: 8px !important;
-            border: 1.5px solid #d0d7de !important;
-            font-size: 0.95rem !important;
-            transition: border-color 0.2s, box-shadow 0.2s !important;
-        }
-        .swal2-popup .swal2-input:focus,
-        .swal2-popup .swal2-textarea:focus,
-        .swal2-popup .swal2-select:focus {
-            border-color: #0a4c23 !important;
-            box-shadow: 0 0 0 3px rgba(10, 76, 35, 0.12) !important;
-            outline: none !important;
-        }
         .swal-toast-modern {
             border-radius: 10px !important;
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.13) !important;
         }
-        .swal-form-label {
+
+        /* === MODAL EDITAR COMUNICADO PERSONALIZADO === */
+        .cedit-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.55);
+            backdrop-filter: blur(3px);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            animation: cedit-fadein 0.2s ease;
+        }
+        .cedit-overlay.active {
+            display: flex;
+        }
+        @keyframes cedit-fadein {
+            from { opacity: 0; }
+            to   { opacity: 1; }
+        }
+        .cedit-card {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 24px 64px rgba(0,0,0,0.22);
+            width: 100%;
+            max-width: 480px;
+            overflow: hidden;
+            animation: cedit-slidein 0.25s ease;
+        }
+        @keyframes cedit-slidein {
+            from { transform: translateY(-20px); opacity: 0; }
+            to   { transform: translateY(0);     opacity: 1; }
+        }
+        .cedit-header {
+            background: #0a4c23;
+            color: white;
+            padding: 18px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: 0.01em;
+        }
+        .cedit-close {
+            background: rgba(255,255,255,0.15);
+            border: none;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            font-size: 1.3rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+            transition: background 0.2s;
+        }
+        .cedit-close:hover { background: rgba(255,255,255,0.3); }
+        .cedit-body {
+            padding: 22px 24px 8px;
+        }
+        .cedit-group {
+            margin-bottom: 16px;
+        }
+        .cedit-label {
             display: block;
             font-size: 0.78rem;
             font-weight: 700;
-            color: #777;
+            color: #555;
             text-transform: uppercase;
-            letter-spacing: 0.06em;
-            margin: 14px 0 5px;
-            text-align: left;
+            letter-spacing: 0.07em;
+            margin-bottom: 6px;
         }
-        .swal-form-label:first-child { margin-top: 4px; }
+        .cedit-input,
+        .cedit-textarea,
+        .cedit-select {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1.5px solid #d0d7de;
+            border-radius: 8px;
+            font-size: 0.97rem;
+            font-family: inherit;
+            color: #222;
+            background: #fafafa;
+            box-sizing: border-box;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .cedit-input:focus,
+        .cedit-textarea:focus,
+        .cedit-select:focus {
+            border-color: #0a4c23;
+            box-shadow: 0 0 0 3px rgba(10, 76, 35, 0.12);
+            outline: none;
+            background: #fff;
+        }
+        .cedit-textarea { resize: vertical; min-height: 100px; }
+        .cedit-select   { cursor: pointer; }
+        .cedit-error {
+            color: #c0392b;
+            font-size: 0.88rem;
+            margin: 0 0 8px;
+            font-weight: 600;
+        }
+        .cedit-footer {
+            padding: 16px 24px 22px;
+            display: flex;
+            gap: 12px;
+        }
+        .cedit-btn-cancel {
+            flex: 1;
+            padding: 11px 0;
+            border-radius: 8px;
+            border: 1.5px solid #d0d7de;
+            background: #f5f5f5;
+            color: #555;
+            font-size: 0.97rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .cedit-btn-cancel:hover { background: #e8e8e8; }
+        .cedit-btn-save {
+            flex: 1;
+            padding: 11px 0;
+            border-radius: 8px;
+            border: none;
+            background: #0a4c23;
+            color: white;
+            font-size: 0.97rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .cedit-btn-save:hover { background: #0d6b32; transform: translateY(-1px); }
+        .cedit-btn-save:disabled { background: #8aab94; cursor: not-allowed; transform: none; }
     </style>
+    <!-- ===== MODAL EDITAR COMUNICADO (personalizado) ===== -->
+    <div id="modalEditarCom" class="cedit-overlay" onclick="cerrarModalEditar(event)">
+        <div class="cedit-card" onclick="event.stopPropagation()">
+            <div class="cedit-header">
+                <span><i class="fas fa-edit"></i> Editar Comunicado</span>
+                <button class="cedit-close" onclick="cerrarModalEditar()" title="Cerrar">&times;</button>
+            </div>
+            <div class="cedit-body">
+                <div class="cedit-group">
+                    <label class="cedit-label" for="edit-titulo">Título</label>
+                    <input type="text" id="edit-titulo" class="cedit-input" placeholder="Título del comunicado">
+                </div>
+                <div class="cedit-group">
+                    <label class="cedit-label" for="edit-contenido">Contenido</label>
+                    <textarea id="edit-contenido" class="cedit-textarea" rows="4" placeholder="Escriba el mensaje..."></textarea>
+                </div>
+                <div class="cedit-group">
+                    <label class="cedit-label" for="edit-color">Tipo de comunicado</label>
+                    <select id="edit-color" class="cedit-select">
+                        <option value="#27ae60">🟢 Informativo (Verde)</option>
+                        <option value="#3498db">🔵 General (Azul)</option>
+                        <option value="#f39c12">🟡 Importante (Naranja)</option>
+                        <option value="#e74c3c">🔴 Urgente (Rojo)</option>
+                    </select>
+                </div>
+                <p id="edit-error" class="cedit-error" style="display:none;"></p>
+            </div>
+            <div class="cedit-footer">
+                <button class="cedit-btn-cancel" onclick="cerrarModalEditar()">
+                    <i class="fas fa-times"></i> Cancelar
+                </button>
+                <button class="cedit-btn-save" onclick="guardarEdicion()">
+                    <i class="fas fa-save"></i> Guardar cambios
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script>
@@ -439,83 +545,61 @@
             }
         }
 
-        async function editarComunicado(id, tituloActual, contenidoActual, colorActual) {
-            const {
-                value: formValues
-            } = await Swal.fire({
-                title: '<i class="fas fa-edit" style="margin-right:8px;font-size:1.1rem;"></i>Editar Comunicado',
-                html: `
-            <div style="padding: 0 2px;">
-                <label class="swal-form-label">Título</label>
-                <input id="swal-input-titulo" class="swal2-input" value="${tituloActual}" placeholder="Título del comunicado" style="margin: 0 0 4px; width: 100%;">
-                <label class="swal-form-label">Contenido</label>
-                <textarea id="swal-input-contenido" class="swal2-textarea" placeholder="Escriba el mensaje aquí..." rows="4" style="margin: 0 0 4px; width: 100%;">${contenidoActual}</textarea>
-                <label class="swal-form-label">Tipo de comunicado</label>
-                <select id="swal-input-color" class="swal2-select" style="width: 100%; margin: 0; padding: 10px 14px; cursor: pointer;">
-                    <option value="#27ae60" ${colorActual === '#27ae60' ? 'selected' : ''}>🟢 Informativo (Verde)</option>
-                    <option value="#3498db" ${colorActual === '#3498db' ? 'selected' : ''}>🔵 General (Azul)</option>
-                    <option value="#f39c12" ${colorActual === '#f39c12' ? 'selected' : ''}>🟡 Importante (Naranja)</option>
-                    <option value="#e74c3c" ${colorActual === '#e74c3c' ? 'selected' : ''}>🔴 Urgente (Rojo)</option>
-                </select>
-            </div>
-        `,
-                focusConfirm: false,
-                showCancelButton: true,
-                confirmButtonColor: '#0a4c23',
-                cancelButtonColor: '#6c757d',
-                confirmButtonText: 'Guardar cambios',
-                cancelButtonText: 'Cancelar',
-                customClass: { popup: 'swal-popup-edit' },
-                didOpen: () => {
-                    const actions = Swal.getActions();
-                    if (actions) {
-                        actions.style.cssText += 'display:flex!important;flex-direction:row!important;flex-wrap:nowrap!important;justify-content:center!important;gap:12px!important;';
-                        const loader = actions.querySelector('.swal2-loader');
-                        if (loader) loader.style.display = 'none';
-                    }
-                },
-                preConfirm: () => {
-                    const valTitulo = document.getElementById('swal-input-titulo').value.trim();
-                    const valContenido = document.getElementById('swal-input-contenido').value.trim();
-                    const valColor = document.getElementById('swal-input-color').value;
+        let _editId = null;
 
-                    if (!valTitulo || !valContenido) {
-                        Swal.showValidationMessage('El título y contenido son requeridos');
-                    }
-                    return {
-                        titulo: valTitulo,
-                        contenido: valContenido,
-                        color_borde: valColor
-                    };
-                }
-            });
+        function editarComunicado(id, tituloActual, contenidoActual, colorActual) {
+            _editId = id;
+            document.getElementById('edit-titulo').value = tituloActual;
+            document.getElementById('edit-contenido').value = contenidoActual.replace(/\\n/g, '\n');
+            document.getElementById('edit-color').value = colorActual;
+            document.getElementById('edit-error').style.display = 'none';
+            document.getElementById('modalEditarCom').classList.add('active');
+            setTimeout(() => document.getElementById('edit-titulo').focus(), 100);
+        }
 
-            if (formValues) {
-                Swal.fire({
-                    title: 'Actualizando...',
-                    text: 'Por favor espere',
-                    allowOutsideClick: false,
-                    showConfirmButton: false,
-                    customClass: { popup: 'swal-popup-modern' },
-                    didOpen: () => { Swal.showLoading(); }
+        function cerrarModalEditar(event) {
+            if (event && event.target !== document.getElementById('modalEditarCom')) return;
+            document.getElementById('modalEditarCom').classList.remove('active');
+            _editId = null;
+        }
+
+        async function guardarEdicion() {
+            const titulo = document.getElementById('edit-titulo').value.trim();
+            const contenido = document.getElementById('edit-contenido').value.trim();
+            const color_borde = document.getElementById('edit-color').value;
+            const errorEl = document.getElementById('edit-error');
+
+            if (!titulo || !contenido) {
+                errorEl.textContent = 'El título y el contenido son obligatorios.';
+                errorEl.style.display = 'block';
+                return;
+            }
+            errorEl.style.display = 'none';
+
+            const btnSave = document.querySelector('.cedit-btn-save');
+            btnSave.disabled = true;
+            btnSave.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Guardando...';
+
+            try {
+                const res = await fetch(`${SUPABASE_URL}/rest/v1/comunicados?id=eq.${_editId}`, {
+                    method: 'PATCH',
+                    headers,
+                    body: JSON.stringify({ titulo, contenido, color_borde })
                 });
 
-                try {
-                    const res = await fetch(`${SUPABASE_URL}/rest/v1/comunicados?id=eq.${id}`, {
-                        method: "PATCH",
-                        headers,
-                        body: JSON.stringify(formValues)
-                    });
+                document.getElementById('modalEditarCom').classList.remove('active');
 
-                    if (res.ok) {
-                        Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'Comunicado actualizado', showConfirmButton: false, timer: 2500, timerProgressBar: true, customClass: { popup: 'swal-toast-modern' } });
-                        cargarComunicadosAdmin();
-                    } else {
-                        Swal.fire({ icon: 'error', title: 'Error', text: 'No se pudo actualizar el comunicado.', confirmButtonColor: '#0a4c23', customClass: { popup: 'swal-popup-modern' } });
-                    }
-                } catch (e) {
-                    Swal.fire({ icon: 'error', title: 'Error de red', text: 'Problema de red al actualizar.', confirmButtonColor: '#0a4c23', customClass: { popup: 'swal-popup-modern' } });
+                if (res.ok) {
+                    Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'Comunicado actualizado', showConfirmButton: false, timer: 2500, timerProgressBar: true, customClass: { popup: 'swal-toast-modern' } });
+                    cargarComunicadosAdmin();
+                } else {
+                    Swal.fire({ icon: 'error', title: 'Error', text: 'No se pudo actualizar el comunicado.', confirmButtonColor: '#0a4c23', customClass: { popup: 'swal-popup-modern' } });
                 }
+            } catch (e) {
+                Swal.fire({ icon: 'error', title: 'Error de red', text: 'Problema de red al actualizar.', confirmButtonColor: '#0a4c23', customClass: { popup: 'swal-popup-modern' } });
+            } finally {
+                btnSave.disabled = false;
+                btnSave.innerHTML = '<i class="fas fa-save"></i> Guardar cambios';
             }
         }
 
