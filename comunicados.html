@@ -320,6 +320,9 @@
                     cargarComunicadosAdmin();
                 } else {
                     Swal.fire({ icon: 'error', title: 'Error', text: 'No se pudo eliminar: ' + res.statusText, confirmButtonColor: '#0a4c23' });
+                }
+            } catch (e) {
+                Swal.fire({ icon: 'error', title: 'Error de conexión', text: 'Problema de conexión.', confirmButtonColor: '#0a4c23' });
             }
         }
 
