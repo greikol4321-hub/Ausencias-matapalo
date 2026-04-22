@@ -233,22 +233,25 @@
         .swal-popup-edit .swal2-actions {
             display: flex !important;
             flex-direction: row !important;
-            flex-wrap: nowrap !important;
+            flex-wrap: wrap !important;
             justify-content: center !important;
-            gap: 10px !important;
-            margin: 1rem 1.5rem 1.25rem !important;
+            gap: 15px !important;
+            margin: 1.5rem 1.5rem 1.25rem !important;
             padding: 0 !important;
+            width: auto !important;
         }
         .swal-popup-edit .swal2-confirm,
         .swal-popup-edit .swal2-cancel {
             border-radius: 8px !important;
-            padding: 11px 0 !important;
+            padding: 12px 24px !important;
             font-weight: 600 !important;
-            font-size: 0.95rem !important;
-            white-space: nowrap !important;
-            flex: 1 !important;
+            font-size: 1rem !important;
+            white-space: normal !important;
+            flex: 0 1 auto !important;
             width: auto !important;
-            min-width: 0 !important;
+            min-width: 140px !important;
+            margin: 0 !important;
+            line-height: 1.2 !important;
         }
         .swal2-popup .swal2-input,
         .swal2-popup .swal2-textarea,
@@ -462,7 +465,7 @@
                 didOpen: () => {
                     const actions = Swal.getActions();
                     if (actions) {
-                        actions.style.cssText += 'display:flex!important;flex-direction:row!important;flex-wrap:nowrap!important;';
+                        actions.style.cssText += 'display:flex!important;flex-direction:row!important;flex-wrap:wrap!important;justify-content:center!important;gap:15px!important;';
                     }
                 },
                 preConfirm: () => {
