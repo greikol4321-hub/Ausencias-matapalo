@@ -29,6 +29,20 @@
             margin: 0 8px;
             color: #ccc;
         }
+        .footer-visitas {
+            margin-top: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+        .footer-visitas-label {
+            font-size: 0.8rem;
+            color: #888;
+        }
+        .footer-visitas-badge {
+            height: 22px;
+        }
     </style>
 </head>
 
@@ -217,6 +231,10 @@
     <span class="footer-brand">CTP de Matapalo</span>
     <span class="footer-sep">&mdash;</span>
     Todos los derechos reservados.
+    <div class="footer-visitas" aria-label="Contador de visitas">
+        <span class="footer-visitas-label">Visitas a la página</span>
+        <img class="footer-visitas-badge" src="https://api.visitorbadge.io/api/visitors?path=sistema-informacion-ctp-matapalo.ed.cr&countColor=%232980b9" alt="Contador de visitas">
+    </div>
 </footer>
 
 </html>
