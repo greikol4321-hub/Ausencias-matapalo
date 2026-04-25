@@ -1893,7 +1893,7 @@ a:hover {
             font-size: 0.85rem;
             text-transform: uppercase;
             color: var(--verde-oscuro);
-            border: 1px solid rgba(10, 76, 35, 0.25);
+            border: none;
             display: inline-block;
             letter-spacing: 0.5px;
         }

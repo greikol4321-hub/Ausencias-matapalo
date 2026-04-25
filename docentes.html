@@ -384,14 +384,17 @@
             document.getElementById('rol').textContent = rolVisible;
             document.getElementById('rolBadge').textContent = rolVisible;
 
+            const badge = document.getElementById('rolBadge');
             if (rol === 'admin') {
                 document.getElementById('seccionAdmin').style.display = 'block';
-                document.getElementById('rolBadge').style.background = '#d4a256';
-                document.getElementById('rolBadge').style.color = '#0a4c23';
+                badge.style.background = '#d4a256';
+                badge.style.color = '#0a4c23';
             } else if (rol === 'docente_guia') {
-                document.getElementById('rolBadge').style.background = '#1a6b3a';
+                badge.style.background = '#1a6b3a';
+                badge.style.color = '#ffffff';
             } else {
-                document.getElementById('rolBadge').style.background = '#0a4c23';
+                badge.style.background = '#0a4c23';
+                badge.style.color = '#ffffff';
             }
 
             cargarHistorial();
