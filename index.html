@@ -158,9 +158,13 @@
 
         async function cargarAusencias() {
             const tabla = document.getElementById("tablaAusencias");
-            const hoy = new Date().toISOString().split('T')[0];
+            const ahora = new Date();
+            const hoy = ahora.toISOString().split('T')[0];
+            const manana = new Date(ahora);
+            manana.setDate(manana.getDate() + 1);
+            const mananaStr = manana.toISOString().split('T')[0];
             try {
-                const res = await fetch(`${SUPABASE_URL}/rest/v1/ausencias?fecha=lte.${hoy}&fecha_fin=gte.${hoy}&select=*`, {
+                const res = await fetch(`${SUPABASE_URL}/rest/v1/ausencias?fecha=lte.${mananaStr}&fecha_fin=gte.${hoy}&select=*`, {
                     headers
                 });
                 const datos = await res.json();
