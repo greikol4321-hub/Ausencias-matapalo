@@ -70,37 +70,99 @@
         const mensaje = document.getElementById('mensaje');
         const btnIngresar = document.getElementById('btnIngresar');
 
+        async function sha256Hex(text) {
+            const bytes = new TextEncoder().encode(text);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', bytes);
+            return Array.from(new Uint8Array(hashBuffer))
+                .map((b) => b.toString(16).padStart(2, '0'))
+                .join('');
+        }
+
+        async function verificarContrasena(storedPassword, plainPassword) {
+            const stored = String(storedPassword || '');
+            if (!stored) return false;
+
+            if (stored.startsWith('sha256:')) {
+                const expected = stored.slice(7);
+                const computed = await sha256Hex(plainPassword);
+                return expected === computed;
+            }
+
+            return stored === plainPassword;
+        }
+
+        async function migrarContrasenaHash(usuario, plainPassword) {
+            const hashed = `sha256:${await sha256Hex(plainPassword)}`;
+            const params = new URLSearchParams();
+            params.set('usuario', `eq.${usuario}`);
+
+            try {
+                await fetch(`${SUPABASE_URL}/rest/v1/usuarios?${params.toString()}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        apikey: SUPABASE_KEY,
+                        Authorization: `Bearer ${SUPABASE_KEY}`,
+                        Prefer: 'return=minimal'
+                    },
+                    body: JSON.stringify({ contrasena: hashed })
+                });
+            } catch (error) {
+                console.warn('No fue posible migrar contraseña a hash en este inicio.', error);
+            }
+        }
+
+        function guardarSesion(user) {
+            const now = Date.now();
+            const ttlMs = 8 * 60 * 60 * 1000;
+
+            localStorage.setItem('usuario', user.usuario);
+            localStorage.setItem('nombre', user.nombre_completo || user.usuario);
+            localStorage.setItem('rol', user.rol || 'docente');
+            localStorage.setItem('session_issued_at', String(now));
+            localStorage.setItem('session_expires_at', String(now + ttlMs));
+        }
+
         form.addEventListener('submit', async(e) => {
             e.preventDefault();
 
-            const usuario = document.getElementById('usuario').value;
+            const usuario = document.getElementById('usuario').value.trim();
             const password = document.getElementById('password').value;
+
+            if (!usuario || !password) {
+                mensaje.innerHTML = '❌ Debe ingresar usuario y contraseña';
+                mensaje.className = 'mensaje error show';
+                return;
+            }
 
             btnIngresar.disabled = true;
             btnIngresar.innerHTML = '<i class="fas fa-spinner fa-spin"></i> CARGANDO...';
 
             try {
+                const params = new URLSearchParams();
+                params.set('select', 'usuario,nombre_completo,rol,contrasena');
+                params.set('usuario', `eq.${usuario}`);
+                params.set('limit', '1');
 
-                const response = await fetch(
-                    `${SUPABASE_URL}/rest/v1/usuarios?usuario=eq.${encodeURIComponent(usuario)}&contrasena=eq.${encodeURIComponent(password)}`, {
-                        method: 'GET',
-                        headers: {
-                            apikey: SUPABASE_KEY,
-                            Authorization: `Bearer ${SUPABASE_KEY}`
-                        }
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/usuarios?${params.toString()}`, {
+                    method: 'GET',
+                    headers: {
+                        apikey: SUPABASE_KEY,
+                        Authorization: `Bearer ${SUPABASE_KEY}`
                     }
-                );
+                });
 
                 const data = await response.json();
 
-                if (data.length > 0) {
+                const user = Array.isArray(data) && data.length ? data[0] : null;
+                const autenticado = user ? await verificarContrasena(user.contrasena, password) : false;
 
-                    const user = data[0];
+                if (autenticado) {
+                    guardarSesion(user);
 
-                    // 🔐 GUARDAR SESIÓN
-                    localStorage.setItem("usuario", user.usuario);
-                    localStorage.setItem("nombre", user.nombre_completo);
-                    localStorage.setItem("rol", user.rol);
+                    if (!String(user.contrasena || '').startsWith('sha256:')) {
+                        await migrarContrasenaHash(user.usuario, password);
+                    }
 
                     mensaje.innerHTML = "✅ Bienvenido " + user.nombre_completo;
                     mensaje.className = "mensaje exito show";

@@ -54,8 +54,8 @@
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,0.52);
-            backdrop-filter: blur(3px);
+            background: rgba(10,18,38,0.70);
+            backdrop-filter: blur(8px) saturate(1.4);
             z-index: 99998;
             align-items: center;
             justify-content: center;
@@ -64,35 +64,43 @@
         .noti-overlay.active { display: flex; }
         .noti-dialog {
             background: #fff;
-            border-radius: 16px;
-            box-shadow: 0 24px 64px rgba(0,0,0,0.22);
+            border-radius: 28px;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.32), 0 8px 24px rgba(0,0,0,0.10);
             width: 100%;
-            max-width: 400px;
+            max-width: 360px;
             overflow: hidden;
-            animation: noti-slidein 0.25s ease;
+            animation: noti-dialog-in 0.42s cubic-bezier(.34,1.56,.64,1) both;
         }
-        @keyframes noti-slidein {
-            from { transform: translateY(-20px); opacity: 0; }
-            to   { transform: translateY(0);     opacity: 1; }
+        @keyframes noti-dialog-in {
+            from { transform: scale(0.82) translateY(24px); opacity: 0; }
+            to   { transform: scale(1)    translateY(0);    opacity: 1; }
         }
-        .noti-dialog-icon  { text-align: center; padding: 28px 24px 0; font-size: 2.8rem; }
-        .noti-dialog-title { text-align: center; font-size: 1.15rem; font-weight: 700; color: #1a1a2e; padding: 12px 24px 4px; }
-        .noti-dialog-text  { text-align: center; font-size: 0.93rem; color: #666; padding: 0 24px 16px; line-height: 1.5; }
-        .noti-dialog-footer { display: flex; gap: 12px; padding: 0 20px 24px; }
-        .noti-dialog-cancel {
-            flex: 1; padding: 11px 0; border-radius: 8px;
-            border: 2px solid #e1e4e8; background: #fff; color: #444;
-            font-size: 0.97rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease;
+        .noti-dialog-strip { height: 6px; background: linear-gradient(90deg,#0a4c23,#1a9448); }
+        .noti-dialog-icon { display:flex; align-items:center; justify-content:center; padding:28px 24px 14px; }
+        .noti-dialog-icon-bubble { width:76px; height:76px; border-radius:50%; background:linear-gradient(145deg,#e8f5ee,#c7ecd8); display:flex; align-items:center; justify-content:center; font-size:2.5rem; box-shadow:0 6px 20px rgba(10,76,35,0.18); }
+        .noti-dialog-title { text-align:center; font-size:1.22rem; font-weight:800; color:#0d1f13; padding:10px 28px 4px; letter-spacing:-0.02em; }
+        .noti-dialog-text  { text-align:center; font-size:0.92rem; color:#6b7280; padding:4px 28px 24px; line-height:1.65; }
+        .noti-dialog-footer { display:flex; gap:10px; padding:0 20px 24px; }
+        .noti-dialog-cancel,.noti-dialog-cancel:link,.noti-dialog-cancel:visited {
+            flex:1 !important; padding:13px 0 !important; border-radius:14px !important;
+            border:1.5px solid #e2e8f0 !important; background:#f8fafc !important; color:#475569 !important;
+            font-size:0.95rem !important; font-weight:600 !important; cursor:pointer !important;
+            transition:all 0.2s ease !important; box-shadow:none !important;
+            text-align:center !important; display:flex !important;
+            align-items:center !important; justify-content:center !important;
         }
-        .noti-dialog-cancel:hover { background: #f8f9fa; border-color: #d0d7de; color: #222; }
-        .noti-dialog-confirm {
-            flex: 1; padding: 11px 0; border-radius: 8px; border: none;
-            background: #0a4c23; color: #fff; font-size: 0.97rem; font-weight: 600;
-            cursor: pointer; transition: all 0.2s ease; box-shadow: 0 4px 12px rgba(10,76,35,0.2);
+        .noti-dialog-cancel:hover { background:#f1f5f9 !important; border-color:#cbd5e1 !important; color:#1e293b !important; }
+        .noti-dialog-confirm,.noti-dialog-confirm:link,.noti-dialog-confirm:visited {
+            flex:1 !important; padding:13px 0 !important; border-radius:14px !important; border:none !important;
+            background:linear-gradient(135deg,#16a34a,#0a4c23) !important; color:#fff !important;
+            font-size:0.95rem !important; font-weight:700 !important; cursor:pointer !important;
+            transition:all 0.22s ease !important; box-shadow:0 4px 16px rgba(10,76,35,0.38) !important;
+            letter-spacing:0.01em !important; text-align:center !important;
+            display:flex !important; align-items:center !important; justify-content:center !important;
         }
-        .noti-dialog-confirm:hover { background: #0d6b32; transform: translateY(-1px); box-shadow: 0 6px 16px rgba(10,76,35,0.3); }
-        .noti-dialog-confirm.danger { background: #e74c3c; box-shadow: 0 4px 12px rgba(231,76,60,0.2); }
-        .noti-dialog-confirm.danger:hover { background: #c0392b; box-shadow: 0 6px 16px rgba(231,76,60,0.3); }
+        .noti-dialog-confirm:hover { background:linear-gradient(135deg,#15803d,#0d5929) !important; transform:translateY(-2px) !important; box-shadow:0 8px 24px rgba(10,76,35,0.44) !important; }
+        .noti-dialog-confirm.danger { background:linear-gradient(135deg,#ef4444,#b91c1c) !important; box-shadow:0 4px 16px rgba(185,28,28,0.38) !important; }
+        .noti-dialog-confirm.danger:hover { background:linear-gradient(135deg,#dc2626,#991b1b) !important; box-shadow:0 8px 24px rgba(185,28,28,0.44) !important; }
         /* Loading overlay */
         #noti-loading {
             display: none; position: fixed; inset: 0;
@@ -122,7 +130,10 @@
     </div>
     <div id="noti-confirm-overlay" class="noti-overlay">
         <div class="noti-dialog">
-            <div class="noti-dialog-icon" id="noti-confirm-icon"></div>
+            <div class="noti-dialog-strip"></div>
+            <div class="noti-dialog-icon">
+                <div class="noti-dialog-icon-bubble" id="noti-confirm-icon"></div>
+            </div>
             <div class="noti-dialog-title" id="noti-confirm-title"></div>
             <div class="noti-dialog-text" id="noti-confirm-text"></div>
             <div class="noti-dialog-footer">
@@ -214,14 +225,9 @@
                 </select>
                 </div>
                 <div>
-                    <label for="detalleAusencia"><i class="fas fa-clipboard"></i> Detalle Breve</label>
+                    <label for="detalleAusencia"><i class="fas fa-clipboard"></i> Detalle breve / motivo</label>
                     <input type="text" id="detalleAusencia" placeholder="Ej: Cita en la Caja">
                 </div>
-            </div>
-
-            <div>
-                <label for="actividadRemplazo"><i class="fas fa-book"></i> Trabajo para los Estudiantes</label>
-                <textarea id="actividadRemplazo" rows="3" placeholder="Describa la práctica o actividad que deben realizar los grupos..."></textarea>
             </div>
             <button type="submit" id="btnGuardar"><i class="fas fa-save"></i> Registrar Período de Ausencia</button>
         </form>
@@ -231,7 +237,7 @@
         <h3><i class="fas fa-history"></i> Mi Historial Reciente</h3>
         <div style="margin-bottom: 15px; position: relative;">
             <i class="fas fa-search" style="position: absolute; left: 15px; top: 12px; color: var(--texto-gris);"></i>
-            <input type="text" id="busquedaHistorial" onkeyup="filtrarTabla()" placeholder="Buscar por motivo, actividad o fecha..." style="width: 100%; padding: 12px 15px 12px 40px; border-radius: 8px; border: 1px solid rgba(0,0,0,0.1); font-size: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+            <input type="text" id="busquedaHistorial" onkeyup="filtrarTabla()" placeholder="Buscar por motivo, detalle o fecha..." style="width: 100%; padding: 12px 15px 12px 40px; border-radius: 8px; border: 1px solid rgba(0,0,0,0.1); font-size: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
         </div>
 
         <div class="overflow-auto">
@@ -241,7 +247,7 @@
                         <tr>
                             <th><i class="fas fa-calendar"></i> Desde</th>
                             <th><i class="fas fa-calendar-check"></i> Hasta</th>
-                            <th><i class="fas fa-info-circle"></i> Motivo y Actividad</th>
+                            <th><i class="fas fa-info-circle"></i> Motivo y Detalle</th>
                             <th><i class="fas fa-cog"></i> Acción</th>
                         </tr>
                     </thead>
@@ -278,14 +284,18 @@
                     setTimeout(() => el.remove(), 300);
                 }, 3200);
             },
-            confirm(title, text, onConfirm, danger = false) {
+            confirm(title, text, onConfirm, danger = false, icon = null) {
                 this._confirmCb = onConfirm;
-                document.getElementById('noti-confirm-icon').textContent = danger ? '🗑️' : '⚠️';
+                document.getElementById('noti-confirm-icon').textContent = icon ?? (danger ? '🗑️' : '⚠️');
                 document.getElementById('noti-confirm-title').textContent = title;
                 document.getElementById('noti-confirm-text').innerHTML = text;
                 const btn = document.getElementById('noti-confirm-btn');
                 btn.className = 'noti-dialog-confirm' + (danger ? ' danger' : '');
                 btn.textContent = danger ? 'Sí, eliminar' : 'Confirmar';
+                const strip = document.querySelector('#noti-confirm-overlay .noti-dialog-strip');
+                if (strip) strip.style.background = danger
+                    ? 'linear-gradient(90deg,#ef4444,#b91c1c)'
+                    : 'linear-gradient(90deg,#0a4c23,#1a9448)';
                 document.getElementById('noti-confirm-overlay').classList.add('active');
             },
             closeConfirm() {
@@ -317,7 +327,7 @@
 
         // 🔒 VERIFICACIÓN DE SESIÓN INMEDIATA
         if (!localStorage.getItem('usuario') || !localStorage.getItem('nombre')) {
-            window.location.href = "registrarme.html";
+            globalThis.location.href = "registrarme.html";
         }
         const SUPABASE_URL = 'https://iowxlwnosyyqetbvvmuk.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlvd3hsd25vc3l5cWV0YnZ2bXVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYxOTk4NDYsImV4cCI6MjA5MTc3NTg0Nn0.VZ5VMu0z4nlsZ0hKvDSk4IUluA1yGx9eQCCXzDc5HmU';
@@ -328,40 +338,98 @@
             "Content-Type": "application/json"
         };
 
-        function inicializar() {
-            const nombre = localStorage.getItem('nombre');
-            const rol = localStorage.getItem('rol');
-            const usuario = localStorage.getItem('usuario');
+        async function cargarSesionDesdeBD() {
+            const usuario = (localStorage.getItem('usuario') || '').trim();
+            const expiraEn = Number(localStorage.getItem('session_expires_at') || 0);
 
-            if (!nombre || !usuario) {
-                globalThis.location.href = "index.html";
+            if (!usuario || (expiraEn && Date.now() > expiraEn)) {
+                localStorage.clear();
+                return null;
+            }
+
+            const params = new URLSearchParams();
+            params.set('select', 'usuario,nombre_completo,rol');
+            params.set('usuario', `eq.${usuario}`);
+            params.set('limit', '1');
+
+            try {
+                const res = await fetch(`${SUPABASE_URL}/rest/v1/usuarios?${params.toString()}`, { headers });
+                const data = await res.json();
+                return Array.isArray(data) && data.length ? data[0] : null;
+            } catch (error) {
+                console.error('No se pudo validar sesión en BD:', error);
+                return null;
+            }
+        }
+
+        async function inicializar() {
+            const sesion = await cargarSesionDesdeBD();
+            if (!sesion) {
+                globalThis.location.href = "registrarme.html";
                 return;
             }
 
+            const nombre = sesion.nombre_completo || sesion.usuario;
+            const rol = sesion.rol || 'docente';
+            const usuario = sesion.usuario;
+
+            localStorage.setItem('usuario', usuario);
+            localStorage.setItem('nombre', nombre);
+            localStorage.setItem('rol', rol);
+
             // Actualizar Textos
+            const rolVisible = String(rol || '').replaceAll('_', ' ');
             document.getElementById('nombreUsuario').textContent = nombre;
             document.getElementById('usuario').textContent = usuario;
-            document.getElementById('rol').textContent = rol;
-            document.getElementById('rolBadge').textContent = rol;
+            document.getElementById('rol').textContent = rolVisible;
+            document.getElementById('rolBadge').textContent = rolVisible;
 
             if (rol === 'admin') {
                 document.getElementById('seccionAdmin').style.display = 'block';
                 document.getElementById('rolBadge').style.background = '#b45309';
             } else if (rol === 'docente_guia') {
-                document.getElementById('rolBadge').style.background = '#16a085';
+                document.getElementById('rolBadge').style.background = '#1a6b3a';
             }
 
             cargarHistorial();
         }
+
+        function sincronizarDetalleAusencia() {
+            const razon = document.getElementById('razonAusencia');
+            const detalle = document.getElementById('detalleAusencia');
+            if (!razon || !detalle) return;
+
+            const esOtro = razon.value === 'Otro';
+            detalle.required = esOtro;
+            detalle.placeholder = esOtro
+                ? 'Escribe el motivo o por qué faltaste'
+                : 'Ej: Cita en la Caja';
+
+            if (!esOtro) {
+                detalle.setCustomValidity('');
+            }
+        }
+
+        document.getElementById('razonAusencia').addEventListener('change', sincronizarDetalleAusencia);
+        sincronizarDetalleAusencia();
 
         document.getElementById('formMiAusencia').addEventListener('submit', async function(e) {
             e.preventDefault();
             const btn = document.getElementById('btnGuardar');
             const f1 = document.getElementById('fechaInicio').value;
             const f2 = document.getElementById('fechaFin').value;
+            const razon = document.getElementById('razonAusencia').value;
+            const detalleInput = document.getElementById('detalleAusencia');
+            const detalle = detalleInput.value.trim();
 
             if (f2 < f1) {
                 noti.toast('warning', 'Fechas incorrectas', 'La fecha final no puede ser anterior a la fecha de inicio.');
+                return;
+            }
+
+            if (razon === 'Otro' && !detalle) {
+                noti.toast('warning', 'Detalle requerido', 'Si eliges Otro, escribe el motivo o por qué faltaste en Detalle breve.');
+                detalleInput.focus();
                 return;
             }
 
@@ -371,9 +439,8 @@
                 nombre: localStorage.getItem('nombre'),
                 fecha: f1,
                 fecha_fin: f2,
-                razon: document.getElementById('razonAusencia').value,
-                detalle: document.getElementById('detalleAusencia').value,
-                actividad: document.getElementById('actividadRemplazo').value
+                razon,
+                detalle
             };
 
             noti.loading(true, 'Guardando...');
@@ -390,8 +457,7 @@
                             fecha_inicio: datos.fecha,
                             fecha_fin: datos.fecha_fin,
                             motivo: datos.razon,
-                            detalle: datos.detalle,
-                            actividad: datos.actividad
+                            detalle: datos.detalle
                         }).then(() => console.log("Correo enviado a dirección"))
                         .catch(err => {
                             console.error("Fallo EmailJS:", err);
@@ -400,6 +466,7 @@
                     noti.loading(false);
                     noti.toast('success', '¡Período de ausencia guardado!');
                     this.reset();
+                    sincronizarDetalleAusencia();
                     cargarHistorial();
                 }
             } catch (err) {
@@ -435,7 +502,7 @@
                     <td>
                         <span class="badge-motivo">${a.razon}</span>
                         <div style="font-size: 0.85rem; margin-top: 6px; color: var(--texto-gris);">
-                            <i class="fas fa-comment-dots" style="color: #999; margin-right:4px;"></i> ${a.actividad || 'Sin actividad asignada'}
+                            <i class="fas fa-comment-dots" style="color: #999; margin-right:4px;"></i> ${a.detalle || 'Sin detalle adicional'}
                         </div>
                     </td>
                     <td style="text-align: center;">
@@ -478,7 +545,7 @@
             noti.confirm('¿Cerrar Sesión?', '¿Seguro que desea salir del panel?', () => {
                 localStorage.clear();
                 globalThis.location.href = "index.html";
-            });
+            }, false, '🚪');
         }
 
         window.onload = inicializar;

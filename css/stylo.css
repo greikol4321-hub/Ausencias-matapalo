@@ -1886,14 +1886,14 @@ a:hover {
 
         /* BADGES */
         .page-docentes .badge-rol {
-            background: rgba(10, 76, 35, 0.12);
+            background: var(--crema);
             padding: 6px 16px;
             border-radius: 20px;
             font-weight: 700;
             font-size: 0.85rem;
             text-transform: uppercase;
-            color: var(--blanco);
-            border: 1px solid var(--verde-claro);
+            color: var(--verde-oscuro);
+            border: 1px solid rgba(10, 76, 35, 0.25);
             display: inline-block;
             letter-spacing: 0.5px;
         }
