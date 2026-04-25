@@ -950,8 +950,9 @@
             document.getElementById('docenteAplica').value = nombre;
 
             if (rol === 'admin') {
-                document.getElementById('rolBadge').style.background = 'var(--dorado, #d4a256)';
-                document.getElementById('rolBadge').style.color = '#fff';
+                document.getElementById('rolBadge').style.background = '#b45309';
+            } else if (rol === 'docente_guia') {
+                document.getElementById('rolBadge').style.background = '#1a6b3a';
             }
         }
 

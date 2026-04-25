@@ -738,6 +738,11 @@
             document.getElementById('usuario').textContent = usuario;
             document.getElementById('rol').textContent = rolVisible;
             document.getElementById('rolBadge').textContent = rolVisible;
+            if (rol === 'admin') {
+                document.getElementById('rolBadge').style.background = '#b45309';
+            } else if (rol === 'docente_guia') {
+                document.getElementById('rolBadge').style.background = '#1a6b3a';
+            }
             setupComunicadoListener();
             cargarComunicadosAdmin();
         }
