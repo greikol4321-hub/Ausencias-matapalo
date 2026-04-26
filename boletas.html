@@ -1242,7 +1242,7 @@
             nivelesDisponibles.forEach((nivel) => {
                 const opt = document.createElement('option');
                 opt.value = nivel;
-                opt.textContent = nivel;
+                opt.textContent = (!isNaN(nivel) && String(nivel).trim() !== '') ? nivel + '°' : nivel;
                 sel.appendChild(opt);
             });
 
@@ -1324,7 +1324,8 @@
                     return;
                 }
                 document.getElementById('cedulaEstudiante').value = selected.dataset.cedula;
-                document.getElementById('nivelEstudiante').value = selected.dataset.nivel || obtenerNivelDeSeccion(selected.dataset.seccion);
+                let nEst = selected.dataset.nivel || obtenerNivelDeSeccion(selected.dataset.seccion);
+                document.getElementById('nivelEstudiante').value = (!isNaN(nEst) && String(nEst).trim() !== '') ? nEst + '°' : nEst;
                 document.getElementById('seccionEstudiante').value = selected.dataset.seccion;
                 document.getElementById('correoEncargado').value = selected.dataset.correo;
             });
