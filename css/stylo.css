@@ -7,7 +7,7 @@
 }
 
 body {
-    font-family: 'Arial', Helvetica, sans-serif;
+    font-family: 'Poppins', sans-serif;
     background: #ebe5d9;
     color: #333;
     line-height: 1.6;
@@ -165,7 +165,7 @@ a:hover {
 
         .page-galeria {
             overflow-x: hidden;
-            font-family: 'Arial', Helvetica, sans-serif;
+            font-family: 'Poppins', sans-serif;
             background:
                 radial-gradient(circle at top right, rgba(26, 107, 58, 0.12), transparent 42%),
                 radial-gradient(circle at bottom left, rgba(10, 76, 35, 0.08), transparent 40%),
@@ -2158,3 +2158,91 @@ body .swal2-container .swal2-actions {
     display: flex;
 }
 
+
+/* MEJORAS DE DISEÑO - RESPONSIVE & UX */
+
+/* Tablas Responsivas */
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+}
+
+/* Efectos "Elevación" (Hover) en Tarjetas */
+.card, .container, .box {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.card:hover, .container:hover, .box:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 20px rgba(10, 76, 35, 0.15);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+::-webkit-scrollbar-track {
+    background: var(--crema);
+}
+::-webkit-scrollbar-thumb {
+    background: var(--verde-oscuro);
+    border-radius: 6px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--verde-claro);
+}
+
+/* Inputs y Selects Mejorados */
+input, textarea, select {
+    border-radius: 8px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+input:focus, textarea:focus, select:focus {
+    border-color: var(--verde-claro);
+    box-shadow: 0 0 0 3px rgba(26, 107, 58, 0.2);
+}
+
+/* MEJORAS DE DISEÑO - RESPONSIVE & UX */
+
+/* Tablas Responsivas */
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+}
+
+/* Efectos "Elevación" (Hover) en Tarjetas */
+.card, .container, .box {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.card:hover, .container:hover, .box:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 20px rgba(10, 76, 35, 0.15);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+::-webkit-scrollbar-track {
+    background: var(--crema);
+}
+::-webkit-scrollbar-thumb {
+    background: var(--verde-oscuro);
+    border-radius: 6px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--verde-claro);
+}
+
+/* Inputs y Selects Mejorados */
+input, textarea, select {
+    border-radius: 8px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+input:focus, textarea:focus, select:focus {
+    border-color: var(--verde-claro);
+    box-shadow: 0 0 0 3px rgba(26, 107, 58, 0.2);
+}
