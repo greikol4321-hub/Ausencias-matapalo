@@ -495,7 +495,7 @@ a:hover {
         }
 
         .page-index {
-            font-family: 'Arial', Helvetica, sans-serif;
+            font-family: 'Poppins', sans-serif;
             background-color: var(--fondo-sitio);
             color: var(--texto-cuerpo);
             line-height: 1.6;
@@ -808,7 +808,7 @@ a:hover {
         radial-gradient(circle at top right, rgba(26, 107, 58, 0.1), transparent 40%),
         radial-gradient(circle at bottom left, rgba(10, 76, 35, 0.08), transparent 38%),
         #ebe5d9;
-    font-family: 'Arial', Helvetica, sans-serif;
+    font-family: 'Poppins', sans-serif;
     min-height: 100vh;
     margin: 0;
     padding: 0;
@@ -1161,7 +1161,7 @@ a:hover {
                 var(--fondo);
             margin: 0;
             min-height: 100vh;
-            font-family: 'Arial', Helvetica, sans-serif;
+            font-family: 'Poppins', sans-serif;
             color: var(--texto-cuerpo);
         }
 
@@ -1450,7 +1450,7 @@ a:hover {
         .page-docentes {
             overflow-x: clip;
             margin: 0;
-            font-family: 'Arial', Helvetica, sans-serif;
+            font-family: 'Poppins', sans-serif;
             background:
                 radial-gradient(circle at top right, rgba(26, 107, 58, 0.1), transparent 40%),
                 radial-gradient(circle at bottom left, rgba(10, 76, 35, 0.08), transparent 38%),
