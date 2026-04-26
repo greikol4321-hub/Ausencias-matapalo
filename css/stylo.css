@@ -1533,7 +1533,7 @@ a:hover {
             align-items: center;
             color: var(--crema);
             box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-            position: fixed;
+            position: absolute;
             top: 0;
             left: 0;
             right: 0;
