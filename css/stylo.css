@@ -2159,7 +2159,7 @@ body .swal2-container .swal2-actions {
 }
 
 
-/* MEJORAS DE DISEÑO - RESPONSIVE & UX */
+/* MEJORAS DE DISEï¿½O - RESPONSIVE & UX */
 
 /* Tablas Responsivas */
 .table-responsive {
@@ -2168,14 +2168,7 @@ body .swal2-container .swal2-actions {
     width: 100%;
 }
 
-/* Efectos "Elevación" (Hover) en Tarjetas */
-.card, .container, .box {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-.card:hover, .container:hover, .box:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 20px rgba(10, 76, 35, 0.15);
-}
+
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
@@ -2203,7 +2196,7 @@ input:focus, textarea:focus, select:focus {
     box-shadow: 0 0 0 3px rgba(26, 107, 58, 0.2);
 }
 
-/* MEJORAS DE DISEÑO - RESPONSIVE & UX */
+/* MEJORAS DE DISEï¿½O - RESPONSIVE & UX */
 
 /* Tablas Responsivas */
 .table-responsive {
@@ -2212,14 +2205,7 @@ input:focus, textarea:focus, select:focus {
     width: 100%;
 }
 
-/* Efectos "Elevación" (Hover) en Tarjetas */
-.card, .container, .box {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-.card:hover, .container:hover, .box:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 20px rgba(10, 76, 35, 0.15);
-}
+
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
