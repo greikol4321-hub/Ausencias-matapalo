@@ -1846,6 +1846,29 @@ a:hover {
             transform: translateY(-2px);
         }
 
+        .page-docentes .btn-editar {
+            background: #f0fdf4;
+            color: #0a4c23;
+            border: 1px solid #bbf7d0;
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            margin: 0;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            display: block;
+            width: 100%;
+        }
+
+        .page-docentes .btn-editar:hover {
+            background: #0a4c23;
+            color: white;
+            border-color: #0a4c23;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(10, 76, 35, 0.2);
+        }
+
         .page-docentes .btn-eliminar {
             background: #fff5f5;
             color: #d32f2f;
@@ -1857,6 +1880,8 @@ a:hover {
             cursor: pointer;
             transition: all 0.3s;
             font-weight: 600;
+            display: block;
+            width: 100%;
         }
 
         .page-docentes .btn-eliminar:hover {
@@ -2254,7 +2279,7 @@ input:focus, textarea:focus, select:focus {
     box-shadow: 0 0 0 3px rgba(26, 107, 58, 0.2);
 }
 
-/* ESTILO GLOBAL PARA EL FOOTER (Copiado de la versión original) */
+/* ESTILO GLOBAL PARA EL FOOTER (Copiado de la versiï¿½n original) */
 .site-footer { margin-top: 34px; padding: 20px 16px 24px; border-top: 1px solid var(--borde); background: rgba(255, 255, 255, 0.45); position: relative; z-index: 2; }
 .footer-content { max-width: 1100px; margin: 0 auto; text-align: center; color: #1f2937; }
 .footer-content p { margin: 0; font-size: 0.95rem; line-height: 1.5; color: #5a5a5a; font-weight: 500; }

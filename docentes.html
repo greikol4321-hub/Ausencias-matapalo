@@ -118,6 +118,36 @@
         }
         .noti-loading-text { color: #fff; font-size: 1rem; font-weight: 600; letter-spacing: 0.03em; }
         @keyframes noti-spin { to { transform: rotate(360deg); } }
+        /* Modal edición */
+        #modal-editar-overlay {
+            display: none; position: fixed; inset: 0;
+            background: rgba(10,18,38,0.70); backdrop-filter: blur(8px) saturate(1.4);
+            z-index: 99998; align-items: center; justify-content: center; padding: 16px;
+        }
+        #modal-editar-overlay.active { display: flex; }
+        #modal-editar {
+            background: #fff; border-radius: 20px;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.28);
+            width: 100%; max-width: 480px; overflow: hidden;
+            animation: noti-dialog-in 0.38s cubic-bezier(.34,1.56,.64,1) both;
+        }
+        .modal-strip { height: 6px; background: linear-gradient(90deg,#0a4c23,#1a9448); }
+        .modal-body { padding: 24px 28px; }
+        .modal-title { font-size: 1.15rem; font-weight: 800; color: #0d1f13; margin-bottom: 18px; }
+        .modal-field { margin-bottom: 14px; }
+        .modal-field label { display: block; font-size: 0.88rem; font-weight: 600; color: #374151; margin-bottom: 5px; }
+        .modal-field input, .modal-field select {
+            width: 100%; padding: 10px 12px; border-radius: 10px;
+            border: 1.5px solid #d1d5db; font-size: 0.95rem;
+            box-sizing: border-box; font-family: inherit;
+        }
+        .modal-field input:focus, .modal-field select:focus {
+            border-color: #0a4c23; outline: none;
+            box-shadow: 0 0 0 3px rgba(10,76,35,0.15);
+        }
+        .modal-footer { display: flex; gap: 10px; padding: 0 28px 24px; }
+        .btn-modal-cancel { flex:1; padding:12px; border-radius:12px; border:1.5px solid #e2e8f0; background:#f8fafc; color:#475569; font-weight:600; cursor:pointer; font-size:0.95rem; }
+        .btn-modal-save { flex:1; padding:12px; border-radius:12px; border:none; background:linear-gradient(135deg,#16a34a,#0a4c23); color:#fff; font-weight:700; cursor:pointer; font-size:0.95rem; box-shadow:0 4px 16px rgba(10,76,35,0.35); }
     </style>
 </head>
 
@@ -140,6 +170,43 @@
             <div class="noti-dialog-footer">
                 <button class="noti-dialog-cancel" onclick="noti.closeConfirm()">Cancelar</button>
                 <button class="noti-dialog-confirm" id="noti-confirm-btn" onclick="noti._doConfirm()">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== MODAL EDITAR AUSENCIA ===== -->
+    <div id="modal-editar-overlay">
+        <div id="modal-editar">
+            <div class="modal-strip"></div>
+            <div class="modal-body">
+                <div class="modal-title"><i class="fas fa-pencil-alt" style="color:#0a4c23; margin-right:8px;"></i> Editar Ausencia</div>
+                <input type="hidden" id="edit-id">
+                <div class="modal-field">
+                    <label><i class="fas fa-calendar-alt"></i> Fecha de Inicio</label>
+                    <input type="date" id="edit-fecha">
+                </div>
+                <div class="modal-field">
+                    <label><i class="fas fa-calendar-check"></i> Fecha de Finalización</label>
+                    <input type="date" id="edit-fecha-fin">
+                </div>
+                <div class="modal-field">
+                    <label><i class="fas fa-list-ul"></i> Motivo</label>
+                    <select id="edit-razon">
+                        <option value="Enfermedad">Enfermedad / Incapacidad</option>
+                        <option value="Permiso">Permiso Personal</option>
+                        <option value="Capacitación">Capacitación MEP</option>
+                        <option value="Cita Médica">Cita Médica</option>
+                        <option value="Otro">Otro Motivo</option>
+                    </select>
+                </div>
+                <div class="modal-field">
+                    <label><i class="fas fa-clipboard"></i> Detalle</label>
+                    <input type="text" id="edit-detalle" placeholder="Detalle adicional">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-modal-cancel" onclick="cerrarModalEditar()">Cancelar</button>
+                <button class="btn-modal-save" onclick="guardarEdicion()"><i class="fas fa-save"></i> Guardar Cambios</button>
             </div>
         </div>
     </div>
@@ -513,6 +580,9 @@
                         </div>
                     </td>
                     <td style="text-align: center;">
+                        <button class="btn-editar" onclick="abrirModalEditar(${a.id}, '${a.fecha}', '${a.fecha_fin || ''}', '${a.razon}', ${JSON.stringify(a.detalle || '')})" title="Editar este periodo" style="margin-bottom:6px;">
+                            <i class="fas fa-pencil-alt"></i> Editar
+                        </button>
                         <button class="btn-eliminar" onclick="eliminarAusencia(${a.id})" title="Eliminar este periodo">
                             <i class="fas fa-trash-alt"></i> Eliminar
                         </button>
@@ -525,8 +595,7 @@
             }
         }
 
-        function eliminarAusencia(id) {
-            noti.confirm('¿Eliminar ausencia?', 'Esta acción no se puede deshacer.', async () => {
+        function eliminarAusencia(id) {            noti.confirm('¿Eliminar ausencia?', 'Esta acción no se puede deshacer.', async () => {
                 noti.loading(true, 'Borrando...');
                 try {
                     const res = await fetch(`${SUPABASE_URL}/rest/v1/ausencias?id=eq.${id}`, {
@@ -553,6 +622,57 @@
                 localStorage.clear();
                 globalThis.location.href = "index.html";
             }, false, '🚪');
+        }
+
+        function abrirModalEditar(id, fecha, fechaFin, razon, detalle) {
+            document.getElementById('edit-id').value = id;
+            document.getElementById('edit-fecha').value = fecha;
+            document.getElementById('edit-fecha-fin').value = fechaFin;
+            document.getElementById('edit-razon').value = razon;
+            document.getElementById('edit-detalle').value = detalle;
+            document.getElementById('modal-editar-overlay').classList.add('active');
+        }
+
+        function cerrarModalEditar() {
+            document.getElementById('modal-editar-overlay').classList.remove('active');
+        }
+
+        async function guardarEdicion() {
+            const id = document.getElementById('edit-id').value;
+            const fecha = document.getElementById('edit-fecha').value;
+            const fechaFin = document.getElementById('edit-fecha-fin').value;
+            const razon = document.getElementById('edit-razon').value;
+            const detalle = document.getElementById('edit-detalle').value.trim();
+
+            if (!fecha || !fechaFin || !razon) {
+                noti.toast('warning', 'Campos incompletos', 'Completa todos los campos requeridos.');
+                return;
+            }
+            if (fechaFin < fecha) {
+                noti.toast('warning', 'Fechas incorrectas', 'La fecha final no puede ser anterior a la de inicio.');
+                return;
+            }
+
+            cerrarModalEditar();
+            noti.loading(true, 'Guardando cambios...');
+            try {
+                const res = await fetch(`${SUPABASE_URL}/rest/v1/ausencias?id=eq.${id}`, {
+                    method: 'PATCH',
+                    headers: { ...headers, 'Prefer': 'return=minimal' },
+                    body: JSON.stringify({ fecha, fecha_fin: fechaFin, razon, detalle })
+                });
+                noti.loading(false);
+                if (res.ok) {
+                    noti.toast('success', 'Ausencia actualizada', 'Los cambios se guardaron correctamente.');
+                    cargarHistorial();
+                } else {
+                    noti.toast('error', 'Error', 'No se pudo actualizar: ' + res.statusText);
+                }
+            } catch (e) {
+                console.error(e);
+                noti.loading(false);
+                noti.toast('error', 'Error de conexión', 'No se pudo conectar con el servidor.');
+            }
         }
 
         window.onload = inicializar;
