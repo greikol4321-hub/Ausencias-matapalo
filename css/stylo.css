@@ -830,6 +830,23 @@ a:hover {
     margin: 0;
     padding: 0;
     color: var(--texto-cuerpo);
+    position: relative;
+}
+
+.page-registrarme::after {
+    content: "";
+    position: fixed;
+    top: 25vh;
+    bottom: 10vh;
+    left: 15vw;
+    right: 15vw;
+    background-image: url('../img/logo_colegio_nuevo.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    opacity: 0.15;
+    z-index: 0;
+    pointer-events: none;
 }
 
 .page-registrarme .header {
