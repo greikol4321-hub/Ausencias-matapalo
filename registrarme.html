@@ -165,12 +165,19 @@
                         await migrarContrasenaHash(user.usuario, password);
                     }
 
-                    mensaje.innerHTML = "✅ Bienvenido " + user.nombre_completo;
+                    mensaje.innerHTML = `
+                        <div style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
+                            <i class="fas fa-check-circle" style="font-size: 2.2rem;"></i>
+                            <div style="font-size: 1.15rem; font-weight: bold;">¡Acceso Autorizado!</div>
+                            <div>Bienvenido/a, <b>${user.nombre_completo}</b></div>
+                            <div style="font-size: 0.85em; opacity: 0.9; margin-top: 5px;"><i class="fas fa-spinner fa-spin"></i> Cargando tu panel...</div>
+                        </div>
+                    `;
                     mensaje.className = "mensaje exito show";
 
                     setTimeout(() => {
                         globalThis.location.href = "docentes.html";
-                    }, 1500);
+                    }, 2500);
 
                 } else {
                     mensaje.innerHTML = "❌ Usuario o contraseña incorrectos";

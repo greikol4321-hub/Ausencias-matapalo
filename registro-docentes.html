@@ -9,7 +9,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/stylo.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </head>
 
@@ -122,20 +121,13 @@
                 );
 
                 if (response.ok) {
+                    mensajeDiv.innerHTML = '✅ ¡Guardado! Redirigiendo...';
+                    mensajeDiv.className = 'mensaje exito show';
                     form.reset();
 
-                    Swal.fire({
-                        icon: 'success',
-                        title: '¡Registro Exitoso!',
-                        html: `¡Bienvenido/a <b>${nombre}</b>!<br>Tu cuenta ha sido creada correctamente.<br><br>Serás redirigido para iniciar sesión.`,
-                        showConfirmButton: false,
-                        timer: 3500,
-                        timerProgressBar: true,
-                        backdrop: `rgba(10, 76, 35, 0.4)`
-                    }).then(() => {
+                    setTimeout(() => {
                         window.location.href = "registrarme.html";
-                    });
-
+                    }, 2000);
                 } else {
                     const errorData = await response.json().catch(() => ({}));
                     const errorMsg = errorData.message || errorData.error || `Error ${response.status}`;
