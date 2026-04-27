@@ -1369,9 +1369,11 @@
                         emailjs.send("service_2wecd52", "template_2idvsua", {
                             to_email: payload.correo_encargado,
                             estudiante_nombre: payload.estudiante_nombre,
+                            estudiante_cedula: payload.estudiante_cedula,
                             numero_boleta: payload.numero_boleta,
                             fecha_boleta: payload.fecha,
                             docente_nombre: payload.docente_nombre,
+                            docente_guia: document.getElementById('docenteGuiaSeccion').value || 'No asignado',
                             falta_cometida: payload.falta_cometida,
                             seccion: payload.seccion
                         }).then(() => {
