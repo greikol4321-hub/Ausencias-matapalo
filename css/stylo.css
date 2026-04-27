@@ -500,6 +500,23 @@ a:hover {
             color: var(--texto-cuerpo);
             line-height: 1.6;
             overflow-x: hidden;
+            position: relative; /* Para la marca de agua */
+        }
+        
+        .page-index::after {
+            content: "";
+            position: fixed;
+            top: 25vh; /* Inicia más abajo, debajo de la barra blanca */
+            bottom: 10vh; /* Termina antes de llegar abajo */
+            left: 15vw; /* Márgenes laterales */
+            right: 15vw;
+            background-image: url('../img/logo_colegio_nuevo.png');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain; /* Obliga a la imagen a mostrarse COMPLETA sin cortar NUNCA */
+            opacity: 0.15; /* Aumentar opacidad para que resalte más */
+            z-index: 0; /* Colocarlo por encima del fondo (background-color) de la web */
+            pointer-events: none;
         }
 
         .page-index img, .page-index video {
