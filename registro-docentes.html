@@ -126,7 +126,7 @@
                     form.reset();
 
                     setTimeout(() => {
-                        window.location.href = "registrarme.html";
+                        globalThis.location.href = "registrarme.html";
                     }, 2000);
                 } else {
                     const errorData = await response.json().catch(() => ({}));

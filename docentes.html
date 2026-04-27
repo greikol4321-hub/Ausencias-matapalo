@@ -93,10 +93,10 @@
         .noti-dialog-cancel:hover { background:#f1f5f9 !important; border-color:#cbd5e1 !important; color:#1e293b !important; }
         .noti-dialog-confirm,.noti-dialog-confirm:link,.noti-dialog-confirm:visited {
             flex:1 !important; padding:13px 0 !important; border-radius:14px !important; border:none !important;
-            background:linear-gradient(135deg,#16a34a,#0a4c23) !important; color:#fff !important;
+            background: #0a4c23 !important; color: #ffffff !important;
             font-size:0.95rem !important; font-weight:700 !important; cursor:pointer !important;
             transition:all 0.22s ease !important; box-shadow:0 4px 16px rgba(10,76,35,0.38) !important;
-            letter-spacing:0.01em !important; text-align:center !important;
+            letter-spacing:0.02em; text-align:center !important;
             display:flex !important; align-items:center !important; justify-content:center !important;
         }
         .noti-dialog-confirm:hover { background:linear-gradient(135deg,#15803d,#0d5929) !important; transform:translateY(-2px) !important; box-shadow:0 8px 24px rgba(10,76,35,0.44) !important; }
@@ -147,7 +147,7 @@
         }
         .modal-footer { display: flex; gap: 10px; padding: 0 28px 24px; }
         .btn-modal-cancel { flex:1; padding:12px; border-radius:12px; border:1.5px solid #e2e8f0; background:#f8fafc; color:#475569; font-weight:600; cursor:pointer; font-size:0.95rem; }
-        .btn-modal-save { flex:1; padding:12px; border-radius:12px; border:none; background:linear-gradient(135deg,#16a34a,#0a4c23); color:#fff; font-weight:700; cursor:pointer; font-size:0.95rem; box-shadow:0 4px 16px rgba(10,76,35,0.35); }
+        .btn-modal-save { flex:1; padding:12px; border-radius:12px; border:none; background:#0a4c23; color:#ffffff; font-weight:700; cursor:pointer; font-size:0.95rem; box-shadow:0 4px 16px rgba(10,76,35,0.35); }
     </style>
 </head>
 
@@ -182,15 +182,15 @@
                 <div class="modal-title"><i class="fas fa-pencil-alt" style="color:#0a4c23; margin-right:8px;"></i> Editar Ausencia</div>
                 <input type="hidden" id="edit-id">
                 <div class="modal-field">
-                    <label><i class="fas fa-calendar-alt"></i> Fecha de Inicio</label>
+                    <label for="edit-fecha"><i class="fas fa-calendar-alt"></i> Fecha de Inicio</label>
                     <input type="date" id="edit-fecha">
                 </div>
                 <div class="modal-field">
-                    <label><i class="fas fa-calendar-check"></i> Fecha de Finalización</label>
+                    <label for="edit-fecha-fin"><i class="fas fa-calendar-check"></i> Fecha de Finalización</label>
                     <input type="date" id="edit-fecha-fin">
                 </div>
                 <div class="modal-field">
-                    <label><i class="fas fa-list-ul"></i> Motivo</label>
+                    <label for="edit-razon"><i class="fas fa-list-ul"></i> Motivo</label>
                     <select id="edit-razon">
                         <option value="Enfermedad">Enfermedad / Incapacidad</option>
                         <option value="Permiso">Permiso Personal</option>
@@ -200,7 +200,7 @@
                     </select>
                 </div>
                 <div class="modal-field">
-                    <label><i class="fas fa-clipboard"></i> Detalle</label>
+                    <label for="edit-detalle"><i class="fas fa-clipboard"></i> Detalle</label>
                     <input type="text" id="edit-detalle" placeholder="Detalle adicional">
                 </div>
             </div>
@@ -580,7 +580,7 @@
                         </div>
                     </td>
                     <td style="text-align: center;">
-                        <button class="btn-editar" data-id="${a.id}" data-fecha="${a.fecha}" data-fechafin="${a.fecha_fin || ''}" data-razon="${a.razon}" data-detalle="${(a.detalle || '').replace(/"/g, '&quot;')}" onclick="abrirModalEditar(this)" title="Editar este periodo" style="margin-bottom:6px;">
+                        <button class="btn-editar" data-id="${a.id}" data-fecha="${a.fecha}" data-fechafin="${a.fecha_fin || ''}" data-razon="${a.razon}" data-detalle="${(a.detalle || '').replaceAll('"', '&quot;')}" onclick="abrirModalEditar(this)" title="Editar este periodo" style="margin-bottom:6px;">
                             <i class="fas fa-pencil-alt"></i> Editar
                         </button>
                         <button class="btn-eliminar" onclick="eliminarAusencia(${a.id})" title="Eliminar este periodo">
@@ -629,7 +629,7 @@
             document.getElementById('edit-fecha').value = btn.dataset.fecha;
             document.getElementById('edit-fecha-fin').value = btn.dataset.fechafin;
             document.getElementById('edit-razon').value = btn.dataset.razon;
-            document.getElementById('edit-detalle').value = btn.dataset.detalle.replace(/&quot;/g, '"');
+            document.getElementById('edit-detalle').value = btn.dataset.detalle.replaceAll('&quot;', '"');
             document.getElementById('modal-editar-overlay').classList.add('active');
         }
 
@@ -694,7 +694,7 @@
                     let textDesde = tdDesde.textContent || tdDesde.innerText;
                     let textHasta = tdHasta.textContent || tdHasta.innerText;
 
-                    if (textMotivo.toUpperCase().indexOf(filter) > -1 || textDesde.toUpperCase().indexOf(filter) > -1 || textHasta.toUpperCase().indexOf(filter) > -1) {
+                    if (textMotivo.toUpperCase().includes(filter) || textDesde.toUpperCase().includes(filter) || textHasta.toUpperCase().includes(filter)) {
                         tr[i].style.display = "";
                     } else {
                         tr[i].style.display = "none";
