@@ -2262,3 +2262,14 @@ input:focus, textarea:focus, select:focus {
 .footer-visitas-label { color: #4b5563; font-weight: 700; font-size: 0.94rem; letter-spacing: 0.2px; }
 .footer-visitas-badge { max-width: 100%; height: auto; border-radius: 6px; box-shadow: 0 1px 4px rgba(17, 24, 39, 0.18); }
 @media (max-width: 600px) { .site-footer { padding: 18px 12px 22px; } .footer-content p { font-size: 0.85rem; } .footer-visitas { gap: 8px; padding: 9px 10px; border-radius: 14px; } .footer-visitas-label { font-size: 0.9rem; } }
+
+/* ESTILO GLOBAL PARA EL FOOTER (Formato unificado del Index) */
+.site-footer { margin-top: 34px; padding: 20px 16px 24px; border-top: 1px solid var(--borde); background: rgba(255, 255, 255, 0.45); }
+.site-footer .footer-brand { color: #0a4c23; font-weight: 700; }
+.site-footer .footer-sep { margin: 0 8px; color: #ccc; }
+.footer-content { max-width: 1100px; margin: 0 auto; text-align: center; color: #1f2937; }
+.footer-content p { margin: 0; font-size: 1.02rem; line-height: 1.5; }
+.footer-visitas { margin-top: 12px; display: flex; justify-content: center; align-items: center; gap: 12px; margin-left: auto; margin-right: auto; box-shadow: 0 3px 10px rgba(10, 76, 35, 0.08); background: transparent; border: none; }
+.footer-visitas-label { color: #4b5563; font-weight: 700; font-size: 0.94rem; letter-spacing: 0.2px; }
+.footer-visitas-badge { max-width: 100%; height: auto; border-radius: 6px; box-shadow: 0 1px 4px rgba(17, 24, 39, 0.18); }
+@media (max-width: 600px) { .site-footer { padding: 18px 12px 22px; } .footer-content p { font-size: 0.95rem; } .footer-visitas { gap: 8px; padding: 9px 10px; border-radius: 14px; } .footer-visitas-label { font-size: 0.9rem; } }
