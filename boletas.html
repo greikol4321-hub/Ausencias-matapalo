@@ -826,7 +826,7 @@
 
         async function cargarDatosUsuarioDesdeBD(usuario) {
             const params = new URLSearchParams();
-            params.set('select', 'usuario,nombre_completo,rol,seccion_guia,seccion');
+            params.set('select', 'usuario,nombre_completo,rol');
             params.set('usuario', `eq.${usuario}`);
             params.set('limit', '1');
             const url = `${SUPABASE_URL}/rest/v1/usuarios?${params.toString()}`;
@@ -1444,7 +1444,7 @@
             const nombre = userDb.nombre_completo || localStorage.getItem('nombre') || usuario;
             rolActual = userDb.rol;
             usuarioActual = userDb.usuario || usuario;
-            seccionGuia = (userDb && (userDb.seccion_guia || userDb.seccion)) || '';
+            seccionGuia = '';
             const asignaciones = await cargarSeccionesAsignadas(usuario, userDb);
             seccionesDocente = asignaciones.todas;
             seccionesGuia = asignaciones.guias;
