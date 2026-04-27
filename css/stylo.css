@@ -1047,12 +1047,16 @@ a:hover {
     top: 20px;
     left: 50%;
     transform: translateX(-50%);
-    padding: 15px 30px;
+    width: max-content; /* Se adapta al contenido automáticamente */
+    max-width: 90vw; /* Evita salirse de la pantalla en móviles */
+    padding: 15px 20px; /* Reducido para móviles */
     display: none;
-    border-radius: 50px;
+    border-radius: 8px; /* Cambiado a 8px para seguir el estilo general del sitio en lugar de 50px */
     text-align: center;
     font-weight: 600;
-    font-size: 1.1rem;
+    font-size: 1.05rem; /* Ajustado sutilmente para móviles */
+    box-sizing: border-box;
+    word-wrap: break-word;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
     z-index: 1000;
     animation: slideDownToast 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
