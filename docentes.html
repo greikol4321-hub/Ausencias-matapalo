@@ -580,7 +580,7 @@
                         </div>
                     </td>
                     <td style="text-align: center;">
-                        <button class="btn-editar" onclick="abrirModalEditar(${a.id}, '${a.fecha}', '${a.fecha_fin || ''}', '${a.razon}', ${JSON.stringify(a.detalle || '')})" title="Editar este periodo" style="margin-bottom:6px;">
+                        <button class="btn-editar" data-id="${a.id}" data-fecha="${a.fecha}" data-fechafin="${a.fecha_fin || ''}" data-razon="${a.razon}" data-detalle="${(a.detalle || '').replace(/"/g, '&quot;')}" onclick="abrirModalEditar(this)" title="Editar este periodo" style="margin-bottom:6px;">
                             <i class="fas fa-pencil-alt"></i> Editar
                         </button>
                         <button class="btn-eliminar" onclick="eliminarAusencia(${a.id})" title="Eliminar este periodo">
@@ -624,12 +624,12 @@
             }, false, '🚪');
         }
 
-        function abrirModalEditar(id, fecha, fechaFin, razon, detalle) {
-            document.getElementById('edit-id').value = id;
-            document.getElementById('edit-fecha').value = fecha;
-            document.getElementById('edit-fecha-fin').value = fechaFin;
-            document.getElementById('edit-razon').value = razon;
-            document.getElementById('edit-detalle').value = detalle;
+        function abrirModalEditar(btn) {
+            document.getElementById('edit-id').value = btn.dataset.id;
+            document.getElementById('edit-fecha').value = btn.dataset.fecha;
+            document.getElementById('edit-fecha-fin').value = btn.dataset.fechafin;
+            document.getElementById('edit-razon').value = btn.dataset.razon;
+            document.getElementById('edit-detalle').value = btn.dataset.detalle.replace(/&quot;/g, '"');
             document.getElementById('modal-editar-overlay').classList.add('active');
         }
 
