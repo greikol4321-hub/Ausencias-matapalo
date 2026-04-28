@@ -308,6 +308,48 @@
             font-weight: 700;
         }
 
+        /* === AUTOCOMPLETE ESTUDIANTE === */
+        .autocomplete-wrap { position: relative; }
+        .autocomplete-suggestions {
+            display: none;
+            position: absolute;
+            top: 100%; left: 0; right: 0;
+            background: #fff;
+            border: 1.5px solid #0a4c23;
+            border-top: none;
+            border-radius: 0 0 6px 6px;
+            max-height: 230px;
+            overflow-y: auto;
+            z-index: 500;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.11);
+        }
+        .autocomplete-suggestions.open { display: block; }
+        .suggestion-item {
+            padding: 10px 14px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #212529;
+            border-bottom: 1px solid #f0f0f0;
+            transition: background 0.15s;
+        }
+        .suggestion-item:last-child { border-bottom: none; }
+        .suggestion-item:hover, .suggestion-item.highlighted {
+            background: #f0faf4;
+            color: #0a4c23;
+            font-weight: 600;
+        }
+        .suggestion-item mark {
+            background: transparent;
+            color: #0a4c23;
+            font-weight: 700;
+        }
+        .suggestion-empty {
+            padding: 10px 14px;
+            color: #999;
+            font-style: italic;
+            font-size: 13px;
+        }
+
         @media (max-width: 900px) {
             .boletas-row {
                 flex-direction: column;
@@ -565,8 +607,14 @@
 
                     <div class="boletas-row">
                         <div class="boletas-field">
-                            <label for="nombreEstudiante">Nombre del estudiante:</label>
-                            <select id="nombreEstudiante" required disabled>
+                            <label for="buscarEstudiante">Nombre del estudiante:</label>
+                            <div class="autocomplete-wrap">
+                                <input id="buscarEstudiante" type="text" autocomplete="off"
+                                    placeholder="Seleccione la sección primero" disabled>
+                                <div id="sugerenciasEstudiante" class="autocomplete-suggestions"></div>
+                            </div>
+                            <!-- Select oculto mantiene la lógica existente -->
+                            <select id="nombreEstudiante" required disabled style="display:none;">
                                 <option value="">-- Seleccione la seccion primero --</option>
                             </select>
                         </div>
@@ -1223,6 +1271,13 @@
             document.getElementById('seccionEstudiante').value = '';
             document.getElementById('correoEncargado').value = '';
 
+            // Resetear campo de búsqueda
+            const buscar = document.getElementById('buscarEstudiante');
+            buscar.value = '';
+            buscar.disabled = !estudiantes.length;
+            buscar.placeholder = estudiantes.length ? 'Escriba para buscar estudiante...' : 'Sin estudiantes en esta sección';
+            document.getElementById('sugerenciasEstudiante').classList.remove('open');
+
             estudiantes.forEach((e) => {
                 if (!e.nombre_completo) return;
                 const opt = document.createElement('option');
@@ -1233,6 +1288,92 @@
                 opt.dataset.seccion = e.seccion || '';
                 opt.dataset.correo = e.correo_encargado || '';
                 sel.appendChild(opt);
+            });
+        }
+
+        function iniciarAutocompletarEstudiante() {
+            const inputBuscar = document.getElementById('buscarEstudiante');
+            const listaSugerencias = document.getElementById('sugerenciasEstudiante');
+            const selOculto = document.getElementById('nombreEstudiante');
+            let indiceActivo = -1;
+
+            function obtenerSugerencias(query) {
+                const q = query.trim().toLowerCase();
+                const opciones = [...selOculto.options].filter(o => o.value);
+                if (!q) return opciones;
+                return opciones.filter(o => o.value.toLowerCase().includes(q));
+            }
+
+            function resaltarTexto(texto, query) {
+                if (!query.trim()) return texto;
+                const escapado = query.trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                return texto.replace(new RegExp('(' + escapado + ')', 'gi'), '<mark>$1</mark>');
+            }
+
+            function mostrarSugerencias(query) {
+                const matches = obtenerSugerencias(query);
+                indiceActivo = -1;
+                listaSugerencias.innerHTML = '';
+
+                if (!matches.length) {
+                    listaSugerencias.innerHTML = '<div class="suggestion-empty">Sin coincidencias</div>';
+                } else {
+                    matches.forEach((opt) => {
+                        const item = document.createElement('div');
+                        item.className = 'suggestion-item';
+                        item.innerHTML = resaltarTexto(opt.value, query);
+                        item.addEventListener('mousedown', (e) => {
+                            e.preventDefault();
+                            seleccionarEstudiante(opt);
+                        });
+                        listaSugerencias.appendChild(item);
+                    });
+                }
+                listaSugerencias.classList.add('open');
+            }
+
+            function seleccionarEstudiante(opt) {
+                inputBuscar.value = opt.value;
+                selOculto.value = opt.value;
+                selOculto.dispatchEvent(new Event('change'));
+                listaSugerencias.classList.remove('open');
+            }
+
+            inputBuscar.addEventListener('input', function () {
+                mostrarSugerencias(this.value);
+            });
+
+            inputBuscar.addEventListener('focus', function () {
+                if (!this.disabled) mostrarSugerencias(this.value);
+            });
+
+            inputBuscar.addEventListener('blur', function () {
+                setTimeout(() => listaSugerencias.classList.remove('open'), 150);
+            });
+
+            inputBuscar.addEventListener('keydown', function (e) {
+                const items = listaSugerencias.querySelectorAll('.suggestion-item');
+                if (!items.length) return;
+
+                if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    indiceActivo = Math.min(indiceActivo + 1, items.length - 1);
+                    items.forEach((el, i) => el.classList.toggle('highlighted', i === indiceActivo));
+                    items[indiceActivo]?.scrollIntoView({ block: 'nearest' });
+                } else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    indiceActivo = Math.max(indiceActivo - 1, 0);
+                    items.forEach((el, i) => el.classList.toggle('highlighted', i === indiceActivo));
+                    items[indiceActivo]?.scrollIntoView({ block: 'nearest' });
+                } else if (e.key === 'Enter') {
+                    e.preventDefault();
+                    if (indiceActivo >= 0 && items[indiceActivo]) {
+                        const matches = obtenerSugerencias(this.value);
+                        if (matches[indiceActivo]) seleccionarEstudiante(matches[indiceActivo]);
+                    }
+                } else if (e.key === 'Escape') {
+                    listaSugerencias.classList.remove('open');
+                }
             });
         }
 
@@ -1399,6 +1540,11 @@
                 document.getElementById('seccionEstudiante').value = '';
                 document.getElementById('docenteGuiaSeccion').value = '';
                 document.getElementById('correoEncargado').value = '';
+                const inputBuscar = document.getElementById('buscarEstudiante');
+                inputBuscar.value = '';
+                inputBuscar.disabled = true;
+                inputBuscar.placeholder = 'Seleccione la sección primero';
+                document.getElementById('sugerenciasEstudiante').classList.remove('open');
                 document.getElementById('numeroBoleta').value = generarNumeroBoleta();
                 document.getElementById('fechaBoleta').value = new Date().toISOString().slice(0, 10);
                 document.getElementById('docenteAplica').value = localStorage.getItem('nombre') || '';
@@ -1422,6 +1568,9 @@
                 globalThis.location.href = 'index.html';
             }, false, '🚪');
         }
+
+        // Iniciar autocomplete al cargar
+        document.addEventListener('DOMContentLoaded', () => iniciarAutocompletarEstudiante());
 
         async function inicializar() {
             const usuario = (localStorage.getItem('usuario') || '').trim();
