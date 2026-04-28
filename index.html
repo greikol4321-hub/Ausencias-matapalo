@@ -205,11 +205,15 @@
                 const datos = await res.json();
 
                 if (!datos || datos.length === 0) {
-                    tabla.innerHTML = "<tr><td colspan='4' style='text-align:center; padding:30px; color:#666;'><i class='fas fa-check-circle' style='color: #27ae60; font-size: 1.5rem; display:block; margin-bottom: 10px;'></i>Todos los docentes están presentes hoy y mañana.</td></tr>";
+                    tabla.innerHTML = "<tr><td colspan='5' style='text-align:center; padding:30px; color:#666;'><i class='fas fa-check-circle' style='color: #27ae60; font-size: 1.5rem; display:block; margin-bottom: 10px;'></i>Todos los docentes están presentes hoy y mañana.</td></tr>";
                     return;
                 }
 
                 tabla.innerHTML = "";
+                const horaActual = ahora.getHours() * 60 + ahora.getMinutes(); // minutos desde medianoche
+                const pasaronLas12 = horaActual >= 12 * 60;        // >= 12:00
+                const pasaronLas1630 = horaActual >= 16 * 60 + 30; // >= 16:30
+
                 datos.forEach(a => {
                     const formatearFecha = (fechaOriginal) => {
                         if (!fechaOriginal) return 'N/A';
@@ -219,10 +223,17 @@
                         }
                         return fechaOriginal;
                     };
-                    const fechaInicio = formatearFecha(a.fecha);
-                    const fechaFin = formatearFecha(a.fecha_fin);
 
                     const horarioTexto = a.horario || 'Todo el día';
+                    const esHoy = a.fecha === hoy;
+
+                    // Ocultar mañanas de hoy si ya pasaron las 12:00
+                    if (esHoy && horarioTexto === 'Mañana' && pasaronLas12) return;
+                    // Ocultar tardes de hoy si ya pasaron las 16:30
+                    if (esHoy && horarioTexto === 'Tarde' && pasaronLas1630) return;
+
+                    const fechaInicio = formatearFecha(a.fecha);
+                    const fechaFin = formatearFecha(a.fecha_fin);
                     const horarioColor = horarioTexto === 'Mañana' ? '#e3f2fd' : horarioTexto === 'Tarde' ? '#fff8e1' : '#f3e5f5';
                     const horarioTextColor = horarioTexto === 'Mañana' ? '#1565c0' : horarioTexto === 'Tarde' ? '#f57f17' : '#6a1b9a';
                     tabla.innerHTML += `
@@ -234,9 +245,13 @@
                             <td><small>${fechaInicio} al ${fechaFin}</small></td>
                         </tr>`;
                 });
+
+                if (tabla.innerHTML === "") {
+                    tabla.innerHTML = "<tr><td colspan='5' style='text-align:center; padding:30px; color:#666;'><i class='fas fa-check-circle' style='color: #27ae60; font-size: 1.5rem; display:block; margin-bottom: 10px;'></i>Todos los docentes están presentes hoy y mañana.</td></tr>";
+                }
             } catch (e) {
                 console.error(e);
-                tabla.innerHTML = "<tr><td colspan='4' style='text-align:center; padding:20px; color:#e74c3c;'><i class='fas fa-exclamation-triangle'></i> Hubo un problema al cargar los datos.</td></tr>";
+                tabla.innerHTML = "<tr><td colspan='5' style='text-align:center; padding:20px; color:#e74c3c;'><i class='fas fa-exclamation-triangle'></i> Hubo un problema al cargar los datos.</td></tr>";
             }
         }
 
