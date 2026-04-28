@@ -1285,6 +1285,8 @@
                 opt.value = e.nombre_completo;
                 opt.textContent = e.nombre_completo;
                 opt.dataset.cedula = e.cedula || '';
+                // Nombre limpio para mostrar: quitar cédula si está pegada al inicio
+                opt.dataset.nombre = e.nombre_completo.replace(/^\d+\s*/, '').trim();
                 opt.dataset.nivel = obtenerNivelDeSeccion(e.seccion);
                 opt.dataset.seccion = e.seccion || '';
                 opt.dataset.correo = e.correo_encargado || '';
@@ -1302,7 +1304,11 @@
                 const q = query.trim().toLowerCase();
                 const opciones = [...selOculto.options].filter(o => o.value);
                 if (!q) return opciones;
-                return opciones.filter(o => o.value.toLowerCase().includes(q));
+                // Buscar por nombre O por cédula
+                return opciones.filter(o =>
+                    o.value.toLowerCase().includes(q) ||
+                    (o.dataset.cedula && o.dataset.cedula.includes(q))
+                );
             }
 
             function resaltarTexto(texto, query) {
@@ -1322,7 +1328,9 @@
                     matches.forEach((opt) => {
                         const item = document.createElement('div');
                         item.className = 'suggestion-item';
-                        item.innerHTML = resaltarTexto(opt.value, query);
+                        // Mostrar solo el nombre limpio (sin cédula aunque esté en nombre_completo)
+                        const nombreMostrar = opt.dataset.nombre || opt.value;
+                        item.innerHTML = resaltarTexto(nombreMostrar, query);
                         item.addEventListener('mousedown', (e) => {
                             e.preventDefault();
                             seleccionarEstudiante(opt);
@@ -1334,7 +1342,7 @@
             }
 
             function seleccionarEstudiante(opt) {
-                inputBuscar.value = opt.value;
+                inputBuscar.value = opt.dataset.nombre || opt.value;
                 selOculto.value = opt.value;
                 selOculto.dispatchEvent(new Event('change'));
                 listaSugerencias.classList.remove('open');
