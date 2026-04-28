@@ -657,6 +657,7 @@
                         <div class="boletas-field">
                             <label for="correoEncargado">Correo del encargado legal:</label>
                             <input id="correoEncargado" type="email" readonly placeholder="Se autocompleta al seleccionar estudiante">
+                            <small id="correoEncargadoAviso" style="display:none; margin-top:5px; color:#e65100; font-weight:600;"><i class="fas fa-exclamation-triangle"></i> Sin correo registrado — escríbalo y se guardará automáticamente</small>
                         </div>
                     </div>
 
@@ -1458,18 +1459,34 @@
 
             document.getElementById('nombreEstudiante').addEventListener('change', function() {
                 const selected = this.options[this.selectedIndex];
+                const correoInput = document.getElementById('correoEncargado');
+                const correoAviso = document.getElementById('correoEncargadoAviso');
                 if (!selected || !selected.dataset.cedula) {
                     document.getElementById('cedulaEstudiante').value = '';
                     document.getElementById('nivelEstudiante').value = '';
                     document.getElementById('seccionEstudiante').value = document.getElementById('seccionSelector').value;
-                    document.getElementById('correoEncargado').value = '';
+                    correoInput.value = '';
+                    correoInput.readOnly = true;
+                    correoInput.style.background = '';
+                    correoAviso.style.display = 'none';
                     return;
                 }
                 document.getElementById('cedulaEstudiante').value = selected.dataset.cedula;
                 let nEst = selected.dataset.nivel || obtenerNivelDeSeccion(selected.dataset.seccion);
                 document.getElementById('nivelEstudiante').value = (!isNaN(nEst) && String(nEst).trim() !== '') ? nEst + '°' : nEst;
                 document.getElementById('seccionEstudiante').value = selected.dataset.seccion;
-                document.getElementById('correoEncargado').value = selected.dataset.correo;
+                if (selected.dataset.correo) {
+                    correoInput.value = selected.dataset.correo;
+                    correoInput.readOnly = true;
+                    correoInput.style.background = '';
+                    correoAviso.style.display = 'none';
+                } else {
+                    correoInput.value = '';
+                    correoInput.readOnly = false;
+                    correoInput.style.background = '#fff8e1';
+                    correoInput.placeholder = 'Escriba el correo del encargado...';
+                    correoAviso.style.display = 'block';
+                }
             });
         }
 
@@ -1503,6 +1520,21 @@
                     headers,
                     body: JSON.stringify(payload)
                 });
+
+                // Si el correo fue ingresado manualmente (campo editable), guardarlo en estudiantes
+                const correoInput = document.getElementById('correoEncargado');
+                if (!correoInput.readOnly && payload.correo_encargado && payload.estudiante_cedula) {
+                    try {
+                        await fetchJson(`${SUPABASE_URL}/rest/v1/estudiantes?cedula=eq.${encodeURIComponent(payload.estudiante_cedula)}`, {
+                            method: 'PATCH',
+                            headers,
+                            body: JSON.stringify({ correo_encargado: payload.correo_encargado })
+                        });
+                        noti.toast('info', 'Correo guardado', `El correo del encargado fue registrado para ${payload.estudiante_nombre}.`);
+                    } catch (e) {
+                        console.warn('No se pudo actualizar el correo en estudiantes:', e);
+                    }
+                }
 
                 // NOTIFICAR POR EMAIL VÍA EMAILJS AL PADRE / ENCARGADO
                 if (payload.correo_encargado) {
@@ -1539,7 +1571,12 @@
                 document.getElementById('nivelEstudiante').value = '';
                 document.getElementById('seccionEstudiante').value = '';
                 document.getElementById('docenteGuiaSeccion').value = '';
-                document.getElementById('correoEncargado').value = '';
+                const correoInputReset = document.getElementById('correoEncargado');
+                correoInputReset.value = '';
+                correoInputReset.readOnly = true;
+                correoInputReset.style.background = '';
+                correoInputReset.placeholder = 'Se autocompleta al seleccionar estudiante';
+                document.getElementById('correoEncargadoAviso').style.display = 'none';
                 const inputBuscar = document.getElementById('buscarEstudiante');
                 inputBuscar.value = '';
                 inputBuscar.disabled = true;
