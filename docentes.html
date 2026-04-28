@@ -200,6 +200,14 @@
                     </select>
                 </div>
                 <div class="modal-field">
+                    <label for="edit-horario"><i class="fas fa-clock"></i> Horario</label>
+                    <select id="edit-horario">
+                        <option value="Todo el día">Todo el día</option>
+                        <option value="Mañana">Mañana (7:00 - 12:00)</option>
+                        <option value="Tarde">Tarde (12:00 - 16:30)</option>
+                    </select>
+                </div>
+                <div class="modal-field">
                     <label for="edit-detalle"><i class="fas fa-clipboard"></i> Detalle</label>
                     <input type="text" id="edit-detalle" placeholder="Detalle adicional">
                 </div>
@@ -292,6 +300,16 @@
                     <option value="Otro">Otro Motivo</option>
                 </select>
                 </div>
+                <div>
+                    <label for="horarioAusencia"><i class="fas fa-clock"></i> Horario</label>
+                    <select id="horarioAusencia" required>
+                        <option value="Todo el día">Todo el día</option>
+                        <option value="Mañana">Mañana (7:00 - 12:00)</option>
+                        <option value="Tarde">Tarde (12:00 - 16:30)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
                 <div>
                     <label for="detalleAusencia"><i class="fas fa-clipboard"></i> Detalle breve / motivo</label>
                     <input type="text" id="detalleAusencia" placeholder="Ej: Cita en la Caja">
@@ -493,6 +511,7 @@
             const f1 = document.getElementById('fechaInicio').value;
             const f2 = document.getElementById('fechaFin').value;
             const razon = document.getElementById('razonAusencia').value;
+            const horario = document.getElementById('horarioAusencia').value;
             const detalleInput = document.getElementById('detalleAusencia');
             const detalle = detalleInput.value.trim();
 
@@ -514,6 +533,7 @@
                 fecha: f1,
                 fecha_fin: f2,
                 razon,
+                horario,
                 detalle
             };
 
@@ -580,7 +600,7 @@
                         </div>
                     </td>
                     <td style="text-align: center;">
-                        <button class="btn-editar" data-id="${a.id}" data-fecha="${a.fecha}" data-fechafin="${a.fecha_fin || ''}" data-razon="${a.razon}" data-detalle="${(a.detalle || '').replaceAll('"', '&quot;')}" onclick="abrirModalEditar(this)" title="Editar este periodo" style="margin-bottom:6px;">
+                        <button class="btn-editar" data-id="${a.id}" data-fecha="${a.fecha}" data-fechafin="${a.fecha_fin || ''}" data-razon="${a.razon}" data-horario="${a.horario || 'Todo el día'}" data-detalle="${(a.detalle || '').replaceAll('"', '&quot;')}" onclick="abrirModalEditar(this)" title="Editar este periodo" style="margin-bottom:6px;">
                             <i class="fas fa-pencil-alt"></i> Editar
                         </button>
                         <button class="btn-eliminar" onclick="eliminarAusencia(${a.id})" title="Eliminar este periodo">
@@ -629,6 +649,7 @@
             document.getElementById('edit-fecha').value = btn.dataset.fecha;
             document.getElementById('edit-fecha-fin').value = btn.dataset.fechafin;
             document.getElementById('edit-razon').value = btn.dataset.razon;
+            document.getElementById('edit-horario').value = btn.dataset.horario || 'Todo el día';
             document.getElementById('edit-detalle').value = btn.dataset.detalle.replaceAll('&quot;', '"');
             document.getElementById('modal-editar-overlay').classList.add('active');
         }
@@ -642,6 +663,7 @@
             const fecha = document.getElementById('edit-fecha').value;
             const fechaFin = document.getElementById('edit-fecha-fin').value;
             const razon = document.getElementById('edit-razon').value;
+            const horario = document.getElementById('edit-horario').value;
             const detalle = document.getElementById('edit-detalle').value.trim();
 
             if (!fecha || !fechaFin || !razon) {
@@ -659,7 +681,7 @@
                 const res = await fetch(`${SUPABASE_URL}/rest/v1/ausencias?id=eq.${id}`, {
                     method: 'PATCH',
                     headers: { ...headers, 'Prefer': 'return=minimal' },
-                    body: JSON.stringify({ fecha, fecha_fin: fechaFin, razon, detalle })
+                    body: JSON.stringify({ fecha, fecha_fin: fechaFin, razon, horario, detalle })
                 });
                 noti.loading(false);
                 if (res.ok) {
