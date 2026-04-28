@@ -334,12 +334,13 @@
                             <th><i class="fas fa-calendar"></i> Desde</th>
                             <th><i class="fas fa-calendar-check"></i> Hasta</th>
                             <th><i class="fas fa-info-circle"></i> Motivo y Detalle</th>
+                            <th><i class="fas fa-clock"></i> Horario</th>
                             <th><i class="fas fa-cog"></i> Acción</th>
                         </tr>
                     </thead>
                     <tbody id="cuerpoTabla">
                         <tr>
-                            <td colspan="4" style="text-align:center; padding: 40px; color: var(--texto-gris);">
+                            <td colspan="5" style="text-align:center; padding: 40px; color: var(--texto-gris);">
                                 <i class="fas fa-spinner fa-spin fa-2x" style="color: var(--verde-claro); margin-bottom: 10px;"></i><br> Cargando sus registros...
                             </td>
                         </tr>
@@ -584,7 +585,7 @@
 
                 tbody.innerHTML = "";
                 if (datos.length === 0) {
-                    tbody.innerHTML = "<tr><td colspan='4' style='text-align:center; padding: 40px; color: var(--texto-gris);'><i class='fas fa-folder-open fa-2x' style='color: #ccc; margin-bottom:15px;'></i><br>No tiene ausencias registradas en el sistema.</td></tr>";
+                    tbody.innerHTML = "<tr><td colspan='5' style='text-align:center; padding: 40px; color: var(--texto-gris);'><i class='fas fa-folder-open fa-2x' style='color: #ccc; margin-bottom:15px;'></i><br>No tiene ausencias registradas en el sistema.</td></tr>";
                     return;
                 }
 
@@ -599,6 +600,9 @@
                             <i class="fas fa-comment-dots" style="color: #999; margin-right:4px;"></i> ${a.detalle || 'Sin detalle adicional'}
                         </div>
                     </td>
+                    <td style="text-align:center;">
+                        <span style="background:${(a.horario||'Todo el día')==='Mañana'?'#e3f2fd':(a.horario||'Todo el día')==='Tarde'?'#fff8e1':'#f3e5f5'}; color:${(a.horario||'Todo el día')==='Mañana'?'#1565c0':(a.horario||'Todo el día')==='Tarde'?'#f57f17':'#6a1b9a'}; padding:3px 8px; border-radius:4px; font-size:0.8rem; font-weight:bold;">${a.horario || 'Todo el día'}</span>
+                    </td>
                     <td style="text-align: center;">
                         <button class="btn-editar" data-id="${a.id}" data-fecha="${a.fecha}" data-fechafin="${a.fecha_fin || ''}" data-razon="${a.razon}" data-horario="${a.horario || 'Todo el día'}" data-detalle="${(a.detalle || '').replaceAll('"', '&quot;')}" onclick="abrirModalEditar(this)" title="Editar este periodo" style="margin-bottom:6px;">
                             <i class="fas fa-pencil-alt"></i> Editar
@@ -611,7 +615,7 @@
                 });
             } catch (e) {
                 console.error(e);
-                tbody.innerHTML = "<tr><td colspan='4'>Error al cargar el historial.</td></tr>";
+                tbody.innerHTML = "<tr><td colspan='5'>Error al cargar el historial.</td></tr>";
             }
         }
 
