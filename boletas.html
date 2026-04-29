@@ -1630,7 +1630,18 @@
                 inputBuscar.placeholder = 'Seleccione la sección primero';
                 document.getElementById('sugerenciasEstudiante').classList.remove('open');
                 document.getElementById('numeroBoleta').value = await generarNumeroBoleta();
-                document.getElementById('fechaBoleta').value = new Date().toISOString().slice(0, 10);
+                document.getElementById('fechaBoleta').value = (() => {
+                    const partes = new Intl.DateTimeFormat('en-CA', {
+                        timeZone: 'America/Costa_Rica',
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit'
+                    }).formatToParts(new Date());
+                    const anio = partes.find(p => p.type === 'year')?.value || '0000';
+                    const mes = partes.find(p => p.type === 'month')?.value || '00';
+                    const dia = partes.find(p => p.type === 'day')?.value || '00';
+                    return `${anio}-${mes}-${dia}`;
+                })();
                 document.getElementById('docenteAplica').value = localStorage.getItem('nombre') || '';
 
                 await cargarBoletasPropias();
@@ -1698,7 +1709,18 @@
 
             actualizarInterfazSesion(nombre, usuario, rolActual);
             document.getElementById('numeroBoleta').value = await generarNumeroBoleta();
-            document.getElementById('fechaBoleta').value = new Date().toISOString().slice(0, 10);
+            document.getElementById('fechaBoleta').value = (() => {
+                const partes = new Intl.DateTimeFormat('en-CA', {
+                    timeZone: 'America/Costa_Rica',
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit'
+                }).formatToParts(new Date());
+                const anio = partes.find(p => p.type === 'year')?.value || '0000';
+                const mes = partes.find(p => p.type === 'month')?.value || '00';
+                const dia = partes.find(p => p.type === 'day')?.value || '00';
+                return `${anio}-${mes}-${dia}`;
+            })();
             prepararEventosSelectorSeccion();
             poblarSelectorNiveles();
             document.getElementById('formBoleta').addEventListener('submit', guardarBoleta);
