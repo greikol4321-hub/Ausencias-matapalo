@@ -857,11 +857,34 @@
             });
         }
 
-        function generarNumeroBoleta() {
-            const fecha = new Date();
-            const prefijo = `${fecha.getFullYear()}${String(fecha.getMonth() + 1).padStart(2, '0')}${String(fecha.getDate()).padStart(2, '0')}`;
-            const aleatorio = String(Math.floor(Math.random() * 900) + 100);
-            return `BOL-${prefijo}-${aleatorio}`;
+        async function generarNumeroBoleta() {
+            try {
+                // Obtener la última boleta registrada
+                const params = new URLSearchParams();
+                params.set('select', 'numero_boleta');
+                params.set('order', 'id.desc');
+                params.set('limit', '1');
+                const url = `${SUPABASE_URL}/rest/v1/boletas?${params.toString()}`;
+                const data = await fetchJson(url, { headers }).catch(() => []);
+                let lastNum = 0;
+                if (Array.isArray(data) && data.length && data[0].numero_boleta) {
+                    const last = String(data[0].numero_boleta || '').trim();
+                    // Intentar extraer el número al final del campo
+                    const m = last.match(/(\d+)$/);
+                    if (m) lastNum = parseInt(m[1], 10) || 0;
+                }
+                const next = (lastNum || 0) + 1;
+                const seq = String(next).padStart(3, '0');
+                const fecha = new Date();
+                const prefijo = `${fecha.getFullYear()}${String(fecha.getMonth() + 1).padStart(2, '0')}${String(fecha.getDate()).padStart(2, '0')}`;
+                return `BOL-${prefijo}-${seq}`;
+            } catch (e) {
+                // En caso de error, fallback a BOL-YYYYMMDD-001
+                console.warn('No se pudo generar número secuencial, usando fallback BOL-YYYYMMDD-001', e);
+                const fecha = new Date();
+                const prefijo = `${fecha.getFullYear()}${String(fecha.getMonth() + 1).padStart(2, '0')}${String(fecha.getDate()).padStart(2, '0')}`;
+                return `BOL-${prefijo}-001`;
+            }
         }
 
         async function fetchJson(url, options = {}) {
@@ -913,9 +936,10 @@
 
             try {
                 const params = new URLSearchParams();
-                params.set('select', 'seccion,es_guia');
+                // docente_guia_secciones no tiene columna `es_guia`, solo solicitamos `seccion`
+                params.set('select', 'seccion');
                 params.set('usuario', `eq.${usuario}`);
-                const data = await fetchJson(`${SUPABASE_URL}/rest/v1/docente_secciones?${params.toString()}`, { headers });
+                const data = await fetchJson(`${SUPABASE_URL}/rest/v1/docente_guia_secciones?${params.toString()}`, { headers });
                 data.forEach((item) => {
                     const sec = String(item.seccion || '').trim();
                     if (!sec) return;
@@ -1196,10 +1220,10 @@
                 const params = new URLSearchParams();
                 params.set('select', 'usuario');
                 params.set('seccion', `eq.${seccion}`);
-                params.set('es_guia', 'eq.true');
                 params.set('limit', '1');
 
-                const data = await fetchJson(`${SUPABASE_URL}/rest/v1/docente_secciones?${params.toString()}`, { headers });
+                // Intentar primero en la tabla de guías (no tiene columna es_guia)
+                const data = await fetchJson(`${SUPABASE_URL}/rest/v1/docente_guia_secciones?${params.toString()}`, { headers });
                 if (Array.isArray(data) && data.length) {
                     return String(data[0].usuario || '').trim();
                 }
@@ -1547,21 +1571,36 @@
                 // NOTIFICAR POR EMAIL VÍA EMAILJS AL PADRE / ENCARGADO
                 if (payload.correo_encargado) {
                     try {
-                        emailjs.send("service_2w4077i", "template_2idvsua", {
-                            to_email: payload.correo_encargado,
-                            estudiante_nombre: payload.estudiante_nombre,
-                            estudiante_cedula: payload.estudiante_cedula,
-                            numero_boleta: payload.numero_boleta,
-                            fecha_boleta: payload.fecha,
-                            docente_nombre: payload.docente_nombre,
-                            docente_guia: document.getElementById('docenteGuiaSeccion').value || 'No asignado',
-                            falta_cometida: payload.falta_cometida,
-                            seccion: payload.seccion
-                        }).then(() => {
-                            console.log("Correo de boleta enviado exitosamente al encargado.");
-                        }).catch(err => {
-                            console.error("No se pudo enviar el correo:", err);
-                        });
+                                // Validar correo_encargado; si es inválido NO enviar y notificar al usuario
+                                function isValidEmail(e) {
+                                    return typeof e === 'string' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
+                                }
+                                if (!isValidEmail(payload.correo_encargado)) {
+                                    console.warn('Correo encargado inválido o vacío. No se enviará la notificación por correo. Valor recibido:', payload.correo_encargado);
+                                    if (typeof noti === 'object' && typeof noti.toast === 'function') {
+                                        noti.toast('warning', 'Correo no enviado', 'El correo del encargado es inválido o está vacío. Actualice el registro del estudiante para enviar la notificación.');
+                                    }
+                                } else {
+                                    const destinatario = payload.correo_encargado;
+                                    console.log('Enviando boleta a:', destinatario);
+                                    emailjs.send("service_2w4077i", "template_8lllyqq", {
+                                        to_email: destinatario,
+                                        correo_encargado: destinatario,
+                                        numero_boleta: payload.numero_boleta,
+                                        estudiante_nombre: payload.estudiante_nombre,
+                                        seccion: payload.seccion,
+                                        fecha_boleta: payload.fecha,
+                                        docente_nombre: payload.docente_nombre,
+                                        falta_cometida: payload.falta_cometida
+                                    }).then(() => {
+                                        console.log("Correo de boleta enviado exitosamente al encargado.");
+                                    }).catch(err => {
+                                        console.error("No se pudo enviar el correo:", err);
+                                        if (typeof noti === 'object' && typeof noti.toast === 'function') {
+                                            noti.toast('error', 'Error envío correo', 'Ocurrió un error al enviar la notificación por correo.');
+                                        }
+                                    });
+                                }
                     } catch (e) {
                         console.error("Error ejecutando EmailJS:", e);
                     }
@@ -1590,8 +1629,19 @@
                 inputBuscar.disabled = true;
                 inputBuscar.placeholder = 'Seleccione la sección primero';
                 document.getElementById('sugerenciasEstudiante').classList.remove('open');
-                document.getElementById('numeroBoleta').value = generarNumeroBoleta();
-                document.getElementById('fechaBoleta').value = new Date().toISOString().slice(0, 10);
+                document.getElementById('numeroBoleta').value = await generarNumeroBoleta();
+                document.getElementById('fechaBoleta').value = (() => {
+                    const partes = new Intl.DateTimeFormat('en-CA', {
+                        timeZone: 'America/Costa_Rica',
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit'
+                    }).formatToParts(new Date());
+                    const anio = partes.find(p => p.type === 'year')?.value || '0000';
+                    const mes = partes.find(p => p.type === 'month')?.value || '00';
+                    const dia = partes.find(p => p.type === 'day')?.value || '00';
+                    return `${anio}-${mes}-${dia}`;
+                })();
                 document.getElementById('docenteAplica').value = localStorage.getItem('nombre') || '';
 
                 await cargarBoletasPropias();
@@ -1658,8 +1708,19 @@
             }
 
             actualizarInterfazSesion(nombre, usuario, rolActual);
-            document.getElementById('numeroBoleta').value = generarNumeroBoleta();
-            document.getElementById('fechaBoleta').value = new Date().toISOString().slice(0, 10);
+            document.getElementById('numeroBoleta').value = await generarNumeroBoleta();
+            document.getElementById('fechaBoleta').value = (() => {
+                const partes = new Intl.DateTimeFormat('en-CA', {
+                    timeZone: 'America/Costa_Rica',
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit'
+                }).formatToParts(new Date());
+                const anio = partes.find(p => p.type === 'year')?.value || '0000';
+                const mes = partes.find(p => p.type === 'month')?.value || '00';
+                const dia = partes.find(p => p.type === 'day')?.value || '00';
+                return `${anio}-${mes}-${dia}`;
+            })();
             prepararEventosSelectorSeccion();
             poblarSelectorNiveles();
             document.getElementById('formBoleta').addEventListener('submit', guardarBoleta);

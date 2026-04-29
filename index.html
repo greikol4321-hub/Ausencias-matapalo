@@ -191,13 +191,50 @@
             }
         }
 
+        function obtenerFechaCostaRica() {
+            const partes = new Intl.DateTimeFormat('en-CA', {
+                timeZone: 'America/Costa_Rica',
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit'
+            }).formatToParts(new Date());
+            const anio = partes.find(p => p.type === 'year')?.value || '0000';
+            const mes = partes.find(p => p.type === 'month')?.value || '00';
+            const dia = partes.find(p => p.type === 'day')?.value || '00';
+            return `${anio}-${mes}-${dia}`;
+        }
+
+        function obtenerFechaCostaRicaDesde(fecha) {
+            const partes = new Intl.DateTimeFormat('en-CA', {
+                timeZone: 'America/Costa_Rica',
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit'
+            }).formatToParts(fecha);
+            const anio = partes.find(p => p.type === 'year')?.value || '0000';
+            const mes = partes.find(p => p.type === 'month')?.value || '00';
+            const dia = partes.find(p => p.type === 'day')?.value || '00';
+            return `${anio}-${mes}-${dia}`;
+        }
+
+        function obtenerHoraCostaRica() {
+            const partes = new Intl.DateTimeFormat('en-GB', {
+                timeZone: 'America/Costa_Rica',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: false
+            }).formatToParts(new Date());
+            const hora = Number(partes.find(p => p.type === 'hour')?.value || 0);
+            const minuto = Number(partes.find(p => p.type === 'minute')?.value || 0);
+            return hora * 60 + minuto;
+        }
+
         async function cargarAusencias() {
             const tabla = document.getElementById("tablaAusencias");
-            const ahora = new Date();
-            const hoy = ahora.toISOString().split('T')[0];
-            const manana = new Date(ahora);
+            const hoy = obtenerFechaCostaRica();
+            const manana = new Date(`${hoy}T00:00:00-06:00`);
             manana.setDate(manana.getDate() + 1);
-            const mananaStr = manana.toISOString().split('T')[0];
+            const mananaStr = obtenerFechaCostaRicaDesde(manana);
             try {
                 const res = await fetch(`${SUPABASE_URL}/rest/v1/ausencias?fecha=lte.${mananaStr}&fecha_fin=gte.${hoy}&select=*`, {
                     headers
@@ -210,7 +247,7 @@
                 }
 
                 tabla.innerHTML = "";
-                const horaActual = ahora.getHours() * 60 + ahora.getMinutes(); // minutos desde medianoche
+                const horaActual = obtenerHoraCostaRica(); // minutos desde medianoche en Costa Rica
                 const pasaronLas12 = horaActual >= 12 * 60;        // >= 12:00
                 const pasaronLas1630 = horaActual >= 16 * 60 + 30; // >= 16:30
 
