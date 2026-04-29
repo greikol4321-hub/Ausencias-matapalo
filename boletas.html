@@ -873,12 +873,17 @@
                     const m = last.match(/(\d+)$/);
                     if (m) lastNum = parseInt(m[1], 10) || 0;
                 }
-                const next = lastNum + 1 || 1;
-                return String(next).padStart(3, '0');
+                const next = (lastNum || 0) + 1;
+                const seq = String(next).padStart(3, '0');
+                const fecha = new Date();
+                const prefijo = `${fecha.getFullYear()}${String(fecha.getMonth() + 1).padStart(2, '0')}${String(fecha.getDate()).padStart(2, '0')}`;
+                return `BOL-${prefijo}-${seq}`;
             } catch (e) {
-                // En caso de error, fallback a 001
-                console.warn('No se pudo generar número secuencial, usando 001', e);
-                return '001';
+                // En caso de error, fallback a BOL-YYYYMMDD-001
+                console.warn('No se pudo generar número secuencial, usando fallback BOL-YYYYMMDD-001', e);
+                const fecha = new Date();
+                const prefijo = `${fecha.getFullYear()}${String(fecha.getMonth() + 1).padStart(2, '0')}${String(fecha.getDate()).padStart(2, '0')}`;
+                return `BOL-${prefijo}-001`;
             }
         }
 
