@@ -1548,30 +1548,35 @@
                 // NOTIFICAR POR EMAIL VÍA EMAILJS AL PADRE / ENCARGADO
                 if (payload.correo_encargado) {
                     try {
-                                // Validar correo_encargado y usar fallback si está vacío o inválido
+                                // Validar correo_encargado; si es inválido NO enviar y notificar al usuario
                                 function isValidEmail(e) {
                                     return typeof e === 'string' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
                                 }
-                                let destinatario = payload.correo_encargado && isValidEmail(payload.correo_encargado) ? payload.correo_encargado : '';
-                                if (!destinatario) {
-                                    console.warn('Correo encargado inválido o vacío, usando fallback institucional. Valor recibido:', payload.correo_encargado);
-                                    destinatario = 'ctp.dematapalo@mep.go.cr';
+                                if (!isValidEmail(payload.correo_encargado)) {
+                                    console.warn('Correo encargado inválido o vacío. No se enviará la notificación por correo. Valor recibido:', payload.correo_encargado);
+                                    if (typeof noti === 'object' && typeof noti.toast === 'function') {
+                                        noti.toast('warning', 'Correo no enviado', 'El correo del encargado es inválido o está vacío. Actualice el registro del estudiante para enviar la notificación.');
+                                    }
+                                } else {
+                                    const destinatario = payload.correo_encargado;
+                                    console.log('Enviando boleta a:', destinatario);
+                                    emailjs.send("service_2w4077i", "template_8lllyqq", {
+                                        correo_encargado: destinatario,
+                                        numero_boleta: payload.numero_boleta,
+                                        estudiante_nombre: payload.estudiante_nombre,
+                                        seccion: payload.seccion,
+                                        fecha_boleta: payload.fecha,
+                                        docente_nombre: payload.docente_nombre,
+                                        falta_cometida: payload.falta_cometida
+                                    }).then(() => {
+                                        console.log("Correo de boleta enviado exitosamente al encargado.");
+                                    }).catch(err => {
+                                        console.error("No se pudo enviar el correo:", err);
+                                        if (typeof noti === 'object' && typeof noti.toast === 'function') {
+                                            noti.toast('error', 'Error envío correo', 'Ocurrió un error al enviar la notificación por correo.');
+                                        }
+                                    });
                                 }
-
-                                console.log('Enviando boleta a:', destinatario);
-                                emailjs.send("service_2w4077i", "template_8lllyqq", {
-                                    correo_encargado: destinatario,
-                                    numero_boleta: payload.numero_boleta,
-                                    estudiante_nombre: payload.estudiante_nombre,
-                                    seccion: payload.seccion,
-                                    fecha_boleta: payload.fecha,
-                                    docente_nombre: payload.docente_nombre,
-                                    falta_cometida: payload.falta_cometida
-                                }).then(() => {
-                                    console.log("Correo de boleta enviado exitosamente al encargado.");
-                                }).catch(err => {
-                                    console.error("No se pudo enviar el correo:", err);
-                                });
                     } catch (e) {
                         console.error("Error ejecutando EmailJS:", e);
                     }
