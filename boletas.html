@@ -857,11 +857,29 @@
             });
         }
 
-        function generarNumeroBoleta() {
-            const fecha = new Date();
-            const prefijo = `${fecha.getFullYear()}${String(fecha.getMonth() + 1).padStart(2, '0')}${String(fecha.getDate()).padStart(2, '0')}`;
-            const aleatorio = String(Math.floor(Math.random() * 900) + 100);
-            return `BOL-${prefijo}-${aleatorio}`;
+        async function generarNumeroBoleta() {
+            try {
+                // Obtener la última boleta registrada
+                const params = new URLSearchParams();
+                params.set('select', 'numero_boleta');
+                params.set('order', 'id.desc');
+                params.set('limit', '1');
+                const url = `${SUPABASE_URL}/rest/v1/boletas?${params.toString()}`;
+                const data = await fetchJson(url, { headers }).catch(() => []);
+                let lastNum = 0;
+                if (Array.isArray(data) && data.length && data[0].numero_boleta) {
+                    const last = String(data[0].numero_boleta || '').trim();
+                    // Intentar extraer el número al final del campo
+                    const m = last.match(/(\d+)$/);
+                    if (m) lastNum = parseInt(m[1], 10) || 0;
+                }
+                const next = lastNum + 1 || 1;
+                return String(next).padStart(3, '0');
+            } catch (e) {
+                // En caso de error, fallback a 001
+                console.warn('No se pudo generar número secuencial, usando 001', e);
+                return '001';
+            }
         }
 
         async function fetchJson(url, options = {}) {
@@ -1606,7 +1624,7 @@
                 inputBuscar.disabled = true;
                 inputBuscar.placeholder = 'Seleccione la sección primero';
                 document.getElementById('sugerenciasEstudiante').classList.remove('open');
-                document.getElementById('numeroBoleta').value = generarNumeroBoleta();
+                document.getElementById('numeroBoleta').value = await generarNumeroBoleta();
                 document.getElementById('fechaBoleta').value = new Date().toISOString().slice(0, 10);
                 document.getElementById('docenteAplica').value = localStorage.getItem('nombre') || '';
 
@@ -1674,7 +1692,7 @@
             }
 
             actualizarInterfazSesion(nombre, usuario, rolActual);
-            document.getElementById('numeroBoleta').value = generarNumeroBoleta();
+            document.getElementById('numeroBoleta').value = await generarNumeroBoleta();
             document.getElementById('fechaBoleta').value = new Date().toISOString().slice(0, 10);
             prepararEventosSelectorSeccion();
             poblarSelectorNiveles();
