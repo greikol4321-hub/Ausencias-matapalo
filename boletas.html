@@ -1561,6 +1561,7 @@
                                     const destinatario = payload.correo_encargado;
                                     console.log('Enviando boleta a:', destinatario);
                                     emailjs.send("service_2w4077i", "template_8lllyqq", {
+                                        to_email: destinatario,
                                         correo_encargado: destinatario,
                                         numero_boleta: payload.numero_boleta,
                                         estudiante_nombre: payload.estudiante_nombre,
