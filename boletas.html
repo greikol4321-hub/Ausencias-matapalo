@@ -915,7 +915,7 @@
                 const params = new URLSearchParams();
                 params.set('select', 'seccion,es_guia');
                 params.set('usuario', `eq.${usuario}`);
-                const data = await fetchJson(`${SUPABASE_URL}/rest/v1/docente_secciones?${params.toString()}`, { headers });
+                const data = await fetchJson(`${SUPABASE_URL}/rest/v1/docente_guia_secciones?${params.toString()}`, { headers });
                 data.forEach((item) => {
                     const sec = String(item.seccion || '').trim();
                     if (!sec) return;
@@ -1199,7 +1199,7 @@
                 params.set('es_guia', 'eq.true');
                 params.set('limit', '1');
 
-                const data = await fetchJson(`${SUPABASE_URL}/rest/v1/docente_secciones?${params.toString()}`, { headers });
+                const data = await fetchJson(`${SUPABASE_URL}/rest/v1/docente_guia_secciones?${params.toString()}`, { headers });
                 if (Array.isArray(data) && data.length) {
                     return String(data[0].usuario || '').trim();
                 }
