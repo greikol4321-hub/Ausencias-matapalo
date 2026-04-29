@@ -1547,16 +1547,14 @@
                 // NOTIFICAR POR EMAIL VÍA EMAILJS AL PADRE / ENCARGADO
                 if (payload.correo_encargado) {
                     try {
-                        emailjs.send("service_2w4077i", "template_2idvsua", {
-                            to_email: payload.correo_encargado,
-                            estudiante_nombre: payload.estudiante_nombre,
-                            estudiante_cedula: payload.estudiante_cedula,
+                        emailjs.send("service_2w4077i", "template_8lllyqq", {
+                            correo_encargado: payload.correo_encargado,
                             numero_boleta: payload.numero_boleta,
+                            estudiante_nombre: payload.estudiante_nombre,
+                            seccion: payload.seccion,
                             fecha_boleta: payload.fecha,
                             docente_nombre: payload.docente_nombre,
-                            docente_guia: document.getElementById('docenteGuiaSeccion').value || 'No asignado',
-                            falta_cometida: payload.falta_cometida,
-                            seccion: payload.seccion
+                            falta_cometida: payload.falta_cometida
                         }).then(() => {
                             console.log("Correo de boleta enviado exitosamente al encargado.");
                         }).catch(err => {
