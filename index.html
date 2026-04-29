@@ -17,20 +17,17 @@
             border-top: 1px solid var(--borde);
             background: rgba(255, 255, 255, 0.45);
         }
-        
         .footer-content {
             max-width: 1100px;
             margin: 0 auto;
             text-align: center;
             color: #1f2937;
         }
-        
         .footer-content p {
             margin: 0;
             font-size: 1.02rem;
             line-height: 1.5;
         }
-        
         .footer-visitas {
             margin-top: 12px;
             display: flex;
@@ -41,36 +38,23 @@
             margin-right: auto;
             box-shadow: 0 3px 10px rgba(10, 76, 35, 0.08);
         }
-        
         .footer-visitas-label {
             color: #4b5563;
             font-weight: 700;
             font-size: 0.94rem;
             letter-spacing: 0.2px;
         }
-        
         .footer-visitas-badge {
             max-width: 100%;
             height: auto;
             border-radius: 6px;
             box-shadow: 0 1px 4px rgba(17, 24, 39, 0.18);
         }
-        
         @media (max-width: 600px) {
-            .site-footer {
-                padding: 18px 12px 22px;
-            }
-            .footer-content p {
-                font-size: 0.95rem;
-            }
-            .footer-visitas {
-                gap: 8px;
-                padding: 9px 10px;
-                border-radius: 14px;
-            }
-            .footer-visitas-label {
-                font-size: 0.9rem;
-            }
+            .site-footer { padding: 18px 12px 22px; }
+            .footer-content p { font-size: 0.95rem; }
+            .footer-visitas { gap: 8px; padding: 9px 10px; border-radius: 14px; }
+            .footer-visitas-label { font-size: 0.9rem; }
         }
     </style>
 </head>
@@ -84,7 +68,6 @@
                 <div class="divider"></div>
                 <div class="logo-gobierno">
                     <strong>Dirección Regional de Educación Central del Pacífico</strong><br>
-                    <strong>Circuito 02</strong><br>
                     <strong>Colegio Técnico Profesional de Matapalo</strong><br>
                 </div>
             </div>
@@ -215,9 +198,9 @@
                 month: '2-digit',
                 day: '2-digit'
             }).formatToParts(new Date());
-            const anio = partes.find(p => p.type === 'year') ? .value || '0000';
-            const mes = partes.find(p => p.type === 'month') ? .value || '00';
-            const dia = partes.find(p => p.type === 'day') ? .value || '00';
+            const anio = partes.find(p => p.type === 'year')?.value || '0000';
+            const mes = partes.find(p => p.type === 'month')?.value || '00';
+            const dia = partes.find(p => p.type === 'day')?.value || '00';
             return `${anio}-${mes}-${dia}`;
         }
 
@@ -228,9 +211,9 @@
                 month: '2-digit',
                 day: '2-digit'
             }).formatToParts(fecha);
-            const anio = partes.find(p => p.type === 'year') ? .value || '0000';
-            const mes = partes.find(p => p.type === 'month') ? .value || '00';
-            const dia = partes.find(p => p.type === 'day') ? .value || '00';
+            const anio = partes.find(p => p.type === 'year')?.value || '0000';
+            const mes = partes.find(p => p.type === 'month')?.value || '00';
+            const dia = partes.find(p => p.type === 'day')?.value || '00';
             return `${anio}-${mes}-${dia}`;
         }
 
@@ -241,8 +224,8 @@
                 minute: '2-digit',
                 hour12: false
             }).formatToParts(new Date());
-            const hora = Number(partes.find(p => p.type === 'hour') ? .value || 0);
-            const minuto = Number(partes.find(p => p.type === 'minute') ? .value || 0);
+            const hora = Number(partes.find(p => p.type === 'hour')?.value || 0);
+            const minuto = Number(partes.find(p => p.type === 'minute')?.value || 0);
             return hora * 60 + minuto;
         }
 
@@ -265,7 +248,7 @@
 
                 tabla.innerHTML = "";
                 const horaActual = obtenerHoraCostaRica(); // minutos desde medianoche en Costa Rica
-                const pasaronLas12 = horaActual >= 12 * 60; // >= 12:00
+                const pasaronLas12 = horaActual >= 12 * 60;        // >= 12:00
                 const pasaronLas1630 = horaActual >= 16 * 60 + 30; // >= 16:30
 
                 datos.forEach(a => {
@@ -314,16 +297,17 @@
             cargarAusencias();
         };
     </script>
-    <footer class="site-footer">
-        <div class="footer-content">
-            <p>Desarrollado por la Especialidad de Informática | CTP de Matapalo | 2026. Todos los derechos reservados.</p>
-            <div class="footer-visitas" aria-label="Contador de visitas">
-                <span class="footer-visitas-label">Visitas a la página</span>
-                <!-- Contador de visitas usando visitorbadge.io -->
-                <img class="footer-visitas-badge" src="https://api.visitorbadge.io/api/visitors?path=sistema-informacion-ctp-matapalo.ed.cr&countColor=%232980b9" alt="Contador de visitas">
-            </div>
-        </div>
-    </footer>
 </body>
+
+<footer class="site-footer">
+    <div class="footer-content">
+        <p>Desarrollado por la Especialidad de Informática | CTP de Matapalo | 2026. Todos los derechos reservados.</p>
+        <div class="footer-visitas" aria-label="Contador de visitas">
+            <span class="footer-visitas-label">Visitas a la página</span>
+            <!-- Contador de visitas usando visitorbadge.io -->
+            <img class="footer-visitas-badge" src="https://api.visitorbadge.io/api/visitors?path=sistema-informacion-ctp-matapalo.ed.cr&countColor=%232980b9" alt="Contador de visitas">
+        </div>
+    </div>
+</footer>
 
 </html>
