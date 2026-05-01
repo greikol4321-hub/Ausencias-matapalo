@@ -1532,6 +1532,10 @@
             });
         }
 
+        function isValidEmail(e) {
+            return typeof e === 'string' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
+        }
+
         async function guardarBoleta(event) {
             event.preventDefault();
             const btn = document.getElementById('btnGuardarBoleta');
