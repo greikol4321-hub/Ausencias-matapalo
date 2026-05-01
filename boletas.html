@@ -663,6 +663,13 @@
 
                     <div class="boletas-row">
                         <div class="boletas-field">
+                            <label for="correoEstudiante">Correo del estudiante:</label>
+                            <input id="correoEstudiante" type="email" readonly placeholder="Se autocompleta al seleccionar estudiante">
+                        </div>
+                    </div>
+
+                    <div class="boletas-row">
+                        <div class="boletas-field">
                             <label for="faltaCometida">Falta cometida:</label>
                             <textarea id="faltaCometida" required></textarea>
                         </div>
@@ -1202,7 +1209,7 @@
         async function cargarEstudiantesDeSeccion(seccion) {
             if (!seccion) return [];
             const params = new URLSearchParams();
-            params.set('select', 'cedula,nombre_completo,seccion,correo_encargado');
+            params.set('select', 'cedula,nombre_completo,seccion,correo_encargado,correo_estudiante');
             params.set('seccion', `eq.${seccion}`);
             params.set('order', 'nombre_completo.asc');
             const url = `${SUPABASE_URL}/rest/v1/estudiantes?${params.toString()}`;
@@ -1314,6 +1321,7 @@
                 opt.dataset.nivel = obtenerNivelDeSeccion(e.seccion);
                 opt.dataset.seccion = e.seccion || '';
                 opt.dataset.correo = e.correo_encargado || '';
+                opt.dataset.correo_estudiante = e.correo_estudiante || '';
                 sel.appendChild(opt);
             });
         }
@@ -1497,6 +1505,7 @@
                     document.getElementById('cedulaEstudiante').value = '';
                     document.getElementById('nivelEstudiante').value = '';
                     document.getElementById('seccionEstudiante').value = document.getElementById('seccionSelector').value;
+                    document.getElementById('correoEstudiante').value = '';
                     correoInput.value = '';
                     correoInput.readOnly = true;
                     correoInput.style.background = '';
@@ -1507,6 +1516,7 @@
                 let nEst = selected.dataset.nivel || obtenerNivelDeSeccion(selected.dataset.seccion);
                 document.getElementById('nivelEstudiante').value = (!isNaN(nEst) && String(nEst).trim() !== '') ? nEst + '°' : nEst;
                 document.getElementById('seccionEstudiante').value = selected.dataset.seccion;
+                document.getElementById('correoEstudiante').value = selected.dataset.correo_estudiante;
                 if (selected.dataset.correo) {
                     correoInput.value = selected.dataset.correo;
                     correoInput.readOnly = true;
@@ -1535,6 +1545,7 @@
                 docente_nombre: document.getElementById('docenteAplica').value.trim(),
                 docente_usuario: usuarioActual,
                 correo_encargado: document.getElementById('correoEncargado').value.trim(),
+                correo_estudiante: document.getElementById('correoEstudiante').value.trim(),
                 falta_cometida: document.getElementById('faltaCometida').value.trim()
             };
 
@@ -1568,41 +1579,35 @@
                     }
                 }
 
-                // NOTIFICAR POR EMAIL VÍA EMAILJS AL PADRE / ENCARGADO
-                if (payload.correo_encargado) {
-                    try {
-                                // Validar correo_encargado; si es inválido NO enviar y notificar al usuario
-                                function isValidEmail(e) {
-                                    return typeof e === 'string' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
+                // NOTIFICAR POR EMAIL VÍA EMAILJS
+                const destinatarios = [payload.correo_encargado, payload.correo_estudiante].filter(isValidEmail);
+
+                if (destinatarios.length > 0) {
+                    const emailParams = {
+                        numero_boleta: payload.numero_boleta,
+                        estudiante_nombre: payload.estudiante_nombre,
+                        seccion: payload.seccion,
+                        fecha_boleta: payload.fecha,
+                        docente_nombre: payload.docente_nombre,
+                        falta_cometida: payload.falta_cometida
+                    };
+
+                    destinatarios.forEach(destinatario => {
+                        console.log('Enviando boleta a:', destinatario);
+                        emailjs.send("service_2w4077i", "template_8lllyqq", { ...emailParams, to_email: destinatario, correo_encargado: destinatario })
+                            .then(() => {
+                                console.log(`Correo de boleta enviado exitosamente a ${destinatario}.`);
+                            }).catch(err => {
+                                console.error(`No se pudo enviar el correo a ${destinatario}:`, err);
+                                if (typeof noti === 'object' && typeof noti.toast === 'function') {
+                                    noti.toast('error', 'Error envío correo', `Ocurrió un error al enviar la notificación a ${destinatario}.`);
                                 }
-                                if (!isValidEmail(payload.correo_encargado)) {
-                                    console.warn('Correo encargado inválido o vacío. No se enviará la notificación por correo. Valor recibido:', payload.correo_encargado);
-                                    if (typeof noti === 'object' && typeof noti.toast === 'function') {
-                                        noti.toast('warning', 'Correo no enviado', 'El correo del encargado es inválido o está vacío. Actualice el registro del estudiante para enviar la notificación.');
-                                    }
-                                } else {
-                                    const destinatario = payload.correo_encargado;
-                                    console.log('Enviando boleta a:', destinatario);
-                                    emailjs.send("service_2w4077i", "template_8lllyqq", {
-                                        to_email: destinatario,
-                                        correo_encargado: destinatario,
-                                        numero_boleta: payload.numero_boleta,
-                                        estudiante_nombre: payload.estudiante_nombre,
-                                        seccion: payload.seccion,
-                                        fecha_boleta: payload.fecha,
-                                        docente_nombre: payload.docente_nombre,
-                                        falta_cometida: payload.falta_cometida
-                                    }).then(() => {
-                                        console.log("Correo de boleta enviado exitosamente al encargado.");
-                                    }).catch(err => {
-                                        console.error("No se pudo enviar el correo:", err);
-                                        if (typeof noti === 'object' && typeof noti.toast === 'function') {
-                                            noti.toast('error', 'Error envío correo', 'Ocurrió un error al enviar la notificación por correo.');
-                                        }
-                                    });
-                                }
-                    } catch (e) {
-                        console.error("Error ejecutando EmailJS:", e);
+                            });
+                    });
+                } else {
+                    console.warn('No hay correos válidos para enviar la notificación.');
+                    if (typeof noti === 'object' && typeof noti.toast === 'function') {
+                        noti.toast('warning', 'Correos no enviados', 'No se encontraron correos válidos para el encargado o el estudiante.');
                     }
                 }
 
@@ -1619,10 +1624,12 @@
                 document.getElementById('seccionEstudiante').value = '';
                 document.getElementById('docenteGuiaSeccion').value = '';
                 const correoInputReset = document.getElementById('correoEncargado');
+                const correoEstudianteInputReset = document.getElementById('correoEstudiante');
                 correoInputReset.value = '';
                 correoInputReset.readOnly = true;
                 correoInputReset.style.background = '';
                 correoInputReset.placeholder = 'Se autocompleta al seleccionar estudiante';
+                correoEstudianteInputReset.value = '';
                 document.getElementById('correoEncargadoAviso').style.display = 'none';
                 const inputBuscar = document.getElementById('buscarEstudiante');
                 inputBuscar.value = '';
