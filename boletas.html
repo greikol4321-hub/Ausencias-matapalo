@@ -1545,9 +1545,10 @@
                 docente_nombre: document.getElementById('docenteAplica').value.trim(),
                 docente_usuario: usuarioActual,
                 correo_encargado: document.getElementById('correoEncargado').value.trim(),
-                correo_estudiante: document.getElementById('correoEstudiante').value.trim(),
                 falta_cometida: document.getElementById('faltaCometida').value.trim()
             };
+
+            const correo_estudiante = document.getElementById('correoEstudiante').value.trim();
 
             if (!payload.fecha || !payload.estudiante_nombre || !payload.estudiante_cedula || !payload.seccion || !payload.falta_cometida) {
                 noti.toast('warning', 'Campos incompletos', 'Debe completar todos los campos obligatorios de la boleta.');
@@ -1580,7 +1581,7 @@
                 }
 
                 // NOTIFICAR POR EMAIL VÍA EMAILJS
-                const destinatarios = [payload.correo_encargado, payload.correo_estudiante].filter(isValidEmail);
+                const destinatarios = [payload.correo_encargado, correo_estudiante].filter(isValidEmail);
 
                 if (destinatarios.length > 0) {
                     const emailParams = {
