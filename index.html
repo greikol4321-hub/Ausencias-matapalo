@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 
 <head>
@@ -152,14 +152,41 @@
             }
         }, 5000);
 
-                const SUPABASE_URL = 'https://etdcmuikvtnqfcnlvodh.supabase.co';
-                const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV0ZGNtdWlrdnRucWZjbmx2b2RoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU1OTQ1ODcsImV4cCI6MjA5MTE3MDU4N30.8JHWlTxYRSYEkpipqesHVBKn7QomTXJYHp6Nm6SzU4A';
+            const SUPABASE_URL = 'https://etdcmuikvtnqfcnlvodh.supabase.co';
+            const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV0ZGNtdWlrdnRucWZjbmx2b2RoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU1OTQ1ODcsImV4cCI6MjA5MTE3MDU4N30.8JHWlTxYRSYEkpipqesHVBKn7QomTXJYHp6Nm6SzU4A';
 
         const headers = {
             "apikey": SUPABASE_KEY,
             "Authorization": `Bearer ${SUPABASE_KEY}`,
             "Content-Type": "application/json"
         };
+
+        function escapeHtml(value) {
+            return String(value || '')
+                .replaceAll('&', '&amp;')
+                .replaceAll('<', '&lt;')
+                .replaceAll('>', '&gt;')
+                .replaceAll('"', '&quot;')
+                .replaceAll("'", '&#39;');
+        }
+
+        function nombrePdfSinExtension(nombre) {
+            return String(nombre || '')
+                .trim()
+                .replace(/\.pdf$/i, '')
+                || 'Documento';
+        }
+
+        function renderAdjuntoPdf(url, nombre) {
+            if (!url) return '';
+            return `
+                <div style="margin-top: 14px;">
+                    <a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer" style="display:inline-flex; align-items:center; gap:8px; background:#fff4e5; color:#a15c00; border:1px solid #ffd08a; border-radius:999px; padding:9px 14px; text-decoration:none; font-weight:700; font-size:0.92rem;">
+                        <i class="fas fa-file-pdf"></i>
+                        ${escapeHtml(nombrePdfSinExtension(nombre))}
+                    </a>
+                </div>`;
+        }
 
         async function cargarComunicados() {
             const contenedor = document.getElementById("contenedorComunicados");
@@ -179,6 +206,7 @@
                             <div class="com-content">
                                 <h3 class="com-titulo">${c.titulo}</h3>
                                 <p class="com-contenido">${c.contenido}</p>
+                                ${renderAdjuntoPdf(c.pdf_url, c.pdf_nombre)}
                             </div>
                             <div class="com-footer">
                                 <span class="com-autor"><i class="fas fa-user-circle"></i> ${c.autor || 'DIRECCIÓN'}</span>

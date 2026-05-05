@@ -40,7 +40,7 @@
             <span><i class="fas fa-clipboard-list"></i> Sesión:</span>
             <span id="rolBadge" class="badge-rol">Cargando...</span>
         </div>
-        <button class="btn-cerrar" onclick="cerrarSesion()"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</button>
+            <button class="btn-cerrar" onclick="cerrarSesion()"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</button>
     </div>
 
     <div class="container">
@@ -66,6 +66,15 @@
             <form id="formComunicado">
                 <input type="text" id="tituloCom" placeholder="Título del comunicado (Ej: Cambio de horario)" required>
                 <textarea id="contenidoCom" rows="2" placeholder="Escriba el mensaje detallado aquí..." required></textarea>
+                <div style="margin: 10px 0 14px;">
+                    <label for="pdfCom" style="display:block; font-weight:600; color:#0a4c23; margin-bottom:6px;">
+                        <i class="fas fa-file-pdf"></i> PDF adjunto opcional
+                    </label>
+                    <input type="file" id="pdfCom" accept="application/pdf,.pdf" style="display:block; width:100%;">
+                    <small style="display:block; margin-top:6px; color:var(--texto-gris);">
+                        Solo se permiten archivos PDF. El archivo aparecerá como enlace en el comunicado y en la página principal.
+                    </small>
+                </div>
                 <select id="colorCom">
                 <option value="#27ae60"><i class="fas fa-circle"></i> Informativo (Verde)</option>
                 <option value="#3498db"><i class="fas fa-circle"></i> General (Azul)</option>
@@ -79,10 +88,10 @@
 
 
 
-        <h3><i class="fas fa-newspaper"></i> Comunicados Activos</h3>
-        <div style="margin-bottom: 15px; position: relative;">
-            <i class="fas fa-search" style="position: absolute; left: 15px; top: 12px; color: var(--texto-gris);"></i>
-            <input type="text" id="busquedaComunicados" onkeyup="filtrarTabla()" placeholder="Buscar por motivo, actividad o fecha..." style="width: 100%; padding: 12px 15px 12px 40px; border-radius: 8px; border: 1px solid rgba(0,0,0,0.1); font-size: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+        <h3 class="com-title"><i class="fas fa-newspaper"></i> Comunicados Activos</h3>
+        <div class="com-search-wrap">
+            <i class="fas fa-search com-search-icon"></i>
+            <input type="text" id="busquedaComunicados" class="com-search-input" onkeyup="filtrarTabla()" placeholder="Buscar por motivo, actividad o fecha...">
         </div>
 
         <div class="overflow-auto">
@@ -116,15 +125,103 @@
     </div>
 
     <style>
+        .com-title {
+            margin-bottom: 14px;
+            color: #10391e;
+            letter-spacing: 0.01em;
+        }
+
+        .com-search-wrap {
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .com-search-icon {
+            position: absolute;
+            left: 15px;
+            top: 13px;
+            color: #7a8794;
+            font-size: 0.95rem;
+        }
+
+        .com-search-input {
+            width: 100%;
+            padding: 12px 15px 12px 40px;
+            border-radius: 10px;
+            border: 1px solid #d5dde5;
+            font-size: 0.98rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .com-search-input:focus {
+            outline: none;
+            border-color: #1b7b41;
+            box-shadow: 0 0 0 4px rgba(26, 148, 72, 0.12);
+        }
+
+        .tabla-container {
+            border-radius: 14px;
+            border: 1px solid #dce4ec;
+            overflow: hidden;
+            box-shadow: 0 10px 26px rgba(11, 27, 44, 0.08);
+        }
+
+        #tablaComunicados {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+        }
+
+        #tablaComunicados thead th {
+            position: sticky;
+            top: 0;
+            z-index: 2;
+            background: linear-gradient(180deg, #f7fbf9 0%, #edf5f1 100%);
+            color: #0f3f22;
+            font-weight: 700;
+            font-size: 0.92rem;
+            padding: 13px 12px;
+            border-bottom: 1px solid #dce4ec;
+            text-align: left;
+        }
+
+        #tablaComunicados tbody td {
+            padding: 14px 12px;
+            border-bottom: 1px solid #edf2f7;
+            vertical-align: top;
+            font-size: 0.93rem;
+            color: #263543;
+            line-height: 1.45;
+        }
+
+        #tablaComunicados tbody tr:hover {
+            background: #f9fcff;
+        }
+
+        #tablaComunicados tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .com-actions {
+            text-align: center;
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            min-width: 170px;
+        }
+
         .btn-editar-com {
             background: #3498db;
             color: white;
             padding: 8px 14px;
-            border-radius: 5px;
+            border-radius: 8px;
             border: none;
             cursor: pointer;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.86rem;
             transition: all 0.3s ease;
             display: inline-flex;
             align-items: center;
@@ -141,11 +238,11 @@
             background: #e74c3c;
             color: white;
             padding: 8px 14px;
-            border-radius: 5px;
+            border-radius: 8px;
             border: none;
             cursor: pointer;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.86rem;
             transition: all 0.3s ease;
             display: inline-flex;
             align-items: center;
@@ -384,8 +481,8 @@
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.55);
-            backdrop-filter: blur(3px);
+            background: rgba(9, 20, 35, 0.68);
+            backdrop-filter: blur(5px) saturate(1.25);
             z-index: 9999;
             align-items: center;
             justify-content: center;
@@ -401,11 +498,14 @@
         }
         .cedit-card {
             background: #fff;
-            border-radius: 16px;
-            box-shadow: 0 24px 64px rgba(0,0,0,0.22);
+            border-radius: 20px;
+            box-shadow: 0 30px 75px rgba(0,0,0,0.26);
             width: 100%;
-            max-width: 480px;
+            max-width: 620px;
+            max-height: 88vh;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
             animation: cedit-slidein 0.25s ease;
         }
         @keyframes cedit-slidein {
@@ -413,7 +513,7 @@
             to   { transform: translateY(0);     opacity: 1; }
         }
         .cedit-header {
-            background: #0a4c23;
+            background: linear-gradient(120deg, #0a4c23 0%, #146e37 100%);
             color: white;
             padding: 18px 24px;
             display: flex;
@@ -441,6 +541,8 @@
         .cedit-close:hover { background: rgba(255,255,255,0.3); }
         .cedit-body {
             padding: 22px 24px 8px;
+            overflow-y: auto;
+            max-height: calc(88vh - 160px);
         }
         .cedit-group {
             margin-bottom: 16px;
@@ -478,6 +580,27 @@
         }
         .cedit-textarea { resize: vertical; min-height: 100px; }
         .cedit-select   { cursor: pointer; }
+        .cedit-check-row {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+            color: #4b5563;
+            font-size: 0.92rem;
+            font-weight: 600;
+            cursor: pointer;
+            line-height: 1.2;
+            width: auto;
+        }
+        .cedit-check-row input[type="checkbox"] {
+            width: 18px !important;
+            height: 18px !important;
+            min-width: 18px;
+            margin: 0;
+            accent-color: #0a4c23;
+            flex-shrink: 0;
+            transform: translateY(-1px);
+        }
         .cedit-error {
             color: #c0392b;
             font-size: 0.88rem;
@@ -488,6 +611,8 @@
             padding: 16px 24px 22px;
             display: flex;
             gap: 12px;
+            border-top: 1px solid #e8edf3;
+            background: #fcfdff;
         }
         .cedit-btn-cancel {
             flex: 1;
@@ -524,6 +649,33 @@
         }
         .cedit-btn-save:hover { background: #0d6b32; transform: translateY(-1px); }
         .cedit-btn-save:disabled { background: #8aab94; cursor: not-allowed; transform: none; }
+
+        @media (max-width: 760px) {
+            #tablaComunicados thead th,
+            #tablaComunicados tbody td {
+                padding: 11px 10px;
+                font-size: 0.88rem;
+            }
+
+            .com-actions {
+                min-width: 0;
+            }
+
+            .btn-editar-com,
+            .btn-eliminar-com {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .cedit-card {
+                max-width: 96vw;
+                max-height: 92vh;
+            }
+
+            .cedit-footer {
+                flex-direction: column;
+            }
+        }
     </style>
     <!-- ===== NOTIFICACIONES PROPIAS ===== -->
     <div id="noti-toast-container"></div>
@@ -573,6 +725,15 @@
                         <option value="#e74c3c">🔴 Urgente (Rojo)</option>
                     </select>
                 </div>
+                <div class="cedit-group">
+                    <label class="cedit-label" for="edit-pdf">PDF adjunto</label>
+                    <div id="edit-pdf-actual" style="margin-bottom:8px; color:var(--texto-gris); font-size:0.92rem;"></div>
+                    <input type="file" id="edit-pdf" class="cedit-input" accept="application/pdf,.pdf">
+                    <label class="cedit-check-row">
+                        <input type="checkbox" id="edit-pdf-remove">
+                        Quitar PDF actual
+                    </label>
+                </div>
                 <p id="edit-error" class="cedit-error" style="display:none;"></p>
             </div>
             <div class="cedit-footer">
@@ -585,7 +746,6 @@
             </div>
         </div>
     </div>
-
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script>
         /* ============================================================
@@ -666,11 +826,114 @@
 
         const SUPABASE_URL = 'https://etdcmuikvtnqfcnlvodh.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV0ZGNtdWlrdnRucWZjbmx2b2RoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU1OTQ1ODcsImV4cCI6MjA5MTE3MDU4N30.8JHWlTxYRSYEkpipqesHVBKn7QomTXJYHp6Nm6SzU4A';
+        const COMUNICADOS_BUCKET = 'comunicados-pdf';
+        const STORAGE_PUBLIC_PREFIX = `${SUPABASE_URL}/storage/v1/object/public/${COMUNICADOS_BUCKET}/`;
         const headers = {
             "apikey": SUPABASE_KEY,
             "Authorization": `Bearer ${SUPABASE_KEY}`,
             "Content-Type": "application/json"
         };
+
+        let _editPdfUrl = '';
+        let _editPdfNombre = '';
+
+        function escapeHtml(value) {
+            return String(value || '')
+                .replaceAll('&', '&amp;')
+                .replaceAll('<', '&lt;')
+                .replaceAll('>', '&gt;')
+                .replaceAll('"', '&quot;')
+                .replaceAll("'", '&#39;');
+        }
+
+        function nombrePdfSinExtension(nombre) {
+            return String(nombre || '')
+                .trim()
+                .replace(/\.pdf$/i, '')
+                || 'Documento';
+        }
+
+        function validarPdf(file) {
+            if (!file) return;
+            const nombre = String(file.name || '').toLowerCase();
+            const esPdf = file.type === 'application/pdf' || nombre.endsWith('.pdf');
+            if (!esPdf) {
+                throw new Error('Solo se permiten archivos PDF.');
+            }
+        }
+
+        function normalizarNombreArchivo(nombre) {
+            return String(nombre || 'adjunto.pdf')
+                .normalize('NFD')
+                    .replaceAll(/[\u0300-\u036f]/g, '')
+                    .replaceAll(/[^a-zA-Z0-9._-]+/g, '-')
+                    .replaceAll(/-+/g, '-')
+                    .replaceAll(/^-|-$/g, '')
+                || 'adjunto.pdf';
+        }
+
+        async function subirPdfComunicado(file) {
+            validarPdf(file);
+            const nombreNormalizado = normalizarNombreArchivo(file.name);
+            const ruta = `comunicados/${Date.now()}-${nombreNormalizado}`;
+            const res = await fetch(`${SUPABASE_URL}/storage/v1/object/${COMUNICADOS_BUCKET}/${ruta}`, {
+                method: 'POST',
+                headers: {
+                    apikey: SUPABASE_KEY,
+                    Authorization: `Bearer ${SUPABASE_KEY}`,
+                    'x-upsert': 'true',
+                    'Content-Type': 'application/pdf'
+                },
+                body: file
+            });
+
+            if (!res.ok) {
+                const detalle = await res.text();
+                throw new Error(detalle || 'No se pudo subir el PDF a Supabase Storage.');
+            }
+
+            return {
+                pdf_url: `${STORAGE_PUBLIC_PREFIX}${ruta}`,
+                pdf_nombre: nombrePdfSinExtension(file.name)
+            };
+        }
+
+        function obtenerRutaStorageDesdeUrl(url) {
+            const texto = String(url || '');
+            if (!texto.startsWith(STORAGE_PUBLIC_PREFIX)) return '';
+            return texto.slice(STORAGE_PUBLIC_PREFIX.length);
+        }
+
+        async function eliminarPdfComunicado(url) {
+            const ruta = obtenerRutaStorageDesdeUrl(url);
+            if (!ruta) return;
+
+            const res = await fetch(`${SUPABASE_URL}/storage/v1/object/${COMUNICADOS_BUCKET}/${ruta}`, {
+                method: 'DELETE',
+                headers: {
+                    apikey: SUPABASE_KEY,
+                    Authorization: `Bearer ${SUPABASE_KEY}`
+                }
+            });
+
+            if (!res.ok) {
+                const detalle = await res.text();
+                throw new Error(detalle || 'No se pudo eliminar el PDF anterior.');
+            }
+        }
+
+        function renderAdjuntoPdf(url, nombre) {
+            if (!url) return '';
+            const nombreSeguro = escapeHtml(nombrePdfSinExtension(nombre));
+            const urlSegura = escapeHtml(url);
+            return `
+                <div style="margin-top:10px;">
+                    <a href="${urlSegura}" target="_blank" rel="noopener noreferrer" style="display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border-radius:999px; background:#fff4e5; color:#a15c00; text-decoration:none; font-weight:600; font-size:0.9rem; border:1px solid #ffd08a;">
+                        <i class="fas fa-file-pdf"></i>
+                        ${nombreSeguro}
+                    </a>
+                </div>`;
+        }
 
         async function cargarSesionDesdeBD() {
             const usuario = (localStorage.getItem('usuario') || '').trim();
@@ -766,18 +1029,27 @@
                 });
                 const datos = await res.json();
 
+                if (!res.ok) {
+                    const mensaje = (datos && (datos.message || datos.error || datos.hint)) || res.statusText || 'Error al consultar comunicados';
+                    throw new Error(mensaje);
+                }
+
+                const lista = Array.isArray(datos) ? datos : [];
+
                 tbody.innerHTML = "";
-                if (datos.length === 0) {
+                if (lista.length === 0) {
                     tbody.innerHTML = "<tr><td colspan='4' style='text-align:center; padding: 40px; color: var(--texto-gris);'><i class='fas fa-folder-open fa-2x' style='color: #ccc; margin-bottom:15px;'></i><br>No hay comunicados registrados.</td></tr>";
                     return;
                 }
 
-                datos.forEach(c => {
+                lista.forEach(c => {
                     const date = new Date(c.creado_en);
                     const formattedDate = date.toLocaleDateString('es-CR');
                     const safeTitulo = encodeURIComponent(c.titulo || '');
                     const safeContenido = encodeURIComponent(c.contenido || '');
                     const safeColor = encodeURIComponent(c.color_borde || '#3498db');
+                    const safePdfUrl = encodeURIComponent(c.pdf_url || '');
+                    const safePdfNombre = encodeURIComponent(c.pdf_nombre || '');
 
                     tbody.innerHTML += `
                 <tr>
@@ -787,15 +1059,18 @@
                         <div style="font-size: 0.85rem; margin-top: 6px; color: var(--texto-gris);">
                             ${c.contenido}
                         </div>
+                        ${renderAdjuntoPdf(c.pdf_url, c.pdf_nombre)}
                     </td>
                     <td>${c.autor}</td>
-                    <td style="text-align: center; display: flex; gap: 8px; justify-content: center;">
+                    <td class="com-actions">
                         <button
                             class="btn-editar-com"
                             data-id="${c.id}"
                             data-titulo="${safeTitulo}"
                             data-contenido="${safeContenido}"
                             data-color="${safeColor}"
+                            data-pdf-url="${safePdfUrl}"
+                            data-pdf-nombre="${safePdfNombre}"
                             onclick="editarComunicadoDesdeBtn(this)"
                             title="Editar este comunicado"
                         >
@@ -808,8 +1083,9 @@
                 </tr>`;
                 });
             } catch (e) {
-                console.error(e);
-                tbody.innerHTML = "<tr><td colspan='4'>Error al cargar los comunicados.</td></tr>";
+                console.error('cargarComunicadosAdmin error:', e);
+                const mensaje = escapeHtml(e?.message || 'Error al cargar los comunicados.');
+                tbody.innerHTML = `<tr><td colspan='4' style='text-align:center; padding: 26px; color:#b42318;'><i class='fas fa-triangle-exclamation' style='margin-right:8px;'></i>${mensaje}</td></tr>`;
             }
         }
 
@@ -848,18 +1124,27 @@
                 const titulo = decodeURIComponent(btn.dataset.titulo || '');
                 const contenido = decodeURIComponent(btn.dataset.contenido || '');
                 const color = decodeURIComponent(btn.dataset.color || '#3498db');
-                editarComunicado(id, titulo, contenido, color);
+                const pdfUrl = decodeURIComponent(btn.dataset.pdfUrl || '');
+                const pdfNombre = decodeURIComponent(btn.dataset.pdfNombre || '');
+                editarComunicado(id, titulo, contenido, color, pdfUrl, pdfNombre);
             } catch (e) {
                 console.error('Error al abrir edición del comunicado', e);
                 noti.error('Error al editar', 'No se pudo abrir el comunicado para editar.');
             }
         }
 
-        function editarComunicado(id, tituloActual, contenidoActual, colorActual) {
+        function editarComunicado(id, tituloActual, contenidoActual, colorActual, pdfUrlActual = '', pdfNombreActual = '') {
             _editId = id;
+            _editPdfUrl = pdfUrlActual;
+            _editPdfNombre = pdfNombreActual;
             document.getElementById('edit-titulo').value = tituloActual;
             document.getElementById('edit-contenido').value = contenidoActual || '';
             document.getElementById('edit-color').value = colorActual;
+            document.getElementById('edit-pdf').value = '';
+            document.getElementById('edit-pdf-remove').checked = false;
+            document.getElementById('edit-pdf-actual').innerHTML = pdfUrlActual
+                ? `PDF actual: <a href="${escapeHtml(pdfUrlActual)}" target="_blank" rel="noopener noreferrer" style="color:#0a4c23; font-weight:600;">${escapeHtml(nombrePdfSinExtension(pdfNombreActual))}</a>`
+                : 'Sin PDF adjunto.';
             document.getElementById('edit-error').style.display = 'none';
             document.getElementById('modalEditarCom').classList.add('active');
             setTimeout(() => document.getElementById('edit-titulo').focus(), 100);
@@ -869,13 +1154,19 @@
             if (event && event.target !== document.getElementById('modalEditarCom')) return;
             document.getElementById('modalEditarCom').classList.remove('active');
             _editId = null;
+            _editPdfUrl = '';
+            _editPdfNombre = '';
         }
 
         async function guardarEdicion() {
             const titulo = document.getElementById('edit-titulo').value.trim();
             const contenido = document.getElementById('edit-contenido').value.trim();
             const color_borde = document.getElementById('edit-color').value;
+            const nuevoPdf = document.getElementById('edit-pdf').files[0];
+            const quitarPdf = document.getElementById('edit-pdf-remove').checked;
             const errorEl = document.getElementById('edit-error');
+            let pdfData = { pdf_url: _editPdfUrl, pdf_nombre: _editPdfNombre };
+            let pdfNuevoSubido = '';
 
             if (!titulo || !contenido) {
                 errorEl.textContent = 'El título y el contenido son obligatorios.';
@@ -889,21 +1180,39 @@
             btnSave.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Guardando...';
 
             try {
+                if (nuevoPdf) {
+                    pdfData = await subirPdfComunicado(nuevoPdf);
+                    pdfNuevoSubido = pdfData.pdf_url;
+                } else if (quitarPdf) {
+                    pdfData = { pdf_url: null, pdf_nombre: null };
+                }
+
                 const res = await fetch(`${SUPABASE_URL}/rest/v1/comunicados?id=eq.${_editId}`, {
                     method: 'PATCH',
                     headers,
-                    body: JSON.stringify({ titulo, contenido, color_borde })
+                    body: JSON.stringify({ titulo, contenido, color_borde, ...pdfData })
                 });
 
-                document.getElementById('modalEditarCom').classList.remove('active');
-
                 if (res.ok) {
+                    if ((_editPdfUrl && nuevoPdf) || (_editPdfUrl && quitarPdf)) {
+                        await eliminarPdfComunicado(_editPdfUrl).catch((error) => {
+                            console.warn('No se pudo borrar el PDF anterior:', error);
+                        });
+                    }
+                    document.getElementById('modalEditarCom').classList.remove('active');
                     noti.toast('success', 'Comunicado actualizado');
                     cargarComunicadosAdmin();
                 } else {
+                    if (pdfNuevoSubido) {
+                        await eliminarPdfComunicado(pdfNuevoSubido).catch(() => {});
+                    }
                     noti.error('Error al actualizar', 'No se pudo guardar el comunicado.');
                 }
             } catch (e) {
+                if (pdfNuevoSubido) {
+                    await eliminarPdfComunicado(pdfNuevoSubido).catch(() => {});
+                }
+                console.error('Error actualizando comunicado con PDF:', e);
                 noti.error('Error de red', 'Problema de conexión al actualizar.');
             } finally {
                 btnSave.disabled = false;
@@ -917,16 +1226,24 @@
                 form.addEventListener('submit', async function(e) {
                     e.preventDefault();
                     const btn = document.getElementById('btnPublicar');
+                    const pdfFile = document.getElementById('pdfCom').files[0];
+                    let pdfData = { pdf_url: null, pdf_nombre: null };
+                    let pdfNuevoSubido = '';
                     btn.disabled = true;
-                    const datos = {
-                        titulo: document.getElementById('tituloCom').value,
-                        contenido: document.getElementById('contenidoCom').value,
-                        color_borde: document.getElementById('colorCom').value,
-                        autor: localStorage.getItem('nombre')
-                    };
                     try {
                         btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Publicando...';
                         noti.loading(true, 'Publicando comunicado...');
+                        if (pdfFile) {
+                            pdfData = await subirPdfComunicado(pdfFile);
+                            pdfNuevoSubido = pdfData.pdf_url;
+                        }
+                        const datos = {
+                            titulo: document.getElementById('tituloCom').value,
+                            contenido: document.getElementById('contenidoCom').value,
+                            color_borde: document.getElementById('colorCom').value,
+                            autor: localStorage.getItem('nombre'),
+                            ...pdfData
+                        };
                         const res = await fetch(`${SUPABASE_URL}/rest/v1/comunicados`, {
                             method: "POST",
                             headers,
@@ -937,6 +1254,9 @@
                             this.reset();
                             cargarComunicadosAdmin();
                         } else {
+                            if (pdfNuevoSubido) {
+                                await eliminarPdfComunicado(pdfNuevoSubido).catch(() => {});
+                            }
                             const error = await res.json();
                             noti.error('Error al publicar', error.message || res.statusText);
                         }
