@@ -1076,7 +1076,7 @@
                         >
                             <i class="fas fa-edit"></i> Editar
                         </button>
-                        <button class="btn-eliminar-com" onclick="eliminarComunicado(${c.id})" title="Eliminar este comunicado">
+                        <button class="btn-eliminar-com" onclick="eliminarComunicado(${c.id}, '${safePdfUrl}')" title="Eliminar este comunicado">
                             <i class="fas fa-trash-alt"></i> Eliminar
                         </button>
                     </td>
@@ -1089,18 +1089,24 @@
             }
         }
 
-        function eliminarComunicado(id) {
+        function eliminarComunicado(id, pdfUrlCodificada = '') {
             noti.confirm(
                 '¿Eliminar comunicado?',
                 'Esta acción <b>no se puede deshacer</b> y el comunicado desaparecerá para todos los usuarios.',
                 async () => {
                     noti.loading(true, 'Eliminando...');
                     try {
+                        const pdfUrl = decodeURIComponent(pdfUrlCodificada || '');
                         const res = await fetch(`${SUPABASE_URL}/rest/v1/comunicados?id=eq.${id}`, {
                             method: 'DELETE',
                             headers
                         });
                         if (res.ok) {
+                            if (pdfUrl) {
+                                await eliminarPdfComunicado(pdfUrl).catch((error) => {
+                                    console.warn('No se pudo borrar el PDF del comunicado eliminado:', error);
+                                });
+                            }
                             noti.toast('success', 'Comunicado eliminado');
                             cargarComunicadosAdmin();
                         } else {
