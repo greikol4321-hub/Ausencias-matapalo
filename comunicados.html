@@ -775,6 +775,9 @@
                 datos.forEach(c => {
                     const date = new Date(c.creado_en);
                     const formattedDate = date.toLocaleDateString('es-CR');
+                    const safeTitulo = encodeURIComponent(c.titulo || '');
+                    const safeContenido = encodeURIComponent(c.contenido || '');
+                    const safeColor = encodeURIComponent(c.color_borde || '#3498db');
 
                     tbody.innerHTML += `
                 <tr>
@@ -787,7 +790,15 @@
                     </td>
                     <td>${c.autor}</td>
                     <td style="text-align: center; display: flex; gap: 8px; justify-content: center;">
-                        <button class="btn-editar-com" onclick="editarComunicado(${c.id}, '${c.titulo.replace(/'/g, "\\'")}', '${c.contenido.replace(/'/g, "\\'").replace(/\n/g, "\\n")}', '${c.color_borde}')" title="Editar este comunicado">
+                        <button
+                            class="btn-editar-com"
+                            data-id="${c.id}"
+                            data-titulo="${safeTitulo}"
+                            data-contenido="${safeContenido}"
+                            data-color="${safeColor}"
+                            onclick="editarComunicadoDesdeBtn(this)"
+                            title="Editar este comunicado"
+                        >
                             <i class="fas fa-edit"></i> Editar
                         </button>
                         <button class="btn-eliminar-com" onclick="eliminarComunicado(${c.id})" title="Eliminar este comunicado">
@@ -831,10 +842,23 @@
 
         let _editId = null;
 
+        function editarComunicadoDesdeBtn(btn) {
+            try {
+                const id = Number(btn.dataset.id);
+                const titulo = decodeURIComponent(btn.dataset.titulo || '');
+                const contenido = decodeURIComponent(btn.dataset.contenido || '');
+                const color = decodeURIComponent(btn.dataset.color || '#3498db');
+                editarComunicado(id, titulo, contenido, color);
+            } catch (e) {
+                console.error('Error al abrir edición del comunicado', e);
+                noti.error('Error al editar', 'No se pudo abrir el comunicado para editar.');
+            }
+        }
+
         function editarComunicado(id, tituloActual, contenidoActual, colorActual) {
             _editId = id;
             document.getElementById('edit-titulo').value = tituloActual;
-            document.getElementById('edit-contenido').value = contenidoActual.replace(/\\n/g, '\n');
+            document.getElementById('edit-contenido').value = contenidoActual || '';
             document.getElementById('edit-color').value = colorActual;
             document.getElementById('edit-error').style.display = 'none';
             document.getElementById('modalEditarCom').classList.add('active');
